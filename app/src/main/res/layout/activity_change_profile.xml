@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".myPage.ChangeProfileActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="49dp">
+
+                <ImageView
+                    android:id="@+id/profileBack"
+                    style="@style/ImageButton.size49"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:paddingVertical="18dp"
+                    android:paddingStart="22dp"
+                    android:paddingEnd="21dp"
+                    android:src="@drawable/star__search_back"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/scdream"
+                    android:text="프로필 수정"
+                    android:textSize="17sp"
+                    app:layout_constraintBottom_toBottomOf="@id/profileBack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="60.46dp">
+
+                <ImageView
+                    android:id="@+id/profileImage3"
+                    android:layout_width="82.54dp"
+                    android:layout_height="82.54dp"
+                    android:layout_gravity="center"
+                    android:scaleType="center"
+                    app:srcCompat="@drawable/profile_default_image2" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="54dp"
+                    android:layout_marginTop="54dp"
+                    app:srcCompat="@drawable/changeprofile__plus" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="43.26dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="17dp"
+                android:text="닉네임"
+                android:fontFamily="@font/spoqahansansneomedium"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/changeNickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="42dp"
+                android:layout_marginEnd="42dp"
+                android:background="@drawable/changeprofile_write"
+                android:inputType="textPersonName"
+                android:fontFamily="@font/spoqahansansneoregular"
+                android:paddingLeft="10dp"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10.44dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/changeNicknameGuide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/point_purple"
+                    android:layout_marginLeft="60dp"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/length"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    android:gravity="end"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/submit"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="100dp"
+                android:layout_marginStart="42dp"
+                android:layout_marginEnd="42dp"
+                android:text="완료"
+                android:fontFamily="@font/spoqahansansneobold"
+                android:textSize="14sp"
+                android:background="@drawable/round_btn" />
+
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,101 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.TourapiProject" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryDark">@color/purple_700</item>
+        <item name="colorAccent">@color/teal_200</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="ImageView">
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:background">@color/black</item>
+    </style>
+
+    <style name="ImageView.size48">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+    </style>
+
+    <style name="ImageView.size60">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">60dp</item>
+    </style>
+
+    <style name="Wt_detail_txt">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+
+    <style name="ThemeOverlay.TourapiProject.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
+        <item name="fullscreenTextColor">@color/light_blue_A200</item>
+    </style>
+
+    <style name="Textview_observation_details" parent="">
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+
+    <style name="Textview_observation_details_title" parent="">
+        <item name="fontFamily">@font/spoqahansansneomedium</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/point_purple</item>
+    </style>
+
+    <style name="StarryNight.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="StarryNight.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="StarryNight.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="SpinnerTheme" parent="android:Widget.Spinner">
+        <item name = "background">@drawable/wt__spinner_background</item>
+    </style>
+
+    <style name="ImageButton">
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
+    <style name="ImageButton.size21">
+        <item name="android:background">@drawable/ripple_21</item>
+        <item name="android:layout_width">21dp</item>
+        <item name="android:layout_height">21dp</item>
+    </style>
+
+    <style name="ImageButton.size37">
+        <item name="android:background">@drawable/ripple_21</item>
+        <item name="android:layout_width">49dp</item>
+        <item name="android:layout_height">49dp</item>
+    </style>
+
+    <style name="ImageButton.size49">
+        <item name="android:background">@drawable/ripple_21</item>
+        <item name="android:layout_width">49dp</item>
+        <item name="android:layout_height">49dp</item>
+    </style>
+
+    <style name="ImageButton.size24">
+        <item name="android:background">@drawable/ripple_21</item>
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+    </style>
+
+    <style name="ImageButton.size24.pad4">
+        <item name="android:padding">4dp</item>
+    </style>
+
+    <style name="ImageButton.size24.pad3">
+        <item name="android:padding">3dp</item>
+    </style>
+
+    <style name="ImageButton.size21.pad12">
+        <item name="android:padding">12dp</item>
+    </style>
+</resources>
