@@ -1,4 +1,4 @@
-package com.starrynight.tourapiproject.weatherPage;
+package com.starrynight.tourapiproject.weatherPage2;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -36,6 +36,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.starrynight.tourapiproject.R;
+import com.starrynight.tourapiproject.weatherPage.GpsTracker;
+import com.starrynight.tourapiproject.weatherPage.WeatherLoadingDialog;
+import com.starrynight.tourapiproject.weatherPage.WtHelpActivity;
 import com.starrynight.tourapiproject.weatherPage.wtAreaRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.weatherPage.wtAreaRetrofit.WtAreaParams;
 import com.starrynight.tourapiproject.weatherPage.wtFineDustModel.WtFineDustModel;
@@ -67,7 +70,7 @@ import retrofit2.Response;
  * @className : WeatherActivity
  * @description : 날씨 페이지입니다.
  * @modification : 2022-09-03 (hyeonz) 주석추가
- * @author : hyeonz
+ * @author : seinLee
  * @date : 2022-09-03
  * @version : 1.0
 ====개정이력(Modification Information)====
@@ -75,9 +78,9 @@ import retrofit2.Response;
 -----------------------------------------
 2022-09-03      hyeonz    주석추가
  */
-public class WeatherActivity extends AppCompatActivity {
+public class WeatherActivity2 extends AppCompatActivity {
     WeatherLoadingDialog dialog;
-    WeatherActivity.LoadingAsyncTask task;
+    WeatherActivity2.LoadingAsyncTask task;
 
     //Picker 관련
     Calendar c = Calendar.getInstance();
@@ -362,10 +365,10 @@ public class WeatherActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_weather);
+        setContentView(R.layout.activity_weather2);
 
-        dialog = new WeatherLoadingDialog(WeatherActivity.this);
-        task = new LoadingAsyncTask(WeatherActivity.this, 5000);
+        dialog = new WeatherLoadingDialog(WeatherActivity2.this);
+        task = new LoadingAsyncTask(WeatherActivity2.this, 5000);
         task.execute();
 
         if (!checkLocationServicesStatus()) {
@@ -377,7 +380,7 @@ public class WeatherActivity extends AppCompatActivity {
             checkRunTimePermission();
         }
 
-        gpsTracker = new GpsTracker(WeatherActivity.this);
+        gpsTracker = new GpsTracker(WeatherActivity2.this);
 
         nowLatitude = gpsTracker.getLatitude();
         nowLongitude = gpsTracker.getLongitude();
@@ -521,10 +524,6 @@ public class WeatherActivity extends AppCompatActivity {
 
     // 날짜 Picker 설정 메소드
     public void onSetDatePicker() {
-
-
-
-        
 //        cal.add(Calendar.DATE, 2);
 //        plusDay = formatDate2.format(cal.getTime());
 //        plusDay += selectTime;
@@ -1485,22 +1484,22 @@ public class WeatherActivity extends AppCompatActivity {
      */
     public void unixChange(String unixTime) {
         //yyyyMMddHH
-        unixDate = new java.util.Date(Long.parseLong(unixTime) * 1000L);
+        unixDate = new Date(Long.parseLong(unixTime) * 1000L);
         formatDateTime.setTimeZone(java.util.TimeZone.getTimeZone("GMT+9"));
         unixToDate = formatDateTime.format(unixDate);
 
         //yyyyMMdd
-        unixDay = new java.util.Date(Long.parseLong(unixTime) * 1000L);
+        unixDay = new Date(Long.parseLong(unixTime) * 1000L);
         formatDate2.setTimeZone(java.util.TimeZone.getTimeZone("GMT+9"));
         unixToDay = formatDate2.format(unixDay);
 
         //HH:mm
-        unixHourMin = new java.util.Date(Long.parseLong(unixTime) * 1000L);
+        unixHourMin = new Date(Long.parseLong(unixTime) * 1000L);
         formatHourMin.setTimeZone(java.util.TimeZone.getTimeZone("GMT+9"));
         unixToHourMin = formatHourMin.format(unixHourMin);
 
         //HH
-        unixHour = new java.util.Date(Long.parseLong(unixTime) * 1000L);
+        unixHour = new Date(Long.parseLong(unixTime) * 1000L);
         formatHour.setTimeZone(java.util.TimeZone.getTimeZone("GMT+9"));
         unixToHour = formatHour.format(unixHour);
     }
@@ -1994,7 +1993,7 @@ public class WeatherActivity extends AppCompatActivity {
         if (nowCity == null || provName == null) {
             nowCity = "서울";
             provName = "강남구";
-            Toast.makeText(WeatherActivity.this, "현재 위치가 인식되지 않습니다.", Toast.LENGTH_LONG).show();
+            Toast.makeText(WeatherActivity2.this, "현재 위치가 인식되지 않습니다.", Toast.LENGTH_LONG).show();
 
         }
 
@@ -2004,7 +2003,7 @@ public class WeatherActivity extends AppCompatActivity {
                 if (cityAdSpin.getItem(position).equals("서울")) {
                     cityName = "서울";
 
-                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity.this, R.array.wt_Seoul, android.R.layout.simple_spinner_dropdown_item);
+                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity2.this, R.array.wt_Seoul, android.R.layout.simple_spinner_dropdown_item);
                     provAdSpin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     provSpinner.setAdapter(provAdSpin);
                     provSpinner.setSelection(getIndex(provSpinner, provName));
@@ -2029,7 +2028,7 @@ public class WeatherActivity extends AppCompatActivity {
                 } else if (cityAdSpin.getItem(position).equals("경기")) {
                     cityName = "경기";
 
-                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity.this, R.array.wt_Gyeonggi, android.R.layout.simple_spinner_dropdown_item);
+                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity2.this, R.array.wt_Gyeonggi, android.R.layout.simple_spinner_dropdown_item);
                     provAdSpin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     provSpinner.setAdapter(provAdSpin);
                     provSpinner.setSelection(getIndex(provSpinner, provName));
@@ -2054,7 +2053,7 @@ public class WeatherActivity extends AppCompatActivity {
                 } else if (cityAdSpin.getItem(position).equals("인천")) {
                     cityName = "인천";
 
-                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity.this, R.array.wt_Incheon, android.R.layout.simple_spinner_dropdown_item);
+                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity2.this, R.array.wt_Incheon, android.R.layout.simple_spinner_dropdown_item);
                     provAdSpin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     provSpinner.setAdapter(provAdSpin);
                     provSpinner.setSelection(getIndex(provSpinner, provName));
@@ -2079,7 +2078,7 @@ public class WeatherActivity extends AppCompatActivity {
                 } else if (cityAdSpin.getItem(position).equals("강원")) {
                     cityName = "강원";
 
-                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity.this, R.array.wt_Gangwon, android.R.layout.simple_spinner_dropdown_item);
+                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity2.this, R.array.wt_Gangwon, android.R.layout.simple_spinner_dropdown_item);
                     provAdSpin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     provSpinner.setAdapter(provAdSpin);
                     provSpinner.setSelection(getIndex(provSpinner, provName));
@@ -2107,7 +2106,7 @@ public class WeatherActivity extends AppCompatActivity {
                 } else if (cityAdSpin.getItem(position).equals("충북")) {
                     cityName = "충북";
 
-                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity.this, R.array.wt_Chungbuk, android.R.layout.simple_spinner_dropdown_item);
+                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity2.this, R.array.wt_Chungbuk, android.R.layout.simple_spinner_dropdown_item);
                     provAdSpin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     provSpinner.setAdapter(provAdSpin);
                     provSpinner.setSelection(getIndex(provSpinner, provName));
@@ -2132,7 +2131,7 @@ public class WeatherActivity extends AppCompatActivity {
                 } else if (cityAdSpin.getItem(position).equals("충남")) {
                     cityName = "충남";
 
-                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity.this, R.array.wt_Chungnam, android.R.layout.simple_spinner_dropdown_item);
+                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity2.this, R.array.wt_Chungnam, android.R.layout.simple_spinner_dropdown_item);
                     provAdSpin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     provSpinner.setAdapter(provAdSpin);
                     provSpinner.setSelection(getIndex(provSpinner, provName));
@@ -2157,7 +2156,7 @@ public class WeatherActivity extends AppCompatActivity {
                 } else if (cityAdSpin.getItem(position).equals("대전·세종")) {
                     cityName = "대전·세종";
 
-                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity.this, R.array.wt_DaejeonSejong, android.R.layout.simple_spinner_dropdown_item);
+                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity2.this, R.array.wt_DaejeonSejong, android.R.layout.simple_spinner_dropdown_item);
                     provAdSpin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     provSpinner.setAdapter(provAdSpin);
                     provSpinner.setSelection(getIndex(provSpinner, provName));
@@ -2182,7 +2181,7 @@ public class WeatherActivity extends AppCompatActivity {
                 } else if (cityAdSpin.getItem(position).equals("광주·전북")) {
                     cityName = "광주·전북";
 
-                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity.this, R.array.wt_GwangjuJeonbuk, android.R.layout.simple_spinner_dropdown_item);
+                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity2.this, R.array.wt_GwangjuJeonbuk, android.R.layout.simple_spinner_dropdown_item);
                     provAdSpin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     provSpinner.setAdapter(provAdSpin);
                     provSpinner.setSelection(getIndex(provSpinner, provName));
@@ -2207,7 +2206,7 @@ public class WeatherActivity extends AppCompatActivity {
                 } else if (cityAdSpin.getItem(position).equals("전남")) {
                     cityName = "전남";
 
-                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity.this, R.array.wt_Jeonnam, android.R.layout.simple_spinner_dropdown_item);
+                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity2.this, R.array.wt_Jeonnam, android.R.layout.simple_spinner_dropdown_item);
                     provAdSpin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     provSpinner.setAdapter(provAdSpin);
                     provSpinner.setSelection(getIndex(provSpinner, provName));
@@ -2232,7 +2231,7 @@ public class WeatherActivity extends AppCompatActivity {
                 } else if (cityAdSpin.getItem(position).equals("대구·경북")) {
                     cityName = "대구·경북";
 
-                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity.this, R.array.wt_DaeguGyeongbuk, android.R.layout.simple_spinner_dropdown_item);
+                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity2.this, R.array.wt_DaeguGyeongbuk, android.R.layout.simple_spinner_dropdown_item);
                     provAdSpin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     provSpinner.setAdapter(provAdSpin);
                     provSpinner.setSelection(getIndex(provSpinner, provName));
@@ -2257,7 +2256,7 @@ public class WeatherActivity extends AppCompatActivity {
                 } else if (cityAdSpin.getItem(position).equals("경남")) {
                     cityName = "경남";
 
-                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity.this, R.array.wt_Gyeongnam, android.R.layout.simple_spinner_dropdown_item);
+                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity2.this, R.array.wt_Gyeongnam, android.R.layout.simple_spinner_dropdown_item);
                     provAdSpin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     provSpinner.setAdapter(provAdSpin);
                     provSpinner.setSelection(getIndex(provSpinner, provName));
@@ -2282,7 +2281,7 @@ public class WeatherActivity extends AppCompatActivity {
                 } else if (cityAdSpin.getItem(position).equals("부산·울산")) {
                     cityName = "부산·울산";
 
-                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity.this, R.array.wt_BusanUlsan, android.R.layout.simple_spinner_dropdown_item);
+                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity2.this, R.array.wt_BusanUlsan, android.R.layout.simple_spinner_dropdown_item);
                     provAdSpin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     provSpinner.setAdapter(provAdSpin);
                     provSpinner.setSelection(getIndex(provSpinner, provName));
@@ -2307,7 +2306,7 @@ public class WeatherActivity extends AppCompatActivity {
                 } else if (cityAdSpin.getItem(position).equals("제주")) {
                     cityName = "제주";
 
-                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity.this, R.array.wt_Jeju, android.R.layout.simple_spinner_dropdown_item);
+                    provAdSpin = ArrayAdapter.createFromResource(WeatherActivity2.this, R.array.wt_Jeju, android.R.layout.simple_spinner_dropdown_item);
                     provAdSpin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     provSpinner.setAdapter(provAdSpin);
                     provSpinner.setSelection(getIndex(provSpinner, provName));
@@ -2662,7 +2661,7 @@ public class WeatherActivity extends AppCompatActivity {
 
             if (check_result) {
                 //위치 권한 허용
-                gpsTracker = new GpsTracker(WeatherActivity.this);
+                gpsTracker = new GpsTracker(WeatherActivity2.this);
 
                 nowLatitude = gpsTracker.getLatitude();
                 nowLongitude = gpsTracker.getLongitude();
@@ -2699,7 +2698,7 @@ public class WeatherActivity extends AppCompatActivity {
                     Log.d("nowCityProv2", nowCity + " " + nowProvince);
 
                 } else {
-                    Toast.makeText(WeatherActivity.this, "퍼미션이 거부되었습니다. 설정(앱 정보)에서 퍼미션을 허용해야 합니다. ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(WeatherActivity2.this, "퍼미션이 거부되었습니다. 설정(앱 정보)에서 퍼미션을 허용해야 합니다. ", Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -2710,9 +2709,9 @@ public class WeatherActivity extends AppCompatActivity {
     //런타임 퍼미션 처리
     void checkRunTimePermission() {
         // 1. 위치 퍼미션을 가지고 있는지 체크합니다.
-        int hasFineLocationPermission = ContextCompat.checkSelfPermission(WeatherActivity.this,
+        int hasFineLocationPermission = ContextCompat.checkSelfPermission(WeatherActivity2.this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
-        int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(WeatherActivity.this,
+        int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(WeatherActivity2.this,
                 Manifest.permission.ACCESS_COARSE_LOCATION);
 
         Log.d("LocationAllow", "1");
@@ -2729,19 +2728,19 @@ public class WeatherActivity extends AppCompatActivity {
         } else {  //2. 퍼미션 요청을 허용한 적이 없다면 퍼미션 요청이 필요합니다. 2가지 경우(3-1, 4-1)가 있습니다.
 
             // 3-1. 사용자가 퍼미션 거부를 한 적이 있는 경우에는
-            if (ActivityCompat.shouldShowRequestPermissionRationale(WeatherActivity.this, REQUIRED_PERMISSIONS[0])) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(WeatherActivity2.this, REQUIRED_PERMISSIONS[0])) {
                 Log.d("LocationAllow", "3");
                 // 3-2. 요청을 진행하기 전에 사용자가에게 퍼미션이 필요한 이유를 설명해줄 필요가 있습니다.
-                Toast.makeText(WeatherActivity.this, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(WeatherActivity2.this, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.", Toast.LENGTH_LONG).show();
                 // 3-3. 사용자에게 퍼미션 요청을 합니다. 요청 결과는 onRequestPermissionResult에서 수신됩니다.
-                ActivityCompat.requestPermissions(WeatherActivity.this, REQUIRED_PERMISSIONS,
+                ActivityCompat.requestPermissions(WeatherActivity2.this, REQUIRED_PERMISSIONS,
                         PERMISSIONS_REQUEST_CODE);
 
             } else {
                 Log.d("LocationAllow", "4");
                 // 4-1. 사용자가 퍼미션 거부를 한 적이 없는 경우에는 퍼미션 요청을 바로 합니다.
                 // 요청 결과는 onRequestPermissionResult에서 수신됩니다.
-                ActivityCompat.requestPermissions(WeatherActivity.this, REQUIRED_PERMISSIONS,
+                ActivityCompat.requestPermissions(WeatherActivity2.this, REQUIRED_PERMISSIONS,
                         PERMISSIONS_REQUEST_CODE);
             }
 
@@ -2793,7 +2792,7 @@ public class WeatherActivity extends AppCompatActivity {
 
     //여기부터는 GPS 활성화를 위한 메소드들
     private void showDialogForLocationServiceSetting() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(WeatherActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(WeatherActivity2.this);
         builder.setTitle("위치 서비스 비활성화");
         builder.setMessage("앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n"
                 + "위치 설정을 수정하시겠습니까?");
@@ -2805,7 +2804,7 @@ public class WeatherActivity extends AppCompatActivity {
                         = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivityForResult(callGPSSettingIntent, GPS_ENABLE_REQUEST_CODE);
 
-                gpsTracker = new GpsTracker(WeatherActivity.this);
+                gpsTracker = new GpsTracker(WeatherActivity2.this);
 
                 nowLatitude = gpsTracker.getLatitude();
                 nowLongitude = gpsTracker.getLongitude();
@@ -2838,7 +2837,7 @@ public class WeatherActivity extends AppCompatActivity {
                 //사용자가 GPS 활성 시켰는지 검사
                 if (checkLocationServicesStatus()) {
                     if (checkLocationServicesStatus()) {
-                        gpsTracker = new GpsTracker(WeatherActivity.this);
+                        gpsTracker = new GpsTracker(WeatherActivity2.this);
 
                         nowLatitude = gpsTracker.getLatitude();
                         nowLongitude = gpsTracker.getLongitude();
@@ -2932,7 +2931,7 @@ public class WeatherActivity extends AppCompatActivity {
         private Long mtime;
 
         public LoadingAsyncTask(Context context, long time) {
-            mContext = WeatherActivity.this;
+            mContext = WeatherActivity2.this;
             mtime = time;
         }
 

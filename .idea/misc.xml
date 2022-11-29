@@ -15,8 +15,21 @@
         <entry key="..\:/Projects/tourapi project/AndroidApp/app/src/main/res/layout/fragment_search_result.xml" value="0.36614583333333334" />
         <entry key="..\:/Projects/tourapi project/AndroidApp/app/src/main/res/layout/observation__course_slider.xml" value="0.36614583333333334" />
         <entry key="..\:/Projects/tourapi project/AndroidApp/app/src/main/res/layout/observe_fee.xml" value="0.36614583333333334" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/drawable/tp__1.xml" value="0.367" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/drawable/tp__2.xml" value="0.367" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_change_password.xml" value="0.36614583333333334" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_find_email.xml" value="0.1875" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_login.xml" value="0.1875" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_logout_pop.xml" value="0.1875" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_main.xml" value="0.3283514492753623" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_my_post.xml" value="0.36614583333333334" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_phone_auth.xml" value="0.36614583333333334" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_sign_up.xml" value="0.1875" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_tourist_point.xml" value="0.36614583333333334" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_weather.xml" value="0.3401268115942029" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_weather2.xml" value="0.36614583333333334" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>
