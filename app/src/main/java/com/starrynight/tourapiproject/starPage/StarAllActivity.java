@@ -103,9 +103,6 @@ public class StarAllActivity extends AppCompatActivity {
             }
         });
 
-        allTodayConst = findViewById(R.id.all_today_const);
-        allTodayConst.findViewById(R.id.star_today_const_notice).setVisibility(View.GONE);
-
         constTodayList = findViewById(R.id.today_cel_recycler);
         gridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
         constTodayList.addItemDecoration(new GridItemDecoration(this));

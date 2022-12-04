@@ -75,7 +75,8 @@
     <LinearLayout
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
         android:background="@drawable/star__rounded"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -85,18 +86,16 @@
         <LinearLayout
             android:id="@+id/top_bar"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:background="@drawable/star__rounded"
             android:backgroundTint="@color/sub_blue"
-            android:orientation="vertical"
-            android:paddingTop="20dp">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center|top"
-                android:layout_marginBottom="10dp"
                 android:src="@drawable/tonight__bottom_up" />
         </LinearLayout>
 
@@ -109,86 +108,19 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/tonight_weather"
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:layout_marginBottom="22dp"
-                    android:background="@color/sub_blue">
-
-                    <ImageView
-                        android:id="@+id/star__today_weather_image"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:src="@drawable/tonight__today_weather_image"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/star__today_weather_txt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="13dp"
-                        android:text="오늘의 날씨 확인하기"
-                        android:textSize="18sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@id/star__today_weather_image"
-                        app:layout_constraintStart_toStartOf="@id/star__today_weather_image"
-                        app:layout_constraintTop_toBottomOf="@id/star__today_weather_image" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="30dp"
-                        android:src="@drawable/tonight__right_arrow"
-                        app:layout_constraintBottom_toBottomOf="@id/star__today_weather_txt"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/star__today_weather_txt" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
                 <include
                     layout="@layout/star__today_cel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <LinearLayout
-                    android:id="@+id/all_const_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="13dp"
-                    android:layout_marginEnd="30dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="12dp"
-                        android:text="모든 별자리 보기"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/tonight__right_arrow" />
-
-                </LinearLayout>
-
-                <include
-                    layout="@layout/star__horoscope"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="25dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="22dp" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <ImageView
+            android:id="@+id/star_camera"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_star_camera" />
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

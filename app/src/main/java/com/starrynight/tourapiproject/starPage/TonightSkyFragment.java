@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -69,6 +70,7 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
     private BottomSheetBehavior bottomSheetBehavior;
     LinearLayout topBar;
     ImageView topIcon;
+    ImageView starCamera;
 
     //나침반 관련
     private SensorManager mSensorManger;
@@ -142,39 +144,6 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_tonight_sky, container, false);
 
-        todayWeather = v.findViewById(R.id.tonight_weather);
-
-        todayWeather.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), WeatherActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //별자리 운세
-        horViewpager = v.findViewById(R.id.hor_viewpager);
-        horAdapter = new HoroscopeAdapter();
-        horViewpager.setAdapter(horAdapter);
-
-        horPrevBtn = v.findViewById(R.id.hor_prev_btn);
-        horNextBtn = v.findViewById(R.id.hor_next_btn);
-
-        connectHoroscope();
-
-        horPrevBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                horViewpager.setCurrentItem(getItem(-1), true);
-            }
-        });
-
-        horNextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                horViewpager.setCurrentItem(getItem(1), true);
-            }
-        });
 
         //나침반
         mSensorManger = (SensorManager) Objects.requireNonNull(getActivity()).getSystemService(Context.SENSOR_SERVICE);
@@ -262,12 +231,19 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
             }
         });
 
+        //별자리 사진 클릭 이벤트
+        starCamera = v.findViewById(R.id.star_camera);
+        starCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Objects.requireNonNull(getActivity()).getApplicationContext(),StarCameraActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // recyclerview 설정
         constList = v.findViewById(R.id.today_cel_recycler);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false);
-        constList.addItemDecoration(new GridItemDecoration(getContext()));
-        constList.setLayoutManager(gridLayoutManager);
+        constList.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
         constAdapter = new StarViewAdapter();
         constList.setAdapter(constAdapter);
 
@@ -407,35 +383,6 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
             compass.startAnimation(ra);
             mCurrentDegree = -azimuthinDegress;
         }
-    }
-
-    //별자리 운세
-    public void connectHoroscope() {
-        todayMonth = formatMonth.format(cal.getTime());
-        Log.d("todayMonth", todayMonth);
-
-        //별자리 운세를 불러오는 api
-        Call<List<HorItem>> horCall = com.starrynight.tourapiproject.starPage.horPageRetriofit.RetrofitClient.getApiService().getHoroscopes(Integer.valueOf(todayMonth));
-        horCall.enqueue(new Callback<List<HorItem>>() {
-            @Override
-            public void onResponse(Call<List<HorItem>> call, Response<List<HorItem>> response) {
-                if (response.isSuccessful()) {
-                    List<HorItem> result = response.body();
-                    for (HorItem hr : result) {
-                        horAdapter.addItem(new HorItem(hr.getHorImage(), hr.getHorEngTitle(), hr.getHorKrTitle(), hr.getHorPeriod(), hr.getHorDesc(), hr.getHorGuard(), hr.getHorPersonality(), hr.getHorTravel()));
-                    }
-
-                    horViewpager.setAdapter(horAdapter);
-                } else {
-                    Log.d("horoscope", "별자리 운세 불러오기 실패");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<HorItem>> call, Throwable t) {
-                Log.e("연결실패", t.getMessage());
-            }
-        });
     }
 
     @Override
