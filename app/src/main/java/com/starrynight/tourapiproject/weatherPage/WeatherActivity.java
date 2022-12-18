@@ -391,7 +391,7 @@ public class WeatherActivity extends AppCompatActivity {
         setTextView();
         onClickBackBtn();
         onClickCloudInfo();
-        onClickHelpBtn();
+//        onClickHelpBtn();
 
         onSetDatePicker();
         onSetTimePicker();
@@ -496,15 +496,15 @@ public class WeatherActivity extends AppCompatActivity {
     }
 
     // 도움말 버튼 이벤트 메소드
-    public void onClickHelpBtn() {
-        wtHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), WtHelpActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
+//    public void onClickHelpBtn() {
+//        wtHelp.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(), WtHelpActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//    }
 
     // 기상청 구름 정보 페이지로 이동 이벤트 메소드
     public void onClickCloudInfo() {
@@ -2677,7 +2677,7 @@ public class WeatherActivity extends AppCompatActivity {
                 setTextView();
                 onClickBackBtn();
                 onClickCloudInfo();
-                onClickHelpBtn();
+//                onClickHelpBtn();
 
                 //setMyLocation();
 
@@ -2853,7 +2853,7 @@ public class WeatherActivity extends AppCompatActivity {
                         setTextView();
                         onClickBackBtn();
                         onClickCloudInfo();
-                        onClickHelpBtn();
+//                        onClickHelpBtn();
 
 
                         onSetDatePicker();

@@ -20,7 +20,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 hyeonz       2022-09-03   주석추가
  */
 public class WtMetRetrofit {
-    private static String BASE_URL = TaskServer.openWeatherURL;
 
     public static WtMetInterface wtMetInterface() {
         return getWeatherInstance().create(WtMetInterface.class);
@@ -31,6 +30,7 @@ public class WtMetRetrofit {
                 .setLenient()
                 .create();
 
+        String BASE_URL = TaskServer.openWeatherURL;
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
