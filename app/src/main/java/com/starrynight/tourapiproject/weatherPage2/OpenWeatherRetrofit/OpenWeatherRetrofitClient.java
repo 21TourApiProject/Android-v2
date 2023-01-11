@@ -8,7 +8,7 @@ import com.starrynight.tourapiproject.signUpPage.signUpRetrofit.SignUpRetrofitSe
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RetrofitClient {
+public class OpenWeatherRetrofitClient {
 
     private static final String BASE_URL = TaskServer.openWeatherURL;
 

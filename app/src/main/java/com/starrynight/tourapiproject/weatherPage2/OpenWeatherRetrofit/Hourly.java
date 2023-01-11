@@ -1,11 +1,11 @@
 package com.starrynight.tourapiproject.weatherPage2.OpenWeatherRetrofit;
 
 import com.google.gson.annotations.SerializedName;
-import com.starrynight.tourapiproject.weatherPage.wtMetModel.Weather;
 
 import java.util.List;
 
 public class Hourly {
+
     @SerializedName("dt")
     private String dt;
 

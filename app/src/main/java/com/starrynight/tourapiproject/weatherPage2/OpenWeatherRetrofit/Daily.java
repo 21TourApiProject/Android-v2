@@ -1,9 +1,11 @@
 package com.starrynight.tourapiproject.weatherPage2.OpenWeatherRetrofit;
 
 import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class Daily {
+
     @SerializedName("dt")
     private String dt;
 
@@ -47,13 +49,22 @@ public class Daily {
     private String windGust;
 
     @SerializedName("weather")
-    private Weather weather;
+    private List<Weather> weather;
 
     @SerializedName("clouds")
     private String clouds;
 
     @SerializedName("pop")
     private String pop;
+
+    @SerializedName("rain")
+    private String rain;
+
+    @SerializedName("snow")
+    private String snow;
+
+    @SerializedName("uvi")
+    private String uvi;
 
     public String getDt() {
         return dt;
@@ -111,7 +122,7 @@ public class Daily {
         return windGust;
     }
 
-    public Weather getWeather() {
+    public List<Weather> getWeather() {
         return weather;
     }
 

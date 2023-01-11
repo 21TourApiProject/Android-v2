@@ -24,6 +24,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
         <activity android:name=".weatherPage2.WeatherActivity2" />
+        <activity android:name=".weatherPage2.WeatherHelpActivity" />
         <activity android:name=".starPage.StarHelpActivity" />
         <activity android:name=".starPage.StarSearchActivity" />
         <activity android:name=".myPage.ThanksToActivity" />
@@ -74,7 +75,6 @@
         <activity
             android:name=".touristPointPage.OverviewPopActivity"
             android:theme="@style/Theme.AppCompat.Dialog" />
-        <activity android:name=".weatherPage.WeatherActivity" />
         <activity android:name=".myPage.ChangeProfileActivity" />
         <activity android:name=".touristPointPage.TouristPointActivity" />
         <activity android:name=".postPage.PostActivity" />

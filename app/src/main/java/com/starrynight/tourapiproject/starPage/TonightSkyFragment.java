@@ -37,7 +37,7 @@ import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdapter;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.GridItemDecoration;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.RetrofitClient;
-import com.starrynight.tourapiproject.weatherPage.WeatherActivity;
+import com.starrynight.tourapiproject.weatherPage2.WeatherActivity2;;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -147,7 +147,7 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
         todayWeather.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                Intent intent = new Intent(getActivity(), WeatherActivity2.class);
                 startActivity(intent);
             }
         });
