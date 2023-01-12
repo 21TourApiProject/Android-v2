@@ -20,30 +20,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.ortiz.touchview.TouchImageView;
-import com.starrynight.tourapiproject.MainActivity;
 import com.starrynight.tourapiproject.R;
-import com.starrynight.tourapiproject.starPage.horItemPage.HorItem;
-import com.starrynight.tourapiproject.starPage.horItemPage.HoroscopeAdapter;
 import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdapter;
-import com.starrynight.tourapiproject.starPage.starPageRetrofit.GridItemDecoration;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.RetrofitClient;
-import com.starrynight.tourapiproject.weatherPage.WeatherActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -66,9 +56,6 @@ import retrofit2.Response;
  */
 public class TonightSkyFragment extends Fragment implements SensorEventListener {
     //bottomSheet 관련
-    private LinearLayout bottomSheet;
-    private BottomSheetBehavior bottomSheetBehavior;
-    LinearLayout topBar;
     ImageView topIcon;
     ImageView starCamera;
 
@@ -91,11 +78,7 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
     RecyclerView allConstList;
     LinearLayout allConstBtn;
 
-    ImageView helpBtn;
     ImageView compass;
-    ImageView starBackBtn;
-    ImageView starSearchBtn;
-    ConstraintLayout todayWeather;
 
     TouchImageView touchImageView;
 
@@ -114,22 +97,6 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
     Date todayDate;
     Date yearEndDate;
     Date yearStartDate;
-
-    //별자리 운세
-    List<HorItem> horItems = new ArrayList<>();
-
-    ImageView horPrevBtn, horNextBtn;
-
-    private HoroscopeAdapter horAdapter;
-    private ViewPager2 horViewpager;
-
-    String todayMonth;
-
-    @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat formatMonth = new SimpleDateFormat("MM");
-
-    Calendar cal = Calendar.getInstance();
-
 
     Integer compareDataSpring, compareDataSummer, compareDataFall, compareDataWinter, compareDataYearEnd, compareDataYearStart;
 
@@ -150,64 +117,7 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
         mAcclerometer = mSensorManger.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mMagnetometer = mSensorManger.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
-        topBar = v.findViewById(R.id.top_bar);
-        bottomSheet = v.findViewById(R.id.bottom_sheet);
         topIcon = v.findViewById(R.id.icon);
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-
-        // bottomSheet 설정
-        topBar.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        topBar.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-//                        bottomSheetBehavior.setPeekHeight(50);
-                        bottomSheetBehavior.setPeekHeight((int) TypedValue.applyDimension(
-                                TypedValue.COMPLEX_UNIT_DIP, 50.f, getResources().getDisplayMetrics()));
-                    }
-                }
-        );
-
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
-        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    topBar.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                        }
-                    });
-                } else if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    topBar.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                if (slideOffset >= 0.0 && slideOffset < 0.5) {
-                    topIcon.setImageResource(R.drawable.tonight__bottom_up);
-                } else if (slideOffset >= 0.5 && slideOffset <= 1.0) {
-                    topIcon.setImageResource(R.drawable.tonight__bottom_down);
-                }
-            }
-        });
-
-        // 뒤로 가기 버튼 클릭 이벤트
-        starBackBtn = v.findViewById(R.id.star_back_btn);
-        starBackBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity) getActivity()).onBackPressed();
-            }
-        });
 
         // 모든 천체 보기 버튼 클릭 이벤트
         allConstList = v.findViewById(R.id.all_const_recycler);
@@ -221,15 +131,6 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
             }
         });
 
-        //검색 버튼 클릭 이벤트
-        starSearchBtn = v.findViewById(R.id.star_search_btn);
-        starSearchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Objects.requireNonNull(getActivity()).getApplicationContext(), StarSearchActivity.class);
-                startActivity(intent);
-            }
-        });
 
         //별자리 사진 클릭 이벤트
         starCamera = v.findViewById(R.id.star_camera);
@@ -246,6 +147,7 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
         constList.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
         constAdapter = new StarViewAdapter();
         constList.setAdapter(constAdapter);
+        constList.addItemDecoration(new StarRecyclerViewWidth(10,0));
 
         // 오늘의 별자리 리스트 불러오는 api
         Call<List<StarItem>> todayConstCall = RetrofitClient.getApiService().getTodayConst();
@@ -282,15 +184,14 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
         });
 
 
-        helpBtn = v.findViewById(R.id.star_help_btn);
         touchImageView = v.findViewById(R.id.touchImage);
         compass = v.findViewById(R.id.compass_needle);
-        starBackBtn = v.findViewById(R.id.star_back_btn);
 
-        helpBtn.setOnClickListener(new View.OnClickListener() {
+        //나침반 페이지로 이동
+        compass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), StarHelpActivity.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(),StarCompassActivity.class);
                 startActivity(intent);
             }
         });
@@ -394,9 +295,5 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-    }
-
-    private int getItem(int i) {
-        return horViewpager.getCurrentItem() + i;
     }
 }

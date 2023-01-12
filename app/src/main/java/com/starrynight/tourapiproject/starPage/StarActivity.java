@@ -1,23 +1,30 @@
 package com.starrynight.tourapiproject.starPage;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.kakao.sdk.newtoneapi.TextToSpeechClient;
 import com.kakao.sdk.newtoneapi.TextToSpeechListener;
 import com.kakao.sdk.newtoneapi.TextToSpeechManager;
 import com.starrynight.tourapiproject.R;
+import com.starrynight.tourapiproject.starPage.constNameRetrofit.ConstellationParams2;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.Constellation;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.RetrofitClient;
+import com.starrynight.tourapiproject.starPage.starPageRetrofit.StarHashTag;
+import com.starrynight.tourapiproject.starPage.starPageRetrofit.StarHashTagAdapter;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,12 +44,17 @@ import retrofit2.Response;
  */
 public class StarActivity extends AppCompatActivity {
     private static final String TAG = "Star page";
-    TextView constName;
+    TextView constName,rightNow,hashTag;
 
     // 별자리 상세정보 뷰
     TextView constMtdTv, constBestMonthTv, constStoryTv;
-    ImageView constImage, constFeature1, constFeature2, constFeature3;
+    ImageView constImage;
     ImageView story_play_btn;
+    Long constId;
+    List<StarHashTag> starHashTags;
+    StarHashTagAdapter starHashTagAdapter;
+    RecyclerView recyclerView;
+    LinearLayout hashTagList;
 
     String intentConstName;
     Constellation constData;
@@ -64,15 +76,12 @@ public class StarActivity extends AppCompatActivity {
         constName = findViewById(R.id.detail_const_name);
         constImage = findViewById(R.id.detail_const_image);
 
-        constFeature1 = findViewById(R.id.const_feature1);
-        constFeature2 = findViewById(R.id.const_feature2);
-        constFeature3 = findViewById(R.id.const_feature3);
-
         constStoryTv = findViewById(R.id.const_story);
         constMtdTv = findViewById(R.id.const_mtd_tv);
         constBestMonthTv = findViewById(R.id.const_best_month_tv);
 
         story_play_btn = findViewById(R.id.story_play_btn);
+        rightNow = findViewById(R.id.rightNow);
 
         ttsClient = new TextToSpeechClient.Builder()
                 .setSpeechMode(TextToSpeechClient.NEWTONE_TALK_1)     // 음성합성방식
@@ -81,6 +90,10 @@ public class StarActivity extends AppCompatActivity {
                 .setListener(ttsListener)
                 .build();
 
+        recyclerView = findViewById(R.id.feature_recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
+        starHashTagAdapter = new StarHashTagAdapter();
+        recyclerView.setAdapter(starHashTagAdapter);
         // 별자리 클릭 후 상세 정보 불러오는 api
         Call<Constellation> detailConstCall = RetrofitClient.getApiService().getDetailConst(intentConstName);
         detailConstCall.enqueue(new Callback<Constellation>() {
@@ -94,26 +107,9 @@ public class StarActivity extends AppCompatActivity {
                     constStoryTv.setText(constData.getConstStory());
                     constMtdTv.setText(constData.getConstMtd());
                     constBestMonthTv.setText(constData.getConstBestMonth());
+                    constId= constData.getConstId();
 
                     ttsClient.setSpeechText(constData.getConstStory());   //뉴톤톡 하고자 하는 문자열을 미리 세팅.
-
-                    if (constData.getConstFeature1() == null) {
-                        constFeature1.setVisibility(View.GONE);
-                    } else {
-                        Glide.with(StarActivity.this).load(constData.getConstFeature1()).fitCenter().into(constFeature1);
-                    }
-
-                    if (constData.getConstFeature2() == null) {
-                        constFeature2.setVisibility(View.GONE);
-                    } else {
-                        Glide.with(StarActivity.this).load(constData.getConstFeature2()).fitCenter().into(constFeature2);
-                    }
-
-                    if (constData.getConstFeature3() == null) {
-                        constFeature3.setVisibility(View.GONE);
-                    } else {
-                        Glide.with(StarActivity.this).load(constData.getConstFeature3()).fitCenter().into(constFeature3);
-                    }
                 } else {
                 }
             }
@@ -123,6 +119,79 @@ public class StarActivity extends AppCompatActivity {
                 Log.e("연결실패", t.getMessage());
             }
         });
+
+        rightNow.setVisibility(View.GONE);
+        //지금 볼 수 있는 별자리인지 확인
+        Call<List<ConstellationParams2>> toCall =RetrofitClient.getApiService().getTodayConstName();
+        toCall.enqueue(new Callback<List<ConstellationParams2>>() {
+            @Override
+            public void onResponse(Call<List<ConstellationParams2>> call, Response<List<ConstellationParams2>> response) {
+                if (response.isSuccessful()){
+                    List<ConstellationParams2> cp2s = response.body();
+                    for(ConstellationParams2 cp2 : cp2s){
+                        String cp2Name = cp2.getConstName();
+                        if(constName.getText().equals(cp2Name)){
+                            Log.d("starNow","오늘 볼 수 있는 별자리 가져오기 성공."+constName.getText());
+                            rightNow.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+                else{Log.e("starNow","오늘 볼 수 있는 별자리 가져오기 실패.");}
+            }
+
+            @Override
+            public void onFailure(Call<List<ConstellationParams2>> call, Throwable t) {
+                Log.e("starNow","오늘 볼 수 있는 별자리 인터넷 실패.");
+            }
+        });
+
+
+        //별자리 해시태그 특성 이미지 가져오기
+        Call<List<StarHashTag>> hashTagCall = RetrofitClient.getApiService().getStarHashTags(constId);
+        hashTagCall.enqueue(new Callback<List<StarHashTag>>() {
+            @Override
+            public void onResponse(Call<List<StarHashTag>> call, Response<List<StarHashTag>> response) {
+                if (response.isSuccessful()){
+                    Log.d("starFeature","별자리 해시태그 이미지 가져오기 성공");
+                    starHashTags=response.body();
+                    if (starHashTags!=null){
+                        for(StarHashTag sh : starHashTags){
+                            starHashTagAdapter.addItem(sh);
+                            hashTag = new TextView(getApplicationContext());
+                            hashTag.setText(sh.getHashTagName());
+                            hashTag.setTextSize(16);
+                            hashTag.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+                            hashTag.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.hashtag_background));
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                            hashTag.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent= new Intent(getApplicationContext(),StarSearchActivity.class);
+                                    intent.putExtra("starHashTag",sh.getHashTagId());
+                                    intent.putExtra("starHashTagName",sh.getHashTagName());
+                                    intent.putExtra("type",2);
+                                    Log.d("starHashTag","해시태그 전송"+sh.getHashTagId());
+                                    startActivity(intent);
+                                }
+                            });
+                            params.rightMargin = 20;
+                            hashTag.setLayoutParams(params);
+                            hashTagList.addView(hashTag);
+                            hashTagList.setDividerPadding(5);
+                        }
+                        recyclerView.setAdapter(starHashTagAdapter);
+                    }
+                }else{
+                    Log.e("starFeature","별자리 해시태그 이미지 가져오기 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<StarHashTag>> call, Throwable t) {
+                Log.e("starFeature","별자리 해시태그 인터넷 오류");
+            }
+        });
+
 
         story_play_btn.setOnClickListener(new View.OnClickListener() {
             @Override

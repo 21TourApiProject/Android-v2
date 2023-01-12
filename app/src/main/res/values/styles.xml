@@ -27,7 +27,7 @@
         <item name="titleTextColor">@color/white</item>
         <item name="android:textColor">@color/white</item>
         // Attributes from android framework
-        <item name="android:windowBackground">@color/bg_dark_indigo</item>
+        <item name="android:windowBackground">@color/bg_black</item>
         // font_style
         <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
         <item name="android:buttonStyle">@style/customButtonFontStyle</item>

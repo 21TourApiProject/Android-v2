@@ -7,14 +7,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="25dp"
-        android:background="@drawable/wt__card_view_round"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@drawable/wt__card_view_top"
+            android:layout_height="60dp"
             android:orientation="horizontal"
             android:paddingVertical="9dp">
 
@@ -22,11 +19,11 @@
                 android:id="@+id/monthStarText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginStart="20dp"
                 android:fontFamily="@font/spoqahansansneobold"
-                android:text="오늘 볼 수 있는 별자리"
-                android:layout_gravity="center"
-                android:textSize="14sp" />
+                android:text="이번 달에 볼 수 있는 별자리"
+                android:textSize="17sp" />
 
             <View
                 android:id="@+id/view"
@@ -38,21 +35,22 @@
                 android:id="@+id/all_const_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:layout_marginRight="20sp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="전체 별자리"
-                    android:textSize="14sp"
-                    android:layout_marginRight="10dp"/>
+                    android:textSize="14sp" />
 
                 <ImageView
                     android:id="@+id/imageView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|end"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="7.5sp"
                     app:srcCompat="@drawable/tonight__right_arrow" />
             </LinearLayout>
 
@@ -63,6 +61,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:paddingStart="20dp"
             android:paddingBottom="16dp">
 
         </androidx.recyclerview.widget.RecyclerView>
