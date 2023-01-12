@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -32,8 +31,9 @@
         tools:targetApi="n">
         <activity android:name=".starPage.StarCompassActivity"/>
         <activity android:name=".starPage.StarCameraActivity" />
+        <activity android:name=".weatherPage2.WeatherActivity2" />
+        <activity android:name=".weatherPage2.WeatherHelpActivity" />
         <activity android:name=".starPage.StarHelpActivity" />
-        <activity android:name=".weatherPage.WtHelpActivity" />
         <activity android:name=".starPage.StarSearchActivity" />
         <activity android:name=".myPage.ThanksToActivity" />
         <activity android:name=".observationPage.MoreObservationActivity" />
@@ -83,7 +83,6 @@
         <activity
             android:name=".touristPointPage.OverviewPopActivity"
             android:theme="@style/Theme.AppCompat.Dialog" />
-        <activity android:name=".weatherPage.WeatherActivity" />
         <activity android:name=".myPage.ChangeProfileActivity" />
         <activity android:name=".touristPointPage.TouristPointActivity" />
         <activity android:name=".postPage.PostActivity" />

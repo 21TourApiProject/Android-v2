@@ -26,7 +26,7 @@ import com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.postWritePage.PostWriteActivity;
 import com.starrynight.tourapiproject.searchPage.SearchResultAdapter2;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.Filter;
-import com.starrynight.tourapiproject.weatherPage.WeatherActivity;
+import com.starrynight.tourapiproject.weatherPage2.WeatherActivity2;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -173,7 +173,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), WeatherActivity.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), WeatherActivity2.class);
                 startActivity(intent);
             }
         });
