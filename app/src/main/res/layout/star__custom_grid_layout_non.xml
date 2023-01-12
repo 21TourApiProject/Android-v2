@@ -9,7 +9,7 @@
         android:id="@+id/star_card_view"
         android:layout_width="100sp"
         android:layout_height="100sp"
-        android:backgroundTint=" #455CFF"
+        android:backgroundTint="@color/gray_700"
         app:cardCornerRadius="15dp"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

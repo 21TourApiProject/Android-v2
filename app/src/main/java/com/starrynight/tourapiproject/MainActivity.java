@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                         if (personFragment != null)
                             getSupportFragmentManager().beginTransaction().hide(personFragment).commit();
 
-                        showOffBottom();
+                        showBottom();
                         removeFragments();
                         return true;
                     case R.id.navigation_person:

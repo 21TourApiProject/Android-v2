@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -15,14 +16,25 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.starrynight.tourapiproject.R;
+import com.starrynight.tourapiproject.searchPage.SearchResultFragment;
+import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.Filter;
+import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchKey;
+import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchLoadingDialog;
+import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchParams1;
 import com.starrynight.tourapiproject.starPage.constNameRetrofit.ConstNameAdapter;
 import com.starrynight.tourapiproject.starPage.constNameRetrofit.ConstellationParams2;
+import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener2;
+import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
+import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdpater2;
+import com.starrynight.tourapiproject.starPage.starPageRetrofit.Constellation;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.RetrofitClient;
 
 import java.util.ArrayList;
@@ -50,15 +62,21 @@ public class StarSearchActivity extends AppCompatActivity {
     ListView searchList;
     LinearLayout searchWordLayout;
     ImageView backBtn;
+    List<Long> hashTagIdList;
+    SearchLoadingDialog dialog;
 
     List<String> nameList = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
     String itemClickId;
+    TextView resultText;
 
     String constName;
-
-    ConstNameAdapter constNameAdapter;
-    RecyclerView constNameRecycler;
+    int starHashTag;
+    String keyword;
+    String hashTagName;
+    List<StarItem> searchResult;
+    StarViewAdpater2 constAdapter;
+    RecyclerView constRecycler;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -66,7 +84,9 @@ public class StarSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_star_search);
 
+        resultText = findViewById(R.id.star_result_text);
         backBtn = findViewById(R.id.star_search_back_btn);
+        dialog = new SearchLoadingDialog(StarSearchActivity.this);
 
         //별자리 검색
         constSearch = findViewById(R.id.edit_search);
@@ -76,14 +96,36 @@ public class StarSearchActivity extends AppCompatActivity {
         constSearch.setIconifiedByDefault(false);
         constSearch.setQueryHint("궁금한 별자리를 입력해보세요");
 
-        // 오늘 볼 수 있는 별자리 이름 recyclerview
-        constNameRecycler = findViewById(R.id.star_search_today_list);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        constNameRecycler.setLayoutManager(linearLayoutManager);
-        constNameAdapter = new ConstNameAdapter();
-        constNameRecycler.setAdapter(constNameAdapter);
+        //이전 페이지 해시태그 및 검색어 받아오기
+        Intent intent = getIntent();
+        int Type = (int) intent.getSerializableExtra("type");
+        if(Type ==1){
+            keyword=(String) intent.getSerializableExtra("keyword");
+            Log.d("keyword 받아오기", keyword);
+            resultText.setText(" ' "+keyword+" ' 검색결과");
+            constSearch.setQuery(keyword,false);
+        }
+        else if(Type ==2){
+            hashTagIdList = new ArrayList<>();
+            starHashTag = (int)intent.getSerializableExtra("starHashTag");
+            hashTagName = (String)intent.getSerializableExtra("starHashTagName");
+            resultText.setText(" ' "+hashTagName+" ' 검색결과");
+            hashTagIdList.add((long)starHashTag);
+        }
+        Filter filter = new Filter(null, hashTagIdList);
+        SearchKey searchKey = new SearchKey(filter, keyword);
+        starSearchEveryThing(searchKey);
 
-        callTodayConstName();
+
+        // 검색 결과 별자리 recyclerview
+        constRecycler = findViewById(R.id.star_search_list);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
+        constRecycler.setLayoutManager(gridLayoutManager);
+        constRecycler.addItemDecoration(new StarRecyclerViewWidth(0,40));
+        constAdapter = new StarViewAdpater2();
+        constRecycler.setAdapter(constAdapter);
+
+
         callAllConstName();
         connectClickConst();
         changeConstSearchText();
@@ -110,28 +152,41 @@ public class StarSearchActivity extends AppCompatActivity {
         });
     }
 
-    //오늘의 별자리 이름 리스트 불러오는  api
-    public void callTodayConstName() {
-        Call<List<ConstellationParams2>> todayConstNameCall = RetrofitClient.getApiService().getTodayConstName();
-        todayConstNameCall.enqueue(new Callback<List<ConstellationParams2>>() {
+    // 별자리 검색 기능
+    private void starSearchEveryThing(SearchKey searchKey){
+        constAdapter = new StarViewAdpater2();
+        LoadingAsyncTask task = new LoadingAsyncTask(getApplicationContext(), 10000);
+        task.execute();
+        Call<List<StarItem>> call = RetrofitClient.getApiService().getConstDataWithFilter(searchKey);
+        call.enqueue(new Callback<List<StarItem>>() {
             @Override
-            public void onResponse(Call<List<ConstellationParams2>> call, Response<List<ConstellationParams2>> response) {
-                if (response.isSuccessful()) {
-                    List<ConstellationParams2> result = response.body();
-
-                    for (ConstellationParams2 cp2 : result) {
-                        ;
-                        constNameAdapter.addItem(new ConstellationParams2(cp2.getConstName()));
+            public void onResponse(Call<List<StarItem>> call, Response<List<StarItem>> response) {
+                if (response.isSuccessful()){
+                    Log.d("searchStar", "별자리 검색 성공");
+                    searchResult = response.body();
+                    for(StarItem si : searchResult){
+                        constAdapter.addItem(si);
                     }
-                    constNameRecycler.setAdapter(constNameAdapter);
-                } else {
-                    Log.d("todayConst", "오늘의 별자리 이름 불러오기 실패");
+                    constRecycler.setAdapter(constAdapter);
+                    constAdapter.setOnItemClickListener(new OnStarItemClickListener2() {
+                        @Override
+                        public void onItemClick(StarViewAdpater2.ViewHolder holder, View view, int position) {
+                            StarItem item = constAdapter.getItem(position);
+                            Intent intent = new Intent(getApplicationContext(),StarActivity.class);
+                            intent.putExtra("constName",item.getConstName());
+                            Log.d("itemConstNameAll", item.getConstName());
+                            startActivity(intent);
+                        }
+                    });
+                }
+                else {
+                    Log.d("searchStar", "별자리 검색 실패");
                 }
             }
 
             @Override
-            public void onFailure(Call<List<ConstellationParams2>> call, Throwable t) {
-                Log.e("연결실패", t.getMessage());
+            public void onFailure(Call<List<StarItem>> call, Throwable t) {
+                Log.d("searchStar", "별자리 검색 인터넷 오류");
             }
         });
     }
@@ -233,6 +288,42 @@ public class StarSearchActivity extends AppCompatActivity {
             constSearch.clearFocus();
         } else {
             finish();
+        }
+    }
+
+    private class LoadingAsyncTask extends AsyncTask<String, Long, Boolean> {
+        private Context mContext = null;
+        private Long mtime;
+
+        public LoadingAsyncTask(Context context, long time) {
+            mContext = context.getApplicationContext();
+            mtime = time;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            dialog.show();
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            try {
+                Thread.sleep(mtime);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return (true);
+        }
+
+        @Override
+        protected void onCancelled(Boolean result) {
+            dialog.dismiss();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            dialog.dismiss();
         }
     }
 }

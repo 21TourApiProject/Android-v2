@@ -20,26 +20,17 @@
             android:src="@drawable/star__fall" />
 
         <ImageView
-            android:id="@+id/star_back_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="13dp"
-            android:background="@drawable/tonight__back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
             android:id="@+id/compass_body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/tonight__compass_body"
-            android:backgroundTint="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="49dp"
+            android:layout_marginStart="30dp"
             app:layout_editor_absoluteX="0dp"
-            app:layout_editor_absoluteY="56dp" />
+            app:layout_editor_absoluteY="56dp"
+            tools:layout_editor_absoluteY="56dp" />
 
         <ImageView
             android:id="@+id/compass_needle"
@@ -51,76 +42,48 @@
             app:layout_constraintStart_toStartOf="@id/compass_body"
             app:layout_constraintTop_toTopOf="@id/compass_body" />
 
-        <ImageView
-            android:id="@+id/star_help_btn"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/bottom_sheet"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:background="@drawable/tonight__question"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/star_back_btn" />
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/star__rounded"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/bottom_nav_size"
+            app:layout_constraintBottom_toBottomOf="@+id/touchImage"
+            >
 
-        <ImageView
-            android:id="@+id/star_search_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/tonight__search_icon"
-            app:layout_constraintEnd_toEndOf="@id/star_help_btn"
-            app:layout_constraintStart_toStartOf="@id/star_help_btn"
-            app:layout_constraintTop_toBottomOf="@id/star_help_btn" />
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/Nest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include
+                        layout="@layout/star__today_cel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+            <ImageView
+                android:id="@+id/star_camera"
+                android:layout_width="match_parent"
+                android:layout_height="50sp"
+                android:layout_below="@id/Nest"
+                android:src="@drawable/ic_star_camera" />
+        </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/bottom_sheet"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:background="@drawable/star__rounded"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="vertical"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-        <LinearLayout
-            android:id="@+id/top_bar"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@drawable/star__rounded"
-            android:backgroundTint="@color/sub_blue"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/tonight__bottom_up" />
-        </LinearLayout>
-
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <include
-                    layout="@layout/star__today_cel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
-
-        <ImageView
-            android:id="@+id/star_camera"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_star_camera" />
-    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
