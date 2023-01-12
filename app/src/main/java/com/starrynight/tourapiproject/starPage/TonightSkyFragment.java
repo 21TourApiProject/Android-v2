@@ -31,7 +31,6 @@ import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListe
 import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdapter;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.RetrofitClient;
-import com.starrynight.tourapiproject.weatherPage2.WeatherActivity2;;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
