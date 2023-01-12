@@ -56,80 +56,80 @@ public class WeatherHelpActivity extends AppCompatActivity {
 
         help_light_pollution_button.setOnClickListener(view -> {
             if (help_light_pollution_text.getVisibility() == View.GONE) {
-                help_light_pollution_button.setRotation(180);
+                help_light_pollution_button.setRotation(270);
                 help_light_pollution_text.setVisibility(View.VISIBLE);
             } else {
-                help_light_pollution_button.setRotation(180);
+                help_light_pollution_button.setRotation(90);
                 help_light_pollution_text.setVisibility(View.GONE);
             }
         });
 
         help_temp_button.setOnClickListener(view -> {
             if (help_temp_text.getVisibility() == View.GONE) {
-                help_temp_button.setRotation(180);
+                help_temp_button.setRotation(270);
                 help_temp_text.setVisibility(View.VISIBLE);
             } else {
-                help_temp_button.setRotation(180);
+                help_temp_button.setRotation(90);
                 help_temp_text.setVisibility(View.GONE);
             }
         });
 
         help_rainfall_probability_button.setOnClickListener(view -> {
             if (help_rainfall_probability_text.getVisibility() == View.GONE) {
-                help_rainfall_probability_button.setRotation(180);
+                help_rainfall_probability_button.setRotation(270);
                 help_rainfall_probability_text.setVisibility(View.VISIBLE);
             } else {
-                help_rainfall_probability_button.setRotation(180);
+                help_rainfall_probability_button.setRotation(90);
                 help_rainfall_probability_text.setVisibility(View.GONE);
             }
         });
 
         help_humidity_button.setOnClickListener(view -> {
             if (help_humidity_text.getVisibility() == View.GONE) {
-                help_humidity_button.setRotation(180);
+                help_humidity_button.setRotation(270);
                 help_humidity_text.setVisibility(View.VISIBLE);
             } else {
-                help_humidity_button.setRotation(180);
+                help_humidity_button.setRotation(90);
                 help_humidity_text.setVisibility(View.GONE);
             }
         });
 
         help_cloud_button.setOnClickListener(view -> {
             if (help_cloud_text.getVisibility() == View.GONE) {
-                help_cloud_button.setRotation(180);
+                help_cloud_button.setRotation(270);
                 help_cloud_text.setVisibility(View.VISIBLE);
             } else {
-                help_cloud_button.setRotation(180);
+                help_cloud_button.setRotation(90);
                 help_cloud_text.setVisibility(View.GONE);
             }
         });
 
         help_fine_dust_button.setOnClickListener(view -> {
             if (help_fine_dust_text.getVisibility() == View.GONE) {
-                help_fine_dust_button.setRotation(180);
+                help_fine_dust_button.setRotation(270);
                 help_fine_dust_text.setVisibility(View.VISIBLE);
             } else {
-                help_fine_dust_button.setRotation(180);
+                help_fine_dust_button.setRotation(90);
                 help_fine_dust_text.setVisibility(View.GONE);
             }
         });
 
         help_wind_speed_button.setOnClickListener(view -> {
             if (help_wind_speed_text.getVisibility() == View.GONE) {
-                help_wind_speed_button.setRotation(180);
+                help_wind_speed_button.setRotation(270);
                 help_wind_speed_text.setVisibility(View.VISIBLE);
             } else {
-                help_wind_speed_button.setRotation(180);
+                help_wind_speed_button.setRotation(90);
                 help_wind_speed_text.setVisibility(View.GONE);
             }
         });
 
         help_moon_age_button.setOnClickListener(view -> {
             if (help_moon_age_text.getVisibility() == View.GONE) {
-                help_moon_age_button.setRotation(180);
+                help_moon_age_button.setRotation(270);
                 help_moon_age_text.setVisibility(View.VISIBLE);
             } else {
-                help_moon_age_button.setRotation(180);
+                help_moon_age_button.setRotation(90);
                 help_moon_age_text.setVisibility(View.GONE);
             }
         });
