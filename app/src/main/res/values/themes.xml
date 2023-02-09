@@ -36,14 +36,17 @@
     </style>
 
     <style name="Textview_observation_details" parent="">
-        <item name="android:textSize">12sp</item>
-        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:textColor">@color/gray_300</item>
+        <item name="android:layout_columnWeight">500</item>
     </style>
 
     <style name="Textview_observation_details_title" parent="">
         <item name="fontFamily">@font/spoqahansansneomedium</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/point_purple</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/gray_300</item>
+        <item name="android:layout_columnWeight">600</item>
     </style>
 
     <style name="StarryNight.NoActionBar">
@@ -97,5 +100,11 @@
 
     <style name="ImageButton.size21.pad12">
         <item name="android:padding">12dp</item>
+    </style>
+
+    <style name="ImageButton.circle">
+        <item name="android:background">@drawable/observation__back_circle</item>
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
     </style>
 </resources>
