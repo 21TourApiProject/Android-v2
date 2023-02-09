@@ -3,28 +3,29 @@ package com.starrynight.tourapiproject.starPage;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.ortiz.touchview.TouchImageView;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener;
@@ -70,7 +71,7 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
     private final float[] mR = new float[9];
     private final float[] mOrientation = new float[3];
     private float mCurrentDegree = 0f;
-
+    private float curRotate = 0F; // seekbar 회전률
     //recyclerview 관련
     RecyclerView constList;
     StarViewAdapter constAdapter;
@@ -81,6 +82,10 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
     ImageView compass;
 
     TouchImageView touchImageView;
+
+    SeekBar seekBar;
+    Bitmap bitmap;
+    int bmpWidth, bmpHeight;
 
     //계절에 따라 이미지 변경
     String spring = "0321";
@@ -196,6 +201,26 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
             }
         });
 
+        //seekbar 사용 시 이미지 회전 시키기
+        seekBar = v.findViewById(R.id.starSeekBar);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                curRotate = (float) progress;
+                drawMatrix();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
         // 계절 별로 다른 이미지 넣기
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat sdf = new SimpleDateFormat("MMdd");
@@ -224,6 +249,8 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
         // 봄(3/21 ~ 6/21)
         if ((compareDataSpring == 1 || compareDataSpring == 0) && compareDataSummer == -1) {
             touchImageView.setImageResource(R.drawable.star__spring);
+            bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.star__spring);
+            touchImageView.setImageBitmap(bitmap);
         }
         // 여름(6/22 ~ 9/22)
         else if ((compareDataSummer == 1 || compareDataSummer == 0) && compareDataFall == -1) {
@@ -240,8 +267,11 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
         // 겨울(01/01 ~ 03/20)
         else if ((compareDataYearStart == 1 || compareDataYearStart == 0) && compareDataSpring == -1) {
             touchImageView.setImageResource(R.drawable.star__winter);
+            bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.star__winter);
+            touchImageView.setImageBitmap(bitmap);
         }
-
+        bmpWidth = bitmap.getWidth();
+        bmpHeight = bitmap.getHeight();
 
         return v;
     }
@@ -286,6 +316,14 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
         }
     }
 
+    private void drawMatrix() {
+
+        Matrix matrix = new Matrix();
+        matrix.postRotate(curRotate);
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bitmap, 0, 0, bmpWidth, bmpHeight, matrix, true);
+        touchImageView.setImageBitmap(resizedBitmap);
+    }
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 

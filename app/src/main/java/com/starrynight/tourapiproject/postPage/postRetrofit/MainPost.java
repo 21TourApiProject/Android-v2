@@ -42,8 +42,9 @@ public class MainPost {
     private String optionHashTag3;
     @SerializedName("profileImage")
     private String profileImage;
-
-    public MainPost(String mainObservation, String optionObservation, String mainTitle, String mainNickName, ArrayList<String> images, List<String> hashTags, String optionHashTag, String profileImage) {
+    @SerializedName("postLike")
+    private int postLike;
+    public MainPost(String mainObservation, String optionObservation, String mainTitle, String mainNickName, ArrayList<String> images, List<String> hashTags, String optionHashTag, String profileImage,int postLike) {
         this.mainObservation = mainObservation;
         this.optionObservation = optionObservation;
         this.mainTitle = mainTitle;
@@ -52,6 +53,15 @@ public class MainPost {
         this.hashTags = hashTags;
         this.optionHashTag = optionHashTag;
         this.profileImage = profileImage;
+        this.postLike= postLike;
+    }
+
+    public int getPostLike() {
+        return postLike;
+    }
+
+    public void setPostLike(int postLike) {
+        this.postLike = postLike;
     }
 
     public Long getPostId() {
