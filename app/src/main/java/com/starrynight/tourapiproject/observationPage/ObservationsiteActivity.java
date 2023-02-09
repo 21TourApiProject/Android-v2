@@ -709,7 +709,7 @@ public class ObservationsiteActivity extends AppCompatActivity {
     private void setInquiry(boolean is_nature){
         if (is_nature) {
             LinearLayout inquiry_layout = findViewById(R.id.obs_inquiry);
-            inquiry_layout.setAlpha((float) 0.2);
+            inquiry_layout.setAlpha((float) 0.1);
         }else{
 
             //전화연결 설정
