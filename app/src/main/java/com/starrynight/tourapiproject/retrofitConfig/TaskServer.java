@@ -20,7 +20,7 @@ public class TaskServer {
 
     public static final String kkoMapURL = "https://dapi.kakao.com/";
 
-    public static final String fineDustURL = "http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/";
+    public static final String airKoreaURL = "http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/";
 
     public static final String openWeatherURL = "https://api.openweathermap.org/data/2.5/";
 }
