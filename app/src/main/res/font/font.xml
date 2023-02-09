@@ -5,10 +5,10 @@
 
     <font android:fontStyle="normal"
         android:fontWeight="500"
-        android:font="@font/spoqahansansneoregular"
+        android:font="@font/pretendard_variable"
         app:fontStyle="normal"
         app:fontWeight="500"
-        app:font="@font/spoqahansansneoregular"
+        app:font="@font/pretendard_variable"
         />
 
 </font-family>
