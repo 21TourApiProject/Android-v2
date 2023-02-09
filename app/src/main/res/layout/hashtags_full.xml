@@ -4,7 +4,10 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/hashtag_background"
-    android:gravity="center">
+    android:gravity="center"
+    android:paddingHorizontal="8dp"
+    android:paddingVertical="4dp"
+    android:layout_marginEnd="8dp">
 
     <ImageView
         android:id="@+id/recycler_hashTag_pin"
@@ -21,9 +24,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/spoqahansansneomedium"
         android:gravity="center"
-        android:paddingHorizontal="4dp"
         android:text="#해쉬태그"
-        android:textColor="@color/white"
-        android:textSize="10sp" />
+        android:textColor="@color/gray_500"
+        android:textSize="14sp" />
 
 </LinearLayout>

@@ -4,36 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="20dp"
-    tools:context=".observationPage.ObservationsiteActivity">
+    tools:context=".observationPage.ObservationsiteActivity"
+    android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="49dp">
-
-                <ImageButton
-                    android:id="@+id/obs_back_btn"
-                    style="@style/ImageButton.size49"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:paddingVertical="18dp"
-                    android:paddingStart="22dp"
-                    android:paddingEnd="21dp"
-                    android:src="@drawable/star__search_back"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <RelativeLayout
                 android:id="@+id/obs_image_layout"
@@ -43,10 +26,17 @@
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/obs_Img_slider"
                     android:layout_width="match_parent"
-                    android:layout_height="308dp"
-                    android:background="@drawable/default_tp">
+                    android:layout_height="240dp"
+                    android:background="@drawable/default_tp" />
 
-                </androidx.viewpager2.widget.ViewPager2>
+                <ImageButton
+                    android:id="@+id/obs_back_btn"
+                    style="@style/ImageButton.circle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/observation__back_circle" />
 
                 <TextView
                     android:id="@+id/obs_image_source"
@@ -62,397 +52,429 @@
                     android:id="@+id/obs_Img_indicator"
                     android:layout_width="match_parent"
                     android:layout_height="8dp"
+                    android:layout_alignTop="@id/obs_Img_slider"
+                    android:layout_marginTop="24dp"
                     android:gravity="center"
-                    android:orientation="horizontal"
-                    android:layout_alignBottom="@id/obs_Img_slider"
-                    android:layout_marginBottom="16dp">
+                    android:orientation="horizontal"></LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="218dp"
+                    android:padding="20dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:background="@drawable/observation__namebox">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/obs_name_txt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:text="관측지 이름"
+                            android:textSize="20sp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="12dp">
+
+                            <ImageView
+                                android:id="@+id/obs_light_icon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/light_good" />
+
+                            <LinearLayout
+                                android:id="@+id/obs_move_light"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="8dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="관측적합도"
+                                    android:textColor="@color/gray_500"
+                                    android:textSize="14sp" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginLeft="7.5dp"
+                                    android:src="@drawable/move_text" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/obs_inquiry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+
+                        <LinearLayout
+                            android:id="@+id/obs_call"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="40dp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/observation__call" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="전화문의"
+                                android:textColor="@color/gray_500"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/observation__gray_line" />
+
+                        <LinearLayout
+                            android:id="@+id/obs_homepage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="40dp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/observation__homepage" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="홈페이지"
+                                android:textColor="@color/gray_500"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </RelativeLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/obs_intro_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/obs_image_layout"
-                android:paddingHorizontal="16dp"
-                android:paddingTop="19dp"
-                android:paddingBottom="10dp">
-
-                <ImageButton
-                    android:id="@+id/obs_location_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/obs_name_txt"
-                    android:layout_marginLeft="3dp"
-                    android:layout_marginBottom="3dp"
-                    android:background="@color/empty"
-                    android:src="@drawable/location_btn" />
-
-                <TextView
-                    android:id="@+id/obs_name_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginLeft="6.5dp"
-                    android:layout_toRightOf="@id/obs_location_btn"
-                    android:fontFamily="@font/spoqahansansneobold"
-                    android:text="관측지 이름"
-                    android:textSize="17sp" />
-
-                <Button
-                    android:id="@+id/obs_save_btn"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_alignBaseline="@id/obs_name_txt"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="5dp"
-                    android:background="@drawable/bookmark_non" />
-
-                <TextView
-                    android:id="@+id/obs_type_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/obs_name_txt"
-                    android:layout_marginLeft="3dp"
-                    android:layout_marginTop="9dp"
-                    android:text="관측지 타입"
-                    android:textColor="@color/gray"
-                    android:textSize="12sp" />
+                android:paddingHorizontal="20dp"
+                android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/obs_hashtags_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/obs_type_txt"
-                    android:layout_marginTop="18dp" />
+                    android:layout_marginTop="16dp" />
 
                 <TextView
                     android:id="@+id/obs_outline_txt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/obs_hashtags_layout"
-                    android:layout_marginTop="23dp"
+                    android:layout_marginTop="10dp"
                     android:ellipsize="end"
-                    android:fontFamily="@font/spoqahansansneoregular"
-                    android:lineSpacingExtra="4dp"
-                    android:maxLines="4"
+                    android:lineSpacingExtra="3sp"
+                    android:maxLines="3"
                     android:text="개요"
-                    android:textSize="12sp" />
+                    android:textSize="16sp"
+                    android:textColor="@color/gray_500"/>
 
                 <TextView
                     android:id="@+id/obs_outline_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/obs_outline_txt"
+                    android:layout_gravity="end"
                     android:layout_marginTop="4dp"
-                    android:fontFamily="@font/spoqahansansneomedium"
                     android:paddingLeft="1dp"
-                    android:paddingRight="20dp"
-                    android:text="자세히 보기 >"
-                    android:textColor="@color/point_purple"
-                    android:textSize="12sp"
+                    android:text="더보기"
+                    android:textColor="@color/gray_500"
+                    android:textSize="14sp"
                     android:visibility="gone"
                     tools:visibility="visible" />
-                </RelativeLayout>
+
+<!--                <TextView-->
+<!--                    android:id="@+id/obs_type_txt"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@id/obs_name_txt"-->
+<!--                    android:layout_marginLeft="3dp"-->
+<!--                    android:layout_marginTop="9dp"-->
+<!--                    android:text="관측지 타입"-->
+<!--                    android:textColor="@color/gray"-->
+<!--                    android:textSize="12sp" />-->
+
+            </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/obs_foroperating_layout"
+                android:id="@+id/observation_information"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="17dp">
+                android:orientation="vertical">
 
                 <RelativeLayout
-                    android:id="@+id/obs_content_layout1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="2dp"
+                        android:background="@color/gray_800" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_alignTop="@id/obs_light_layout"
-                        android:layout_alignBottom="@id/obs_light_layout"
-                        android:gravity="center_vertical">
+                        android:weightSum="10"
+                        android:orientation="horizontal"
+                        android:layout_alignParentBottom="true">
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="5.33dp"
-                            android:src="@drawable/observation__light" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:layout_weight="5">
 
-                        <TextView
-                            style="@style/Textview_observation_details_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="광공해" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="정보"
+                                android:layout_marginTop="16dp"
+                                android:layout_gravity="center_horizontal"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="3dp"
+                                android:background="@color/white"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginHorizontal="8dp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/obs_comment_btn"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:layout_weight="5">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="16dp" >
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="후기"
+                                    android:textColor="@color/gray_500"/>
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="4dp"
+                                    android:src="@drawable/observation__review"/>
+
+                            </LinearLayout>
+
+
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:visibility="gone"
+                                android:layout_height="3dp"
+                                android:background="@color/white"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginHorizontal="8dp"/>
+
+                        </LinearLayout>
+
                     </LinearLayout>
 
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/obs_foroperating_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="27dp"
+                    android:paddingHorizontal="19dp">
+
                     <RelativeLayout
-                        android:id="@+id/obs_light_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginLeft="102dp">
+                        android:id="@+id/obs_content_layout1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
                         <TextView
-                            android:id="@+id/obs_light_txt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@id/obs_location_btn"
+                            android:text="주소"
+                            style="@style/Textview_observation_details_title"/>
+
+                        <TextView
+                            android:id="@+id/obs_address_txt"
                             style="@style/Textview_observation_details"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="00.0" />
+                            android:layout_marginLeft="75dp"
+                            android:layout_toLeftOf="@+id/obs_location_btn"
+                            android:layout_alignBaseline="@id/obs_location_btn"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:text="ㅇㅇ군 ㅇㅇ시 ㅇㅇ동" />
 
-                        <ImageView
-                            android:id="@+id/obs_light_icon"
-                            android:layout_width="55dp"
-                            android:layout_height="20dp"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginTop="3dp"
-                            android:layout_toRightOf="@id/obs_light_txt"
-                            android:adjustViewBounds="true"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/observation__light_worst" />
-                    </RelativeLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:layout_alignTop="@+id/obs_address_txt">
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="5.33dp"
-                            android:src="@drawable/observation__address"/>
                         <TextView
+                            android:id="@+id/obs_location_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="주소"
-                            style="@style/Textview_observation_details_title" />
-                    </LinearLayout>
+                            android:layout_alignParentRight="true"
+                            android:layout_marginLeft="14dp"
+                            android:layout_marginRight="0dp"
+                            android:background="@drawable/observation__map_background"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="4dp"
+                            android:text="카카오맵"
+                            android:textColor="@color/gray_500" />
 
-                    <TextView
-                        android:id="@+id/obs_address_txt"
-                        style="@style/Textview_observation_details"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/obs_light_layout"
-                        android:layout_alignLeft="@id/obs_light_layout"
-                        android:text="ㅇㅇ군 ㅇㅇ시 ㅇㅇ동" />
-
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:layout_alignTop="@id/obs_phonenumber_txt">
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="5.33dp"
-                            android:src="@drawable/observation__call"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             style="@style/Textview_observation_details_title"
-                            android:text="문의" />
-                    </LinearLayout>
-                    <TextView
-                        android:id="@+id/obs_phonenumber_txt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="010-0000-0000"
-                        style="@style/Textview_observation_details"
-                        android:layout_below="@id/obs_address_txt"
-                        android:layout_alignLeft="@id/obs_address_txt"/>
-
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:layout_alignTop="@id/obs_operatinghour_txt">
-                        <ImageView
+                            android:layout_alignBaseline="@id/obs_operatinghour_txt"
+                            android:text="영업시간" />
+                        <TextView
+                            android:id="@+id/obs_operatinghour_txt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="5.33dp"
-                            android:src="@drawable/observation__time"/>
+                            android:text="00:00~00:00"
+                            style="@style/Textview_observation_details"
+                            android:layout_below="@id/obs_address_txt"
+                            android:layout_alignLeft="@id/obs_address_txt"/>
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             style="@style/Textview_observation_details_title"
-                            android:text="이용시간" />
-                    </LinearLayout>
-                    <TextView
-                        android:id="@+id/obs_operatinghour_txt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="00:00~00:00"
-                        style="@style/Textview_observation_details"
-                        android:layout_below="@id/obs_phonenumber_txt"
-                        android:layout_alignLeft="@id/obs_address_txt"/>
-
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:layout_alignTop="@id/obs_closedday_txt">
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="5.33dp"
-                            android:src="@drawable/observation__dayoff"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            style="@style/Textview_observation_details_title"
+                            android:layout_alignBaseline="@id/obs_closedday_txt"
                             android:text="휴무일" />
-                    </LinearLayout>
-                    <TextView
-                        android:id="@+id/obs_closedday_txt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="O요일"
-                        style="@style/Textview_observation_details"
-                        android:layout_below="@id/obs_operatinghour_txt"
-                        android:layout_alignLeft="@id/obs_address_txt"/>
-
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:layout_alignTop="@id/obs_entrancefee_layout">
-                        <ImageView
+                        <TextView
+                            android:id="@+id/obs_closedday_txt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="5.33dp"
-                            android:src="@drawable/observation__fee"/>
+                            android:text="O요일"
+                            style="@style/Textview_observation_details"
+                            android:layout_below="@id/obs_operatinghour_txt"
+                            android:layout_alignLeft="@id/obs_address_txt"/>
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             style="@style/Textview_observation_details_title"
-                            android:text="이용요금" />
-                    </LinearLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/obs_entrancefee_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        style="@style/Textview_observation_details"
-                        android:layout_below="@id/obs_closedday_txt"
-                        android:layout_alignLeft="@id/obs_address_txt"/>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/obd_moreinfo_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    tools:visibility="visible">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5.33dp"
-                        android:src="@drawable/observation__address"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/Textview_observation_details_title"
-                        android:text="이용안내" />
-                    </LinearLayout>
-                    <TextView
-                        android:id="@+id/obs_guide_txt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="이용안내 글 전체"
-                        android:lineSpacingExtra="4dp"
-                        style="@style/Textview_observation_details"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="102dp"/>
-
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:layout_alignTop="@id/obs_parking_txt">
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="5.33dp"
-                            android:src="@drawable/observation__parking"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            style="@style/Textview_observation_details_title"
+                            android:layout_alignBaseline="@id/obs_parking_txt"
                             android:text="주차시설" />
-                    </LinearLayout>
-                    <TextView
-                        android:id="@+id/obs_parking_txt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="주차정보있음"
-                        style="@style/Textview_observation_details"
-                        android:layout_below="@id/obs_guide_txt"
-                        android:layout_alignLeft="@id/obs_guide_txt"/>
-
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:layout_alignTop="@id/obs_url_txt">
-                        <ImageView
+                        <TextView
+                            android:id="@+id/obs_parking_txt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="5.33dp"
-                            android:src="@drawable/observation__homepage"/>
+                            android:text="주차정보있음"
+                            style="@style/Textview_observation_details"
+                            android:layout_below="@id/obs_closedday_txt"
+                            android:layout_alignLeft="@id/obs_address_txt"/>
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             style="@style/Textview_observation_details_title"
-                            android:text="홈페이지" />
-                    </LinearLayout>
-                    <TextView
-                        android:id="@+id/obs_url_txt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="www.hahaha.com"
-                        style="@style/Textview_observation_details"
-                        android:layout_below="@id/obs_parking_txt"
-                        android:layout_alignLeft="@id/obs_guide_txt"/>
+                            android:layout_alignBaseline="@id/obs_guide_txt"
+                            android:text="이용안내" />
+                        <TextView
+                            android:id="@+id/obs_guide_txt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="이용안내 글 전체"
+                            android:lineSpacingExtra="4dp"
+                            style="@style/Textview_observation_details"
+                            android:layout_below="@id/obs_parking_txt"
+                            android:layout_alignLeft="@id/obs_address_txt" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="10sp"
-                        android:text="※ 더 많은 상세정보는 홈페이지에서 확인하세요"
-                        android:layout_below="@+id/obs_url_txt"/>
+
+                        <TextView
+                            android:id="@+id/obs_fee_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/Textview_observation_details_title"
+                            android:layout_below="@id/obs_guide_txt"
+                            android:text="입장료" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/obs_entrancefee_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/obs_fee_name"
+                            android:orientation="vertical"
+                            android:isScrollContainer="false"
+                            android:layout_marginTop="12dp"/>
+
+                        <LinearLayout
+                            android:id="@+id/obs_fee_more_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/obs_entrancefee_layout"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="12dp"
+                            android:layout_centerHorizontal="true">
+
+                            <TextView
+                                android:id="@+id/obs_fee_more_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="더보기"
+                                android:textColor="@color/gray_500"
+                                android:textSize="14sp"
+                                android:layout_marginRight="4.5dp"/>
+                            <ImageView
+                                android:id="@+id/obs_fee_more_img"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/observation__fee_more"
+                                android:layout_gravity="center_vertical"/>
+
+                        </LinearLayout>
+
                 </RelativeLayout>
-                <ToggleButton
-                    android:id="@+id/obs_moreinfo_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@color/empty"
-                    android:textColor="@color/point_purple"
-                    android:layout_marginTop="20dp"
-                    android:textSize="14sp"
-                    android:textOff="더보기"
-                    android:textOn="축소하기"/>
                     
             </LinearLayout>
 
@@ -460,317 +482,372 @@
                 android:id="@+id/obs_fornature_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="17dp"
-                android:layout_marginBottom="16dp"
+                android:paddingHorizontal="19dp"
+                android:layout_marginTop="27dp"
                 android:visibility="gone"
                 tools:visibility="visible">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:layout_alignBottom="@id/obs_nature_light_layout"
-                    android:layout_alignTop="@id/obs_nature_light_layout">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5.33dp"
-                        android:src="@drawable/observation__light"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="광공해"
-                        style="@style/Textview_observation_details_title" />
-                </LinearLayout>
-
-                <RelativeLayout
-                    android:id="@+id/obs_nature_light_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="102dp"
-                    android:layout_marginBottom="10dp">
-
-                    <TextView
-                        android:id="@+id/obs_nature_light_txt"
-                        style="@style/Textview_observation_details"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:text="00.0" />
-
-
-                    <ImageView
-                        android:id="@+id/obs_nature_light_icon"
-                        android:layout_width="55dp"
-                        android:layout_height="20dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@id/obs_nature_light_txt"
-                        android:adjustViewBounds="true"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/observation__light_worst" />
-                </RelativeLayout>
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@id/obs_nature_address_txt">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5.33dp"
-                        android:src="@drawable/observation__address"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/Textview_observation_details_title"
                         android:text="주소" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/obs_nature_address_txt"
-                    style="@style/Textview_observation_details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/obs_nature_light_layout"
-                    android:layout_alignLeft="@id/obs_nature_light_layout"
-                    android:text="ㅇㅇ군 ㅇㅇ시 ㅇㅇ동" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignTop="@id/obs_nature_parking_txt">
-                    <ImageView
+                    <TextView
+                        android:id="@+id/obs_nature_address_txt"
+                        style="@style/Textview_observation_details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="5.33dp"
-                        android:src="@drawable/observation__parking"/>
+                        android:layout_marginLeft="75dp"
+                        android:text="ㅇㅇ군 ㅇㅇ시 ㅇㅇ동" />
+
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/Textview_observation_details_title"
+                        android:layout_alignBaseline="@id/obs_nature_parking_txt"
                         android:text="주차시설" />
-                </LinearLayout>
-                <TextView
-                    android:id="@+id/obs_nature_parking_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="주차정보있음"
-                    style="@style/Textview_observation_details"
-                    android:layout_below="@id/obs_nature_address_txt"
-                    android:layout_alignLeft="@id/obs_nature_address_txt"/>
+                    <TextView
+                        android:id="@+id/obs_nature_parking_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="주차정보있음"
+                        style="@style/Textview_observation_details"
+                        android:layout_below="@id/obs_nature_address_txt"
+                        android:layout_alignLeft="@id/obs_nature_address_txt"/>
 
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignTop="@id/obs_nature_guide_txt">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="5.33dp"
-                    android:src="@drawable/observation__tourtip"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/Textview_observation_details_title"
-                    android:text="여행팁" />
-                </LinearLayout>
-                <TextView
-                    android:id="@+id/obs_nature_guide_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="이용안내 글 전체"
-                    android:lineSpacingExtra="4dp"
-                    style="@style/Textview_observation_details"
-                    android:layout_below="@id/obs_nature_parking_txt"
-                    android:layout_alignLeft="@id/obs_nature_address_txt"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Textview_observation_details_title"
+                        android:layout_alignBaseline="@id/obs_nature_guide_txt"
+                        android:text="여행팁" />
+                    <TextView
+                        android:id="@+id/obs_nature_guide_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="이용안내 글 전체"
+                        android:lineSpacingExtra="4dp"
+                        style="@style/Textview_observation_details"
+                        android:layout_below="@id/obs_nature_parking_txt"
+                        android:layout_alignLeft="@id/obs_nature_address_txt"/>
 
 
             </RelativeLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/sub_blue"/>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp">
-
-
-                <TextView
-                    android:id="@+id/postImageText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="방문자 게시글"
-                    android:textSize="18sp"
-                    android:fontFamily="@font/spoqahansansneomedium"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/writePost_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="방문소감쓰기>"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/spoqahansansneomedium"
-                    android:textColor="@color/white"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginRight="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/relatePostLinear"/>
-
-                <LinearLayout
-                    android:id="@+id/relatePostLinear"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_marginTop="18dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/postImageText">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp"
-                        app:cardCornerRadius="5dp">
-
-                        <ImageView
-                            android:id="@+id/relateImage"
-                            android:layout_width="90dp"
-                            android:layout_height="90dp"
-                            android:layout_weight="1"
-                            android:adjustViewBounds="true"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/default_image" />
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp"
-                        app:cardCornerRadius="5dp">
-
-                        <ImageView
-                            android:id="@+id/relateImage2"
-                            android:layout_width="90dp"
-                            android:layout_height="90dp"
-                            android:layout_weight="1"
-                            android:adjustViewBounds="true"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/default_image"
-                            android:visibility="gone" />
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:cardCornerRadius="5dp">
-
-                        <FrameLayout
-                            android:id="@+id/relateImageFrame"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:visibility="gone">
-
-                            <ImageView
-                                android:id="@+id/relateImage3"
-                                android:layout_width="90dp"
-                                android:layout_height="90dp"
-                                android:layout_weight="1"
-                                android:adjustViewBounds="true"
-                                android:foreground="@drawable/observation__moreimage"
-                                android:scaleType="centerCrop"
-                                android:visibility="visible" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:text="+더 보기" />
-                            </LinearLayout>
-
-                        </FrameLayout>
-                    </androidx.cardview.widget.CardView>
-
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/sub_blue"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="24dp"
-                android:paddingRight="24dp">
+                android:layout_marginTop="61dp"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/obs_course"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="추천코스"
-                    android:textSize="17sp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_marginLeft="17dp">
 
-                <RelativeLayout
+                    <TextView
+                        android:id="@+id/obs_course"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="추천코스"
+                        android:layout_weight="600"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="by 별밤에디터"
+                        android:textColor="@color/point_blue"
+                        android:textSize="14dp"
+                        android:layout_marginLeft="8dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/obs_course_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="19.5dp"
+                    android:textColor="@color/gray_300"
+                    android:layout_marginTop="14dp"
+                    android:text="1번장소 > 2번장소 > 3번장소 > 4번장소"
+                    android:textSize="16sp" />
+                <ImageView
+                    android:id="@+id/obs_course_image"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:layout_gravity="center_horizontal"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/default_tp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/obs_course_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp">
+                    android:layout_marginTop="20dp"
+                    android:layout_marginHorizontal="19.5dp"/>
 
-                    <ImageView
+            </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/observation_review"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="16dp">
+
+                    <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:paddingHorizontal="23dp"
-                        android:src="@drawable/observation__course_line"/>
+                        android:layout_height="2dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="2dp"
+                        android:background="@color/gray_800" />
 
                     <LinearLayout
-                        android:id="@+id/obs_course_circle_indicator"
                         android:layout_width="match_parent"
-                        android:layout_height="24dp"
-                        android:gravity="center"
-                        android:orientation="horizontal" />
+                        android:layout_height="match_parent"
+                        android:weightSum="10"
+                        android:orientation="horizontal"
+                        android:layout_alignParentBottom="true">
 
-                    <LinearLayout
-                        android:id="@+id/obs_course_name_indicator"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_below="@id/obs_course_circle_indicator"
-                        android:orientation="horizontal" />
+                        <LinearLayout
+                            android:id="@+id/obs_info_btn"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:layout_weight="5">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="정보"
+                                android:layout_marginTop="16dp"
+                                android:textColor="@color/gray_500"
+                                android:layout_gravity="center_horizontal"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="3dp"
+                                android:visibility="gone"
+                                android:background="@color/white"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginHorizontal="8dp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:layout_weight="5">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="16dp" >
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="후기" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="4dp"
+                                    android:src="@drawable/observation__review_on"/>
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="3dp"
+                                android:background="@color/white"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginHorizontal="8dp"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                 </RelativeLayout>
 
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/obs_course_slider"
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp">
+
+
+                    <TextView
+                        android:id="@+id/postImageText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="방문자 게시글"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/writePost_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="방문소감쓰기>"
+                        android:textSize="14sp"
+                        android:textColor="@color/white"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/relatePostLinear"/>
+
+                    <LinearLayout
+                        android:id="@+id/relatePostLinear"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="18dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/postImageText">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="20dp"
+                            app:cardCornerRadius="5dp">
+
+                            <ImageView
+                                android:id="@+id/relateImage"
+                                android:layout_width="90dp"
+                                android:layout_height="90dp"
+                                android:layout_weight="1"
+                                android:adjustViewBounds="true"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/default_image" />
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="20dp"
+                            app:cardCornerRadius="5dp">
+
+                            <ImageView
+                                android:id="@+id/relateImage2"
+                                android:layout_width="90dp"
+                                android:layout_height="90dp"
+                                android:layout_weight="1"
+                                android:adjustViewBounds="true"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/default_image"
+                                android:visibility="gone" />
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:cardCornerRadius="5dp">
+
+                            <FrameLayout
+                                android:id="@+id/relateImageFrame"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:visibility="gone">
+
+                                <ImageView
+                                    android:id="@+id/relateImage3"
+                                    android:layout_width="90dp"
+                                    android:layout_height="90dp"
+                                    android:layout_weight="1"
+                                    android:adjustViewBounds="true"
+                                    android:foreground="@drawable/observation__moreimage"
+                                    android:scaleType="centerCrop"
+                                    android:visibility="visible" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        android:text="+더 보기" />
+                                </LinearLayout>
+
+                            </FrameLayout>
+                        </androidx.cardview.widget.CardView>
+
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
+
+
 
         </LinearLayout>
 
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp">
+
+        <LinearLayout
+            android:id="@+id/obs_save_btn"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:background="@drawable/observation__fee_box"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/obs_save_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bookmark_non" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="000"
+                android:layout_marginTop="3dp"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/obs_reserve"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/observation__reserve_back"
+            android:paddingVertical="16dp"
+            android:text="입장 예약하러 가기"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
 
 </LinearLayout>
