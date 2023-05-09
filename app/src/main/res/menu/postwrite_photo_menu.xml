@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_photo"
+        android:icon="@drawable/postwritepage_bar_photo"
+        android:title="@string/title_photo" />
+    <item
+        android:id="@+id/menu_nothing1"
+        android:title="@string/title_photo" />
+    <item
+        android:id="@+id/menu_nothing2"
+        android:title="@string/title_photo" />
+    <item
+        android:id="@+id/menu_delete"
+        android:title="@string/title_delete" />
+</menu>

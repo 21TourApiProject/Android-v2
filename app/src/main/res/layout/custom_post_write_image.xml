@@ -2,8 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="160dp"
-    android:layout_height="160dp"
+    android:layout_width="320dp"
+    android:layout_height="320dp"
     android:layout_marginLeft="20dp">
 
     <ImageView
@@ -18,7 +18,7 @@
         android:id="@+id/remove"
         android:layout_width="20dp"
         android:layout_height="18dp"
-        android:layout_marginLeft="140dp"
+        android:layout_marginLeft="290dp"
         android:background="@drawable/new_postwrite_delete" />
 </FrameLayout>
 

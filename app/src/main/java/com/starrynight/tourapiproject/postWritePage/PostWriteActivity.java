@@ -22,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -34,6 +35,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,6 +57,8 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.postItemPage.PostWriteHashTagItem2;
 import com.starrynight.tourapiproject.postItemPage.PostWriteHashTagItem2Adapter;
@@ -63,6 +67,9 @@ import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostImageP
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostParams;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostWriteLoadingDialog;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.RetrofitClient;
+
+import org.jetbrains.annotations.NotNull;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -99,10 +106,9 @@ public class PostWriteActivity extends AppCompatActivity {
     final int PICK_IMAGE_SAMSUNG = 200;
     final int PICK_IMAGE_MULTIPLE = 201;
     int numOfPicture = 0;
-    private Button addPicture;
     SelectImageAdapter adapter;
     RecyclerView recyclerView;
-    String postContent = "", yearDate = "", time = "", postTitle, observationName, optionobservationName;
+    String postContent = "",yearDate = "", time = "",postTitle, observationName, optionobservationName;
     List<PostHashTagParams> postHashTagParams = new ArrayList<>();
     List<PostImageParams> postImageParams = new ArrayList<>();
     String postObservePointName = "";
@@ -113,32 +119,17 @@ public class PostWriteActivity extends AppCompatActivity {
     File file;
     LinearLayout ob_linear;
     ArrayList<File> files = new ArrayList<>();
-    LinearLayout examplelayout;
+    BottomNavigationView photoBNV;
     private TextView postObservePointItem;
     String[] WRITE_PERMISSION = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
     String[] READ_PERMISSION = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
     String[] INTERNET_PERMISSION = new String[]{Manifest.permission.INTERNET};
     EditText addContext;
+    TextView dateText,timeText;
 
     int PERMISSIONS_REQUEST_CODE = 100;
 
-    Calendar c = Calendar.getInstance();
-    int mYear = c.get(Calendar.YEAR);
-    int mMonth = c.get(Calendar.MONTH);
-    int mDay = c.get(Calendar.DAY_OF_MONTH);
 
-    private TextView datePicker;
-    private DatePickerDialog.OnDateSetListener callbackMethod;
-    private TextView timePicker;
-    private TimePickerDialog.OnTimeSetListener callbackMethod2;
-
-    @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat formatHour = new SimpleDateFormat("HH");
-
-    @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat formatMin = new SimpleDateFormat("mm");
-    private String todaydate;
-    private String todaytime;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -147,7 +138,6 @@ public class PostWriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_post_write);
         postObservePointItem = (TextView) findViewById(R.id.postObservationItem);
         ob_linear = findViewById(R.id.postwrite_ob_linear);
-        examplelayout = findViewById(R.id.exampleLinear);
         dialog = new PostWriteLoadingDialog(PostWriteActivity.this);
         addContext = findViewById(R.id.postContentText);
 
@@ -179,41 +169,41 @@ public class PostWriteActivity extends AppCompatActivity {
             }
         });
 
-        // + 버튼 클릭 이벤트
-        addPicture = findViewById(R.id.addPicture);
-        addPicture.setOnClickListener(new View.OnClickListener() {
+        // 사진 추가 버튼 클릭 이벤트
+        photoBNV= findViewById(R.id.bottom_nav_photo);
+        photoBNV.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                examplelayout.setVisibility(View.GONE);
-                recyclerView.setVisibility(View.VISIBLE);
-                if (numOfPicture > 10) {
-                    Toast.makeText(PostWriteActivity.this, "사진은 최대 10장까지 선택할수있습니다.", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                //권한 설정
-                int permission = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                int permission2 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
-                int permission3 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.INTERNET);//denied면 -1
+            public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.menu_photo:
+                        recyclerView.setVisibility(View.VISIBLE);
+                        if (numOfPicture > 10) {
+                            Toast.makeText(PostWriteActivity.this, "사진은 최대 10장까지 선택할수있습니다.", Toast.LENGTH_LONG).show();
+                        }
+                        //권한 설정
+                        int permission = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                        int permission2 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
+                        int permission3 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.INTERNET);//denied면 -1
 
-                Log.d("test", "onClick: location clicked");
-                if (permission == PackageManager.PERMISSION_GRANTED && permission2 == PackageManager.PERMISSION_GRANTED && permission3 == PackageManager.PERMISSION_GRANTED) {
-                    Log.d("MyTag", "읽기,쓰기,인터넷 권한이 있습니다.");
-                    Intent intent = new Intent("android.intent.action.MULTIPLE_PICK");
-                    intent.setType("image/*");
-                    PackageManager manager = getApplicationContext().getPackageManager();
-                    List<ResolveInfo> infos = manager.queryIntentActivities(intent, 0);
+                        Log.d("test", "onClick: location clicked");
+                        if (permission == PackageManager.PERMISSION_GRANTED && permission2 == PackageManager.PERMISSION_GRANTED && permission3 == PackageManager.PERMISSION_GRANTED) {
+                            Log.d("MyTag", "읽기,쓰기,인터넷 권한이 있습니다.");
+                            Intent intent = new Intent("android.intent.action.MULTIPLE_PICK");
+                            intent.setType("image/*");
+                            PackageManager manager = getApplicationContext().getPackageManager();
+                            List<ResolveInfo> infos = manager.queryIntentActivities(intent, 0);
 
 
-                    if (infos.size() > 0) { //테스트 하고 삼성,일반 차이없으면 삭제 예정
-                        Log.e("FAT=", "삼성폰");
-                        startActivityForResult(intent, PICK_IMAGE_SAMSUNG);
-                    } else {
-                        Log.e("FAT=", "일반폰");
-                        Intent pickerIntent = new Intent(Intent.ACTION_PICK);
-                        pickerIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                        pickerIntent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
-                        pickerIntent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(pickerIntent, PICK_IMAGE_MULTIPLE);
+                            if (infos.size() > 0) { //테스트 하고 삼성,일반 차이없으면 삭제 예정
+                                Log.e("FAT=", "삼성폰");
+                                startActivityForResult(intent, PICK_IMAGE_SAMSUNG);
+                            } else {
+                                Log.e("FAT=", "일반폰");
+                                Intent pickerIntent = new Intent(Intent.ACTION_PICK);
+                                pickerIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                                pickerIntent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+                                pickerIntent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                startActivityForResult(pickerIntent, PICK_IMAGE_MULTIPLE);
 
 //                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true); // 일반폰 - 반드시 있어야 다중선택 가능
 //                    intent.setAction(Intent.ACTION_PICK); // ACTION_GET_CONTENT 사용불가 - 엘지 G2 테스트
@@ -224,22 +214,23 @@ public class PostWriteActivity extends AppCompatActivity {
 //                    //intent.setType("image/*");
 //                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 //                    startActivityForResult(Intent.createChooser(intent, "사진 최대 9장 선택가능"), PICK_IMAGE_MULTIPLE);
-                    }
-                } else if (permission == PackageManager.PERMISSION_DENIED) {
-                    Log.d("test", "permission denied");
-                    Toast.makeText(getApplicationContext(), "쓰기권한이 없습니다.", Toast.LENGTH_SHORT).show();
-                    ActivityCompat.requestPermissions(PostWriteActivity.this, WRITE_PERMISSION, PERMISSIONS_REQUEST_CODE);
-                    ActivityCompat.requestPermissions(PostWriteActivity.this, READ_PERMISSION, PERMISSIONS_REQUEST_CODE);
-                    ActivityCompat.requestPermissions(PostWriteActivity.this, INTERNET_PERMISSION, PERMISSIONS_REQUEST_CODE);
+                            }
+                        } else if (permission == PackageManager.PERMISSION_DENIED) {
+                            Log.d("test", "permission denied");
+                            Toast.makeText(getApplicationContext(), "쓰기권한이 없습니다.", Toast.LENGTH_SHORT).show();
+                            ActivityCompat.requestPermissions(PostWriteActivity.this, WRITE_PERMISSION, PERMISSIONS_REQUEST_CODE);
+                            ActivityCompat.requestPermissions(PostWriteActivity.this, READ_PERMISSION, PERMISSIONS_REQUEST_CODE);
+                            ActivityCompat.requestPermissions(PostWriteActivity.this, INTERNET_PERMISSION, PERMISSIONS_REQUEST_CODE);
+                        }
                 }
+                return false;
             }
-
         });
 
         //선택한 사진 추가 어댑터
         recyclerView = findViewById(R.id.recyclerView);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
         adapter = new SelectImageAdapter();
@@ -252,55 +243,12 @@ public class PostWriteActivity extends AppCompatActivity {
                 adapter.removeItem(position);
                 adapter.notifyDataSetChanged();
                 numOfPicture--;
-                addPicture.setText(Integer.toString(numOfPicture) + "/10");
                 postImageParams.remove(position);
                 if (numOfPicture == 0) {
                     recyclerView.setVisibility(View.GONE);
-                    examplelayout.setVisibility(View.VISIBLE);
                 }
             }
         });
-
-        //날짜 클릭 이벤트
-        datePicker = (TextView) findViewById(R.id.datePicker);
-        callbackMethod = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                monthOfYear += 1;
-                String month = Integer.toString(monthOfYear);
-                String day = Integer.toString(dayOfMonth);
-
-                if (monthOfYear < 10) {
-                    month = "0" + Integer.toString(monthOfYear);
-                }
-
-                if (dayOfMonth < 10) {
-                    day = "0" + Integer.toString(dayOfMonth);
-                }
-                datePicker.setText(year + "-" + month + "-" + day);
-                yearDate = datePicker.getText().toString();
-
-            }
-        };
-
-        //시간 클릭 이벤트
-        timePicker = (TextView) findViewById(R.id.timePicker);
-        callbackMethod2 = new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String hour = Integer.toString(hourOfDay);
-                String min = Integer.toString(minute);
-                if (hourOfDay < 10) {
-                    hour = "0" + hourOfDay;
-                }
-                if (minute < 10) {
-                    min = "0" + minute;
-                }
-                String realtime = hour + ":" + min + ":" + "00";
-                timePicker.setText(hour + ":" + min);
-                time = realtime;
-            }
-        };
 
         //관측지점검색 버튼 클릭 이벤트
         ConstraintLayout observationlayout = findViewById(R.id.layout_observation);
@@ -325,8 +273,19 @@ public class PostWriteActivity extends AppCompatActivity {
             }
         });
 
+        //시간 추가 버튼 클릭 이벤트
+        dateText = findViewById(R.id.dateText);
+        timeText = findViewById(R.id.timeText);
+        dateText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PostWriteActivity.this, SelectTimeActivity.class);
+                startActivityForResult(intent, 204);
+            }
+        });
+
         //뒤로가기 버튼
-        ImageView back = findViewById(R.id.postWrite_back_btn);
+        TextView back = findViewById(R.id.postWrite_back_btn);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -596,6 +555,15 @@ public class PostWriteActivity extends AppCompatActivity {
                 Log.d("postHashTag", "게시물 검색 해시태그 로드 실패");
             }
         }
+        if(requestCode==204){
+            if(requestCode==4){
+                Log.d("postTime", "게시물 관측 시간 넘어옴");
+                yearDate = (String)data.getSerializableExtra("date");
+                time = (String)data.getSerializableExtra("time");
+                dateText.setText(yearDate);
+                timeText.setText(time);
+            }
+        }
         if (resultCode != RESULT_OK || data == null) {
             return;
         }
@@ -714,7 +682,6 @@ public class PostWriteActivity extends AppCompatActivity {
 
     private void addImage(Bitmap img) {
         numOfPicture++;
-        addPicture.setText(Integer.toString(numOfPicture) + "/10");
 
         adapter.addItem(new SelectImage(img, numOfPicture));
         recyclerView.setAdapter(adapter);
@@ -736,7 +703,6 @@ public class PostWriteActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        addPicture.setText(Integer.toString(numOfPicture) + "/10");
     }
 
     public void uploadfiles(ArrayList<File> files) {
@@ -745,23 +711,7 @@ public class PostWriteActivity extends AppCompatActivity {
         }
     }
 
-    public void onClickDatePicker(View view) {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, callbackMethod, mYear, mMonth, mDay);
-        //datePickerDialog.getDatePicker().setCalendarViewShown(false);
-        //datePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        datePickerDialog.show();
 
-    }
-
-    public void onClickTimePicker(View view) {
-        todaydate = formatHour.format(c.getTime());
-        todaytime = formatMin.format(c.getTime());
-        int todayHour = Integer.parseInt(todaydate);
-        int todayTime = Integer.parseInt(todaytime);
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Dialog_NoActionBar, callbackMethod2, todayHour, todayTime, false);
-        timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        timePickerDialog.show();
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private Bitmap rotateImage(Uri uri, Bitmap bitmap) throws IOException {

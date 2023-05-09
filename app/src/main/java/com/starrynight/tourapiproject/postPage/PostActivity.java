@@ -1,5 +1,6 @@
 package com.starrynight.tourapiproject.postPage;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -9,10 +10,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,20 +45,28 @@ import com.starrynight.tourapiproject.postItemPage.PostHashTagItemAdapter;
 import com.starrynight.tourapiproject.postItemPage.Post_point_item_Adapter;
 import com.starrynight.tourapiproject.postItemPage.post_point_item;
 import com.starrynight.tourapiproject.postPage.postRetrofit.Like;
+import com.starrynight.tourapiproject.postPage.postRetrofit.OnPostCommentItemClickListener;
 import com.starrynight.tourapiproject.postPage.postRetrofit.Post;
+import com.starrynight.tourapiproject.postPage.postRetrofit.PostComment;
+import com.starrynight.tourapiproject.postPage.postRetrofit.PostCommentAdapter;
+import com.starrynight.tourapiproject.postPage.postRetrofit.PostCommentParams;
 import com.starrynight.tourapiproject.postPage.postRetrofit.PostHashTag;
 import com.starrynight.tourapiproject.postPage.postRetrofit.PostImage;
 import com.starrynight.tourapiproject.postPage.postRetrofit.PostPageRetrofitService;
 import com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostParams;
 
+import org.w3c.dom.Comment;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -92,6 +103,7 @@ public class PostActivity extends AppCompatActivity {
     TextView postLike;
     TextView loveCount;
     ImageView profileImage;
+    RecyclerView commentRecyclerView;
     List<String> postHashTags;
     List<PostHashTag> postHashTagList;
     String[] filename2 = new String[10];
@@ -449,7 +461,7 @@ public class PostActivity extends AppCompatActivity {
 
                                                         @Override
                                                         public void onFailure(Call<Void> call, Throwable t) {
-                                                            Log.d("deletePost", "게시물 삭제 실패 2");
+                                                            Log.d("deletePost", "게시물 삭제 인터넷 오류");
                                                         }
                                                     });
                                                     dialog.dismiss();
@@ -553,6 +565,118 @@ public class PostActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Post> call, Throwable t) {
                 Log.d("post", "게시물 인터넷 오류");
+            }
+        });
+
+        //게시글 댓글 가져오기
+        commentRecyclerView = findViewById(R.id.commentRecyclerview);
+        LinearLayoutManager commentLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        commentRecyclerView.setLayoutManager(commentLayoutManager);
+        PostCommentAdapter commentAdapter = new PostCommentAdapter();
+        Call<List<PostComment>> commentCall = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().getPostCommentById(postId);
+        commentCall.enqueue(new Callback<List<PostComment>>() {
+            @Override
+            public void onResponse(Call<List<PostComment>> call, Response<List<PostComment>> response) {
+                if(response.isSuccessful()){
+                    List<PostComment> result = response.body();
+                    for(int i=0;i<result.size();i++){
+                        commentAdapter.addItem(result.get(i));
+                    }
+                    commentRecyclerView.setAdapter(commentAdapter);
+                }
+                else{
+                    Log.d("postComment", "게시물 댓글 정보 업로드 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PostComment>> call, Throwable t) {
+                Log.d("postComment", "게시물 댓글 인터넷 오류");
+            }
+        });
+
+        //게시글 댓글 달기
+        EditText commentEditText = findViewById(R.id.comment_editText);
+        Button send_btn = findViewById(R.id.comment_send_btn);
+        commentEditText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(event.getAction()==KeyEvent.ACTION_DOWN&&keyCode ==KeyEvent.KEYCODE_ENTER){ //입력하고 엔터쳤을 때
+                    if (!commentEditText.getText().toString().equals("")) {
+                        PostCommentParams postCommentParams = new PostCommentParams();
+                        postCommentParams.setComment(((EditText) (findViewById(R.id.comment_editText))).getText().toString());
+                        postCommentParams.setUserId(userId);
+                        long now = System.currentTimeMillis();//댓글을 쓴 현재시간 가져오기
+                        Date date = new Date(now);
+                        @SuppressLint("SimpleDateFormat")
+                        SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+                        @SuppressLint("SimpleDateFormat")
+                        SimpleDateFormat dateFormat2 = new SimpleDateFormat("hh:mm:ss");
+                        String yearDate = dateFormat1.format(date);
+                        String time = dateFormat2.format(date);
+                        postCommentParams.setTime(time);
+                        postCommentParams.setYearDate(yearDate);
+                        Call<Void> commentCall = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().createPostComment(postId,postCommentParams);
+                        commentCall.enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if(response.isSuccessful()){
+                                    commentAdapter.notifyDataSetChanged(); // 댓글 추가 변화 인식
+                                }else{
+                                    Log.d("postComment", "게시물 댓글 정보 추가 실패");
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Log.d("postComment", "게시물 댓글 추가 인터넷 오류");
+                            }
+                        });
+                    }else{
+                        return false;
+                    }
+                }
+                return true;
+            }
+        });
+
+        //댓글 입력 버튼을 입력했을 때
+        send_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!commentEditText.getText().toString().equals("")) {
+                    PostCommentParams postCommentParams = new PostCommentParams();
+                    postCommentParams.setComment(((EditText) (findViewById(R.id.comment_editText))).getText().toString());
+                    postCommentParams.setUserId(userId);
+                    long now = System.currentTimeMillis();//댓글을 쓴 현재시간 가져오기
+                    Date date = new Date(now);
+                    SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat dateFormat2 = new SimpleDateFormat("hh:mm:ss");
+                    String yearDate = dateFormat1.format(date);
+                    String time = dateFormat2.format(date);
+                    postCommentParams.setTime(time);
+                    postCommentParams.setYearDate(yearDate);
+                    Call<Void> commentCall = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().createPostComment(postId,postCommentParams);
+                    commentCall.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if(response.isSuccessful()){
+                                Intent intent = getIntent();
+                                finish(); //페이지 새로고침
+                                overridePendingTransition(0, 0);
+                                startActivity(intent);
+                                overridePendingTransition(0, 0);
+                            }else{
+                                Log.d("postComment", "게시물 댓글 정보 추가 실패");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Log.d("postComment", "게시물 댓글 추가 인터넷 오류");
+                        }
+                    });
+                }
             }
         });
 

@@ -207,11 +207,16 @@
                 </LinearLayout>
 
             </LinearLayout>
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
 
                 <Button
                     android:id="@+id/love"
@@ -237,9 +242,7 @@
                     android:layout_height="17dp"
                     android:layout_gravity="center"
                     android:layout_marginEnd="4dp"
-                    android:background="@drawable/post__comment"
-
-                    />
+                    android:background="@drawable/post__comment" />
 
                 <TextView
                     android:id="@+id/comment_count"
@@ -252,15 +255,65 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1" />
-                <Button
-                    android:id="@+id/like"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="right|center_vertical"
-                    android:layout_marginStart="17.86dp"
-                    android:background="@drawable/main__bookmark"
-                    app:layout_constraintTop_toBottomOf="@+id/postThumbnail"
-                    android:layout_marginEnd="16dp"/>
+
+                <LinearLayout
+                    android:id="@+id/like_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/like"
+                        android:layout_width="12dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_marginStart="17.86dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/main__bookmark"
+                        app:layout_constraintTop_toBottomOf="@+id/postThumbnail" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/postwrite__search_bar">
+
+                    <EditText
+                        android:id="@+id/comment_editText"
+                        android:layout_width="0dp"
+                        android:layout_height="44dp"
+                        android:paddingStart="16dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:ems="20"
+                        android:fontFamily="@font/spoqahansansneoregular"
+                        android:hint="댓글을 입력해주세요"
+                        android:inputType="textLongMessage|textMultiLine"
+                        android:lineSpacingExtra="7dp"
+                        android:overScrollMode="always"
+                        android:scrollbarStyle="insideInset"
+                        android:scrollbars="vertical"
+                        android:scrollHorizontally="false"
+                        android:textSize="16sp">
+                    </EditText>
+                    <Button
+                        android:id="@+id/comment_send_btn"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/post__comment_send_btn"
+                        android:layout_marginEnd="6dp">
+                    </Button>
+                </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/commentRecyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    />
             </LinearLayout>
 
             <LinearLayout
