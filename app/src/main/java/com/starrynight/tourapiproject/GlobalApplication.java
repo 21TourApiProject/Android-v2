@@ -1,14 +1,13 @@
 package com.starrynight.tourapiproject;
 
 import android.app.Application;
-import android.content.Context;
+import android.util.Log;
 
-import com.kakao.auth.ApprovalType;
-import com.kakao.auth.AuthType;
-import com.kakao.auth.IApplicationConfig;
-import com.kakao.auth.ISessionConfig;
-import com.kakao.auth.KakaoAdapter;
-import com.kakao.auth.KakaoSDK;
+import com.kakao.sdk.common.KakaoSdk;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class GlobalApplication extends Application {
 
@@ -28,7 +27,7 @@ public class GlobalApplication extends Application {
         instance = this;
 
         // Kakao Sdk 초기화
-        KakaoSDK.init(new KakaoSDKAdapter());
+        KakaoSdk.init(this, "2201411c61cc7086fe639ce660ccb21e");
     }
 
     @Override
@@ -37,47 +36,69 @@ public class GlobalApplication extends Application {
         instance = null;
     }
 
-    public class KakaoSDKAdapter extends KakaoAdapter {
+    private String readKakaokey() {
+        String data = null;
+        InputStream inputStream = getResources().openRawResource(R.raw.kakao);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        int i;
+        try {
+            i = inputStream.read();
+            while (i != -1) {
+                byteArrayOutputStream.write(i);
+                i = inputStream.read();
+            }
+            data = new String(byteArrayOutputStream.toByteArray(), "MS949");
 
-        @Override
-        public ISessionConfig getSessionConfig() {
-            return new ISessionConfig() {
-                @Override
-                public AuthType[] getAuthTypes() {
-                    return new AuthType[]{AuthType.KAKAO_LOGIN_ALL};
-                }
-
-                @Override
-                public boolean isUsingWebviewTimer() {
-                    return false;
-                }
-
-                @Override
-                public boolean isSecureMode() {
-                    return false;
-                }
-
-                @Override
-                public ApprovalType getApprovalType() {
-                    return ApprovalType.INDIVIDUAL;
-                }
-
-                @Override
-                public boolean isSaveFormData() {
-                    return true;
-                }
-            };
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        // Application이 가지고 있는 정보를 얻기 위한 인터페이스
-        @Override
-        public IApplicationConfig getApplicationConfig() {
-            return new IApplicationConfig() {
-                @Override
-                public Context getApplicationContext() {
-                    return GlobalApplication.getGlobalApplicationContext();
-                }
-            };
-        }
+        Log.d("카카오키 뭐임?",data);
+        return data;
     }
+//
+//    public class KakaoSDKAdapter extends KakaoAdapter {
+//
+//        @Override
+//        public ISessionConfig getSessionConfig() {
+//            return new ISessionConfig() {
+//                @Override
+//                public AuthType[] getAuthTypes() {
+//                    return new AuthType[]{AuthType.KAKAO_LOGIN_ALL};
+//                }
+//
+//                @Override
+//                public boolean isUsingWebviewTimer() {
+//                    return false;
+//                }
+//
+//                @Override
+//                public boolean isSecureMode() {
+//                    return false;
+//                }
+//
+//                @Override
+//                public ApprovalType getApprovalType() {
+//                    return ApprovalType.INDIVIDUAL;
+//                }
+//
+//                @Override
+//                public boolean isSaveFormData() {
+//                    return true;
+//                }
+//            };
+//        }
+//
+//        // Application이 가지고 있는 정보를 얻기 위한 인터페이스
+//        @Override
+//        public IApplicationConfig getApplicationConfig() {
+//            return new IApplicationConfig() {
+//                @Override
+//                public Context getApplicationContext() {
+//                    return GlobalApplication.getGlobalApplicationContext();
+//                }
+//            };
+//        }
+//    }
 }

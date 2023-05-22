@@ -239,7 +239,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/observation_information"
+                android:id="@+id/obs_information_tab"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -286,7 +286,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/obs_comment_btn"
+                            android:id="@+id/obs_review_btn"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
@@ -542,6 +542,7 @@
             </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/obs_course"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="61dp"
@@ -553,7 +554,6 @@
                     android:layout_marginLeft="17dp">
 
                     <TextView
-                        android:id="@+id/obs_course"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="추천코스"
@@ -601,7 +601,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/observation_review"
+                android:id="@+id/obs_review_tab"
                 android:visibility="gone"
                 tools:visibility="visible"
                 android:layout_width="match_parent"
@@ -838,6 +838,7 @@
                 android:src="@drawable/bookmark_non" />
 
             <TextView
+                android:id="@+id/obs_save_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="000"
