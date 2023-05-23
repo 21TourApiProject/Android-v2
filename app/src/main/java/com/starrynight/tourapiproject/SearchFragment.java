@@ -51,7 +51,7 @@ public class SearchFragment extends Fragment {
 
         ((MainActivity) getActivity()).setFilter(null);
 
-        androidx.appcompat.widget.SearchView searchView = v.findViewById(R.id.search);
+        androidx.appcompat.widget.SearchView searchView = v.findViewById(R.id.search2);
         searchView.setIconifiedByDefault(false);
         searchView.setQueryHint("원하는 것을 검색해보세요");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -81,7 +81,7 @@ public class SearchFragment extends Fragment {
         });
 
         //지도 페이지로
-        ImageButton map_btn = (ImageButton) v.findViewById(R.id.mapBtn);
+        ImageButton map_btn = (ImageButton) v.findViewById(R.id.mapBtn2);
         map_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,7 +102,7 @@ public class SearchFragment extends Fragment {
         });
 
         //필터 고르는 페이지로
-        ImageButton filter_btn = (ImageButton) v.findViewById(R.id.filterBtn);
+        ImageButton filter_btn = (ImageButton) v.findViewById(R.id.filterBtn2);
         filter_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

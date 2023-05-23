@@ -233,7 +233,8 @@ public class ObservationsiteActivity extends AppCompatActivity {
                         parking.setText(observation.getParking());
 
                     }
-
+                    // 후기, 정보 탭 설정
+                    setTab();
 
                     //해쉬태그 리사이클러 설정
                     initHashtagRecycler();
@@ -288,6 +289,9 @@ public class ObservationsiteActivity extends AppCompatActivity {
         //찜버튼 설정
         LinearLayout save_btn = findViewById(R.id.obs_save_btn);
         ImageView save_img = findViewById(R.id.obs_save_img);
+        TextView save_count = findViewById(R.id.obs_save_count);
+
+        save_count.setText(observation.getSaved().toString());
 
         //앱 내부 저장소의 userId 데이터 읽기
         String fileName = "userId";
@@ -338,6 +342,8 @@ public class ObservationsiteActivity extends AppCompatActivity {
                                 //버튼 디자인 바뀌게 구현하기
                                 isWish = true;
                                 save_img.setImageResource(R.drawable.bookmark);
+                                Long count_tmp = observation.getSaved()+1;
+                                save_count.setText(count_tmp.toString());
                                 Toast.makeText(getApplicationContext(), "나의 여행버킷리스트에 저장되었습니다.", Toast.LENGTH_SHORT).show();
                             } else {
                                 Log.d("isWish", "관광지 찜 실패");
@@ -357,6 +363,8 @@ public class ObservationsiteActivity extends AppCompatActivity {
                             if (response.isSuccessful()) {
                                 isWish = false;
                                 save_img.setImageResource(R.drawable.bookmark_non);
+                                Long count_tmp = observation.getSaved()-1;
+                                save_count.setText(count_tmp.toString());
                                 Toast.makeText(getApplicationContext(), "나의 여행버킷리스트에서 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                             } else {
                                 Log.d("isWishDelete", "관광지 찜 삭제 실패");
@@ -603,6 +611,16 @@ public class ObservationsiteActivity extends AppCompatActivity {
     private void setCourse(){
 
         ImageView course_img = findViewById(R.id.obs_course_image);
+
+        LinearLayout course = findViewById(R.id.obs_course);
+
+        try{
+            observation.getCourseOrder();
+        } catch (NullPointerException e){
+            course.setVisibility(View.INVISIBLE);
+            return;
+        }
+
         Call<List<String>> call6 = RetrofitClient.getApiService().getCourseNameList(observation.getObservationId());
         call6.enqueue(new Callback<List<String>>() {
             @Override
@@ -779,7 +797,7 @@ public class ObservationsiteActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     try {
-                        Intent homepageurl = new Intent(Intent.ACTION_VIEW, Uri.parse("http://"+observation.getLink()));
+                        Intent homepageurl = new Intent(Intent.ACTION_VIEW, Uri.parse("http://"+observation.getReserve()));
                         startActivity(homepageurl);
                     } catch (Exception e) {
                         Log.e(TAG, "홈페이지 이동 불가");
@@ -787,8 +805,30 @@ public class ObservationsiteActivity extends AppCompatActivity {
                 }
             });
         }
+    }
 
+    private void setTab(){
+        LinearLayout information_tab = findViewById(R.id.obs_information_tab);
+        LinearLayout review_tab = findViewById(R.id.obs_review_tab);
+        LinearLayout review_tab_btn = findViewById(R.id.obs_review_btn);
 
+        review_tab_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                review_tab.setVisibility(View.VISIBLE);
+                information_tab.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        LinearLayout info_tab_btn = findViewById(R.id.obs_info_btn);
+
+        info_tab_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                review_tab.setVisibility(View.INVISIBLE);
+                information_tab.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
 }

@@ -36,6 +36,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     buildFeatures {
         viewBinding true
     }
@@ -94,9 +95,9 @@ dependencies {
     implementation 'com.amazonaws:aws-android-sdk-s3:2.13.5'
 
     implementation "com.kakao.sdk:v2-user:2.5.2" // 카카오 로그인
-    implementation group: project.KAKAO_SDK_GROUP, name: 'usermgmt', version: project.KAKAO_SDK_VERSION
+//    implementation group: project.KAKAO_SDK_GROUP, name: 'usermgmt', version: project.KAKAO_SDK_VERSION
     implementation 'com.kakao.sdk:newtone:6.0.1'
-    implementation group: project.KAKAO_SDK_GROUP, name: 'newtone', version: project.KAKAO_SPEECH_VERSION
+//    implementation group: project.KAKAO_SDK_GROUP, name: 'newtone', version: project.KAKAO_SPEECH_VERSION
     implementation files('..\\libs\\json-simple-1.1.1.jar')
     //noinspection GradleCompatible
     implementation 'com.android.support:cardview-v7:28.0.0'
