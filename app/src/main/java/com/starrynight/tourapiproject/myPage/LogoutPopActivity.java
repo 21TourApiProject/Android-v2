@@ -67,6 +67,7 @@ public class LogoutPopActivity extends AppCompatActivity {
                             if(error!=null){
                                 Log.e("KakaoLogout","로그인 실패 : ",error);
                             }else{
+                                Log.i("KakaoLogout","로그아웃 완료");
                                 File dir = getFilesDir();
                                 File file = new File(dir, "userId");
                                 boolean deleted = file.delete();

@@ -58,7 +58,7 @@ public class SignUpActivity extends AppCompatActivity {
     String[] READ_PERMISSION = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
     String[] INTERNET_PERMISSION = new String[]{Manifest.permission.INTERNET};
     int PERMISSIONS_REQUEST_CODE = 100;
-    KakaoUserParams kakaoUserParams;
+    KakaoUserParams kakaoUserParams = new KakaoUserParams();
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -208,9 +208,9 @@ public class SignUpActivity extends AppCompatActivity {
         // 카카오톡으로 로그인
         UserApiClient.getInstance().loginWithKakaoTalk(SignUpActivity.this, (oAuthToken, error) -> {
             if (error != null) {
-                Log.e("KakaoLogin", "로그인 실패", error);
+                Log.e(TAG2, "카카오톡 로그인 실패", error);
             } else if (oAuthToken != null) {
-                Log.i("KakaoLogin", "로그인 성공");
+                Log.i(TAG2, "카카오톡 로그인 성공");
                 getKakaoInfo();
             }
             return null;
@@ -219,12 +219,11 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void kakaoAccountLogin() {
         // 카카오계정으로 로그인
-        String TAG = "kakaoAccountLogin()";
         UserApiClient.getInstance().loginWithKakaoAccount(SignUpActivity.this, (oAuthToken, error) -> {
             if (error != null) {
-                Log.e(TAG, "로그인 실패", error);
+                Log.e(TAG2, "카카오계정 로그인 실패", error);
             } else if (oAuthToken != null) {
-                Log.i(TAG, "로그인 성공(토큰)");
+                Log.i(TAG2, "카카오계정 로그인 성공(토큰)");
                 getKakaoInfo();
             }
             return null;
@@ -232,14 +231,12 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void getKakaoInfo() {
-        String TAG = "getKakaoInfo()";
         UserApiClient.getInstance().me((user, meError) -> {
             if (meError != null) {
-                Log.e(TAG, "사용자 정보 요청 실패", meError);
+                Log.e(TAG2, "사용자 정보 요청 실패", meError);
             } else {
-                System.out.println("로그인 완료");
+                Log.i(TAG2,"사용자 정보요청 성공");
 
-                Log.i(TAG2, "사용자 아이디: " + user.getId());
                 String id = String.valueOf(user.getId());
                 Account kakaoAccount = user.getKakaoAccount();
                 if (kakaoAccount != null) {
@@ -247,21 +244,17 @@ public class SignUpActivity extends AppCompatActivity {
                     // 이메일
                     String email = kakaoAccount.getEmail();
                     if (email != null) {
-                        Log.d(TAG2, "onSuccess:getEmail " + email);
                         kakaoUserParams.setEmail(email);
                     } else {
                         Log.d(TAG2, "onSuccess:email null ");
                     }
                     if (kakaoAccount.getAgeRange() != null) {
-                        Log.d(TAG2, "onSuccess:get ageRange " + kakaoAccount.getAgeRange());
                         kakaoUserParams.setAgeRange(kakaoAccount.getAgeRange().toString());
                     }
                     if (kakaoAccount.getBirthday() != null) {
-                        Log.d(TAG2, "onSuccess:get Birthday " + kakaoAccount.getBirthday());
                         kakaoUserParams.setBirthDay(kakaoAccount.getBirthday());
                     }
                     if (kakaoAccount.getGender() != null) {
-                        Log.d(TAG2, "onSuccess:get Gender " + kakaoAccount.getGender());
                         if (kakaoAccount.getGender() == Gender.FEMALE)
                             kakaoUserParams.setSex(false);
                         else if (kakaoAccount.getGender() == Gender.MALE)
@@ -272,16 +265,8 @@ public class SignUpActivity extends AppCompatActivity {
                     if (profile == null) {
                         Log.d(TAG2, "onSuccess:profile null ");
                     } else {
-                        Log.d(TAG2, "onSuccess:getProfileImageUrl " + profile.getProfileImageUrl());
                         kakaoUserParams.setProfileImage(profile.getProfileImageUrl());
-                        Log.d(TAG2, "onSuccess:getNickname " + profile.getNickname());
                         kakaoUserParams.setNickName(profile.getNickname());
-                    }
-                    if (email != null) {
-
-                        Log.d(TAG2, "onSuccess:email " + email);
-                    } else {
-                        Log.d(TAG2, "onSuccess:email null ");
                     }
 
                     // 프로필
@@ -289,9 +274,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                     if (_profile != null) {
 
-                        Log.d(TAG2, "nickname: " + _profile.getNickname());
                         kakaoUserParams.setNickName(profile.getNickname());
-                        Log.d(TAG2, "profile image: " + _profile.getProfileImageUrl());
                         kakaoUserParams.setProfileImage(profile.getProfileImageUrl());
 
 

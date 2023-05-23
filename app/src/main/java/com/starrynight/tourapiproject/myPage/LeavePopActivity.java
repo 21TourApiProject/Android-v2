@@ -68,11 +68,12 @@ public class LeavePopActivity extends AppCompatActivity {
                         UserApiClient.getInstance().unlink(
                                 (error)->{
                                     if(error!=null){
-                                        Log.e(TAG, "연결 끊기 실패", error);
+                                        Log.e("Kakao leave", "연결 끊기 실패", error);
                                         Toast.makeText(getApplicationContext(), "회원탈퇴에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT).show();
                                     }else {
                                         //"회원탈퇴에 성공했습니다."라는 Toast 메세지를 띄우고 로그인 창으로 이동함
                                         //delete api 호출
+                                        Log.i("Kakao leave", "카카오 회원 탈퇴" );
 
                                         Call<Void> call3 = RetrofitClient.getApiService().deleteUser(userId);
                                         call3.enqueue(new Callback<Void>() {
