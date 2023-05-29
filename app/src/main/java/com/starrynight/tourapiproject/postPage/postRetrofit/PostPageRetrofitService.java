@@ -57,4 +57,23 @@ public interface PostPageRetrofitService {
 
     @GET("like/{itemId}/{likeType}") // 좋아요 수 가져오기
     Call<Like> getLikeCount(@Path("itemId") Long itemId, @Path("likeType") Integer likeType);
+
+    @POST("postComment/{postId}")
+    Call<Void>  createPostComment(@Path("postId")Long postId, @Body PostCommentParams postCommentParams);
+
+    @GET("postComment/{postCommentId}")
+    Call<PostComment>  getPostComment(@Path("postCommentId")Long postCommentId);
+
+    @GET("postComment/{postId}")
+    Call<List<PostComment>>  getPostCommentById(@Path("postId")Long postId);
+
+    @GET("postComment/{userId}/{postCommentId}")
+    Call<Void> addLove(@Path("userId") Long userId, @Path("postCommentId")Long postCommentId);
+
+    @GET("postComment/{userId}/{postCommentId}")
+    Call<Void> removeLove(@Path("userId") Long userId, @Path("postCommentId")Long postCommentId);
+
+    @DELETE("postComment/{postCommentId}")
+    Call<Void>  deletePostComment(@Path("postCommentId")Long postCommentId);
+
 }
