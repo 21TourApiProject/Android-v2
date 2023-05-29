@@ -4,15 +4,15 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.common.Const;
-import com.starrynight.tourapiproject.postWritePage.PostWriteActivity;
 import com.starrynight.tourapiproject.weatherPage2.AirKoreaRetrofit.AirKoreaRetrofitClient;
 import com.starrynight.tourapiproject.weatherPage2.AirKoreaRetrofit.FineDustData;
 import com.starrynight.tourapiproject.weatherPage2.AirKoreaRetrofit.Item;
@@ -20,11 +20,16 @@ import com.starrynight.tourapiproject.weatherPage2.OpenWeatherRetrofit.Daily;
 import com.starrynight.tourapiproject.weatherPage2.OpenWeatherRetrofit.DetailWeatherData;
 import com.starrynight.tourapiproject.weatherPage2.OpenWeatherRetrofit.Hourly;
 import com.starrynight.tourapiproject.weatherPage2.OpenWeatherRetrofit.OpenWeatherRetrofitClient;
+import com.starrynight.tourapiproject.weatherPage2.weatherRetrofit.DayObservationFit;
+import com.starrynight.tourapiproject.weatherPage2.weatherRetrofit.HourObservationFit;
+import com.starrynight.tourapiproject.weatherPage2.weatherRetrofit.WeatherRetrofitClient;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -67,9 +72,20 @@ public class WeatherActivity2 extends AppCompatActivity {
 
     private ImageView weatherHelp; // 날씨 도움말 페이지
 
+
+    private RecyclerView day_Recycler; // 주간 예보 RecyclerView
+    private RecyclerView hour_Recycler; // 시간별 예보 RecyclerView
+    List<DayObservationFit> dayResult = new ArrayList<>(); // 주간 예보 결과
+    List<HourObservationFit> hourResult = new ArrayList<>(); // 시간별 예보 결과
+
+    private TextView best_observation_fit; // 오늘의 최대 관측적합도
+
     Double latitude; // 위도
     Double longitude; // 경도
-    String city; // 도 이름
+    String city; // 도 이름 ex) 서울
+    String date; // 오늘 날짜 ex) 230303
+    String hour; // 현재 시간 ex) 18
+
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -97,7 +113,8 @@ public class WeatherActivity2 extends AppCompatActivity {
 
 
         // 현재 시간(hour) 조회
-        detailHour.setText(formatH.format(new Date(System.currentTimeMillis())) + Const.Weather.DETAIL_HOUR);
+        hour = formatH.format(new Date(System.currentTimeMillis()));
+        detailHour.setText(hour + Const.Weather.DETAIL_HOUR);
 
         // 메인 페이지에서 위경도, 도시 정보를 받아옴 (메인 페이지 완성 시 주석 해제)
 //        Intent mainIntent = getIntent();
@@ -183,6 +200,62 @@ public class WeatherActivity2 extends AppCompatActivity {
         // 뒤로 가기
         ImageView back = findViewById(R.id.weather_back);
         back.setOnClickListener(v -> finish());
+
+
+        date = "230301";
+
+        // 시간별 예보
+        hour_Recycler = findViewById(R.id.hour_recycler);
+        hour_Recycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        WeatherRetrofitClient.getApiService()
+                .getHourObservationFit(date)
+                .enqueue(new Callback<List<HourObservationFit>>() {
+                    @Override
+                    public void onResponse(Call<List<HourObservationFit>> call, Response<List<HourObservationFit>> response) {
+                        if (response.isSuccessful()) {
+                            System.out.println("DayObservationFit 서버 연결 성공");
+                            hourResult = response.body();
+                            HourAdapter hourAdapter = new HourAdapter(hourResult);
+                            hour_Recycler.setAdapter(hourAdapter);
+                        } else {
+                            Log.e(TAG, "HourObservationFit 호출 실패");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<HourObservationFit>> call, Throwable t) {
+                        Log.e("HourObservationFit 서버 연결 실패", t.getMessage());
+                    }
+                });
+
+        best_observation_fit = findViewById(R.id.best_observation_fit);
+
+        // 주간 예보
+        day_Recycler = findViewById(R.id.day_recycler);
+        day_Recycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        WeatherRetrofitClient.getApiService()
+                .getDayObservationFit(date)
+                .enqueue(new Callback<List<DayObservationFit>>() {
+                    @Override
+                    public void onResponse(Call<List<DayObservationFit>> call, Response<List<DayObservationFit>> response) {
+                        if (response.isSuccessful()) {
+                            System.out.println("DayObservationFit 서버 연결 성공");
+                            dayResult = response.body();
+                            DayAdapter dayAdapter = new DayAdapter(dayResult);
+                            day_Recycler.setAdapter(dayAdapter);
+                        } else {
+                            Log.e(TAG, "DayObservationFit 호출 실패");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<DayObservationFit>> call, Throwable t) {
+                        Log.e("DayObservationFit 서버 연결 실패", t.getMessage());
+                    }
+                });
+
 
     }
 
