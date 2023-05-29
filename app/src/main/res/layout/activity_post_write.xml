@@ -87,7 +87,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="start|center_vertical"
                         android:layout_marginStart="16dp"
-                        android:text="게시글 이름"
+                        android:text="게시판을 선택해주세요"
                         android:textSize="16sp" />
 
                     <TextView
@@ -312,12 +312,14 @@
                                 android:id="@+id/timeText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:padding="7dp"
                                 android:layout_marginStart="10dp"
                                 android:background="@drawable/hashtag_background"
                                 android:textAlignment="center"
+                                android:text="날짜, 시간을 선택해주세요"
                                 android:textColor="@color/gray_500"
                                 android:textSize="14sp"
-                                android:visibility="invisible" />
+                                android:visibility="gone" />
                         </LinearLayout>
                     </LinearLayout>
 

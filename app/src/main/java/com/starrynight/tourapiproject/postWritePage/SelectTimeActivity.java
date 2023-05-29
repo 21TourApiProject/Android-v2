@@ -27,6 +27,7 @@ public class SelectTimeActivity extends AppCompatActivity {
     int mDay = c.get(Calendar.DAY_OF_MONTH);
     CheckBox timeCheckbox;
     String yearDate = "", time = "";
+    boolean day=false;
 
     private TextView datePicker;
     private DatePickerDialog.OnDateSetListener callbackMethod;
@@ -62,7 +63,7 @@ public class SelectTimeActivity extends AppCompatActivity {
                 if (dayOfMonth < 10) {
                     day = "0" + Integer.toString(dayOfMonth);
                 }
-                datePicker.setText(year + "-" + month + "-" + day);
+                datePicker.setText(year + "." + month + "." + day);
                 yearDate = datePicker.getText().toString();
 
             }
@@ -81,9 +82,12 @@ public class SelectTimeActivity extends AppCompatActivity {
                 if (minute < 10) {
                     min = "0" + minute;
                 }
-                String realtime = hour + ":" + min + ":" + "00";
+                String realtime = hour + ":" + min;
                 timePicker.setText(hour + ":" + min);
                 time = realtime;
+                if(hourOfDay<12){
+                    day=true;
+                }else{day=false;}
             }
         };
         //시간 모르겠음 체크박스 클릭
@@ -92,11 +96,9 @@ public class SelectTimeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(timeCheckbox.isChecked()){
-                    timeCheckbox.setChecked(false);
-                    timePicker.setText("관측 시간대");
-                }else{
-                    timeCheckbox.setChecked(true);
                     timePicker.setText("모르겠음");
+                }else{
+                    timePicker.setText("관측 시간대");
                 }
             }
         });
@@ -118,6 +120,7 @@ public class SelectTimeActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.putExtra("date",yearDate);
                 intent.putExtra("time",time);
+                intent.putExtra("day",day);
                 setResult(4,intent);
                 finish();
             }
