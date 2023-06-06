@@ -35,28 +35,28 @@ public class GlobalApplication extends Application {
         super.onTerminate();
         instance = null;
     }
-
-    private String readKakaokey() {
-        String data = null;
-        InputStream inputStream = getResources().openRawResource(R.raw.kakao);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        int i;
-        try {
-            i = inputStream.read();
-            while (i != -1) {
-                byteArrayOutputStream.write(i);
-                i = inputStream.read();
-            }
-            data = new String(byteArrayOutputStream.toByteArray(), "MS949");
-
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Log.d("카카오키 뭐임?",data);
-        return data;
-    }
+//
+//    private String readKakaokey() {
+//        String data = null;
+//        InputStream inputStream = getResources().openRawResource(R.raw.kakao);
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        int i;
+//        try {
+//            i = inputStream.read();
+//            while (i != -1) {
+//                byteArrayOutputStream.write(i);
+//                i = inputStream.read();
+//            }
+//            data = new String(byteArrayOutputStream.toByteArray(), "MS949");
+//
+//            inputStream.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        Log.d("카카오키 뭐임?",data);
+//        return data;
+//    }
 //
 //    public class KakaoSDKAdapter extends KakaoAdapter {
 //

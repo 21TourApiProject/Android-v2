@@ -73,7 +73,7 @@ public class HourAdapter extends RecyclerView.Adapter<HourAdapter.HourHolder> {
 
         public void setItem(HourObservationalFit item) {
             hour.setText(item.getHour());
-            observationFit.setText(item.getObservationFit());
+            observationFit.setText(item.getObservationalFit());
         }
     }
 

@@ -78,7 +78,7 @@ public class DayAdapter extends RecyclerView.Adapter<DayAdapter.DayHolder> {
             if (item.getDay().equals("일")) day.setTextColor(Color.parseColor("#EC3E4D"));
             if (item.getDay().equals("오늘")) day.setTextColor(Color.parseColor("#DADAE5"));
             date.setText(item.getDate());
-            observationFit.setText(item.getObservationFit());
+            observationFit.setText(item.getObservationalFit());
         }
     }
 
