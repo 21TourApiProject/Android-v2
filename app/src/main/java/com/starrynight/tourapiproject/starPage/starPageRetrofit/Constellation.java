@@ -30,15 +30,6 @@ public class Constellation {
     @SerializedName("constBestMonth")
     private String constBestMonth;
 
-    @SerializedName("constFeature1")
-    private String constFeature1;
-
-    @SerializedName("constFeature2")
-    private String constFeature2;
-
-    @SerializedName("constFeature3")
-    private String constFeature3;
-
     @SerializedName("startDate1")
     private String startDate1;
 
@@ -95,30 +86,6 @@ public class Constellation {
 
     public void setConstBestMonth(String constBestMonth) {
         this.constBestMonth = constBestMonth;
-    }
-
-    public String getConstFeature1() {
-        return constFeature1;
-    }
-
-    public String getConstFeature2() {
-        return constFeature2;
-    }
-
-    public String getConstFeature3() {
-        return constFeature3;
-    }
-
-    public void setConstFeature1(String constFeature1) {
-        this.constFeature1 = constFeature1;
-    }
-
-    public void setConstFeature2(String constFeature2) {
-        this.constFeature2 = constFeature2;
-    }
-
-    public void setConstFeature3(String constFeature3) {
-        this.constFeature3 = constFeature3;
     }
 
     public String getStartDate1() {

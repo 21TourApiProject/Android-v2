@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="@dimen/bottom_nav_size"
-    android:background="@color/bg_dark_indigo"
     tools:context=".SearchFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -19,63 +18,41 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/sf_search_btn"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingHorizontal="24dp"
-                android:weightSum="7">
+                android:layout_marginVertical="12dp"
+                android:layout_marginHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:paddingHorizontal="15dp"
+                android:background="@drawable/search__search_background">
 
-                <!--                android:focusableInTouchMode="false"-->
-                <FrameLayout
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="17dp"
-                    android:layout_marginEnd="13dp"
-                    android:layout_marginBottom="38dp"
-                    android:layout_weight="7"
-                    android:background="@drawable/postwrite__search_bar">
+                    android:src="@drawable/search_btn"
+                    android:layout_marginRight="12dp"
+                    android:layout_gravity="center_vertical"/>
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="10dp"
-                        android:src="@drawable/postwrite_observationsearch" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <androidx.appcompat.widget.SearchView
-                        android:id="@+id/search"
-                        style="@style/MySearchViewStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:layout_marginStart="18dp"
-                        app:iconifiedByDefault="false"
-                        app:theme="@style/AppSearchView" />
-                </FrameLayout>
-
-                <ImageButton
-                    android:id="@+id/mapBtn"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="17dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@color/empty"
-                    android:padding="5dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/search__map_btn" />
-
-                <ImageButton
-                    android:id="@+id/filterBtn"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="17dp"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@color/empty"
-                    android:padding="5dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/search__filter_btn" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="어디로 별 보러 갈까요? 💫"
+                        android:textColor="@color/gray_300"
+                        android:textSize="14sp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="키워드·필터로 검색"
+                        android:textColor="@color/gray_500"
+                        android:textSize="12sp"/>
+                </LinearLayout>
 
             </LinearLayout>
 

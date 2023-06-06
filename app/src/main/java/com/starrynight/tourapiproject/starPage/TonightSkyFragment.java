@@ -3,46 +3,38 @@ package com.starrynight.tourapiproject.starPage;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.ortiz.touchview.TouchImageView;
-import com.starrynight.tourapiproject.MainActivity;
 import com.starrynight.tourapiproject.R;
-import com.starrynight.tourapiproject.starPage.horItemPage.HorItem;
-import com.starrynight.tourapiproject.starPage.horItemPage.HoroscopeAdapter;
 import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdapter;
-import com.starrynight.tourapiproject.starPage.starPageRetrofit.GridItemDecoration;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.RetrofitClient;
-import com.starrynight.tourapiproject.weatherPage2.WeatherActivity2;;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -65,10 +57,8 @@ import retrofit2.Response;
  */
 public class TonightSkyFragment extends Fragment implements SensorEventListener {
     //bottomSheet 관련
-    private LinearLayout bottomSheet;
-    private BottomSheetBehavior bottomSheetBehavior;
-    LinearLayout topBar;
     ImageView topIcon;
+    ImageView starCamera;
 
     //나침반 관련
     private SensorManager mSensorManger;
@@ -81,7 +71,7 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
     private final float[] mR = new float[9];
     private final float[] mOrientation = new float[3];
     private float mCurrentDegree = 0f;
-
+    private float curRotate = 0F; // seekbar 회전률
     //recyclerview 관련
     RecyclerView constList;
     StarViewAdapter constAdapter;
@@ -89,13 +79,13 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
     RecyclerView allConstList;
     LinearLayout allConstBtn;
 
-    ImageView helpBtn;
     ImageView compass;
-    ImageView starBackBtn;
-    ImageView starSearchBtn;
-    ConstraintLayout todayWeather;
 
     TouchImageView touchImageView;
+
+    SeekBar seekBar;
+    Bitmap bitmap;
+    int bmpWidth, bmpHeight;
 
     //계절에 따라 이미지 변경
     String spring = "0321";
@@ -113,22 +103,6 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
     Date yearEndDate;
     Date yearStartDate;
 
-    //별자리 운세
-    List<HorItem> horItems = new ArrayList<>();
-
-    ImageView horPrevBtn, horNextBtn;
-
-    private HoroscopeAdapter horAdapter;
-    private ViewPager2 horViewpager;
-
-    String todayMonth;
-
-    @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat formatMonth = new SimpleDateFormat("MM");
-
-    Calendar cal = Calendar.getInstance();
-
-
     Integer compareDataSpring, compareDataSummer, compareDataFall, compareDataWinter, compareDataYearEnd, compareDataYearStart;
 
     @Override
@@ -142,103 +116,13 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_tonight_sky, container, false);
 
-        todayWeather = v.findViewById(R.id.tonight_weather);
-
-        todayWeather.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), WeatherActivity2.class);
-                startActivity(intent);
-            }
-        });
-
-        //별자리 운세
-        horViewpager = v.findViewById(R.id.hor_viewpager);
-        horAdapter = new HoroscopeAdapter();
-        horViewpager.setAdapter(horAdapter);
-
-        horPrevBtn = v.findViewById(R.id.hor_prev_btn);
-        horNextBtn = v.findViewById(R.id.hor_next_btn);
-
-        connectHoroscope();
-
-        horPrevBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                horViewpager.setCurrentItem(getItem(-1), true);
-            }
-        });
-
-        horNextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                horViewpager.setCurrentItem(getItem(1), true);
-            }
-        });
 
         //나침반
         mSensorManger = (SensorManager) Objects.requireNonNull(getActivity()).getSystemService(Context.SENSOR_SERVICE);
         mAcclerometer = mSensorManger.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mMagnetometer = mSensorManger.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
-        topBar = v.findViewById(R.id.top_bar);
-        bottomSheet = v.findViewById(R.id.bottom_sheet);
         topIcon = v.findViewById(R.id.icon);
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-
-        // bottomSheet 설정
-        topBar.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        topBar.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-//                        bottomSheetBehavior.setPeekHeight(50);
-                        bottomSheetBehavior.setPeekHeight((int) TypedValue.applyDimension(
-                                TypedValue.COMPLEX_UNIT_DIP, 50.f, getResources().getDisplayMetrics()));
-                    }
-                }
-        );
-
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
-        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    topBar.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                        }
-                    });
-                } else if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    topBar.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                if (slideOffset >= 0.0 && slideOffset < 0.5) {
-                    topIcon.setImageResource(R.drawable.tonight__bottom_up);
-                } else if (slideOffset >= 0.5 && slideOffset <= 1.0) {
-                    topIcon.setImageResource(R.drawable.tonight__bottom_down);
-                }
-            }
-        });
-
-        // 뒤로 가기 버튼 클릭 이벤트
-        starBackBtn = v.findViewById(R.id.star_back_btn);
-        starBackBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity) getActivity()).onBackPressed();
-            }
-        });
 
         // 모든 천체 보기 버튼 클릭 이벤트
         allConstList = v.findViewById(R.id.all_const_recycler);
@@ -252,24 +136,23 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
             }
         });
 
-        //검색 버튼 클릭 이벤트
-        starSearchBtn = v.findViewById(R.id.star_search_btn);
-        starSearchBtn.setOnClickListener(new View.OnClickListener() {
+
+        //별자리 사진 클릭 이벤트
+        starCamera = v.findViewById(R.id.star_camera);
+        starCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Objects.requireNonNull(getActivity()).getApplicationContext(), StarSearchActivity.class);
+                Intent intent = new Intent(Objects.requireNonNull(getActivity()).getApplicationContext(),StarCameraActivity.class);
                 startActivity(intent);
             }
         });
 
-
         // recyclerview 설정
         constList = v.findViewById(R.id.today_cel_recycler);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false);
-        constList.addItemDecoration(new GridItemDecoration(getContext()));
-        constList.setLayoutManager(gridLayoutManager);
+        constList.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
         constAdapter = new StarViewAdapter();
         constList.setAdapter(constAdapter);
+        constList.addItemDecoration(new StarRecyclerViewWidth(10,0));
 
         // 오늘의 별자리 리스트 불러오는 api
         Call<List<StarItem>> todayConstCall = RetrofitClient.getApiService().getTodayConst();
@@ -306,16 +189,35 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
         });
 
 
-        helpBtn = v.findViewById(R.id.star_help_btn);
         touchImageView = v.findViewById(R.id.touchImage);
         compass = v.findViewById(R.id.compass_needle);
-        starBackBtn = v.findViewById(R.id.star_back_btn);
 
-        helpBtn.setOnClickListener(new View.OnClickListener() {
+        //나침반 페이지로 이동
+        compass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), StarHelpActivity.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(),StarCompassActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        //seekbar 사용 시 이미지 회전 시키기
+        seekBar = v.findViewById(R.id.starSeekBar);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                curRotate = (float) progress;
+                drawMatrix();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
 
@@ -347,6 +249,8 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
         // 봄(3/21 ~ 6/21)
         if ((compareDataSpring == 1 || compareDataSpring == 0) && compareDataSummer == -1) {
             touchImageView.setImageResource(R.drawable.star__spring);
+            bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.star__spring);
+            touchImageView.setImageBitmap(bitmap);
         }
         // 여름(6/22 ~ 9/22)
         else if ((compareDataSummer == 1 || compareDataSummer == 0) && compareDataFall == -1) {
@@ -363,8 +267,11 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
         // 겨울(01/01 ~ 03/20)
         else if ((compareDataYearStart == 1 || compareDataYearStart == 0) && compareDataSpring == -1) {
             touchImageView.setImageResource(R.drawable.star__winter);
+            bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.star__winter);
+            touchImageView.setImageBitmap(bitmap);
         }
-
+        bmpWidth = bitmap.getWidth();
+        bmpHeight = bitmap.getHeight();
 
         return v;
     }
@@ -409,35 +316,14 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
         }
     }
 
-    //별자리 운세
-    public void connectHoroscope() {
-        todayMonth = formatMonth.format(cal.getTime());
-        Log.d("todayMonth", todayMonth);
+    private void drawMatrix() {
 
-        //별자리 운세를 불러오는 api
-        Call<List<HorItem>> horCall = com.starrynight.tourapiproject.starPage.horPageRetriofit.RetrofitClient.getApiService().getHoroscopes(Integer.valueOf(todayMonth));
-        horCall.enqueue(new Callback<List<HorItem>>() {
-            @Override
-            public void onResponse(Call<List<HorItem>> call, Response<List<HorItem>> response) {
-                if (response.isSuccessful()) {
-                    List<HorItem> result = response.body();
-                    for (HorItem hr : result) {
-                        horAdapter.addItem(new HorItem(hr.getHorImage(), hr.getHorEngTitle(), hr.getHorKrTitle(), hr.getHorPeriod(), hr.getHorDesc(), hr.getHorGuard(), hr.getHorPersonality(), hr.getHorTravel()));
-                    }
-
-                    horViewpager.setAdapter(horAdapter);
-                } else {
-                    Log.d("horoscope", "별자리 운세 불러오기 실패");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<HorItem>> call, Throwable t) {
-                Log.e("연결실패", t.getMessage());
-            }
-        });
+        Matrix matrix = new Matrix();
+        matrix.postRotate(curRotate);
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bitmap, 0, 0, bmpWidth, bmpHeight, matrix, true);
+        touchImageView.setImageBitmap(resizedBitmap);
     }
-
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
@@ -447,9 +333,5 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-    }
-
-    private int getItem(int i) {
-        return horViewpager.getCurrentItem() + i;
     }
 }

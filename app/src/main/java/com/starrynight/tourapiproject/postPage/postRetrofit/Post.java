@@ -49,6 +49,8 @@ public class Post {
     String yearDate;
     @SerializedName("time")
     String time;
+    @SerializedName("postLike")
+    int postLike;
     @SerializedName("postHashTag")
     List<PostHashTag> postHashTags;
     @SerializedName("postImage")
@@ -113,6 +115,14 @@ public class Post {
 
     public String getPostContent() {
         return postContent;
+    }
+
+    public int getPostLike() {
+        return postLike;
+    }
+
+    public void setPostLike(int postLike) {
+        this.postLike = postLike;
     }
 
     public Long getPostId() {

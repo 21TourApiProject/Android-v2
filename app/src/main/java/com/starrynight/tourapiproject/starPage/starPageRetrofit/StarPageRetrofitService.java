@@ -1,12 +1,16 @@
 package com.starrynight.tourapiproject.starPage.starPageRetrofit;
 
+import com.starrynight.tourapiproject.myPage.myWish.post.MyPost;
+import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchKey;
 import com.starrynight.tourapiproject.starPage.constNameRetrofit.ConstellationParams2;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
 
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 /**
@@ -37,5 +41,9 @@ public interface StarPageRetrofitService {
     @GET("constellation/{constName}")
     Call<Constellation> getDetailConst(@Path("constName") String constName);
 
+    @POST("search/constellation")
+    Call<List<StarItem>> getConstDataWithFilter(@Body SearchKey searchKey);
 
+    @GET("starHashTag/{constId}")
+    Call<List<StarHashTag>> getStarHashTags(@Path("constId") Long constId);
 }

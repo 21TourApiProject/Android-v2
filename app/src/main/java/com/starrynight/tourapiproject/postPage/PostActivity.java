@@ -1,5 +1,6 @@
 package com.starrynight.tourapiproject.postPage;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -8,12 +9,17 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,19 +44,29 @@ import com.starrynight.tourapiproject.postItemPage.PostHashTagItem;
 import com.starrynight.tourapiproject.postItemPage.PostHashTagItemAdapter;
 import com.starrynight.tourapiproject.postItemPage.Post_point_item_Adapter;
 import com.starrynight.tourapiproject.postItemPage.post_point_item;
+import com.starrynight.tourapiproject.postPage.postRetrofit.Like;
+import com.starrynight.tourapiproject.postPage.postRetrofit.OnPostCommentItemClickListener;
 import com.starrynight.tourapiproject.postPage.postRetrofit.Post;
+import com.starrynight.tourapiproject.postPage.postRetrofit.PostComment;
+import com.starrynight.tourapiproject.postPage.postRetrofit.PostCommentAdapter;
+import com.starrynight.tourapiproject.postPage.postRetrofit.PostCommentParams;
 import com.starrynight.tourapiproject.postPage.postRetrofit.PostHashTag;
 import com.starrynight.tourapiproject.postPage.postRetrofit.PostImage;
+import com.starrynight.tourapiproject.postPage.postRetrofit.PostPageRetrofitService;
 import com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostParams;
+
+import org.w3c.dom.Comment;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -72,7 +88,9 @@ public class PostActivity extends AppCompatActivity {
     private ViewPager2 sliderViewPager;
     private LinearLayout indicator;
     boolean isWish;
+    boolean isLove;
     Button like_btn;
+    Button love_btn;
     Post post;
     Long postId;
     Long userId;
@@ -82,7 +100,10 @@ public class PostActivity extends AppCompatActivity {
     TextView postContent;
     TextView postTime;
     TextView postDate;
+    TextView postLike;
+    TextView loveCount;
     ImageView profileImage;
+    RecyclerView commentRecyclerView;
     List<String> postHashTags;
     List<PostHashTag> postHashTagList;
     String[] filename2 = new String[10];
@@ -156,6 +177,7 @@ public class PostActivity extends AppCompatActivity {
         postDate = findViewById(R.id.postDate);
         profileImage = findViewById(R.id.post_profileImage);
         nickname = findViewById(R.id.post_nickname);
+        postLike = findViewById(R.id.love_count);
         profileImage.setBackground(new ShapeDrawable(new OvalShape()));
         profileImage.setClipToOutline(true);
         //게시물 정보가져오는 get api
@@ -172,6 +194,7 @@ public class PostActivity extends AppCompatActivity {
                     postRealTime = postRealTime.substring(0, postRealTime.length() - 3);
                     postTime.setText(postRealTime);
                     postDate.setText(post.getYearDate());
+                    postLike.setText(String.valueOf(post.getPostLike()));
                     //관측지
                     Call<Observation> call2 = RetrofitClient.getApiService().getObservation(post.getObservationId());
                     call2.enqueue(new Callback<Observation>() {
@@ -406,51 +429,81 @@ public class PostActivity extends AppCompatActivity {
                     //삭제 버튼
                     LinearLayout deleteLayout = findViewById(R.id.delete_layout);
                     if (post.getUserId() == userId) {
-                        deleteLayout.setVisibility(View.VISIBLE);
+                        deleteLayout.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                final PopupMenu popupMenu = new PopupMenu(getApplicationContext(),v);
+                                getMenuInflater().inflate(R.menu.my_option_menu,popupMenu.getMenu());
+                                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                    @Override
+                                    public boolean onMenuItemClick(MenuItem item) {
+                                        if (item.getItemId()==R.id.action_delete) { // 삭제하기 버튼을 클릭 시
+                                            AlertDialog.Builder ad = new AlertDialog.Builder(PostActivity.this, R.style.MyDialogTheme);
+                                            ad.setMessage("정말로 게시물을 삭제하시겠습니까?");
+                                            ad.setTitle("알림");
+                                            ad.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    Call<Void> call8 = RetrofitClient.getApiService().deletePost(postId);
+                                                    call8.enqueue(new Callback<Void>() {
+                                                        @Override
+                                                        public void onResponse(Call<Void> call, Response<Void> response) {
+                                                            if (response.isSuccessful()) {
+                                                                Log.d("deletePost", "게시물 삭제 완료");
+                                                                Toast.makeText(PostActivity.this, "내가 쓴 게시글을 삭제했어요.", Toast.LENGTH_SHORT).show();
+                                                                Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);
+                                                                startActivity(intent1);
+                                                                finish();
+                                                            } else {
+                                                                Log.d("deletePost", "게시물 삭제 실패");
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(Call<Void> call, Throwable t) {
+                                                            Log.d("deletePost", "게시물 삭제 인터넷 오류");
+                                                        }
+                                                    });
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                                            ad.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                                            ad.show();
+                                        }else{
+                                            Toast.makeText(PostActivity.this, "수정하기 클릭.", Toast.LENGTH_SHORT).show();
+
+
+                                        }
+                                        return false;
+                                    }
+                                });
+                                popupMenu.show();
+                            }
+                        });
                     } else if (post.getUserId() != userId) {
-                        deleteLayout.setVisibility(View.GONE);
+                        deleteLayout.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                final PopupMenu popupMenu = new PopupMenu(getApplicationContext(),v);
+                                getMenuInflater().inflate(R.menu.option_menu,popupMenu.getMenu());
+                                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                    @Override
+                                    public boolean onMenuItemClick(MenuItem item) {
+                                        if (item.getItemId()==R.id.action_report){
+                                            Toast.makeText(PostActivity.this, "신고하기 클릭", Toast.LENGTH_SHORT).show();
+                                        }
+                                        return false;
+                                    }
+                                });
+                            }
+                        });
                     }
-                    deleteLayout.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            AlertDialog.Builder ad = new AlertDialog.Builder(PostActivity.this, R.style.MyDialogTheme);
-                            ad.setMessage("정말로 게시물을 삭제하시겠습니까?");
-                            ad.setTitle("알림");
-                            ad.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Call<Void> call8 = RetrofitClient.getApiService().deletePost(postId);
-                                    call8.enqueue(new Callback<Void>() {
-                                        @Override
-                                        public void onResponse(Call<Void> call, Response<Void> response) {
-                                            if (response.isSuccessful()) {
-                                                Log.d("deletePost", "게시물 삭제 완료");
 
-                                                Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);
-                                                startActivity(intent1);
-                                                finish();
-                                            } else {
-                                                Log.d("deletePost", "게시물 삭제 실패");
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<Void> call, Throwable t) {
-                                            Log.d("deletePost", "게시물 삭제 실패 2");
-                                        }
-                                    });
-                                    dialog.dismiss();
-                                }
-                            });
-                            ad.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                            ad.show();
-                        }
-                    });
 
 
                     //관련 게시물
@@ -515,6 +568,118 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
+        //게시글 댓글 가져오기
+        commentRecyclerView = findViewById(R.id.commentRecyclerview);
+        LinearLayoutManager commentLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        commentRecyclerView.setLayoutManager(commentLayoutManager);
+        PostCommentAdapter commentAdapter = new PostCommentAdapter();
+        Call<List<PostComment>> commentCall = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().getPostCommentById(postId);
+        commentCall.enqueue(new Callback<List<PostComment>>() {
+            @Override
+            public void onResponse(Call<List<PostComment>> call, Response<List<PostComment>> response) {
+                if(response.isSuccessful()){
+                    List<PostComment> result = response.body();
+                    for(int i=0;i<result.size();i++){
+                        commentAdapter.addItem(result.get(i));
+                    }
+                    commentRecyclerView.setAdapter(commentAdapter);
+                }
+                else{
+                    Log.d("postComment", "게시물 댓글 정보 업로드 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PostComment>> call, Throwable t) {
+                Log.d("postComment", "게시물 댓글 인터넷 오류");
+            }
+        });
+
+        //게시글 댓글 달기
+        EditText commentEditText = findViewById(R.id.comment_editText);
+        Button send_btn = findViewById(R.id.comment_send_btn);
+        commentEditText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(event.getAction()==KeyEvent.ACTION_DOWN&&keyCode ==KeyEvent.KEYCODE_ENTER){ //입력하고 엔터쳤을 때
+                    if (!commentEditText.getText().toString().equals("")) {
+                        PostCommentParams postCommentParams = new PostCommentParams();
+                        postCommentParams.setComment(((EditText) (findViewById(R.id.comment_editText))).getText().toString());
+                        postCommentParams.setUserId(userId);
+                        long now = System.currentTimeMillis();//댓글을 쓴 현재시간 가져오기
+                        Date date = new Date(now);
+                        @SuppressLint("SimpleDateFormat")
+                        SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+                        @SuppressLint("SimpleDateFormat")
+                        SimpleDateFormat dateFormat2 = new SimpleDateFormat("hh:mm:ss");
+                        String yearDate = dateFormat1.format(date);
+                        String time = dateFormat2.format(date);
+                        postCommentParams.setTime(time);
+                        postCommentParams.setYearDate(yearDate);
+                        Call<Void> commentCall = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().createPostComment(postId,postCommentParams);
+                        commentCall.enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if(response.isSuccessful()){
+                                    commentAdapter.notifyDataSetChanged(); // 댓글 추가 변화 인식
+                                }else{
+                                    Log.d("postComment", "게시물 댓글 정보 추가 실패");
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Log.d("postComment", "게시물 댓글 추가 인터넷 오류");
+                            }
+                        });
+                    }else{
+                        return false;
+                    }
+                }
+                return true;
+            }
+        });
+
+        //댓글 입력 버튼을 입력했을 때
+        send_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!commentEditText.getText().toString().equals("")) {
+                    PostCommentParams postCommentParams = new PostCommentParams();
+                    postCommentParams.setComment(((EditText) (findViewById(R.id.comment_editText))).getText().toString());
+                    postCommentParams.setUserId(userId);
+                    long now = System.currentTimeMillis();//댓글을 쓴 현재시간 가져오기
+                    Date date = new Date(now);
+                    SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat dateFormat2 = new SimpleDateFormat("hh:mm:ss");
+                    String yearDate = dateFormat1.format(date);
+                    String time = dateFormat2.format(date);
+                    postCommentParams.setTime(time);
+                    postCommentParams.setYearDate(yearDate);
+                    Call<Void> commentCall = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().createPostComment(postId,postCommentParams);
+                    commentCall.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if(response.isSuccessful()){
+                                Intent intent = getIntent();
+                                finish(); //페이지 새로고침
+                                overridePendingTransition(0, 0);
+                                startActivity(intent);
+                                overridePendingTransition(0, 0);
+                            }else{
+                                Log.d("postComment", "게시물 댓글 정보 추가 실패");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Log.d("postComment", "게시물 댓글 추가 인터넷 오류");
+                        }
+                    });
+                }
+            }
+        });
+
 
         //이미 찜한건지 확인
         like_btn = findViewById(R.id.like);
@@ -563,7 +728,7 @@ public class PostActivity extends AppCompatActivity {
                                     }
                                 },1500);
                             } else {
-                                Log.d("myWish", "관광지 찜 실패");
+                                Log.d("myWish", "게시글 찜 실패");
                             }
                         }
 
@@ -582,8 +747,16 @@ public class PostActivity extends AppCompatActivity {
                                 v.setSelected(!v.isSelected());
                                 Toast.makeText(getApplicationContext(), "나의 여행버킷리스트에서 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                                 ((MainActivity) MainActivity.mContext).replaceFragment(mainFragment);
+                                like_btn.setEnabled(false);
+                                Handler handle = new Handler();
+                                handle.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        like_btn.setEnabled(true);
+                                    }
+                                },1500);
                             } else {
-                                Log.d("deleteMyWish", "관광지 찜 삭제 실패");
+                                Log.d("deleteMyWish", "게시글 찜 삭제 실패");
                             }
                         }
 
@@ -595,6 +768,148 @@ public class PostActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //좋아요 수 업데이트
+        Call<Like> loveCall4 = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().getLikeCount(postId,2);
+        loveCall4.enqueue(new Callback<Like>() {
+            @Override
+            public void onResponse(Call<Like> call, Response<Like> response) {
+                if(response.isSuccessful()){
+                    Like like = response.body();
+                    loveCount.setText(like.getLikeCount());
+                }else{
+                    Log.d("myLike", "게시글 좋아요 수 업데이트 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Like> call, Throwable t) {
+                Log.d("myLike", "게시글 좋아요 수 업데이트 인터넷 오류");
+            }
+        });
+        //게시글 좋아요 버튼
+        love_btn = findViewById(R.id.love);
+        //좋아요 버튼을 이미 눌렀는지 확인
+        Call<Boolean>loveCall1 = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().isThereLike(userId,postId,2);
+        loveCall1.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.isSuccessful()) {
+                    if (response.body()) {
+                        isLove = true;
+                        love_btn.setSelected(!love_btn.isSelected());
+                    } else {
+                        isLove = false;
+                    }
+                } else {
+                    Log.d("isLike", "내 좋아요 조회하기 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.d("isLike", "인터넷 연결실패");
+            }
+        });
+
+        love_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isLove){ //좋아요 안한 상태일 때
+                    Call<Void> loveCall2 = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().createLike(userId, postId, 2);
+                    loveCall2.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                //버튼 디자인 바뀌게 구현하기
+                                isLove = true;
+                                v.setSelected(!v.isSelected());
+                                //좋아요 수 업데이트
+                                Call<Like> loveCall4 = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().getLikeCount(postId,2);
+                                loveCall4.enqueue(new Callback<Like>() {
+                                    @Override
+                                    public void onResponse(Call<Like> call, Response<Like> response) {
+                                        if(response.isSuccessful()){
+                                            Like like = response.body();
+                                            loveCount.setText(like.getLikeCount());
+                                        }else{
+                                            Log.d("myLike", "게시글 좋아요 수 업데이트 실패");
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Like> call, Throwable t) {
+                                        Log.d("myLike", "게시글 좋아요 수 업데이트 인터넷 오류");
+                                    }
+                                });
+                                //1.5초 딜레이주기(오류 방지)
+                                love_btn.setEnabled(false);
+                                Handler handle = new Handler();
+                                handle.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        love_btn.setEnabled(true);
+                                    }
+                                },1500);
+                            } else {
+                                Log.d("myLike", "게시글 좋아요 실패");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Log.d("myLike", "게시글 좋아요 인터넷 오류");
+                        }
+                    });
+                }else{
+                    Call<Void> loveCall3 = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().deleteLike(userId, postId, 2);
+                    loveCall3.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                isLove = false;
+                                v.setSelected(!v.isSelected());
+                                love_btn.setEnabled(false);
+                                //좋아요 수 업데이트
+                                Call<Like> loveCall4 = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().getLikeCount(postId,2);
+                                loveCall4.enqueue(new Callback<Like>() {
+                                    @Override
+                                    public void onResponse(Call<Like> call, Response<Like> response) {
+                                        if(response.isSuccessful()){
+                                            Like like = response.body();
+                                            loveCount.setText(like.getLikeCount());
+                                        }else{
+                                            Log.d("myLike", "게시글 좋아요 수 업데이트 실패");
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Like> call, Throwable t) {
+                                        Log.d("myLike", "게시글 좋아요 수 업데이트 인터넷 오류");
+                                    }
+                                });
+                                //1.5초 딜레이주기(오류 방지)
+                                Handler handle = new Handler();
+                                handle.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        love_btn.setEnabled(true);
+                                    }
+                                },1500);
+                            } else {
+                                Log.d("deleteMyLike", "게시글 좋아요 삭제 실패");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Log.d("deleteMyLike", "게시글 좋아요 삭제 인터넷 오류");
+                        }
+                    });
+                }
+            }
+        });
+
     }
     // 슬라이드 아래 indicator 양식
     private void setupIndicators(int count) {

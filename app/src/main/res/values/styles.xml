@@ -8,7 +8,7 @@
     <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:background">@color/content_blue</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:fontFamily">@font/spoqahansansneoregular</item>
+        <item name="android:fontFamily">@font/pretendard_variable</item>
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:colorAccent">@android:color/white</item>
     </style>
@@ -27,7 +27,7 @@
         <item name="titleTextColor">@color/white</item>
         <item name="android:textColor">@color/white</item>
         // Attributes from android framework
-        <item name="android:windowBackground">@color/bg_dark_indigo</item>
+        <item name="android:windowBackground">@color/bg_black</item>
         // font_style
         <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
         <item name="android:buttonStyle">@style/customButtonFontStyle</item>
@@ -38,13 +38,13 @@
     </style>
 
     <style name="AppSearchView" parent="Widget.AppCompat.SearchView">
-        <item name="android:textSize">12sp</item>
-        <item name="android:fontFamily">@font/spoqahansansneoregular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/pretendard_variable</item>
     </style>
 
     <style name="StarSearchView" parent="Widget.AppCompat.SearchView">
         <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">@font/spoqahansansneoregular</item>
+        <item name="android:fontFamily">@font/pretendard_variable</item>
     </style>
 
 

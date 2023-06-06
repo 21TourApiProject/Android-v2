@@ -20,26 +20,17 @@
             android:src="@drawable/star__fall" />
 
         <ImageView
-            android:id="@+id/star_back_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="13dp"
-            android:background="@drawable/tonight__back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
             android:id="@+id/compass_body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/tonight__compass_body"
-            android:backgroundTint="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="49dp"
+            android:layout_marginStart="30dp"
             app:layout_editor_absoluteX="0dp"
-            app:layout_editor_absoluteY="56dp" />
+            app:layout_editor_absoluteY="56dp"
+            tools:layout_editor_absoluteY="56dp" />
 
         <ImageView
             android:id="@+id/compass_needle"
@@ -51,144 +42,65 @@
             app:layout_constraintStart_toStartOf="@id/compass_body"
             app:layout_constraintTop_toTopOf="@id/compass_body" />
 
-        <ImageView
-            android:id="@+id/star_help_btn"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/bottom_sheet"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:background="@drawable/tonight__question"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/star_back_btn" />
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/star__rounded"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/bottom_nav_size"
+            app:layout_constraintBottom_toBottomOf="@+id/touchImage"
+            >
 
-        <ImageView
-            android:id="@+id/star_search_btn"
-            android:layout_width="wrap_content"
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/Nest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include
+                        layout="@layout/star__today_cel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+            <ImageView
+                android:id="@+id/star_camera"
+                android:layout_width="match_parent"
+                android:layout_height="50sp"
+                android:layout_below="@id/Nest"
+                android:src="@drawable/ic_star_camera" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/tonight__search_icon"
-            app:layout_constraintEnd_toEndOf="@id/star_help_btn"
-            app:layout_constraintStart_toStartOf="@id/star_help_btn"
-            app:layout_constraintTop_toBottomOf="@id/star_help_btn" />
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <SeekBar
+                android:id="@+id/starSeekBar"
+                android:layout_width="270dp"
+                android:layout_height="33dp"
+                android:max="360"/>
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/bottom_sheet"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/star__rounded"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="vertical"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-        <LinearLayout
-            android:id="@+id/top_bar"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/star__rounded"
-            android:backgroundTint="@color/sub_blue"
-            android:orientation="vertical"
-            android:paddingTop="20dp">
-
-            <ImageView
-                android:id="@+id/icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|top"
-                android:layout_marginBottom="10dp"
-                android:src="@drawable/tonight__bottom_up" />
-        </LinearLayout>
-
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/tonight_weather"
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:layout_marginBottom="22dp"
-                    android:background="@color/sub_blue">
-
-                    <ImageView
-                        android:id="@+id/star__today_weather_image"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:src="@drawable/tonight__today_weather_image"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/star__today_weather_txt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="13dp"
-                        android:text="오늘의 날씨 확인하기"
-                        android:textSize="18sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@id/star__today_weather_image"
-                        app:layout_constraintStart_toStartOf="@id/star__today_weather_image"
-                        app:layout_constraintTop_toBottomOf="@id/star__today_weather_image" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="30dp"
-                        android:src="@drawable/tonight__right_arrow"
-                        app:layout_constraintBottom_toBottomOf="@id/star__today_weather_txt"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/star__today_weather_txt" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                <include
-                    layout="@layout/star__today_cel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <LinearLayout
-                    android:id="@+id/all_const_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="13dp"
-                    android:layout_marginEnd="30dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="12dp"
-                        android:text="모든 별자리 보기"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/tonight__right_arrow" />
-
-                </LinearLayout>
-
-                <include
-                    layout="@layout/star__horoscope"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="25dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="22dp" />
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
-    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

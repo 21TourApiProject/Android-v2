@@ -1,32 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingVertical="8dp"
+    android:paddingHorizontal="16dp"
+    android:background="@drawable/observation__fee_box">
 
     <TextView
         android:id="@+id/feename_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/Textview_observation_details"
-        android:text="요금이름이 몇글자"/>
-
-    <ImageView
-        android:id="@+id/fee_line"
-        android:layout_width="wrap_content"
-        android:layout_height="1.5dp"
-        android:layout_marginTop="8dp"
-        android:layout_weight="1"
-        android:layerType="software"
-        android:src="@drawable/observation__string"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"/>
+        android:textColor="@color/gray_300"
+        android:textSize="14sp"
+        android:text="요금이름"
+        android:gravity="center"/>
 
     <TextView
         android:id="@+id/entrancefee_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/Textview_observation_details"
+        android:textSize="14sp"
+        android:textColor="@color/gray_300"
+        android:layout_alignParentRight="true"
         android:text="10,000원"/>
 
-</LinearLayout>
+</RelativeLayout>

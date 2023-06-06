@@ -3,6 +3,7 @@ package com.starrynight.tourapiproject.postWritePage;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -45,18 +46,14 @@ import java.util.List;
 public class AddHashTagActivity extends AppCompatActivity {
     List<PostHashTagParams> postHashTagParams = new ArrayList<>();
     List<PostHashTagParams> postHashTagParams2 = new ArrayList<>();
-    RecyclerView optionHashTagRecyclerView;
-    TextView findHashTag;
-    String optionHashTag;
-    EditText editText;
-    String[] optionHashTagList = new String[10];
-    String[] hashTaglist = new String[22];
-    String[] clicked = new String[22];
+    String[] hashTaglist = new String[26];
+    String[] clicked = new String[26];
     ArrayList<String> hashtag = new ArrayList<>();
     HashMap<String, Integer> hashTagMap = new HashMap<String, Integer>();
-    String[] hashTagName = {"공기 좋은", "깔끔한", "감성적인", "이색적인", "인생샷", "전문적인", "캠핑", "차박", "뚜벅이", "드라이브",
-            "반려동물", "한적한", "근교", "도심 속", "연인", "가족", "친구", "혼자", "가성비", "소확행", "럭셔리한", "경치 좋은"};
-    Button[] buttons = new Button[22];
+    String[] hashTagName = {"서울","강원","경기","전남","전북","경남","경북",
+            "뚜벅이", "자전거","드라이브", "가족", "연인", "친구", "혼자", "반려동물",
+            "공기좋은", "분위기 있는", "깔끔한", "감성적인", "이색적인", "인생샷","전문적인","캠핑","차박","대한민국 구석구석"};
+    Button[] buttons = new Button[26];
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -79,12 +76,11 @@ public class AddHashTagActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_hash_tag);
-        findHashTag = findViewById(R.id.findHashTag);
 
 
         Intent intent = getIntent();
         postHashTagParams2 = (List<PostHashTagParams>) intent.getSerializableExtra("hashTagParams");
-        for (int i = 0; i < 22; i++) {
+        for (int i = 0; i < 26; i++) {
             clicked[i] = "";
         }
         if (postHashTagParams2 != null) {
@@ -128,6 +124,9 @@ public class AddHashTagActivity extends AppCompatActivity {
         Button ht20 = findViewById(R.id.ht20);
         Button ht21 = findViewById(R.id.ht21);
         Button ht22 = findViewById(R.id.ht22);
+        Button ht23 = findViewById(R.id.ht23);
+        Button ht24 = findViewById(R.id.ht24);
+        Button ht25 = findViewById(R.id.ht25);
         buttons[0] = ht1;
         buttons[1] = ht2;
         buttons[2] = ht3;
@@ -150,30 +149,31 @@ public class AddHashTagActivity extends AppCompatActivity {
         buttons[19] = ht20;
         buttons[20] = ht21;
         buttons[21] = ht22;
+        buttons[22] = ht23;
+        buttons[23] = ht24;
+        buttons[24] = ht25;
 
-        for (int i = 0; i < 22; i++) {
+        //버튼 클릭시 색 변화
+        for (int i = 0; i < 26; i++) {
             if (!clicked[i].equals("")) {
                 buttons[i].setTag("isClicked");
                 buttons[i].setBackground(ContextCompat.getDrawable(this, R.drawable.selectmyhashtag_hashtag));
-                buttons[i].setTextColor(ContextCompat.getColor(this, R.color.bg_dark_indigo));
+                buttons[i].setHeight(buttons[i].getHeight());
+                buttons[i].setWidth(buttons[i].getWidth());
+                buttons[i].setTextColor(ContextCompat.getColor(this, R.color.gray_700));
             }
         }
 
         Arrays.fill(hashTaglist, "");
-        Arrays.fill(optionHashTagList, "");
         final List<String> finallist = new ArrayList<>(); //메인 해시태그 리스트
-        final List<String> optionFinalList = new ArrayList<>(); //임의 해시태그 리스트
-        optionHashTagRecyclerView = findViewById(R.id.optionHashTagRecyclerView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false);
-        optionHashTagRecyclerView.setLayoutManager(layoutManager);
         PostWriteHashTagItemAdapter adapter = new PostWriteHashTagItemAdapter();
-        optionHashTagRecyclerView.addItemDecoration(new RecyclerViewDecoration(20));
-        optionHashTagRecyclerView.setAdapter(adapter);
+
+        //완료 버튼 클릭 이벤트
         TextView plusHashTag = findViewById(R.id.finish_add_hashTag);
         plusHashTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (int i = 0; i < 22; i++) {
+                for (int i = 0; i < 26; i++) {
                     if (!clicked[i].isEmpty()) {
                         PostHashTagParams postHashTagParam = new PostHashTagParams();
                         postHashTagParam.setHashTagName(clicked[i]);
@@ -188,69 +188,18 @@ public class AddHashTagActivity extends AppCompatActivity {
                     }
                 }
                 Collections.addAll(finallist, hashTaglist);
-                for (int i = 21; i >= 0; i--) {
+                for (int i = 25; i >= 0; i--) {
                     if (finallist.get(i) == "") {
                         finallist.remove(i);
                     }
                 }
-                Collections.addAll(optionFinalList, optionHashTagList);
-                for (int i = 9; i >= 0; i--) {
-                    if (optionFinalList.get(i) == "") {
-                        optionFinalList.remove(i);
-                    }
-                }
                 intent.putExtra("postHashTagParams", (Serializable) postHashTagParams);
                 intent.putExtra("hashTagList", (Serializable) finallist);
-                intent.putExtra("optionHashTagList", (Serializable) optionFinalList);
                 setResult(3, intent);
                 finish();
             }
         });
 
-        // 임의 해시태그 작성하는 텍스트 칸
-        editText = findViewById(R.id.findHashTag);
-        editText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                    if (!editText.getText().toString().equals("")) {
-                        optionHashTag = editText.getText().toString();
-                        for (int i = 0; i < optionHashTagList.length; i++) {
-                            if (optionHashTagList[i] == "") {
-                                optionHashTagList[i] = optionHashTag;
-                                break;
-                            }
-                        }
-                        adapter.addItem(new PostWriteHashTagItem(optionHashTag));
-                        adapter.notifyDataSetChanged();
-                        editText.getText().clear();
-                    }
-                } else {
-                    return false;
-                }
-                return true;
-            }
-        });
-
-        //임의 해시태그 추가하는 버튼
-        Button add_hashTag = findViewById(R.id.addHashTag);
-        add_hashTag.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!editText.getText().toString().equals("")) {
-                    optionHashTag = editText.getText().toString();
-                    for (int i = 0; i < optionHashTagList.length; i++) {
-                        if (optionHashTagList[i] == "") {
-                            optionHashTagList[i] = optionHashTag;
-                            break;
-                        }
-                    }
-                    adapter.addItem(new PostWriteHashTagItem(optionHashTag));
-                    adapter.notifyDataSetChanged();
-                    editText.getText().clear();
-                }
-            }
-        });
 
         //해시태그 삭제
         adapter.setOnItemClicklistener(new OnPostWriteHashTagItemAdapter() {
@@ -258,7 +207,6 @@ public class AddHashTagActivity extends AppCompatActivity {
             public void onItemClick(PostWriteHashTagItemAdapter.ViewHolder holder, View view, int position) {
                 adapter.removeItem(position);
                 adapter.notifyDataSetChanged();
-                optionHashTagList[position] = "";
             }
         });
 
@@ -296,7 +244,7 @@ public class AddHashTagActivity extends AppCompatActivity {
         if (button.getTag() == "isClicked") {
             button.setTag("");
             button.setBackground(ContextCompat.getDrawable(this, R.drawable.selectmyhashtag_hashtag_non));
-            button.setTextColor(ContextCompat.getColor(this, R.color.name_purple));
+            button.setTextColor(ContextCompat.getColor(this, R.color.gray_300));
 
             String viewId = view.getResources().getResourceEntryName(view.getId());
             int id = Integer.parseInt(viewId.substring(2));
@@ -304,7 +252,7 @@ public class AddHashTagActivity extends AppCompatActivity {
         } else {
             button.setTag("isClicked");
             button.setBackground(ContextCompat.getDrawable(this, R.drawable.selectmyhashtag_hashtag));
-            button.setTextColor(ContextCompat.getColor(this, R.color.bg_dark_indigo));
+            button.setTextColor(ContextCompat.getColor(this, R.color.gray_700));
 
             String viewId = view.getResources().getResourceEntryName(view.getId());
             int id = Integer.parseInt(viewId.substring(2));
