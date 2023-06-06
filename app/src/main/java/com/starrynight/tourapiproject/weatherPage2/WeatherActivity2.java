@@ -13,24 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.common.Const;
-import com.starrynight.tourapiproject.weatherPage2.AirKoreaRetrofit.AirKoreaRetrofitClient;
-import com.starrynight.tourapiproject.weatherPage2.AirKoreaRetrofit.FineDustData;
-import com.starrynight.tourapiproject.weatherPage2.AirKoreaRetrofit.Item;
-import com.starrynight.tourapiproject.weatherPage2.OpenWeatherRetrofit.Daily;
-import com.starrynight.tourapiproject.weatherPage2.OpenWeatherRetrofit.DetailWeatherData;
-import com.starrynight.tourapiproject.weatherPage2.OpenWeatherRetrofit.Hourly;
-import com.starrynight.tourapiproject.weatherPage2.OpenWeatherRetrofit.OpenWeatherRetrofitClient;
-import com.starrynight.tourapiproject.weatherPage2.weatherRetrofit.DayObservationFit;
-import com.starrynight.tourapiproject.weatherPage2.weatherRetrofit.HourObservationFit;
+import com.starrynight.tourapiproject.weatherPage2.weatherRetrofit.AreaTimeDTO;
+import com.starrynight.tourapiproject.weatherPage2.weatherRetrofit.DayObservationalFit;
+import com.starrynight.tourapiproject.weatherPage2.weatherRetrofit.HourObservationalFit;
+import com.starrynight.tourapiproject.weatherPage2.weatherRetrofit.WeatherInfo;
 import com.starrynight.tourapiproject.weatherPage2.weatherRetrofit.WeatherRetrofitClient;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,9 +44,11 @@ public class WeatherActivity2 extends AppCompatActivity {
 
 
     @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat formatyMdH = new SimpleDateFormat("yyyyMMddHH");
+    SimpleDateFormat YYYY_MM_DD_HH = new SimpleDateFormat("yyyyMMddHH");
     @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat formatH = new SimpleDateFormat("HH");
+    SimpleDateFormat HH = new SimpleDateFormat("HH");
+    @SuppressLint("SimpleDateFormat")
+    SimpleDateFormat YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd");
 
     private TextView detailHour; //상세 날씨 - 기준 시간
     private TextView detail_weather_2; //상세 날씨 - 날씨
@@ -72,18 +67,18 @@ public class WeatherActivity2 extends AppCompatActivity {
 
     private ImageView weatherHelp; // 날씨 도움말 페이지
 
-
-    private RecyclerView day_Recycler; // 주간 예보 RecyclerView
     private RecyclerView hour_Recycler; // 시간별 예보 RecyclerView
-    List<DayObservationFit> dayResult = new ArrayList<>(); // 주간 예보 결과
-    List<HourObservationFit> hourResult = new ArrayList<>(); // 시간별 예보 결과
+    private RecyclerView day_Recycler; // 주간 예보 RecyclerView
+    List<HourObservationalFit> hourResult = new ArrayList<>(); // 시간별 예보 결과
+    List<DayObservationalFit> dayResult = new ArrayList<>(); // 주간 예보 결과
+
 
     private TextView best_observation_fit; // 오늘의 최대 관측적합도
 
     Double latitude; // 위도
     Double longitude; // 경도
-    String city; // 도 이름 ex) 서울
-    String date; // 오늘 날짜 ex) 230303
+    Long areaId; // WEATHER_AREA id
+    Long observationId; // WEATHER_OBSERVATION id
     String hour; // 현재 시간 ex) 18
 
 
@@ -113,83 +108,141 @@ public class WeatherActivity2 extends AppCompatActivity {
 
 
         // 현재 시간(hour) 조회
-        hour = formatH.format(new Date(System.currentTimeMillis()));
+        hour = HH.format(new Date(System.currentTimeMillis()));
         detailHour.setText(hour + Const.Weather.DETAIL_HOUR);
 
-        // 메인 페이지에서 위경도, 도시 정보를 받아옴 (메인 페이지 완성 시 주석 해제)
+        // 메인 페이지에서 위경도, 지역 또는 관측지 정보를 받아옴 (메인 페이지 완성 시 주석 해제)
 //        Intent mainIntent = getIntent();
 //        LocationDTO locationDTO = (LocationDTO) mainIntent.getSerializableExtra("location");
 //        latitude = locationDTO.getLatitude(); // 위도
 //        longitude = locationDTO.getLongitude(); // 경도
-//        city = locationDTO.getCity(); // 도시
+//        areaId = locationDTO.getAreaId();
+//        observationId = locationDTO.getObservationId();
 
         latitude = 37.573386D;
         longitude = 126.910087D;
-        city = "서울";
+        areaId = 1L;
+        observationId = 1L;
 
-        // 시간별 상세 날씨 정보 호출
-        OpenWeatherRetrofitClient.getApiService()
-                .geDetailWeatherData(latitude, longitude, OPEN_WEATHER_EXCLUDE, OPEN_WEATHER_API_KEY, OPEN_WEATHER_UNITS, OPEN_WEATHER_LANG)
-                .enqueue(new Callback<DetailWeatherData>() {
+        // 서버 기반 api
+        AreaTimeDTO areaTimeDTO = new AreaTimeDTO(YYYY_MM_DD.format(new Date(System.currentTimeMillis())), Integer.valueOf(hour), latitude, longitude);
+        if (Objects.nonNull(areaId)) areaTimeDTO.setAreaId(areaId);
+        else if (Objects.nonNull(observationId)) areaTimeDTO.setObservationId(observationId);
+
+        WeatherRetrofitClient.getApiService()
+                .getWeatherInfo(areaTimeDTO)
+                .enqueue(new Callback<WeatherInfo>() {
                     @Override
-                    public void onResponse(Call<DetailWeatherData> call, Response<DetailWeatherData> response) {
+                    public void onResponse(Call<WeatherInfo> call, Response<WeatherInfo> response) {
                         if (response.isSuccessful()) {
-                            DetailWeatherData data = response.body();
-                            Hourly hourly = data.getHourly().get(0); // 현재 Hour 기준 날씨
-                            Daily daily = data.getDaily().get(0); // 현재 Date 기준 날씨
+                            WeatherInfo info = response.body();
+                            WeatherInfo.DetailWeather detail = info.getDetailWeather();
+                            hourResult = info.getHourObservationalFitList();
+                            dayResult = info.getDayObservationalFitList();
 
-                            unixToDate(hourly.getDt());
-                            detail_weather_2.setText(hourly.getWeather().get(0).getDescription());
-                            detail_temp_highest.setText(daily.getTemp().getMax());
-                            detail_temp_lowest.setText(daily.getTemp().getMin());
-                            detail_rainfall_probability.setText(Double.parseDouble(hourly.getPop()) * 100 + Const.Weather.PERCENT);
-                            detail_humidity.setText(hourly.getHumidity() + Const.Weather.PERCENT);
-                            detail_cloud.setText(hourly.getClouds() + Const.Weather.PERCENT);
-
-                            detail_wind_speed.setText(hourly.getWindSpeed() + Const.Weather.METER_PER_SECOND);
-                            detail_moon_age.setText(getMoonPhaseString(Double.valueOf(daily.getMoonPhase())));
-                            detail_sunrise.setText(getHHmm(daily.getSunrise()));
-                            detail_sunset.setText(getHHmm(daily.getSunset()));
-                            detail_moonrise.setText(getHHmm(daily.getMoonrise()));
-                            detail_moonset.setText(getHHmm(daily.getMoonset()));
+                            detail_weather_2.setText(detail.getWeatherText());
+                            detail_temp_highest.setText(detail.getTempHighest());
+                            detail_temp_lowest.setText(detail.getTempLowest());
+                            detail_rainfall_probability.setText(detail.getRainfallProbability());
+                            detail_humidity.setText(detail.getHumidity());
+                            detail_cloud.setText(detail.getCloud());
+                            detail_fine_dust.setText(detail.getFineDust());
+                            detail_wind_speed.setText(detail.getWindSpeed());
+                            detail_moon_age.setText(detail.getMoonAge());
+                            detail_sunrise.setText(detail.getSunrise());
+                            detail_sunset.setText(detail.getSunset());
+                            detail_moonrise.setText(detail.getMoonrise());
+                            detail_moonset.setText(detail.getMoonset());
                         } else {
-                            Log.e(TAG, "open api 호출 실패");
+                            Log.e(TAG, "서버 api 호출 실패");
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<DetailWeatherData> call, Throwable t) {
+                    public void onFailure(Call<WeatherInfo> call, Throwable t) {
                         Log.e("연결실패", t.getMessage());
                     }
                 });
 
-        // 시간별 미세먼지 정보 호출
-        AirKoreaRetrofitClient.getApiService()
-                .getFineDustData(AIR_KOREA_API_KEY, AIR_KOREA_RETURN_TYPE, LocalDate.now().toString(), AIR_KOREA_INFORM_CODE)
-                .enqueue(new Callback<FineDustData>() {
-                    @Override
-                    public void onResponse(Call<FineDustData> call, Response<FineDustData> response) {
-                        if (response.isSuccessful()) {
-                            FineDustData data = response.body();
-                            Item item = data.getResponse().getBody().getItems().get(0);
 
-                            Map<String, String> grade = new HashMap<>();
-                            String[] split1 = item.getInformGrade().split(Const.Weather.FINE_DUST_SPLIT_1);
-                            for (String s1 : split1) {
-                                String[] split2 = s1.split(Const.Weather.FINE_DUST_SPLIT_2);
-                                grade.put(split2[0], split2[1]);
-                            }
-                            detail_fine_dust.setText(grade.getOrDefault(city, ""));
-                        } else {
-                            Log.e(TAG, "air korea 호출 실패");
-                        }
-                    }
+        // 시간별 예보
+        hour_Recycler = findViewById(R.id.hour_recycler);
+        hour_Recycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        HourAdapter hourAdapter = new HourAdapter(hourResult);
+        hour_Recycler.setAdapter(hourAdapter);
 
-                    @Override
-                    public void onFailure(Call<FineDustData> call, Throwable t) {
-                        Log.e("연결실패", t.getMessage());
-                    }
-                });
+
+        // 주간 예보
+        day_Recycler = findViewById(R.id.day_recycler);
+        day_Recycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        DayAdapter dayAdapter = new DayAdapter(dayResult);
+        day_Recycler.setAdapter(dayAdapter);
+
+//        best_observation_fit = findViewById(R.id.best_observation_fit);
+
+//        // 시간별 상세 날씨 정보 호출
+//        OpenWeatherRetrofitClient.getApiService()
+//                .geDetailWeatherData(latitude, longitude, OPEN_WEATHER_EXCLUDE, OPEN_WEATHER_API_KEY, OPEN_WEATHER_UNITS, OPEN_WEATHER_LANG)
+//                .enqueue(new Callback<DetailWeatherData>() {
+//                    @Override
+//                    public void onResponse(Call<DetailWeatherData> call, Response<DetailWeatherData> response) {
+//                        if (response.isSuccessful()) {
+//                            DetailWeatherData data = response.body();
+//                            Hourly hourly = data.getHourly().get(0); // 현재 Hour 기준 날씨
+//                            Daily daily = data.getDaily().get(0); // 현재 Date 기준 날씨
+//
+//                            unixToDate(hourly.getDt());
+//                            detail_weather_2.setText(hourly.getWeather().get(0).getDescription());
+//                            detail_temp_highest.setText(daily.getTemp().getMax());
+//                            detail_temp_lowest.setText(daily.getTemp().getMin());
+//                            detail_rainfall_probability.setText(Double.parseDouble(hourly.getPop()) * 100 + Const.Weather.PERCENT);
+//                            detail_humidity.setText(hourly.getHumidity() + Const.Weather.PERCENT);
+//                            detail_cloud.setText(hourly.getClouds() + Const.Weather.PERCENT);
+//
+//                            detail_wind_speed.setText(hourly.getWindSpeed() + Const.Weather.METER_PER_SECOND);
+//                            detail_moon_age.setText(getMoonPhaseString(Double.valueOf(daily.getMoonPhase())));
+//                            detail_sunrise.setText(getHHmm(daily.getSunrise()));
+//                            detail_sunset.setText(getHHmm(daily.getSunset()));
+//                            detail_moonrise.setText(getHHmm(daily.getMoonrise()));
+//                            detail_moonset.setText(getHHmm(daily.getMoonset()));
+//                        } else {
+//                            Log.e(TAG, "open api 호출 실패");
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<DetailWeatherData> call, Throwable t) {
+//                        Log.e("연결실패", t.getMessage());
+//                    }
+//                });
+//
+//        // 시간별 미세먼지 정보 호출
+//        AirKoreaRetrofitClient.getApiService()
+//                .getFineDustData(AIR_KOREA_API_KEY, AIR_KOREA_RETURN_TYPE, LocalDate.now().toString(), AIR_KOREA_INFORM_CODE)
+//                .enqueue(new Callback<FineDustData>() {
+//                    @Override
+//                    public void onResponse(Call<FineDustData> call, Response<FineDustData> response) {
+//                        if (response.isSuccessful()) {
+//                            FineDustData data = response.body();
+//                            Item item = data.getResponse().getBody().getItems().get(0);
+//
+//                            Map<String, String> grade = new HashMap<>();
+//                            String[] split1 = item.getInformGrade().split(Const.Weather.FINE_DUST_SPLIT_1);
+//                            for (String s1 : split1) {
+//                                String[] split2 = s1.split(Const.Weather.FINE_DUST_SPLIT_2);
+//                                grade.put(split2[0], split2[1]);
+//                            }
+//                            detail_fine_dust.setText(grade.getOrDefault(city, ""));
+//                        } else {
+//                            Log.e(TAG, "air korea 호출 실패");
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<FineDustData> call, Throwable t) {
+//                        Log.e("연결실패", t.getMessage());
+//                    }
+//                });
 
         //날씨 도움말 페이지 이동
         weatherHelp.setOnClickListener(view -> {
@@ -201,62 +254,6 @@ public class WeatherActivity2 extends AppCompatActivity {
         ImageView back = findViewById(R.id.weather_back);
         back.setOnClickListener(v -> finish());
 
-
-        date = "230301";
-
-        // 시간별 예보
-        hour_Recycler = findViewById(R.id.hour_recycler);
-        hour_Recycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-
-        WeatherRetrofitClient.getApiService()
-                .getHourObservationFit(date)
-                .enqueue(new Callback<List<HourObservationFit>>() {
-                    @Override
-                    public void onResponse(Call<List<HourObservationFit>> call, Response<List<HourObservationFit>> response) {
-                        if (response.isSuccessful()) {
-                            System.out.println("DayObservationFit 서버 연결 성공");
-                            hourResult = response.body();
-                            HourAdapter hourAdapter = new HourAdapter(hourResult);
-                            hour_Recycler.setAdapter(hourAdapter);
-                        } else {
-                            Log.e(TAG, "HourObservationFit 호출 실패");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<HourObservationFit>> call, Throwable t) {
-                        Log.e("HourObservationFit 서버 연결 실패", t.getMessage());
-                    }
-                });
-
-        best_observation_fit = findViewById(R.id.best_observation_fit);
-
-        // 주간 예보
-        day_Recycler = findViewById(R.id.day_recycler);
-        day_Recycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-
-        WeatherRetrofitClient.getApiService()
-                .getDayObservationFit(date)
-                .enqueue(new Callback<List<DayObservationFit>>() {
-                    @Override
-                    public void onResponse(Call<List<DayObservationFit>> call, Response<List<DayObservationFit>> response) {
-                        if (response.isSuccessful()) {
-                            System.out.println("DayObservationFit 서버 연결 성공");
-                            dayResult = response.body();
-                            DayAdapter dayAdapter = new DayAdapter(dayResult);
-                            day_Recycler.setAdapter(dayAdapter);
-                        } else {
-                            Log.e(TAG, "DayObservationFit 호출 실패");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<DayObservationFit>> call, Throwable t) {
-                        Log.e("DayObservationFit 서버 연결 실패", t.getMessage());
-                    }
-                });
-
-
     }
 
     // Unix 타임스탬프를 시간으로 변환하는 메서드
@@ -264,14 +261,14 @@ public class WeatherActivity2 extends AppCompatActivity {
 
         //yyyyMMddHH
         Date unixDate = new Date(Long.parseLong(unixTime) * 1000L);
-        formatyMdH.setTimeZone(java.util.TimeZone.getTimeZone("GMT+9"));
-        String unixToDate = formatyMdH.format(unixDate);
+        YYYY_MM_DD_HH.setTimeZone(java.util.TimeZone.getTimeZone("GMT+9"));
+        String unixToDate = YYYY_MM_DD_HH.format(unixDate);
         System.out.println("unixToDate = " + unixToDate);
 
         //HH
         Date date = new Date(Long.parseLong(unixTime) * 1000L);
-        formatH.setTimeZone(java.util.TimeZone.getTimeZone("GMT+9"));
-        String unixToHour = formatH.format(date);
+        HH.setTimeZone(java.util.TimeZone.getTimeZone("GMT+9"));
+        String unixToHour = HH.format(date);
         System.out.println("unixToHour = " + unixToHour);
     }
 
@@ -293,8 +290,8 @@ public class WeatherActivity2 extends AppCompatActivity {
     // unix UTC 을 HH:mm 로 바꾸는 메서드
     public String getHHmm(String unixTime) {
         Date unixHourMin = new Date(Long.parseLong(unixTime) * 1000L);
-        SimpleDateFormat formatHourMin = new SimpleDateFormat("HH:mm");
-        formatHourMin.setTimeZone(java.util.TimeZone.getTimeZone("GMT+9"));
-        return formatHourMin.format(unixHourMin);
+        SimpleDateFormat HHourMin = new SimpleDateFormat("HH:mm");
+        HHourMin.setTimeZone(java.util.TimeZone.getTimeZone("GMT+9"));
+        return HHourMin.format(unixHourMin);
     }
 }

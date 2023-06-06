@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.starrynight.tourapiproject.R;
-import com.starrynight.tourapiproject.weatherPage2.weatherRetrofit.DayObservationFit;
+import com.starrynight.tourapiproject.weatherPage2.weatherRetrofit.DayObservationalFit;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -19,9 +19,9 @@ import java.util.List;
 
 public class DayAdapter extends RecyclerView.Adapter<DayAdapter.DayHolder> {
 
-    private List<DayObservationFit> items;
+    private List<DayObservationalFit> items;
 
-    public DayAdapter(List<DayObservationFit> items) {
+    public DayAdapter(List<DayObservationalFit> items) {
         this.items = items;
     }
 
@@ -36,7 +36,7 @@ public class DayAdapter extends RecyclerView.Adapter<DayAdapter.DayHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull DayHolder holder, int position) {
-        DayObservationFit item = items.get(position);
+        DayObservationalFit item = items.get(position);
         holder.setItem(item);
     }
 
@@ -45,15 +45,15 @@ public class DayAdapter extends RecyclerView.Adapter<DayAdapter.DayHolder> {
         return items.size();
     }
 
-    public void addItem(DayObservationFit item) {
+    public void addItem(DayObservationalFit item) {
         items.add(item);
     }
 
-    public void setItems(ArrayList<DayObservationFit> items) {
+    public void setItems(ArrayList<DayObservationalFit> items) {
         this.items = items;
     }
 
-    public DayObservationFit getItem(int position) {
+    public DayObservationalFit getItem(int position) {
         return items.get(position);
     }
 
@@ -73,12 +73,12 @@ public class DayAdapter extends RecyclerView.Adapter<DayAdapter.DayHolder> {
             itemView.setClickable(false);
         }
 
-        public void setItem(DayObservationFit item) {
+        public void setItem(DayObservationalFit item) {
             day.setText(item.getDay());
             if (item.getDay().equals("일")) day.setTextColor(Color.parseColor("#EC3E4D"));
             if (item.getDay().equals("오늘")) day.setTextColor(Color.parseColor("#DADAE5"));
             date.setText(item.getDate());
-            observationFit.setText(item.getObservationFit() + "%");
+            observationFit.setText(item.getObservationFit());
         }
     }
 

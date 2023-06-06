@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.starrynight.tourapiproject.R;
-import com.starrynight.tourapiproject.weatherPage2.weatherRetrofit.HourObservationFit;
+import com.starrynight.tourapiproject.weatherPage2.weatherRetrofit.HourObservationalFit;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -18,9 +18,9 @@ import java.util.List;
 
 public class HourAdapter extends RecyclerView.Adapter<HourAdapter.HourHolder> {
 
-    private List<HourObservationFit> items;
+    private List<HourObservationalFit> items;
 
-    public HourAdapter(List<HourObservationFit> items) {
+    public HourAdapter(List<HourObservationalFit> items) {
         this.items = items;
     }
 
@@ -36,7 +36,7 @@ public class HourAdapter extends RecyclerView.Adapter<HourAdapter.HourHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull HourHolder holder, int position) {
-        HourObservationFit item = items.get(position);
+        HourObservationalFit item = items.get(position);
         holder.setItem(item);
     }
 
@@ -45,15 +45,15 @@ public class HourAdapter extends RecyclerView.Adapter<HourAdapter.HourHolder> {
         return items.size();
     }
 
-    public void addItem(HourObservationFit item) {
+    public void addItem(HourObservationalFit item) {
         items.add(item);
     }
 
-    public void setItems(ArrayList<HourObservationFit> items) {
+    public void setItems(ArrayList<HourObservationalFit> items) {
         this.items = items;
     }
 
-    public HourObservationFit getItem(int position) {
+    public HourObservationalFit getItem(int position) {
         return items.get(position);
     }
 
@@ -71,9 +71,9 @@ public class HourAdapter extends RecyclerView.Adapter<HourAdapter.HourHolder> {
             itemView.setClickable(false);
         }
 
-        public void setItem(HourObservationFit item) {
+        public void setItem(HourObservationalFit item) {
             hour.setText(item.getHour());
-            observationFit.setText(item.getObservationFit() + "%");
+            observationFit.setText(item.getObservationFit());
         }
     }
 

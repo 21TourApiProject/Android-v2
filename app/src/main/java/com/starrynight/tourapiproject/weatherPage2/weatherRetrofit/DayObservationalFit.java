@@ -1,12 +1,17 @@
 package com.starrynight.tourapiproject.weatherPage2.weatherRetrofit;
 
-public class HourObservationFit {
+public class DayObservationalFit {
 
-    private String hour;
+    private String day;
+    private String date;
     private Integer observationFit;
 
-    public String getHour() {
-        return hour;
+    public String getDay() {
+        return day;
+    }
+
+    public String getDate() {
+        return date;
     }
 
     public Integer getObservationFit() {
