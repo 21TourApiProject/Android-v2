@@ -264,7 +264,7 @@ public class PostWriteActivity extends AppCompatActivity {
         });
 
         //해시태그추가 버튼 클릭 이벤트
-        ConstraintLayout hashTaglayout = findViewById(R.id.layout_hashtag);
+        LinearLayout hashTaglayout = findViewById(R.id.layout_hashtag);
         hashTaglayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -429,6 +429,7 @@ public class PostWriteActivity extends AppCompatActivity {
                     ob_linear.setVisibility(View.VISIBLE);
                     postObservePointItem.setText(observationName);
                     postObservePointName = observationName;
+                    postObservePointItem.setTextColor(getColor(R.color.point_blue));
                 } else {
                     postObservePointItem.setText(optionobservationName);
                     ob_linear.setVisibility(View.VISIBLE);

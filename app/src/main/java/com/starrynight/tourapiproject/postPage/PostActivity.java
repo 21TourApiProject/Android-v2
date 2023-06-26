@@ -96,12 +96,7 @@ public class PostActivity extends AppCompatActivity {
     Long userId;
     int allsize = 0;
     TextView nickname;
-    TextView postTitle;
-    TextView postContent;
-    TextView postTime;
-    TextView postDate;
-    TextView postLike;
-    TextView loveCount;
+    TextView postTitle,postContent,postTime,postDate,postLike,loveCount,postObservation;
     ImageView profileImage;
     RecyclerView commentRecyclerView;
     List<String> postHashTags;
@@ -178,6 +173,7 @@ public class PostActivity extends AppCompatActivity {
         profileImage = findViewById(R.id.post_profileImage);
         nickname = findViewById(R.id.post_nickname);
         postLike = findViewById(R.id.love_count);
+        postObservation = findViewById(R.id.postObservationText);
         profileImage.setBackground(new ShapeDrawable(new OvalShape()));
         profileImage.setClipToOutline(true);
         //게시물 정보가져오는 get api
@@ -203,6 +199,7 @@ public class PostActivity extends AppCompatActivity {
                             if (response.isSuccessful()) {
                                 Log.d("postObservation", "게시물 관측지 가져옴");
                                 Observation observation = response.body();
+                                postObservation.setText(observation.getObservationName());
                                 //게시물 해시태그
                                 Call<List<PostHashTag>> call6 = RetrofitClient.getApiService().getPostHashTags(postId);
                                 call6.enqueue(new Callback<List<PostHashTag>>() {
@@ -216,11 +213,6 @@ public class PostActivity extends AppCompatActivity {
                                                 StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL); // 해시태그 나열하는 Layout
                                                 hashTagRecyclerView.setLayoutManager(staggeredGridLayoutManager);
                                                 PostHashTagItemAdapter adapter2 = new PostHashTagItemAdapter();
-                                                if (!observation.getObservationName().equals("나만의 관측지")) {
-                                                    adapter2.addItem(new PostHashTagItem(observation.getObservationName(), null, observation.getObservationId(), null));
-                                                } else {
-                                                    adapter2.addItem(new PostHashTagItem(post.getOptionObservation(), null, null, null));
-                                                }
                                                 for (int i = 0; i < postHashTagList.size(); i++) {
                                                     if (postHashTagList.get(i).getHashTagId() != null) {
                                                         adapter2.addItem(new PostHashTagItem(postHashTagList.get(i).getHashTagName(), null, null, postHashTagList.get(i).getHashTagId()));
@@ -259,13 +251,6 @@ public class PostActivity extends AppCompatActivity {
                                                 //해시태그 개수에 따라 레이아웃 변경
                                                 for (int i = 0; i < adapter2.getItemCount(); i++) {
                                                     allsize += adapter2.getItem(i).getHashTagname().length();
-                                                }
-                                                if (allsize > 20 && allsize < 41) {
-                                                    staggeredGridLayoutManager.setSpanCount(2);
-                                                } else if (allsize > 40 && allsize < 57) {
-                                                    staggeredGridLayoutManager.setSpanCount(3);
-                                                } else if (allsize > 56) {
-                                                    staggeredGridLayoutManager.setSpanCount(4);
                                                 }
                                                 hashTagRecyclerView.setAdapter(adapter2);
                                                 hashTagRecyclerView.addItemDecoration(new RecyclerViewDecoration(20, 20));
@@ -340,13 +325,6 @@ public class PostActivity extends AppCompatActivity {
                                                 //해시태그 갯수에 따라 레이아웃 변경
                                                 for (int i = 0; i < adapter.getItemCount(); i++) {
                                                     allsize += adapter.getItem(i).getHashTagname().length();
-                                                }
-                                                if (allsize > 20 && allsize < 41) {
-                                                    staggeredGridLayoutManager.setSpanCount(2);
-                                                } else if (allsize > 40 && allsize < 57) {
-                                                    staggeredGridLayoutManager.setSpanCount(3);
-                                                } else if (allsize > 56) {
-                                                    staggeredGridLayoutManager.setSpanCount(4);
                                                 }
                                                 // 해시태그 클릭시 페이지 이동
                                                 hashTagRecyclerView.setAdapter(adapter);

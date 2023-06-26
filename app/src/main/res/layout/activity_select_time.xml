@@ -60,8 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="40dp"
+                android:layout_marginVertical="20dp"
                 android:text="관측 날짜와 시간대를 알려주세요"
                 android:textSize="20sp" />
 
@@ -69,30 +68,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:layout_marginBottom="10dp">
+                android:paddingVertical="20dp"
+                android:paddingHorizontal="16dp">
 
                 <TextView
                     android:id="@+id/datePicker"
-                    android:layout_width="wrap_content"
+                    android:layout_width="170dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/hashtag_background"
+                    android:background="@drawable/postwrite_time_non"
                     android:onClick="onClickDatePicker"
-                    android:textSize="18sp"
-                    android:padding="20dp"
-                    android:layout_marginStart="19dp"
-                    android:paddingEnd="50dp"
+                    android:textSize="16sp"
                     android:layout_marginEnd="12dp"
                     android:text="관측 날짜" />
 
                 <TextView
                     android:id="@+id/timePicker"
-                    android:layout_width="wrap_content"
+                    android:layout_width="170dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/hashtag_background"
+                    android:background="@drawable/postwrite_time_non"
                     android:onClick="onClickTimePicker"
-                    android:textSize="18sp"
-                    android:padding="20dp"
-                    android:paddingEnd="50dp"
+                    android:textSize="16sp"
                     android:text="관측 시간대" />
             </LinearLayout>
 

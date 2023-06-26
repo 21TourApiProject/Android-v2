@@ -64,7 +64,6 @@ public class PostHashTagItemAdapter extends RecyclerView.Adapter<PostHashTagItem
         } else {
             PostHashTagItem item0 = items.get(0);
             viewHolder.setItem(item0);
-            viewHolder.hashTagPin.setVisibility(View.VISIBLE);
             viewHolder.postHashTagName.setText(item0.getHashTagname());
             viewHolder.postHashTagName.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -90,14 +89,12 @@ public class PostHashTagItemAdapter extends RecyclerView.Adapter<PostHashTagItem
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView postHashTagName;
-        ImageView hashTagPin;
         Long observationId;
         Long hashTagId;
 
         public ViewHolder(View itemView, final OnPostHashTagClickListener listener) {
             super(itemView);
             postHashTagName = itemView.findViewById(R.id.recycler_hashTagName);
-            hashTagPin = itemView.findViewById(R.id.recycler_hashTag_pin);
 
             itemView.setClickable(true);
             itemView.setOnClickListener(new View.OnClickListener() {
