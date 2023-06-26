@@ -2,6 +2,7 @@ package com.starrynight.tourapiproject.weatherPage2;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -50,12 +51,12 @@ public class WeatherActivity2 extends AppCompatActivity {
     private TextView todayComment2;
     private TextView bestObservationalFit;
     private TextView mainEffect;
-    
+
     private RecyclerView hour_recycler; // 시간별 예보 RecyclerView
     private RecyclerView day_recycler; // 주간 예보 RecyclerView
     List<HourObservationalFit> hourResult = new ArrayList<>(); // 시간별 예보 결과
     List<DayObservationalFit> dayResult = new ArrayList<>(); // 주간 예보 결과
-    
+
     private TextView detailHour; // 상세 날씨 - 기준 시간
     private TextView detail_weather_2; // 상세 날씨 - 날씨
     private TextView detail_temp_highest; // 상세 날씨 - 기온 최고
@@ -71,7 +72,7 @@ public class WeatherActivity2 extends AppCompatActivity {
     private TextView detail_moonrise; // 상세 날씨 - 월출
     private TextView detail_moonset; // 상세 날씨 - 월몰
 
-    
+
     Double latitude; // 위도
     Double longitude; // 경도
     Long areaId; // WEATHER_AREA id
@@ -89,11 +90,11 @@ public class WeatherActivity2 extends AppCompatActivity {
         //변수, 레이아웃 id와 매칭
         ImageView weatherBack = findViewById(R.id.weather_back);
         ImageView weatherHelp = findViewById(R.id.weather_help);
-        
+
         TextView todayDate = findViewById(R.id.today_date); // 9.17(토)
         TextView currentPosition = findViewById(R.id.current_position); // 양천읍
         lightPollutionLevel = findViewById(R.id.light_pollution_level);
-        
+
         todayComment1 = findViewById(R.id.today_comment_1);
         todayComment2 = findViewById(R.id.today_comment_2);
         bestObservationalFit = findViewById(R.id.best_observation_fit);
@@ -118,7 +119,8 @@ public class WeatherActivity2 extends AppCompatActivity {
         detail_sunset = findViewById(R.id.detail_sunset);
         detail_moonrise = findViewById(R.id.detail_moonrise);
         detail_moonset = findViewById(R.id.detail_moonset);
-        
+
+        View weatherMap = findViewById(R.id.weather_map);
 
 
         // 현재 시간(hour) 조회
@@ -203,14 +205,19 @@ public class WeatherActivity2 extends AppCompatActivity {
 
 //        best_observation_fit = findViewById(R.id.best_observation_fit);
 
-        
+
         // 뒤로 가기
         weatherBack.setOnClickListener(v -> finish());
-        
+
         //날씨 도움말 페이지 이동
         weatherHelp.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), WeatherHelpActivity.class);
             startActivity(intent);
+        });
+
+        // 실시간 날씨 지도
+        weatherMap.setOnClickListener(view -> {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.weather.go.kr/wgis-nuri/html/map.html")));
         });
     }
 
