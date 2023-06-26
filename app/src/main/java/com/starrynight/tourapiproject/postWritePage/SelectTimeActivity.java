@@ -83,11 +83,12 @@ public class SelectTimeActivity extends AppCompatActivity {
                     min = "0" + minute;
                 }
                 String realtime = hour + ":" + min;
-                timePicker.setText(hour + ":" + min);
                 time = realtime;
                 if(hourOfDay<12){
                     day=true;
-                }else{day=false;}
+                    timePicker.setText("오전 "+hour + ":" + min);
+                }else{day=false;
+                    timePicker.setText("오후 " +hour + ":" + min);}
             }
         };
         //시간 모르겠음 체크박스 클릭
@@ -129,8 +130,8 @@ public class SelectTimeActivity extends AppCompatActivity {
     }
     public void onClickDatePicker(View view) {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, callbackMethod, mYear, mMonth, mDay);
-        datePicker.setBackground(ContextCompat.getDrawable(this, R.drawable.hashtag_background_click));
-        timePicker.setBackground(ContextCompat.getDrawable(this, R.drawable.hashtag_background));
+        datePicker.setBackground(ContextCompat.getDrawable(this, R.drawable.postwrite_time));
+        timePicker.setBackground(ContextCompat.getDrawable(this, R.drawable.postwrite_time_non));
         //datePickerDialog.getDatePicker().setCalendarViewShown(false);
         //datePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         datePickerDialog.show();
@@ -140,8 +141,8 @@ public class SelectTimeActivity extends AppCompatActivity {
     public void onClickTimePicker(View view) {
         todaydate = formatHour.format(c.getTime());
         todaytime = formatMin.format(c.getTime());
-        datePicker.setBackground(ContextCompat.getDrawable(this, R.drawable.hashtag_background));
-        timePicker.setBackground(ContextCompat.getDrawable(this, R.drawable.hashtag_background_click));
+        datePicker.setBackground(ContextCompat.getDrawable(this, R.drawable.postwrite_time_non));
+        timePicker.setBackground(ContextCompat.getDrawable(this, R.drawable.postwrite_time));
         int todayHour = Integer.parseInt(todaydate);
         int todayTime = Integer.parseInt(todaytime);
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Dialog_NoActionBar, callbackMethod2, todayHour, todayTime, false);

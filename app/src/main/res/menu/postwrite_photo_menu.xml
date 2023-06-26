@@ -11,6 +11,9 @@
         android:id="@+id/menu_nothing2"
         android:title="@string/title_photo" />
     <item
+        android:id="@+id/menu_nothing3"
+        android:title="@string/title_photo" />
+    <item
         android:id="@+id/menu_delete"
         android:title="@string/title_delete" />
 </menu>

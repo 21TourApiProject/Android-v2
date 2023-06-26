@@ -14,6 +14,7 @@
         android:layout_height="52dp"
         android:background="@drawable/main__bar"
         app:itemIconSize="32dp"
+        app:itemIconTint="@color/gray_500"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -74,12 +75,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <FrameLayout
                     android:id="@+id/postType_FrameLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    >
 
                     <TextView
                         android:id="@+id/postType"
@@ -109,23 +112,12 @@
                 android:layout_marginTop="5dp"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/postwrite__line" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:paddingHorizontal="16dp">
 
-                    <TextView
-                        android:id="@+id/postWriteTitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="제목" />
 
                     <EditText
                         android:id="@+id/postWrite_titleText"
@@ -133,11 +125,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="14dp"
+                        android:background="@null"
                         android:ems="20"
                         android:fontFamily="@font/spoqahansansneoregular"
                         android:hint="제목을 입력해주세요"
                         android:inputType="textPersonName"
-                        android:textSize="14sp" />
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <ImageView
@@ -151,11 +144,6 @@
                     android:layout_marginTop="10dp"
                     android:orientation="vertical"
                     android:paddingHorizontal="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="본문" />
 
                     <EditText
                         android:id="@+id/postContentText"
@@ -195,25 +183,31 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_observation"
                         android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_height="wrap_content"
                         android:paddingHorizontal="16dp"
-                        android:paddingBottom="8dp">
+                        android:paddingVertical="18dp"
+                        android:layout_marginBottom="2dp"
+                        android:background="@color/gray_900">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
 
                         <LinearLayout
                             android:id="@+id/linearLayout_observePoint"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:orientation="horizontal"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
+                            android:gravity="center"
+                            android:orientation="horizontal">
 
                             <ImageView
                                 android:id="@+id/imageView3"
-                                android:layout_width="16dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="18dp"
-                                android:layout_marginEnd="10dp"
-                                app:srcCompat="@drawable/mainpage_observationpin" />
+                                android:layout_marginEnd="8dp"
+                                app:srcCompat="@drawable/postwrite__observationpin" />
 
                             <TextView
                                 android:id="@+id/postWrite_observePoint"
@@ -221,61 +215,54 @@
                                 android:layout_height="wrap_content"
                                 android:text="관측 위치"
                                 android:textColor="@color/gray_500" />
+                            <Button
+                                android:id="@+id/observingPoint"
+                                android:layout_width="12dp"
+                                android:layout_height="12dp"
+                                android:layout_marginStart="290dp"
+                                android:background="@drawable/signup_back"
+                                android:scaleX="-1" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/postwrite_ob_linear"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:orientation="horizontal"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/linearLayout_observePoint">
+                            android:layout_height="match_parent">
 
                             <TextView
                                 android:id="@+id/postObservationItem"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
                                 android:background="@drawable/hashtag_background"
                                 android:fontFamily="@font/pretendard_variable"
-                                android:padding="7dp"
                                 android:text="어디서 관측하셨나요?"
-                                android:textAlignment="center"
                                 android:textColor="@color/gray_500"
                                 android:textSize="14sp" />
                         </LinearLayout>
 
-                        <Button
-                            android:id="@+id/observingPoint"
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:layout_marginTop="12dp"
-                            android:background="@drawable/signup_back"
-                            android:scaleX="-1"
-                            android:scaleY="1"
-                            android:textSize="18sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
+                        </LinearLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <ImageView
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        app:srcCompat="@drawable/postwrite__line" />
-
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="18dp"
+                        android:layout_marginBottom="2dp"
+                        android:background="@color/gray_900">
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:orientation="horizontal">
 
                             <ImageView
@@ -288,21 +275,22 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="관측 시간"
+                                android:layout_marginStart="8dp"
                                 android:textColor="@color/gray_500" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="8dp">
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            >
 
                             <TextView
                                 android:id="@+id/dateText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+
                                 android:background="@drawable/hashtag_background"
-                                android:padding="7dp"
                                 android:text="날짜, 시간을 선택해주세요"
                                 android:textAlignment="center"
                                 android:textColor="@color/gray_500"
@@ -312,7 +300,6 @@
                                 android:id="@+id/timeText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:padding="7dp"
                                 android:layout_marginStart="10dp"
                                 android:background="@drawable/hashtag_background"
                                 android:textAlignment="center"
@@ -322,57 +309,62 @@
                                 android:visibility="gone" />
                         </LinearLayout>
                     </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        app:srcCompat="@drawable/postwrite__line" />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <LinearLayout
                         android:id="@+id/layout_hashtag"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:paddingHorizontal="16dp">
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="18dp"
+                        android:background="@color/gray_900">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:id="@+id/hashImage"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_marginEnd="10dp"
+                                app:srcCompat="@drawable/postwrite_hash" />
 
                         <TextView
                             android:id="@+id/postWrite_hashTag"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="# 관측유형"
-                            android:textColor="@color/gray_500"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            android:text="관측유형"
+                            android:textColor="@color/gray_500" />
 
                         <Button
                             android:id="@+id/hashTag"
                             android:layout_width="12dp"
                             android:layout_height="12dp"
-                            android:layout_marginTop="12dp"
                             android:background="@drawable/signup_back"
+                            android:layout_marginStart="290dp"
                             android:scaleX="-1"
-                            android:textSize="18sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            android:textSize="18sp"/>
+                        </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/postHashTagLinearLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="20dp"
                             android:orientation="horizontal"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/postWrite_hashTag">
+                            android:layout_marginTop="12dp">
 
                             <TextView
                                 android:id="@+id/exampleHashTagTextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/hashtag_background"
-                                android:padding="5dp"
                                 android:text="태그를 추가해보세요"
                                 android:textColor="@color/gray_500"
                                 android:textSize="14sp" />
@@ -385,15 +377,8 @@
                                 android:visibility="gone"
                                 tools:itemCount="5" />
                         </LinearLayout>
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="52dp"
-                        app:srcCompat="@drawable/postwrite__line" />
+                        </LinearLayout>
+                    </LinearLayout>
 
                 </LinearLayout>
 
