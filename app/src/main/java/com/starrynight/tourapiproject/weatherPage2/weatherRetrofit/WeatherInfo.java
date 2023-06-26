@@ -10,6 +10,17 @@ public class WeatherInfo {
 
     public List<DayObservationalFit> dayObservationalFitList;
 
+    public Integer lightPollutionLevel;
+
+    public String todayComment1; // 오늘 23시에
+
+    public String todayComment2; // 관측하면 가장 좋아요
+
+    public Integer bestObservationalFit;
+
+    public Integer bestTime;
+    public String mainEffect;
+
     public DetailWeather getDetailWeather() {
         return detailWeather;
     }
@@ -20,6 +31,30 @@ public class WeatherInfo {
 
     public List<DayObservationalFit> getDayObservationalFitList() {
         return dayObservationalFitList;
+    }
+
+    public Integer getLightPollutionLevel() {
+        return lightPollutionLevel;
+    }
+
+    public String getTodayComment1() {
+        return todayComment1;
+    }
+
+    public String getTodayComment2() {
+        return todayComment2;
+    }
+
+    public Integer getBestObservationalFit() {
+        return bestObservationalFit;
+    }
+
+    public Integer getBestTime() {
+        return bestTime;
+    }
+
+    public String getMainEffect() {
+        return mainEffect;
     }
 
     public static class DetailWeather {

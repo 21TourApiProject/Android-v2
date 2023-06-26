@@ -76,7 +76,11 @@ public class DayAdapter extends RecyclerView.Adapter<DayAdapter.DayHolder> {
         public void setItem(DayObservationalFit item) {
             day.setText(item.getDay());
             if (item.getDay().equals("일")) day.setTextColor(Color.parseColor("#EC3E4D"));
-            if (item.getDay().equals("오늘")) day.setTextColor(Color.parseColor("#DADAE5"));
+            if (item.getDay().equals("오늘")) {
+                day.setTextColor(Color.parseColor("#DADAE5"));
+                observationFit.setTextColor(Color.parseColor("#DADAE5"));
+                observationFit.setBackgroundResource(R.drawable.wt__day_today);
+            }
             date.setText(item.getDate());
             observationFit.setText(item.getObservationalFit());
         }
