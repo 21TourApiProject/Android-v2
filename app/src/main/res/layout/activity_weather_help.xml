@@ -8,7 +8,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,8 +34,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="관측접합도란?"
-                    android:textSize="16sp"
+                    android:text="별밤 가이드"
+                    android:textSize="16dp"
                     app:layout_constraintBottom_toBottomOf="@id/weather_help_back"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -45,572 +45,314 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="47sp"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="47dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="38.08sp"
-                    android:layout_height="36.48sp"
-                    android:layout_marginLeft="16sp"
-                    app:srcCompat="@drawable/alarm__star" />
-
-                <TextView
-                    android:id="@+id/textView"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="8sp"
-                    android:text="관측적합도 점수"
-                    android:textSize="20sp" />
-            </LinearLayout>
+                    android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16sp"
-                android:layout_marginTop="22.52sp"
-                android:layout_marginRight="22sp"
-                android:text="별 관측적합도는 별 헤는 밤에서만 볼 수 있는 특별한 관측 정보에요. 밤하늘 별 관측에 중요한 날씨 정보들을 요소별, 상태별로 가산점을 측정해 데일리 점수를 계산하고 있답니다. "
-                android:textColor="#DADAE5" />
+                    <ImageView
+                        android:layout_width="38.08dp"
+                        android:layout_height="36.48dp"
+                        app:srcCompat="@drawable/wt__help_white1" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16sp"
-                android:layout_marginTop="21sp"
-                android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:text="별 관측이 처음이신가요?"
+                        android:textSize="20dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22.52dp"
+                    android:text="별밤에서 준비한 초보용 관측 팁들을 읽어보세요.\n오늘부터 🌟별잘알🌟으로 거듭날 준비 되셨나요?"
+                    android:textColor="#DADAE5" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="16sp"
-                    android:text="NN점 ~ NN점"
-                    android:textColor="#84838D" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="별 보기 참 좋아요!"
-                    android:textColor="#84838D" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16sp"
-                android:layout_marginTop="8sp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="16sp"
-                    android:text="NN점 ~ NN점"
-                    android:textColor="#84838D" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="별 보기 참 좋아요!"
-                    android:textColor="#84838D" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16sp"
-                android:layout_marginTop="8sp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="16sp"
-                    android:text="NN점 ~ NN점"
-                    android:textColor="#84838D" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="별을 보기 어려워요"
-                    android:textColor="#84838D" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16sp"
-                android:layout_marginTop="20sp"
-                android:layout_marginRight="56sp"
-                android:text="날씨가 별 관측에 어떻게 영향을 미치는지 궁금하다면 아래의 내용을 참고하세요!"
-                android:textColor="#84838D" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16sp"
-                android:layout_marginTop="22sp"
-                android:text="점수 산정 요소"
-                android:textColor="#DADAE5" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16sp"
-                android:layout_marginTop="16sp"
-                android:layout_marginRight="16sp"
-                android:background="#202027"
-                android:orientation="vertical">
+                    android:layout_marginTop="40dp"
+                    android:text="별 관측 Tip!"
+                    android:textColor="#DADAE5"
+                    android:textSize="16sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20sp"
-                    android:layout_marginTop="20sp"
-                    android:layout_marginRight="20sp"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/wt__help_detail"
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="20dp">
 
-                    <ImageView
-                        android:layout_width="18sp"
-                        android:layout_height="18sp"
-                        app:srcCompat="@drawable/alarm__star" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/wt__help_white2" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="4dp"
+                            android:text="별 쉽게 관찰하기"
+                            android:textColor="#DADAE5" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:id="@+id/help_1_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/wt__help_arrow" />
+                    </LinearLayout>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/help_1_text"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="8sp"
-                        android:text="광공해"
-                        android:textColor="#DADAE5" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <ImageView
-                        android:id="@+id/help_light_pollution_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@drawable/tonight__right_arrow" />
+                        android:layout_marginTop="16dp"
+                        android:text="별빛은 아주 어둡기 때문에, 훨씬 밝은 불빛들이 가득한 도심 속에서는 별을 보기 힘들어요. 이처럼 불빛들로 인해 생기는 공해를 바로 ‘광공해’라고 한답니다.\n\n내 주변의 광공해가 0에 가까울수록 관측적합도 점수가 높아져요."
+                        android:textColor="#84838D"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/help_light_pollution_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20sp"
-                    android:layout_marginTop="16sp"
-                    android:layout_marginRight="20sp"
-                    android:layout_marginBottom="20sp"
-                    android:text="별빛은 아주 어둡기 때문에, 훨씬 밝은 불빛들이 가득한 도심 속에서는 별을 보기 힘들어요. 이처럼 불빛들로 인해 생기는 공해를 바로 ‘광공해’라고 한답니다.\n\n내 주변의 광공해가 0에 가까울수록 관측적합도 점수가 높아져요."
-                    android:textColor="#84838D" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16sp"
-                android:layout_marginTop="12sp"
-                android:layout_marginRight="16sp"
-                android:background="#202027"
-                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20sp"
-                    android:layout_marginTop="20sp"
-                    android:layout_marginRight="20sp"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/wt__help_detail"
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="20dp">
 
-                    <ImageView
-                        android:layout_width="18sp"
-                        android:layout_height="18sp"
-                        app:srcCompat="@drawable/alarm__star" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/wt__help_white2" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="4dp"
+                            android:text="별 사진 제대로 찍기"
+                            android:textColor="#DADAE5" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:id="@+id/help_2_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/wt__help_arrow" />
+                    </LinearLayout>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/help_2_text"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="8sp"
-                        android:text="기온"
-                        android:textColor="#DADAE5" />
+                        android:layout_marginTop="16dp"
+                        android:text="기온은 별을 보는 데에는 직접적인 영향을 주진 않아요. 하지만 밤 시간대는 우리 생각보다 쌀쌀할 수 있으니, 일교차에 유의하셔서 적절한 옷차림을 준비해 주세요."
+                        android:textColor="#84838D"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <ImageView
-                        android:id="@+id/help_temp_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@drawable/tonight__right_arrow" />
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/help_temp_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20sp"
-                    android:layout_marginTop="16sp"
-                    android:layout_marginRight="20sp"
-                    android:layout_marginBottom="20sp"
-                    android:text="기온은 별을 보는 데에는 직접적인 영향을 주진 않아요. 하지만 밤 시간대는 우리 생각보다 쌀쌀할 수 있으니, 일교차에 유의하셔서 적절한 옷차림을 준비해 주세요."
-                    android:textColor="#84838D" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16sp"
-                android:layout_marginTop="12sp"
-                android:layout_marginRight="16sp"
-                android:background="#202027"
-                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20sp"
-                    android:layout_marginTop="20sp"
-                    android:layout_marginRight="20sp"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/wt__help_detail"
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="20dp">
 
-                    <ImageView
-                        android:layout_width="18sp"
-                        android:layout_height="18sp"
-                        app:srcCompat="@drawable/alarm__star" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/wt__help_white2" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="4dp"
+                            android:text="별 관측 준비물"
+                            android:textColor="#DADAE5" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:id="@+id/help_3_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/wt__help_arrow" />
+                    </LinearLayout>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/help_3_text"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="8sp"
-                        android:text="광공해"
-                        android:textColor="#DADAE5" />
+                        android:layout_marginTop="16dp"
+                        android:text="0.1mm 이상의 비가 내릴 확률이에요. 비가 오는 날에는, 아쉽지만 별 보기가 참 어려울 거에요. 그렇지만 비가 온 다음에는 오히려 대기가 깨끗해지기 때문에, 별 보기 가장 좋은 상태가 된답니다."
+                        android:textColor="#84838D"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <ImageView
-                        android:id="@+id/help_rainfall_probability_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@drawable/tonight__right_arrow" />
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/help_rainfall_probability_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20sp"
-                    android:layout_marginTop="16sp"
-                    android:layout_marginRight="20sp"
-                    android:layout_marginBottom="20sp"
-                    android:text="0.1mm 이상의 비가 내릴 확률이에요. 비가 오는 날에는, 아쉽지만 별 보기가 참 어려울 거에요. 그렇지만 비가 온 다음에는 오히려 대기가 깨끗해지기 때문에, 별 보기 가장 좋은 상태가 된답니다."
-                    android:textColor="#84838D" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16sp"
-                android:layout_marginTop="12sp"
-                android:layout_marginRight="16sp"
-                android:background="#202027"
-                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20sp"
-                    android:layout_marginTop="20sp"
-                    android:layout_marginRight="20sp"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/wt__help_detail"
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="20dp">
 
-                    <ImageView
-                        android:layout_width="18sp"
-                        android:layout_height="18sp"
-                        app:srcCompat="@drawable/alarm__star" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/wt__help_white2" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="4dp"
+                            android:text="별 관측 에티켓"
+                            android:textColor="#DADAE5" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:id="@+id/help_4_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/wt__help_arrow" />
+                    </LinearLayout>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/help_4_text"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="8sp"
-                        android:text="습도"
-                        android:textColor="#DADAE5" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <ImageView
-                        android:id="@+id/help_humidity_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@drawable/tonight__right_arrow" />
+                        android:layout_marginTop="16dp"
+                        android:text="습도가 높으면 공기 중의 물 분자에 빛이 굴절되어 별빛이 다소 흐리게 보일 수 있다고 해요. 습도가 높은 여름보다, 건조한 겨울이 밤하늘 별 관측에 선호되는 계절인 이유가 바로 여기에 있답니다."
+                        android:textColor="#84838D"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/help_humidity_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20sp"
-                    android:layout_marginTop="16sp"
-                    android:layout_marginRight="20sp"
-                    android:layout_marginBottom="20sp"
-                    android:text="습도가 높으면 공기 중의 물 분자에 빛이 굴절되어 별빛이 다소 흐리게 보일 수 있다고 해요. 습도가 높은 여름보다, 건조한 겨울이 밤하늘 별 관측에 선호되는 계절인 이유가 바로 여기에 있답니다."
-                    android:textColor="#84838D" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16sp"
-                android:layout_marginTop="12sp"
-                android:layout_marginRight="16sp"
-                android:background="#202027"
-                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20sp"
-                    android:layout_marginTop="20sp"
-                    android:layout_marginRight="20sp"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/wt__help_detail"
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="20dp">
 
-                    <ImageView
-                        android:layout_width="18sp"
-                        android:layout_height="18sp"
-                        app:srcCompat="@drawable/alarm__star" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/wt__help_white2" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="4dp"
+                            android:text="은하수를 보는 법"
+                            android:textColor="#DADAE5" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:id="@+id/help_5_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/wt__help_arrow" />
+                    </LinearLayout>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/help_5_text"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="8sp"
-                        android:text="구름량"
-                        android:textColor="#DADAE5" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <ImageView
-                        android:id="@+id/help_cloud_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@drawable/tonight__right_arrow" />
+                        android:layout_marginTop="16dp"
+                        android:text="구름 한 점 없는 밤하늘이 반짝이는 별들을 보기 가장 좋은 날이랍니다.\n\n구름량이 0%에 가까울수록 하늘이 깨끗해 관측적합도 점수가 높아져요."
+                        android:textColor="#84838D"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/help_cloud_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20sp"
-                    android:layout_marginTop="16sp"
-                    android:layout_marginRight="20sp"
-                    android:layout_marginBottom="20sp"
-                    android:text="구름 한 점 없는 밤하늘이 반짝이는 별들을 보기 가장 좋은 날이랍니다.\n\n구름량이 0%에 가까울수록 하늘이 깨끗해 관측적합도 점수가 높아져요."
-                    android:textColor="#84838D" />
-
-
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16sp"
-                android:layout_marginTop="12sp"
-                android:layout_marginRight="16sp"
-                android:background="#202027"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20sp"
-                    android:layout_marginTop="20sp"
-                    android:layout_marginRight="20sp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="18sp"
-                        android:layout_height="18sp"
-                        app:srcCompat="@drawable/alarm__star" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="8sp"
-                        android:text="미세먼지"
-                        android:textColor="#DADAE5" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <ImageView
-                        android:id="@+id/help_fine_dust_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@drawable/tonight__right_arrow" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/help_fine_dust_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20sp"
-                    android:layout_marginTop="16sp"
-                    android:layout_marginRight="20sp"
-                    android:layout_marginBottom="20sp"
-                    android:text="미세먼지가 높은 날 고도가 낮은 지역에서는 밤하늘조차 뿌옇게 보일 수 있어요. 무엇보다도 건강에 좋지 않으니, 장기간 노출되는 것을 피해주세요."
-                    android:textColor="#84838D" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16sp"
-                android:layout_marginTop="12sp"
-                android:layout_marginRight="16sp"
-                android:background="#202027"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20sp"
-                    android:layout_marginTop="20sp"
-                    android:layout_marginRight="20sp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="18sp"
-                        android:layout_height="18sp"
-                        app:srcCompat="@drawable/alarm__star" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="8sp"
-                        android:text="풍속"
-                        android:textColor="#DADAE5" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <ImageView
-                        android:id="@+id/help_wind_speed_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@drawable/tonight__right_arrow" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/help_wind_speed_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20sp"
-                    android:layout_marginTop="16sp"
-                    android:layout_marginRight="20sp"
-                    android:layout_marginBottom="20sp"
-                    android:text="적당히 선선한 바람은 별을 관측하는 기분을 보다 상쾌하게 해 줄 거에요. 다만, 바람이 너무 센 날을 고르지 않도록 유의해 주세요."
-                    android:textColor="#84838D" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16sp"
-                android:layout_marginTop="12sp"
-                android:layout_marginRight="16sp"
-                android:layout_marginBottom="22sp"
-                android:background="#202027"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20sp"
-                    android:layout_marginTop="20sp"
-                    android:layout_marginRight="20sp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="18sp"
-                        android:layout_height="18sp"
-                        app:srcCompat="@drawable/alarm__star" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="8sp"
-                        android:text="월령"
-                        android:textColor="#DADAE5" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <ImageView
-                        android:id="@+id/help_moon_age_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@drawable/tonight__right_arrow" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/help_moon_age_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20sp"
-                    android:layout_marginTop="16sp"
-                    android:layout_marginRight="20sp"
-                    android:layout_marginBottom="20sp"
-                    android:text="월령은 간단히 말해 달이 차오른 정도를 알 수 있는 지표에요. 0은 초승달, 0.5는 보름달, 1은 그믐달을 의미합니다. 달이 너무 밝다면, 달빛에 가려 별들이 제대로 보이지 않을 거에요.\n\n월령이  0이나 1에 가까울수록 달빛이 적어 관측적합도 점수가 높아져요."
-                    android:textColor="#84838D" />
-
-
-            </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 
