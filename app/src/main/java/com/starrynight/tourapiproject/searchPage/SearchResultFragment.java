@@ -32,6 +32,7 @@ import com.starrynight.tourapiproject.myPage.myWish.post.MyPostAdapter;
 import com.starrynight.tourapiproject.myPage.myWish.post.OnMyPostItemClickListener;
 import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
 import com.starrynight.tourapiproject.postPage.PostActivity;
+import com.starrynight.tourapiproject.searchPage.filter.FilterFragment;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.Filter;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchKey;

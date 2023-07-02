@@ -6,6 +6,7 @@ plugins {
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def kakao_sdk_key = properties.getProperty('kakao_sdk_key')
 
 android {
     compileSdkVersion 30
@@ -23,7 +24,9 @@ android {
 
         // 프로젝트 내에서 사용 가능한 변수
         buildConfigField "String", "SPRING_SERVER_V1", properties['spring_server_v1']
+        buildConfigField "String", "KAKAO_SDK_KEY", properties['kakao_sdk_key']
 
+        manifestPlaceholders = [KAKAO_SDK_KEY: properties['kakao_sdk_key']]
     }
 
     buildTypes {
@@ -104,6 +107,8 @@ dependencies {
     implementation 'androidx.preference:preference:1.1.0-alpha05'
 
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
+
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

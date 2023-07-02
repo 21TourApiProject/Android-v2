@@ -140,7 +140,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                             }
                         } else {
-                            Log.e(TAG0, "로그인 실패");
+                            Log.e(TAG0, response.errorBody().toString());
                         }
                     }
 

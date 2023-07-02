@@ -1,6 +1,7 @@
 package com.starrynight.tourapiproject.searchPage.searchPageRetrofit;
 
 import com.starrynight.tourapiproject.myPage.myWish.post.MyPost;
+import com.starrynight.tourapiproject.searchPage.filter.HashTagItem;
 
 import java.util.List;
 
@@ -26,5 +27,11 @@ public interface SearchPageRetrofitService {
 
     @GET("searchFirst/{typeName}")
     Call<List<SearchFirst>> getSearchFirst(@Path("typeName") String typeName);
+
+    @GET("hashTags/filter")
+    Call<List<HashTagItem>> getHashTag();
+
+    @GET("area/filter")
+    Call<List<HashTagItem>> getAreaFilter();
 
 }

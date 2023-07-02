@@ -2,6 +2,7 @@ package com.starrynight.tourapiproject.observationPage.fee;
 
 import android.content.Context;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,8 @@ public class ObservationFeeAdapter extends RecyclerView.Adapter<ObservationFeeAd
             entrance_fee.setText(item.getEntranceFee());
             if (item.getEntranceFee() == null) {
                 entrance_fee.setVisibility(View.GONE);
+            }else {
+                entrance_fee.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -81,6 +84,7 @@ public class ObservationFeeAdapter extends RecyclerView.Adapter<ObservationFeeAd
     public void addItem(ObservationFeeItem item) {
         if (listFee.size() < 3) {
             listFee.add(item);
+            listFee2.add(item);
         } else {
             listFee2.add(item);
         }
@@ -89,7 +93,8 @@ public class ObservationFeeAdapter extends RecyclerView.Adapter<ObservationFeeAd
 
     //이용요금 더보기 클릭 시
     public void showMoreFee(){
-        for (ObservationFeeItem item : listFee2) {
+        for (int i = 3; i < listFee2.size(); i++) {
+            ObservationFeeItem item = listFee2.get(i);
             listFee.add(item);
         }
     }
@@ -97,8 +102,9 @@ public class ObservationFeeAdapter extends RecyclerView.Adapter<ObservationFeeAd
     //이용요금 접기 클릭 시
     public void closeMoreFee(){
         if (listFee.size() > 3) {
-            for (int i = 3; i < listFee.size(); i++) {
-                listFee.remove(i);
+            listFee.clear();
+            for (int i = 0; i < 3; i++) {
+                listFee.add(listFee2.get(i));
             }
         }
 

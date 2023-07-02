@@ -2,7 +2,7 @@ package com.starrynight.tourapiproject.touristPointPage.touristPointRetrofit;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.starrynight.tourapiproject.retrofitConfig.TaskServer;
+import com.starrynight.tourapiproject.common.TaskServer;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

@@ -1,6 +1,5 @@
-package com.starrynight.tourapiproject.searchPage;
+package com.starrynight.tourapiproject.searchPage.filter;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,13 +11,13 @@ import android.widget.LinearLayout;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.starrynight.tourapiproject.MainActivity;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.mapPage.Activities;
 import com.starrynight.tourapiproject.mapPage.MapFragment;
+import com.starrynight.tourapiproject.searchPage.SearchResultFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -147,7 +147,7 @@
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/map__background"
+            android:background="@drawable/bottom__background"
             android:paddingLeft="30dp"
             android:paddingTop="25dp"
             android:visibility="gone"
