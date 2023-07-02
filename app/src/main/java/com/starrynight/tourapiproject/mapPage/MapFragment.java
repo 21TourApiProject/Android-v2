@@ -39,7 +39,7 @@ import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
 import com.starrynight.tourapiproject.observationPage.RecyclerDecoration;
 import com.starrynight.tourapiproject.observationPage.RecyclerHashTagAdapter;
 import com.starrynight.tourapiproject.observationPage.RecyclerHashTagItem;
-import com.starrynight.tourapiproject.searchPage.FilterFragment;
+import com.starrynight.tourapiproject.searchPage.filter.FilterFragment;
 import com.starrynight.tourapiproject.searchPage.SearchResultFragment;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.Filter;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.RetrofitClient;

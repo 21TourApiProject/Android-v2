@@ -70,6 +70,12 @@ public class Observation {
     }
 
 
+    //TODO 없애야함
+    public void setSaved() {
+        saved = 0L;
+    }
+
+
     public Long getReserve() {
         return reserve;
     }
