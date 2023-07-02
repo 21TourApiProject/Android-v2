@@ -160,10 +160,9 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp">
 
@@ -179,13 +178,69 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:text="주차시설"
-                    android:layout_gravity="center_vertical"/>
+                    android:textFontWeight="600"
+                    android:layout_gravity="center_vertical"
+                    android:layout_toRightOf="@id/sr_parking_check"/>
 
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="북마크 많은 순"
+                    android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <Button
+                        android:id="@+id/sr_obBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="관측지" />
+                    <TextView
+                        android:id="@+id/sr_obs_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="3px"
+                        android:layout_marginHorizontal="8dp"
+                        android:background="@color/white"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <Button
+                        android:id="@+id/sr_postBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="후기" />
+                    <TextView
+                        android:id="@+id/sr_post_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="3px"
+                        android:layout_marginHorizontal="8dp"
+                        android:background="@color/white"/>
+                </LinearLayout>
 
             </LinearLayout>
 
-
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/searchResult4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"/>
         </LinearLayout>
 
 
