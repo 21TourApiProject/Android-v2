@@ -2,29 +2,34 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:orientation="vertical"
+    android:background="@drawable/postwrite_observation_item">
 
     <TextView
         android:id="@+id/itemName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:gravity="left|center_vertical"
+        android:fontFamily="@font/pretendard_variable"
+        android:includeFontPadding="false"
+        android:gravity="bottom"
+        android:height="18sp"
         android:text="관광지"
         android:textColor="@color/white"
-        android:textSize="14sp" />
+        android:layout_marginBottom="10dp"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/address"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="5dp"
+        android:layout_height="wrap_content"
         android:text="주소"
         android:textColor="@color/gray"
-        android:textSize="11sp" />
+        android:includeFontPadding="false"
+        android:gravity="bottom"
+        android:height="14sp"
+        android:textSize="14sp" />
 
 </LinearLayout>
 

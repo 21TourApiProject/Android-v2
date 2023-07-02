@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_dark_indigo"
+    android:background="@color/bg_black"
     tools:context=".postWritePage.AddHashTagActivity">
 
     <ScrollView
@@ -29,30 +29,27 @@
                         style="@style/ImageButton.size49"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="7dp"
-                        android:paddingVertical="18dp"
-                        android:paddingStart="22dp"
-                        android:paddingEnd="21dp"
-                        android:src="@drawable/star__search_back" />
+                        android:layout_marginVertical="14dp"
+                        android:layout_marginStart="16dp"
+                        android:src="@drawable/postwrite_xbtn" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:fontFamily="@font/scdream"
-                        android:text="해시태그 설정"
-                       android:layout_gravity="center"
+                        android:text="관측 태그"
                         android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/finish_add_hashTag"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
                         android:layout_gravity="center_vertical|end"
+                        android:layout_marginEnd="10dp"
                         android:fontFamily="@font/scdream"
                         android:padding="10dp"
-                        android:text="완성"
-                        android:textColor="@color/point_purple"
+                        android:text="저장"
                         android:textSize="15sp" />
                 </FrameLayout>
 
@@ -65,18 +62,35 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:layout_height="96dp"
+                    android:gravity="center|left"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="이번 관측을 잘 설명해줄 태그를 \n골라주세요"
+                        android:textSize="20sp"
+                        android:layout_marginStart="16dp"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="37dp"
-                    android:gravity="center"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="5dp"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10sp"
-                        android:gravity="center"
-                        android:text="여행태마"
-                        android:textSize="12sp" />
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="지역"
+                        android:textColor="@color/gray_500"
+                        android:textSize="16sp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -85,170 +99,173 @@
 
                         <Button
                             android:id="@+id/ht1"
-                            android:layout_width="80dp"
-                            android:layout_height="32dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
                             android:layout_marginEnd="16dp"
                             android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
                             android:onClick="ClickEvent"
-                            android:text="공기 좋은"
-                            android:textColor="@color/name_purple"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/spoqahansansneomedium"/>
+                            android:text="서울"
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
 
                         <Button
                             android:id="@+id/ht2"
-                            android:layout_width="80dp"
-                            android:layout_height="32dp"
-                            android:layout_marginRight="16dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:layout_marginEnd="16dp"
                             android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
                             android:onClick="ClickEvent"
-                            android:text="깔끔한"
-                            android:textColor="@color/name_purple"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/spoqahansansneomedium"/>
+                            android:text="강원"
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
 
                         <Button
                             android:id="@+id/ht3"
-                            android:layout_width="80dp"
-                            android:layout_height="32dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:layout_marginEnd="16dp"
                             android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
                             android:onClick="ClickEvent"
-                            android:text="감성적인"
-                            android:textColor="@color/name_purple"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/spoqahansansneomedium"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:orientation="horizontal">
+                            android:text="경기"
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
 
                         <Button
                             android:id="@+id/ht4"
-                            android:layout_width="80dp"
-                            android:layout_height="32dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
                             android:layout_marginEnd="16dp"
                             android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
                             android:onClick="ClickEvent"
-                            android:text="이색적인"
-                            android:textColor="@color/name_purple"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/spoqahansansneomedium"/>
+                            android:text="전남"
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
 
                         <Button
                             android:id="@+id/ht5"
-                            android:layout_width="80dp"
-                            android:layout_height="32dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
                             android:layout_marginEnd="16dp"
                             android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
                             android:onClick="ClickEvent"
-                            android:text="인생샷"
-                            android:textColor="@color/name_purple"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/spoqahansansneomedium"/>
+                            android:text="전북"
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="horizontal">
 
                         <Button
                             android:id="@+id/ht6"
-                            android:layout_width="80dp"
-                            android:layout_height="32dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:layout_marginEnd="16dp"
                             android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
                             android:onClick="ClickEvent"
-                            android:text="전문적인"
-                            android:textColor="@color/name_purple"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/spoqahansansneomedium"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:orientation="horizontal">
+                            android:text="경남"
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
 
                         <Button
                             android:id="@+id/ht7"
-                            android:layout_width="80dp"
-                            android:layout_height="32dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
                             android:layout_marginEnd="16dp"
                             android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
                             android:onClick="ClickEvent"
-                            android:text="캠핑"
-                            android:textColor="@color/name_purple"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/spoqahansansneomedium"/>
+                            android:text="경북"
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="이동 수단"
+                        android:textColor="@color/gray_500"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
                         <Button
                             android:id="@+id/ht8"
-                            android:layout_width="80dp"
-                            android:layout_height="32dp"
-                            android:layout_marginEnd="16dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:layout_marginEnd="10dp"
                             android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
                             android:onClick="ClickEvent"
-                            android:text="차박"
-                            android:textColor="@color/name_purple"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/spoqahansansneomedium"/>
-
-                        <Button
-                            android:id="@+id/ht22"
-                            android:layout_width="80dp"
-                            android:layout_height="32dp"
-                            android:background="@drawable/selectmyhashtag_hashtag_non"
-                            android:onClick="ClickEvent"
-                            android:text="경치 좋은"
-                            android:textColor="@color/name_purple"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/spoqahansansneomedium"/>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="48dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10sp"
-                        android:gravity="center"
-                        android:text="이동 수단"
-                        android:textSize="12sp" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                            android:text="뚜벅이"
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
 
                         <Button
                             android:id="@+id/ht9"
-                            android:layout_width="80dp"
-                            android:layout_height="32dp"
-                            android:layout_marginEnd="16dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:layout_marginRight="10dp"
                             android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
                             android:onClick="ClickEvent"
-                            android:text="뚜벅이"
-                            android:textColor="@color/name_purple"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/spoqahansansneomedium"/>
+                            android:text="자전거"
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
 
                         <Button
                             android:id="@+id/ht10"
-                            android:layout_width="80dp"
-                            android:layout_height="32dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
                             android:layout_marginRight="10dp"
                             android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
                             android:onClick="ClickEvent"
                             android:text="드라이브"
-                            android:textColor="@color/name_purple"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/spoqahansansneomedium"/>
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -256,147 +273,91 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="48dp"
-                    android:gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="16dp"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10sp"
-                        android:gravity="center"
-                        android:text="분위기"
-                        android:textSize="12sp" />
+                        android:layout_marginBottom="20dp"
+                        android:text="동행"
+                        android:textColor="@color/gray_500"
+                        android:textSize="16sp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-
-                        <Button
-                            android:id="@+id/ht12"
-                            android:layout_width="80dp"
-                            android:layout_height="32dp"
-                            android:layout_marginRight="10dp"
-                            android:background="@drawable/selectmyhashtag_hashtag_non"
-                            android:onClick="ClickEvent"
-                            android:text="한적한"
-                            android:textColor="@color/name_purple"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/spoqahansansneomedium"/>
-
-                        <Button
-                            android:id="@+id/ht13"
-                            android:layout_width="80dp"
-                            android:layout_height="32dp"
-                            android:layout_marginRight="10dp"
-                            android:background="@drawable/selectmyhashtag_hashtag_non"
-                            android:onClick="ClickEvent"
-                            android:text="근교"
-                            android:textColor="@color/name_purple"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/spoqahansansneomedium"/>
-
-                        <Button
-                            android:id="@+id/ht14"
-                            android:layout_width="80dp"
-                            android:layout_height="32dp"
-                            android:background="@drawable/selectmyhashtag_hashtag_non"
-                            android:onClick="ClickEvent"
-                            android:text="도심 속"
-                            android:textColor="@color/name_purple"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/spoqahansansneomedium"/>
-
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="48dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10sp"
-                        android:gravity="center"
-                        android:text="여행 동반자"
-                        android:textSize="12sp" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <Button
-                            android:id="@+id/ht15"
-                            android:layout_width="80dp"
-                            android:layout_height="32dp"
-                            android:layout_marginRight="10dp"
-                            android:background="@drawable/selectmyhashtag_hashtag_non"
-                            android:onClick="ClickEvent"
-                            android:text="연인"
-                            android:textColor="@color/name_purple"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/spoqahansansneomedium"/>
-
-                        <Button
-                            android:id="@+id/ht16"
-                            android:layout_width="80dp"
-                            android:layout_height="32dp"
-                            android:layout_marginRight="10dp"
-                            android:background="@drawable/selectmyhashtag_hashtag_non"
-                            android:onClick="ClickEvent"
-                            android:text="가족"
-                            android:textColor="@color/name_purple"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/spoqahansansneomedium"/>
-
-                        <Button
-                            android:id="@+id/ht17"
-                            android:layout_width="80dp"
-                            android:layout_height="32dp"
-                            android:layout_marginRight="10dp"
-                            android:background="@drawable/selectmyhashtag_hashtag_non"
-                            android:onClick="ClickEvent"
-                            android:text="친구"
-                            android:textColor="@color/name_purple"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/spoqahansansneomedium"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
-                        android:orientation="horizontal">
-
-                        <Button
-                            android:id="@+id/ht18"
-                            android:layout_width="80dp"
-                            android:layout_height="32dp"
-                            android:layout_marginEnd="10dp"
-                            android:background="@drawable/selectmyhashtag_hashtag_non"
-                            android:onClick="ClickEvent"
-                            android:text="혼자"
-                            android:textColor="@color/name_purple"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/spoqahansansneomedium"/>
 
                         <Button
                             android:id="@+id/ht11"
-                            android:layout_width="80dp"
-                            android:layout_height="32dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:layout_marginRight="10dp"
                             android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
+                            android:onClick="ClickEvent"
+                            android:text="연인"
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
+
+                        <Button
+                            android:id="@+id/ht12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
+                            android:onClick="ClickEvent"
+                            android:text="가족"
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
+
+                        <Button
+                            android:id="@+id/ht13"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
+                            android:onClick="ClickEvent"
+                            android:text="친구"
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
+                        <Button
+                            android:id="@+id/ht14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:layout_marginEnd="10dp"
+                            android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
+                            android:onClick="ClickEvent"
+                            android:text="혼자"
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
+
+                        <Button
+                            android:id="@+id/ht15"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
                             android:onClick="ClickEvent"
                             android:text="반려동물"
-                            android:textColor="@color/name_purple"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/spoqahansansneomedium"/>
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
+
                     </LinearLayout>
 
                 </LinearLayout>
@@ -404,17 +365,17 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="48dp"
-                    android:gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="16dp"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10sp"
-                        android:gravity="center"
-                        android:text="여행 예산"
-                        android:textSize="12sp" />
+                        android:layout_marginBottom="20dp"
+                        android:text="테마"
+                        android:textColor="@color/gray_500"
+                        android:textSize="16sp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -422,95 +383,164 @@
                         android:orientation="horizontal">
 
                         <Button
-                            android:id="@+id/ht19"
-                            android:layout_width="80dp"
-                            android:layout_height="32dp"
-                            android:layout_marginRight="10dp"
+                            android:id="@+id/ht16"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:layout_marginEnd="16dp"
                             android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
                             android:onClick="ClickEvent"
-                            android:text="가성비"
-                            android:textColor="@color/name_purple"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/spoqahansansneomedium"/>
+                            android:text="공기 좋은"
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
+
+                        <Button
+                            android:id="@+id/ht17"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:layout_marginRight="16dp"
+                            android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
+                            android:onClick="ClickEvent"
+                            android:text="분위기 있는"
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
+
+                        <Button
+                            android:id="@+id/ht18"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:layout_marginRight="16dp"
+                            android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
+                            android:onClick="ClickEvent"
+                            android:text="깔끔한"
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
+
+                        <Button
+                            android:id="@+id/ht19"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:layout_marginEnd="16dp"
+                            android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
+                            android:onClick="ClickEvent"
+                            android:text="감성적인"
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
 
                         <Button
                             android:id="@+id/ht20"
-                            android:layout_width="80dp"
-                            android:layout_height="32dp"
-                            android:layout_marginRight="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:layout_marginEnd="16dp"
                             android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
                             android:onClick="ClickEvent"
-                            android:text="소확행"
-                            android:textColor="@color/name_purple"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/spoqahansansneomedium"/>
+                            android:text="이색적인"
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
 
                         <Button
                             android:id="@+id/ht21"
-                            android:layout_width="80dp"
-                            android:layout_height="32dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:layout_marginEnd="16dp"
                             android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
                             android:onClick="ClickEvent"
-                            android:text="럭셔리한"
-                            android:textColor="@color/name_purple"
-                            android:textSize="11sp"
-                            android:fontFamily="@font/spoqahansansneomedium"/>
+                            android:text="인생샷"
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
+
+                        <Button
+                            android:id="@+id/ht22"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:layout_marginEnd="16dp"
+                            android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
+                            android:onClick="ClickEvent"
+                            android:text="전문적인"
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
+
+                        <Button
+                            android:id="@+id/ht23"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:layout_marginEnd="16dp"
+                            android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
+                            android:onClick="ClickEvent"
+                            android:text="캠핑"
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/ht24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:layout_marginEnd="16dp"
+                            android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
+                            android:onClick="ClickEvent"
+                            android:text="차박"
+                            android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
+
+                        <Button
+                            android:id="@+id/ht25"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:background="@drawable/selectmyhashtag_hashtag_non"
+                            android:fontFamily="@font/pretendard_variable"
+                            android:onClick="ClickEvent"
+                            android:text="대한민국 구석구석"
+                           android:textColor="@color/gray_300"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
+
             </LinearLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="24dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="120dp">
-
-                <LinearLayout
-                    android:id="@+id/linearLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/postwrite__search_bar"
-                    android:orientation="horizontal"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <Button
-                        android:id="@+id/addHashTag"
-                        android:layout_width="30dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/postwrite_observationsearch" />
-
-                    <EditText
-                        android:id="@+id/findHashTag"
-                        android:layout_width="0dp"
-                        android:layout_height="35dp"
-                        android:layout_weight="1"
-                        android:ems="13"
-                        android:hint="해시태그를 직접 입력해보세요"
-                        android:inputType="textPersonName"
-                        android:paddingStart="10dp"
-                        android:textSize="12sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/linearLayout">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/optionHashTagRecyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-                </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>
 

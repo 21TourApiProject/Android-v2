@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/bg_black"
     tools:context=".MainActivity">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,19 +24,18 @@
                 android:layout_height="49dp"
                 android:orientation="horizontal">
 
-                    <FrameLayout
-                        android:id="@+id/back_btn_layout"
-                        android:layout_width="45dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="8dp">
+                <FrameLayout
+                    android:id="@+id/back_btn_layout"
+                    android:layout_width="45dp"
+                    android:layout_height="match_parent">
 
-                        <Button
-                            android:layout_width="16sp"
-                            android:layout_height="16sp"
-                            android:layout_gravity="center"
-                            android:background="@drawable/mypost_back"
-                            android:clickable="false" />
-                    </FrameLayout>
+                    <Button
+                        android:layout_width="24sp"
+                        android:layout_height="24sp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/mypost_back"
+                        android:clickable="false" />
+                </FrameLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -48,15 +49,15 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:fontFamily="@font/scdream"
-                        android:text="후기"
+                        android:text="관측 후기"
                         android:textAlignment="center"
-                        android:textSize="17sp" />
+                        android:textSize="16sp" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/delete_layout"
-                    android:layout_width="80dp"
+                    android:layout_width="50dp"
                     android:layout_height="49dp"
                     android:gravity="center"
                     android:orientation="vertical"
@@ -67,7 +68,6 @@
                         android:layout_width="4dp"
                         android:layout_height="13dp"
                         android:layout_gravity="center"
-                        android:layout_marginStart="10dp"
                         android:background="@drawable/comment__option"
                         android:clickable="false"
                         android:visibility="visible" />
@@ -76,7 +76,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="64dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -94,29 +94,122 @@
                         android:scaleType="centerCrop"
                         app:srcCompat="@drawable/post__profile_no_image" />
 
-                    <TextView
-                        android:id="@+id/post_nickname"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginStart="8dp"
-                        android:fontFamily="@font/spoqahansansneobold"
-                        android:text="닉네임"
-                        android:textSize="12sp" />
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/post_nickname"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/spoqahansansneobold"
+                            android:layout_gravity="start"
+                            android:text="닉네임"
+                            android:textSize="12sp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                        </LinearLayout>
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/hashTagRecyclerView"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                tools:itemCount="4" />
+                android:layout_height="match_parent"
+               android:layout_marginStart="16dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/hashtag_background"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView5"
+                        android:layout_width="19dp"
+                        android:layout_height="19dp"
+                        app:srcCompat="@drawable/post_observationpin"
+                        android:layout_marginEnd="4dp"/>
+
+                    <TextView
+                        android:id="@+id/postObservationText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:text="관측 위치"
+                        android:textColor="@color/point_blue"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/postDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/hashtag_background"
+                    android:textColor="@color/point_blue"
+                    android:layout_marginStart="8dp"
+                    android:text="2023.2.10" />
+
+                <TextView
+                    android:id="@+id/postTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/point_blue"
+                    android:background="@drawable/hashtag_background"
+                    android:layout_marginStart="8dp"
+                    android:text="오전 1:00" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/bg_black"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/postTitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="12dp"
+                    android:fontFamily="@font/spoqahansansneobold"
+                    android:text="게시물 제목"
+                    android:textSize="15sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:layout_marginVertical="15dp">
+
+                <TextView
+                    android:id="@+id/postContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/spoqahansansneoregular"
+                    android:lineSpacingExtra="4dp"
+                    android:text="게시물 내용\n- 개시물 내용"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="16dp">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -144,124 +237,90 @@
 
             </FrameLayout>
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/hashTagRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_gravity="center_vertical"
-                android:background="@color/bg_black"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/postTitleText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="12dp"
-                    android:fontFamily="@font/spoqahansansneobold"
-                    android:text="게시물 제목"
-                    android:textSize="15sp" />
-
-
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="16dp"
+                tools:itemCount="4" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingHorizontal="24dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="16dp">
-
-                <TextView
-                    android:id="@+id/postContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/spoqahansansneoregular"
-                    android:lineSpacingExtra="4dp"
-                    android:text="게시물 내용\n- 개시물 내용"
-                    android:textSize="12sp" />
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/postDate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:hint="2021-09-28"
-                        android:textColor="@color/gray"
-                        android:textSize="10sp" />
+                    <Button
+                        android:id="@+id/love"
+                        android:layout_width="17dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="14dp"
+                        android:layout_marginEnd="4dp"
+                        android:background="@drawable/post__love" />
 
                     <TextView
-                        android:id="@+id/postTime"
+                        android:id="@+id/love_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:hint="15:30"
-                        android:textColor="@color/gray"
-                        android:textSize="10sp" />
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="14dp"
+                        android:text="0" />
+
+                    <Button
+                        android:id="@+id/comment"
+                        android:layout_width="17dp"
+                        android:layout_height="17dp"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="4dp"
+                        android:background="@drawable/post__comment" />
+
+                    <TextView
+                        android:id="@+id/comment_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="0" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <LinearLayout
+                        android:id="@+id/like_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/like"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="right|center_vertical"
+                            android:layout_marginStart="17.86dp"
+                            android:layout_marginEnd="16dp"
+                            android:background="@drawable/main__bookmark"
+                            app:layout_constraintTop_toBottomOf="@+id/postThumbnail" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/commentRecyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/love"
-                    android:layout_width="17dp"
-                    android:layout_height="15dp"
-                    android:background="@drawable/post__love"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="14dp"
-                    android:layout_marginEnd="4dp"
-                    />
-
-                <TextView
-                    android:id="@+id/love_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="0"
-                    android:layout_marginEnd="14dp"/>
-
-                <Button
-                    android:id="@+id/comment"
-                    android:layout_width="17dp"
-                    android:layout_height="17dp"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="4dp"
-                    android:background="@drawable/post__comment"
-
-                    />
-
-                <TextView
-                    android:id="@+id/comment_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="0" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-                <Button
-                    android:id="@+id/like"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="right|center_vertical"
-                    android:layout_marginStart="17.86dp"
-                    android:background="@drawable/main__bookmark"
-                    app:layout_constraintTop_toBottomOf="@+id/postThumbnail"
-                    android:layout_marginEnd="16dp"/>
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:orientation="vertical" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -296,4 +355,45 @@
         </LinearLayout>
     </ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:background="@drawable/postwrite__search_bar"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/comment_editText"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:ems="20"
+                android:fontFamily="@font/spoqahansansneoregular"
+                android:hint="댓글을 입력해주세요"
+                android:inputType="textLongMessage|textMultiLine"
+                android:lineSpacingExtra="7dp"
+                android:overScrollMode="always"
+                android:paddingStart="16dp"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical"
+                android:scrollHorizontally="false"
+                android:textSize="16sp"></EditText>
+
+            <Button
+                android:id="@+id/comment_send_btn"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/post__comment_send_btn"></Button>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

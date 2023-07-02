@@ -52,8 +52,18 @@
         <entry key="..\:/Projects/tourapi project/AndroidApp/app/src/main/res/layout/fragment_search_result.xml" value="0.36614583333333334" />
         <entry key="..\:/Projects/tourapi project/AndroidApp/app/src/main/res/layout/observation__course_slider.xml" value="0.36614583333333334" />
         <entry key="..\:/Projects/tourapi project/AndroidApp/app/src/main/res/layout/observe_fee.xml" value="0.36614583333333334" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/drawable/alarm__star.xml" value="0.367" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/drawable/love.xml" value="0.367" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/drawable/wt__bad_observational_fit.xml" value="0.367" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/drawable/wt__best_observational_fit.xml" value="0.367" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/drawable/wt__day_today.xml" value="0.366" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_star.xml" value="0.3523550724637681" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_tourist_point.xml" value="0.3220108695652174" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_weather2.xml" value="0.27848101265822783" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/weather__day_view.xml" value="0.3523550724637681" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/weather__hour_view.xml" value="0.5" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>
