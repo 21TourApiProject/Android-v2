@@ -49,6 +49,7 @@
         <item name="android:layout_columnWeight">600</item>
     </style>
 
+
     <style name="StarryNight.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

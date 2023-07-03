@@ -6,23 +6,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.starrynight.tourapiproject.mapPage.Activities;
-import com.starrynight.tourapiproject.mapPage.MapFragment;
 import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
 import com.starrynight.tourapiproject.postItemPage.OnPostPointItemClickListener;
 import com.starrynight.tourapiproject.postItemPage.Post_point_item_Adapter;
 import com.starrynight.tourapiproject.postItemPage.post_point_item;
-import com.starrynight.tourapiproject.searchPage.FilterFragment;
-import com.starrynight.tourapiproject.searchPage.SearchResultFragment;
+import com.starrynight.tourapiproject.searchPage.SearchResultActivity;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchFirst;
 
@@ -51,74 +45,16 @@ public class SearchFragment extends Fragment {
 
         ((MainActivity) getActivity()).setFilter(null);
 
-        androidx.appcompat.widget.SearchView searchView = v.findViewById(R.id.search2);
-        searchView.setIconifiedByDefault(false);
-        searchView.setQueryHint("원하는 것을 검색해보세요");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        LinearLayout searchButton = v.findViewById(R.id.sf_search_btn);
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-
-                Bundle bundle = new Bundle(); // 번들을 통해 값 전달
-                bundle.putInt("type", 2);
-                bundle.putString("keyword", query);
-
-                ((MainActivity) getActivity()).setFilter(null);
-                Fragment resultfragment = new SearchResultFragment();
-                resultfragment.setArguments(bundle);
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.add(R.id.main_view, resultfragment);
-                ((MainActivity) getActivity()).setSearchResult(resultfragment);
-                transaction.addToBackStack(null);
-                transaction.hide(SearchFragment.this);
-                transaction.commit();
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), SearchResultActivity.class);
+                startActivity(intent);
             }
         });
 
-        //지도 페이지로
-        ImageButton map_btn = (ImageButton) v.findViewById(R.id.mapBtn2);
-        map_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle(); // 번들을 통해 값 전달
-                bundle.putSerializable("FromWhere", Activities.SEARCH);//번들에 넘길 값 저장
-
-                MapFragment mapFragment = new MapFragment();
-                mapFragment.setArguments(bundle);
-
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.add(R.id.main_view, mapFragment);
-                ((MainActivity) getActivity()).setMap(mapFragment);
-                transaction.addToBackStack(null);
-                transaction.hide(SearchFragment.this);
-                transaction.commit();
-//                ((MainActivity)getActivity()).replaceFragment(mapFragment);
-            }
-        });
-
-        //필터 고르는 페이지로
-        ImageButton filter_btn = (ImageButton) v.findViewById(R.id.filterBtn2);
-        filter_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("fromWhere", Activities.SEARCH);
-
-                FilterFragment filterFragment = new FilterFragment();
-                filterFragment.setArguments(bundle);
-                ((MainActivity) getActivity()).setFilter(filterFragment);
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.add(R.id.main_view, filterFragment);
-                transaction.addToBackStack(null);
-                transaction.hide(SearchFragment.this);
-                transaction.commit();
-            }
-        });
 
         if (getArguments() != null) {
             int type = getArguments().getInt("type");

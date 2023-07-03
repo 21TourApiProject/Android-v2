@@ -99,6 +99,7 @@ public class ObservationsiteActivity extends AppCompatActivity {
 
     private ObservationFeeAdapter observationFeeAdapter;
     private List<ObserveFee> obs_fee_list;
+    private boolean isFeeClosed =true;
     private String[] relatefilename = new String[5];
 
 
@@ -129,6 +130,9 @@ public class ObservationsiteActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Log.d(TAG, "관측지 호출 성공");
                     observation = response.body();
+                    if (observation.getSaved() == null) {
+                        observation.setSaved();
+                    }
 
                     Call<List<ObserveImageInfo>> call3 = RetrofitClient.getApiService().getObserveImageInfo(observationId);
                     call3.enqueue(new Callback<List<ObserveImageInfo>>() {
@@ -272,7 +276,8 @@ public class ObservationsiteActivity extends AppCompatActivity {
 
                     //코스설정
                     setCourse();
-
+                    //찜버튼 설정
+                    setSaveBtn();
 
                 } else {
                     Log.e(TAG, "관측지 호출 실패");
@@ -286,12 +291,9 @@ public class ObservationsiteActivity extends AppCompatActivity {
 
         });
 
-        //찜버튼 설정
-        LinearLayout save_btn = findViewById(R.id.obs_save_btn);
-        ImageView save_img = findViewById(R.id.obs_save_img);
-        TextView save_count = findViewById(R.id.obs_save_count);
 
-        save_count.setText(observation.getSaved().toString());
+
+
 
         //앱 내부 저장소의 userId 데이터 읽기
         String fileName = "userId";
@@ -306,79 +308,7 @@ public class ObservationsiteActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        //이미 찜한건지 확인
-        Call<Boolean> call0 = com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient.getApiService().isThereMyWish(userId, observationId, 0);
-        call0.enqueue(new Callback<Boolean>() {
-            @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                if (response.isSuccessful()) {
-                    if (response.body()) {
-                        isWish = true;
-                        save_img.setImageResource(R.drawable.bookmark);
-                    } else {
-                        isWish = false;
-                    }
-                } else {
-                    Log.d("isWish", "내 찜 조회하기 실패");
-                }
-            }
 
-            @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
-                Log.e("연결실패", t.getMessage());
-            }
-        });
-
-        // 짐버튼 클릭 설정정
-       save_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isWish) { //찜 안한 상태일때
-                    Call<Void> call = com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient.getApiService().createMyWish(userId, observationId, 0);
-                    call.enqueue(new Callback<Void>() {
-                        @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
-                            if (response.isSuccessful()) {
-                                //버튼 디자인 바뀌게 구현하기
-                                isWish = true;
-                                save_img.setImageResource(R.drawable.bookmark);
-                                Long count_tmp = observation.getSaved()+1;
-                                save_count.setText(count_tmp.toString());
-                                Toast.makeText(getApplicationContext(), "나의 여행버킷리스트에 저장되었습니다.", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Log.d("isWish", "관광지 찜 실패");
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Void> call, Throwable t) {
-                            Log.e("연결실패", t.getMessage());
-                        }
-                    });
-                } else {
-                    Call<Void> call = com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient.getApiService().deleteMyWish(userId, observationId, 0);
-                    call.enqueue(new Callback<Void>() {
-                        @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
-                            if (response.isSuccessful()) {
-                                isWish = false;
-                                save_img.setImageResource(R.drawable.bookmark_non);
-                                Long count_tmp = observation.getSaved()-1;
-                                save_count.setText(count_tmp.toString());
-                                Toast.makeText(getApplicationContext(), "나의 여행버킷리스트에서 삭제되었습니다.", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Log.d("isWishDelete", "관광지 찜 삭제 실패");
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Void> call, Throwable t) {
-                            Log.e("연결실패", t.getMessage());
-                        }
-                    });
-                }
-            }
-        });
         ImageButton back_btn = findViewById(R.id.obs_back_btn);
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -466,6 +396,87 @@ public class ObservationsiteActivity extends AppCompatActivity {
 
     }
 
+    private void setSaveBtn(){
+        //찜버튼 설정
+        LinearLayout save_btn = findViewById(R.id.obs_save_btn);
+        ImageView save_img = findViewById(R.id.obs_save_img);
+        TextView save_count = findViewById(R.id.obs_save_count);
+        save_count.setText(observation.getSaved().toString());
+
+        //이미 찜한건지 확인
+        Call<Boolean> call0 = com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient.getApiService().isThereMyWish(userId, observation.getObservationId(), 0);
+        call0.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.isSuccessful()) {
+                    if (response.body()) {
+                        isWish = true;
+                        save_img.setImageResource(R.drawable.bookmark);
+                    } else {
+                        isWish = false;
+                    }
+                } else {
+                    Log.d("isWish", "내 찜 조회하기 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.e("연결실패", t.getMessage());
+            }
+        });
+
+        // 짐버튼 클릭 설정정
+        save_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isWish) { //찜 안한 상태일때
+                    Call<Void> call = com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient.getApiService().createMyWish(userId, observation.getObservationId(), 0);
+                    call.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                //버튼 디자인 바뀌게 구현하기
+                                isWish = true;
+                                save_img.setImageResource(R.drawable.bookmark);
+                                Long count_tmp = observation.getSaved()+1;
+                                save_count.setText(count_tmp.toString());
+                                Toast.makeText(getApplicationContext(), "나의 여행버킷리스트에 저장되었습니다.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Log.d("isWish", "관광지 찜 실패");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Log.e("연결실패", t.getMessage());
+                        }
+                    });
+                } else {
+                    Call<Void> call = com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient.getApiService().deleteMyWish(userId, observation.getObservationId(), 0);
+                    call.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                isWish = false;
+                                save_img.setImageResource(R.drawable.bookmark_non);
+                                Long count_tmp = observation.getSaved()-1;
+                                save_count.setText(count_tmp.toString());
+                                Toast.makeText(getApplicationContext(), "나의 여행버킷리스트에서 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Log.d("isWishDelete", "관광지 찜 삭제 실패");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Log.e("연결실패", t.getMessage());
+                        }
+                    });
+                }
+            }
+        });
+    }
 
     private void initHashtagRecycler() {
         //해쉬태그 리사이클러 초기화
@@ -497,15 +508,19 @@ public class ObservationsiteActivity extends AppCompatActivity {
         moreFeeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (observationFeeAdapter.getItemCount()<=3) {
-                    //더보기 접혀있을 때
-
+                if (observationFeeAdapter.getItemCount() <= 3) {
+                    observationFeeAdapter.showMoreFee();
+                    moreFeeImg.setImageResource(R.drawable.observation__fee_close);
+                    moreFeeTxt.setText("접기");
                 }else{
-                    //더보기 열여있을 때
-
+                    observationFeeAdapter.closeMoreFee();
+                    moreFeeImg.setImageResource(R.drawable.observation__fee_more);
+                    moreFeeTxt.setText("더보기");
                 }
+                observationFeeAdapter.notifyDataSetChanged();
             }
         });
+
 
         Call<List<ObserveFee>> call4 = RetrofitClient.getApiService().getObserveFeeList(observationId);
         call4.enqueue(new Callback<List<ObserveFee>>() {
@@ -515,6 +530,10 @@ public class ObservationsiteActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Log.d(TAG, "관측지 이용요금 호출 성공");
                     obs_fee_list = response.body();
+
+                    if (obs_fee_list.size()<=3) {
+                        moreFeeBtn.setVisibility(View.GONE);
+                    }
 
                     for (ObserveFee p : obs_fee_list) {
                         ObservationFeeItem item = new ObservationFeeItem();
@@ -816,7 +835,7 @@ public class ObservationsiteActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 review_tab.setVisibility(View.VISIBLE);
-                information_tab.setVisibility(View.INVISIBLE);
+                information_tab.setVisibility(View.GONE);
             }
         });
 
@@ -825,7 +844,7 @@ public class ObservationsiteActivity extends AppCompatActivity {
         info_tab_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                review_tab.setVisibility(View.INVISIBLE);
+                review_tab.setVisibility(View.GONE);
                 information_tab.setVisibility(View.VISIBLE);
             }
         });

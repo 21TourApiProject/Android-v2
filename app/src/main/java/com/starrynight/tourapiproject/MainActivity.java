@@ -27,7 +27,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.starrynight.tourapiproject.mapPage.Activities;
 import com.starrynight.tourapiproject.mapPage.MapFragment;
-import com.starrynight.tourapiproject.searchPage.FilterFragment;
+import com.starrynight.tourapiproject.searchPage.filter.FilterFragment;
 import com.starrynight.tourapiproject.searchPage.SearchResultFragment;
 import com.starrynight.tourapiproject.starPage.TonightSkyFragment;
 
