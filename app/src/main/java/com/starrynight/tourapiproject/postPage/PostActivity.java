@@ -37,6 +37,7 @@ import com.starrynight.tourapiproject.MainFragment;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.mapPage.Activities;
 import com.starrynight.tourapiproject.myPage.myPageRetrofit.User;
+import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
 import com.starrynight.tourapiproject.observationPage.observationPageRetrofit.Observation;
 import com.starrynight.tourapiproject.postItemPage.OnPostHashTagClickListener;
 import com.starrynight.tourapiproject.postItemPage.OnPostPointItemClickListener;
@@ -97,7 +98,7 @@ public class PostActivity extends AppCompatActivity {
     int allsize = 0;
     TextView nickname;
     TextView postTitle,postContent,postTime,postDate,postLike,loveCount,postObservation;
-    ImageView profileImage;
+    ImageView profileImage,postObservationbtn;
     RecyclerView commentRecyclerView;
     List<String> postHashTags;
     List<PostHashTag> postHashTagList;
@@ -174,6 +175,7 @@ public class PostActivity extends AppCompatActivity {
         nickname = findViewById(R.id.post_nickname);
         postLike = findViewById(R.id.love_count);
         postObservation = findViewById(R.id.postObservationText);
+        postObservationbtn = findViewById(R.id.postObservationbtn);
         profileImage.setBackground(new ShapeDrawable(new OvalShape()));
         profileImage.setClipToOutline(true);
         //게시물 정보가져오는 get api
@@ -199,7 +201,26 @@ public class PostActivity extends AppCompatActivity {
                             if (response.isSuccessful()) {
                                 Log.d("postObservation", "게시물 관측지 가져옴");
                                 Observation observation = response.body();
-                                postObservation.setText(observation.getObservationName());
+                                if(!observation.getObservationName().equals("나만의 관측지")){
+                                    postObservation.setText(observation.getObservationName());
+                                    postObservationbtn.setVisibility(View.VISIBLE);
+                                }else{
+                                    postObservation.setText(post.getOptionObservation());
+                                    postObservationbtn.setVisibility(View.GONE);
+                                }
+
+                                //관측지 클릭시 지정된 관측지면 관측지 상세페이지로 이동
+                                postObservation.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if(!observation.getObservationName().equals("나만의 관측지")){
+                                            Intent intent1 = new Intent(PostActivity.this, ObservationsiteActivity.class);
+                                            intent1.putExtra("observationId", observation.getObservationId());
+                                            startActivity(intent1);
+                                        }
+                                    }
+                                });
+
                                 //게시물 해시태그
                                 Call<List<PostHashTag>> call6 = RetrofitClient.getApiService().getPostHashTags(postId);
                                 call6.enqueue(new Callback<List<PostHashTag>>() {

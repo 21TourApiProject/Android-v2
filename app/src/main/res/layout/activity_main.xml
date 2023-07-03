@@ -13,7 +13,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/bottom_nav_size"
         android:background="@drawable/main__bar"
-        app:itemIconSize="40dp"
+        app:itemIconSize="80dp"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

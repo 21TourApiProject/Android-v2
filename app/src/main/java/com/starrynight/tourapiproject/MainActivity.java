@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                             removeFragments();
                         }
                         return true;
-                    case R.id.navigation_search:
+                    case R.id.navigation_observation:
                         if (searchFragment == null) {
                             searchFragment = new SearchFragment();
                             getSupportFragmentManager().beginTransaction().add(R.id.main_view, searchFragment).commit();
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle(); // 번들을 통해 값 전달
                 bundle.putSerializable("FromWhere", Activities.OBSERVATION);//번들에 넘길 값 저장
                 bundle.putSerializable("BalloonObject", intent.getSerializableExtra("BalloonObject"));    //지도에 필요한 내용
-                bottomNavigationView.setSelectedItemId(R.id.navigation_search);
+                bottomNavigationView.setSelectedItemId(R.id.navigation_observation);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 Fragment mapfragment = new MapFragment();
                 mapfragment.setArguments(bundle);
@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle(); // 번들을 통해 값 전달
                 bundle.putSerializable("FromWhere", Activities.TOURISTPOINT);//번들에 넘길 값 저장
                 bundle.putSerializable("BalloonObject", intent.getSerializableExtra("BalloonObject"));    //지도에 필요한 내용
-                bottomNavigationView.setSelectedItemId(R.id.navigation_search);
+                bottomNavigationView.setSelectedItemId(R.id.navigation_observation);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 Fragment mapfragment = new MapFragment();
                 mapfragment.setArguments(bundle);
@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
                 map = mapfragment;
                 transaction.commit();
             } else if (fromWhere == Activities.POST) {
-                bottomNavigationView.setSelectedItemId(R.id.navigation_search);
+                bottomNavigationView.setSelectedItemId(R.id.navigation_observation);
                 getSupportFragmentManager().beginTransaction().hide(searchFragment).commit();
                 Bundle bundle = new Bundle();
                 bundle.putInt("type", 1);
@@ -240,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("1번이니");
             if (fragmentManager.getBackStackEntryCount() > 0) {
                 fragmentManager.beginTransaction().remove(fragment).commit();
-                bottomNavigationView.setSelectedItemId(R.id.navigation_search);
+                bottomNavigationView.setSelectedItemId(R.id.navigation_observation);
             } else {
                 super.onBackPressed();
             }
@@ -281,11 +281,11 @@ public class MainActivity extends AppCompatActivity {
                 System.exit(0);
 //                finish();
             }
-        } else if (bottomNavigationView.getSelectedItemId() == R.id.navigation_person || bottomNavigationView.getSelectedItemId() == R.id.navigation_search) {
+        } else if (bottomNavigationView.getSelectedItemId() == R.id.navigation_person || bottomNavigationView.getSelectedItemId() == R.id.navigation_observation) {
             System.out.println("3번이니");
             if (map != null || searchResult != null) {
                 if (fragmentManager.getBackStackEntryCount() > 0) {
-                    bottomNavigationView.setSelectedItemId(R.id.navigation_search);
+                    bottomNavigationView.setSelectedItemId(R.id.navigation_observation);
                 } else {
                     finish();
                 }

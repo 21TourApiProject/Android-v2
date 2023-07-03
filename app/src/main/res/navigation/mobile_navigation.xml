@@ -12,9 +12,9 @@
         tools:layout="@layout/fragment_main" />
 
     <fragment
-        android:id="@+id/navigation_search"
+        android:id="@+id/navigation_observation"
         android:name="com.starrynight.tourapiproject.SearchFragment"
-        android:label="@string/title_search"
+        android:label="@string/title_observation"
         tools:layout="@layout/fragment_search" />
 
     <fragment

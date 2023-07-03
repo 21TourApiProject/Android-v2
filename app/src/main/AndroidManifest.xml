@@ -29,7 +29,8 @@
         android:theme="@style/StarryNight"
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
-        <activity android:name=".postWritePage.SelectTimeActivity"></activity>
+        <activity android:name=".weatherPage2.WeatherLocationSearchActivity"></activity>
+        <activity android:name=".postWritePage.SelectTimeActivity" />
         <activity android:name=".starPage.StarCompassActivity" />
         <activity android:name=".starPage.StarCameraActivity" />
         <activity android:name=".weatherPage2.WeatherActivity2" />
@@ -102,7 +103,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-<!--                 Redirect URI: "kakao{NATIVE_APP_KEY}://oauth" -->
+                <!-- Redirect URI: "kakao{NATIVE_APP_KEY}://oauth" -->
                 <data
                     android:host="oauth"
                     android:scheme="kakao2201411c61cc7086fe639ce660ccb21e" />

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
@@ -27,6 +28,7 @@ import com.starrynight.tourapiproject.postWritePage.PostWriteActivity;
 import com.starrynight.tourapiproject.searchPage.SearchResultAdapter2;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.Filter;
 import com.starrynight.tourapiproject.weatherPage2.WeatherActivity2;
+import com.starrynight.tourapiproject.weatherPage2.WeatherLocationSearchActivity;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -72,6 +74,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     RecyclerView recyclerView;
     MainPost_adapter adapter;
     ProgressBar progressBar;
+    LinearLayout weatherLinearLayout;
     public MainFragment() {
         // Required empty public constructor
     }
@@ -98,6 +101,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         nestedScrollView = v.findViewById(R.id.scroll_layout);
         recyclerView = v.findViewById(R.id.recyclerView);
         progressBar = v.findViewById(R.id.mainProgressBar);
+        weatherLinearLayout = v.findViewById(R.id.mainpage_weatherLinearLayout);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         String fileName = "userId"; // 유저 아이디 가져오기
@@ -168,15 +172,6 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
 
-        //날씨 버튼
-        ImageButton button = (ImageButton) v.findViewById(R.id.weather_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), WeatherActivity2.class);
-                startActivity(intent);
-            }
-        });
 
         // 게시물 작성 페이지로 넘어가는 이벤트
         Button postWrite = (Button) v.findViewById(R.id.postWrite);
@@ -199,8 +194,19 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
 
+        //위치 검색바 클릭 시 위치 검색 페이지로 이동하는 이벤트
+        weatherLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
+                startActivityForResult(intent, 105);
+            }
+        });
+
         return v;
     }
+
+
 
     public void toTheTop() {
         LinearLayoutManager linearLayoutManager = (LinearLayoutManager)recyclerView.getLayoutManager();

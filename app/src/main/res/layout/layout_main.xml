@@ -20,7 +20,7 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/mainslider"
             android:layout_width="match_parent"
-            android:layout_height="350dp">
+            android:layout_height="360dp">
 
         </androidx.viewpager2.widget.ViewPager2>
 
@@ -46,13 +46,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linearLayout2">
 
-        <Button
+        <ImageView
             android:id="@+id/mainplus_btn"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:layout_gravity="center"
             android:layout_marginEnd="12dp"
-            android:background="@drawable/main__bookmark"
-            android:layout_gravity="center" />
+            android:background="@drawable/main__bookmark" />
 
         <TextView
             android:id="@+id/mainpost_title"
@@ -78,7 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="14dp"
-        android:background="@color/bg_dark_indigo"
+        android:background="@color/bg_black"
         android:orientation="vertical"
         android:paddingHorizontal="24dp"
         android:paddingBottom="16dp"
