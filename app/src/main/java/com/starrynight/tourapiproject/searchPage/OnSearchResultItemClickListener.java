@@ -4,5 +4,5 @@ import android.view.View;
 
 
 public interface OnSearchResultItemClickListener {
-    public void onItemClick(SearchResultAdapter.ViewHolder holder, View view, int position);
+    public void onItemClick(SearchItemRecyclerAdapter.MyViewHolder holder, View view, int position);
 }
