@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +21,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.starrynight.tourapiproject.R;
 
 import java.util.List;
+import java.util.Objects;
 
 
 public class BottomFilterFragment extends BottomSheetDialogFragment {
@@ -111,7 +113,8 @@ public class BottomFilterFragment extends BottomSheetDialogFragment {
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().onBackPressed();
+                dismiss();
+
             }
         });
 
@@ -220,4 +223,5 @@ public class BottomFilterFragment extends BottomSheetDialogFragment {
         this.firstTab = firstTab;
 
     }
+
 }

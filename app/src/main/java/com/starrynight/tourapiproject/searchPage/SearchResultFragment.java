@@ -534,40 +534,40 @@ public class SearchResultFragment extends Fragment {
                 }
                 Filter filter = new Filter(areaCodeList, hashTagIdList);
                 SearchKey searchKey = new SearchKey(filter, keyword);
-                Call<List<MyPost>> call = RetrofitClient.getApiService().getPostWithFilter(searchKey);
-                call.enqueue(new Callback<List<MyPost>>() {
-                    @Override
-                    public void onResponse(Call<List<MyPost>> call, Response<List<MyPost>> response) {
-                        if (response.isSuccessful()) {
-                            Log.d("searchPost", "검색 게시물 업로드 성공");
-                            postResult = response.body();
-                            MyPostAdapter postAdapter = new MyPostAdapter(postResult, getContext());
-                            searchResult6.setAdapter(postAdapter);
-                            if (postResult.isEmpty()){
-                                no_result.setVisibility(View.VISIBLE);
-                            }else{no_result.setVisibility(View.GONE);}
-                            postAdapter.setOnMyWishPostItemClickListener(new OnMyPostItemClickListener() {
-                                @Override
-                                public void onItemClick(MyPostAdapter.ViewHolder holder, View view, int position) {
-                                    MyPost item = postAdapter.getItem(position);
-                                    Intent intent = new Intent(getContext(), PostActivity.class);
-                                    intent.putExtra("postId", item.getPostId());
-                                    startActivity(intent);
-                                }
-                            });
-
-                        } else {
-                            Log.d("searchPost", "검색 게시물 업로드 실패");
-                            morePostText.setVisibility(View.GONE);
-                            postline.setVisibility(View.GONE);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<MyPost>> call, Throwable t) {
-                        Log.d("searchPost", "검색 게시물 인터넷 오류");
-                    }
-                });
+//                Call<List<MyPost>> call = RetrofitClient.getApiService().getPostWithFilter(searchKey);
+//                call.enqueue(new Callback<List<MyPost>>() {
+//                    @Override
+//                    public void onResponse(Call<List<MyPost>> call, Response<List<MyPost>> response) {
+//                        if (response.isSuccessful()) {
+//                            Log.d("searchPost", "검색 게시물 업로드 성공");
+//                            postResult = response.body();
+//                            MyPostAdapter postAdapter = new MyPostAdapter(postResult, getContext());
+//                            searchResult6.setAdapter(postAdapter);
+//                            if (postResult.isEmpty()){
+//                                no_result.setVisibility(View.VISIBLE);
+//                            }else{no_result.setVisibility(View.GONE);}
+//                            postAdapter.setOnMyWishPostItemClickListener(new OnMyPostItemClickListener() {
+//                                @Override
+//                                public void onItemClick(MyPostAdapter.ViewHolder holder, View view, int position) {
+//                                    MyPost item = postAdapter.getItem(position);
+//                                    Intent intent = new Intent(getContext(), PostActivity.class);
+//                                    intent.putExtra("postId", item.getPostId());
+//                                    startActivity(intent);
+//                                }
+//                            });
+//
+//                        } else {
+//                            Log.d("searchPost", "검색 게시물 업로드 실패");
+//                            morePostText.setVisibility(View.GONE);
+//                            postline.setVisibility(View.GONE);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<List<MyPost>> call, Throwable t) {
+//                        Log.d("searchPost", "검색 게시물 인터넷 오류");
+//                    }
+//                });
 
             }
         });
@@ -795,37 +795,37 @@ public class SearchResultFragment extends Fragment {
                 }
                 Filter filter = new Filter(areaCodeList, hashTagIdList);
                 SearchKey searchKey = new SearchKey(filter, keyword);
-                Call<List<MyPost>> call = RetrofitClient.getApiService().getPostWithFilter(searchKey);
-                call.enqueue(new Callback<List<MyPost>>() {
-                    @Override
-                    public void onResponse(Call<List<MyPost>> call, Response<List<MyPost>> response) {
-                        if (response.isSuccessful()) {
-                            Log.d("searchPost", "검색 게시물 업로드 성공");
-                            postResult = response.body();
-                            MyPostAdapter postAdapter = new MyPostAdapter(postResult, getContext());
-                            searchResult6.setAdapter(postAdapter);
-                            postAdapter.setOnMyWishPostItemClickListener(new OnMyPostItemClickListener() {
-                                @Override
-                                public void onItemClick(MyPostAdapter.ViewHolder holder, View view, int position) {
-                                    MyPost item = postAdapter.getItem(position);
-                                    Intent intent = new Intent(getContext(), PostActivity.class);
-                                    intent.putExtra("postId", item.getPostId());
-                                    startActivity(intent);
-                                }
-                            });
-
-                        } else {
-                            Log.d("searchPost", "검색 게시물 업로드 실패");
-                            morePostText.setVisibility(View.GONE);
-                            postline.setVisibility(View.GONE);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<MyPost>> call, Throwable t) {
-                        Log.d("searchPost", "검색 게시물 인터넷 오류");
-                    }
-                });
+//                Call<List<MyPost>> call = RetrofitClient.getApiService().getPostWithFilter(searchKey);
+//                call.enqueue(new Callback<List<MyPost>>() {
+//                    @Override
+//                    public void onResponse(Call<List<MyPost>> call, Response<List<MyPost>> response) {
+//                        if (response.isSuccessful()) {
+//                            Log.d("searchPost", "검색 게시물 업로드 성공");
+//                            postResult = response.body();
+//                            MyPostAdapter postAdapter = new MyPostAdapter(postResult, getContext());
+//                            searchResult6.setAdapter(postAdapter);
+//                            postAdapter.setOnMyWishPostItemClickListener(new OnMyPostItemClickListener() {
+//                                @Override
+//                                public void onItemClick(MyPostAdapter.ViewHolder holder, View view, int position) {
+//                                    MyPost item = postAdapter.getItem(position);
+//                                    Intent intent = new Intent(getContext(), PostActivity.class);
+//                                    intent.putExtra("postId", item.getPostId());
+//                                    startActivity(intent);
+//                                }
+//                            });
+//
+//                        } else {
+//                            Log.d("searchPost", "검색 게시물 업로드 실패");
+//                            morePostText.setVisibility(View.GONE);
+//                            postline.setVisibility(View.GONE);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<List<MyPost>> call, Throwable t) {
+//                        Log.d("searchPost", "검색 게시물 인터넷 오류");
+//                    }
+//                });
             }
         });
 
@@ -1060,56 +1060,56 @@ public class SearchResultFragment extends Fragment {
         finalPostResult.clear();
         morePostText.setVisibility(View.VISIBLE);
         postline.setVisibility(View.VISIBLE);
-        Call<List<MyPost>> call3 = RetrofitClient.getApiService().getPostWithFilter(searchKey);
-        call3.enqueue(new Callback<List<MyPost>>() {
-            @Override
-            public void onResponse(Call<List<MyPost>> call, Response<List<MyPost>> response) {
-                if (response.isSuccessful()) {
-                    Log.d("searchPost", "검색 게시물 업로드 성공");
-                    postResult = response.body();
-                    if (postResult.size() <= 3) {
-                        morePostText.setVisibility(View.GONE);
-                    }
-                    if (postResult.size()==0){
-                        morePostText.setVisibility(View.GONE);
-                        postline.setVisibility(View.GONE);
-                    }
-                    if (postResult.size() > 3) {
-                        finalPostResult.add(postResult.get(0));
-                        finalPostResult.add(postResult.get(1));
-                        finalPostResult.add(postResult.get(2));
-                        morePostText.setVisibility(View.VISIBLE);
-                        postline.setVisibility(View.VISIBLE);
-                    } else {
-                        finalPostResult.addAll(postResult);
-                    }
-                    MyPostAdapter postAdapter = new MyPostAdapter(finalPostResult, getContext());
-                    searchResult3.setAdapter(postAdapter);
-                    if (finalPostResult.isEmpty()){
-                        no_result.setVisibility(View.VISIBLE);
-                    }else{no_result.setVisibility(View.GONE);}
-                    postAdapter.setOnMyWishPostItemClickListener(new OnMyPostItemClickListener() {
-                        @Override
-                        public void onItemClick(MyPostAdapter.ViewHolder holder, View view, int position) {
-                            MyPost item = postAdapter.getItem(position);
-                            Intent intent = new Intent(getContext(), PostActivity.class);
-                            intent.putExtra("postId", item.getPostId());
-                            startActivity(intent);
-                        }
-                    });
-
-                } else {
-                    Log.d("searchPost", "검색 게시물 업로드 실패");
-                    morePostText.setVisibility(View.GONE);
-                    postline.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<MyPost>> call, Throwable t) {
-                Log.d("searchPost", "검색 게시물 인터넷 오류");
-            }
-        });
+//        Call<List<MyPost>> call3 = RetrofitClient.getApiService().getPostWithFilter(searchKey);
+//        call3.enqueue(new Callback<List<MyPost>>() {
+//            @Override
+//            public void onResponse(Call<List<MyPost>> call, Response<List<MyPost>> response) {
+//                if (response.isSuccessful()) {
+//                    Log.d("searchPost", "검색 게시물 업로드 성공");
+//                    postResult = response.body();
+//                    if (postResult.size() <= 3) {
+//                        morePostText.setVisibility(View.GONE);
+//                    }
+//                    if (postResult.size()==0){
+//                        morePostText.setVisibility(View.GONE);
+//                        postline.setVisibility(View.GONE);
+//                    }
+//                    if (postResult.size() > 3) {
+//                        finalPostResult.add(postResult.get(0));
+//                        finalPostResult.add(postResult.get(1));
+//                        finalPostResult.add(postResult.get(2));
+//                        morePostText.setVisibility(View.VISIBLE);
+//                        postline.setVisibility(View.VISIBLE);
+//                    } else {
+//                        finalPostResult.addAll(postResult);
+//                    }
+//                    MyPostAdapter postAdapter = new MyPostAdapter(finalPostResult, getContext());
+//                    searchResult3.setAdapter(postAdapter);
+//                    if (finalPostResult.isEmpty()){
+//                        no_result.setVisibility(View.VISIBLE);
+//                    }else{no_result.setVisibility(View.GONE);}
+//                    postAdapter.setOnMyWishPostItemClickListener(new OnMyPostItemClickListener() {
+//                        @Override
+//                        public void onItemClick(MyPostAdapter.ViewHolder holder, View view, int position) {
+//                            MyPost item = postAdapter.getItem(position);
+//                            Intent intent = new Intent(getContext(), PostActivity.class);
+//                            intent.putExtra("postId", item.getPostId());
+//                            startActivity(intent);
+//                        }
+//                    });
+//
+//                } else {
+//                    Log.d("searchPost", "검색 게시물 업로드 실패");
+//                    morePostText.setVisibility(View.GONE);
+//                    postline.setVisibility(View.GONE);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<MyPost>> call, Throwable t) {
+//                Log.d("searchPost", "검색 게시물 인터넷 오류");
+//            }
+//        });
     }
 
     private class LoadingAsyncTask extends AsyncTask<String, Long, Boolean> {

@@ -6,16 +6,27 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.searchPage.filter.BottomFilterFragment;
 import com.starrynight.tourapiproject.searchPage.filter.FilterType;
 import com.starrynight.tourapiproject.searchPage.filter.HashTagItem;
+import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.Filter;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.RetrofitClient;
+import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchKey;
+import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchParams1;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -28,8 +39,8 @@ public class SearchResultActivity extends AppCompatActivity {
     String keyword = null;
     BottomFilterFragment filterFragment;
 
-    List<HashTagItem> hashTagItems;
-    List<HashTagItem> areaList;
+    List<HashTagItem> hashTagItems = new ArrayList<>();
+    List<HashTagItem> areaList = new ArrayList<>();
     List<HashTagItem> themeList = new ArrayList<>();
     List<HashTagItem> peopleList = new ArrayList<>();
     List<HashTagItem> transportList = new ArrayList<>();
@@ -39,8 +50,20 @@ public class SearchResultActivity extends AppCompatActivity {
     LinearLayout peopleBtn;
     LinearLayout themeBtn;
 
+    ViewPager2 resultViewPager;
+    TabLayout tabLayout;
+    ResultViewPagerAdapter resultViewPagerAdapter;
+
+    List<Long> areaCodeList = new ArrayList<>();
+    List<Long> hashTagIdList = new ArrayList<>();
+    List<SearchParams1> observationResult;
+    List<SearchParams1> postResult;
+
+    FragmentManager fragmentManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        System.out.println("create실행중");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
 
@@ -49,15 +72,21 @@ public class SearchResultActivity extends AppCompatActivity {
         peopleBtn = findViewById(R.id.sr_people_btn);
         themeBtn = findViewById(R.id.sr_theme_btn);
 
+        resultViewPager = findViewById(R.id.sr_result_view_pager);
+        tabLayout = findViewById(R.id.sr_tab_layout);
+
         ImageView back = findViewById(R.id.sr_back_btn);
         back.setOnClickListener(v -> finish());
 
         androidx.appcompat.widget.SearchView searchView = findViewById(R.id.sr_search_input);
 
+        fragmentManager = getSupportFragmentManager();
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 keyword = query;
+                getObservation();
                 return true;
             }
 
@@ -67,9 +96,102 @@ public class SearchResultActivity extends AppCompatActivity {
             }
         });
 
-
         getFilterHashtags();
 
+    }
+
+    @Override
+    protected void onResume() {
+        System.out.println("resume실행중");
+        super.onResume();
+        getObservation();
+    }
+
+    private void setViewPager() {
+        resultViewPagerAdapter = new ResultViewPagerAdapter(getSupportFragmentManager(),getLifecycle(),observationResult,postResult);
+        resultViewPager.setAdapter(resultViewPagerAdapter);
+        final List<String> tabElement = Arrays.asList("관측지","게시글");
+
+        //tabLyout와 viewPager 연결
+        new TabLayoutMediator(tabLayout, resultViewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull @NotNull TabLayout.Tab tab, int position) {
+//                LinearLayout tabview = new LinearLayout(SearchResultActivity.this);
+//                textView.setText(tabElement.get(position));
+//                tab.setCustomView(textView);
+                tab.setText(tabElement.get(position));
+            }
+
+        }).attach();
+    }
+
+    private void setFilter(){
+        hashTagIdList.clear();
+        areaCodeList.clear();
+        for (HashTagItem h : hashTagItems) {
+            if (h.getIsActive() == HashTagItem.VIEWTYPE_ACTIVE) {
+                hashTagIdList.add(h.getId());
+            }
+        }
+        for (HashTagItem h : areaList) {
+            if (h.getIsActive() == HashTagItem.VIEWTYPE_ACTIVE) {
+                areaCodeList.add(h.getId());
+            }
+        }
+    }
+
+    private void getObservation(){
+
+        setFilter();
+
+        Filter filter = new Filter(areaCodeList, hashTagIdList);
+        SearchKey searchKey = new SearchKey(filter, keyword);
+        Call<List<SearchParams1>> call = RetrofitClient.getApiService().getObservationWithFilter(searchKey);
+        call.enqueue(new Callback<List<SearchParams1>>() {
+            @Override
+            public void onResponse(Call<List<SearchParams1>> call, Response<List<SearchParams1>> response) {
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "관측지 검색 성공");
+                    observationResult = response.body();
+                    getPosts();
+
+                } else {
+                    Log.e(TAG, "관측지 검색 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<SearchParams1>> call, Throwable t) {
+                Log.e("연결실패", t.getMessage());
+            }
+        });
+    }
+
+    private void getPosts(){
+
+        setFilter();
+
+        Filter filter = new Filter(areaCodeList, hashTagIdList);
+        SearchKey searchKey = new SearchKey(filter, keyword);
+        Call<List<SearchParams1>> call = RetrofitClient.getApiService().getPostWithFilter(searchKey);
+        call.enqueue(new Callback<List<SearchParams1>>() {
+            @Override
+            public void onResponse(Call<List<SearchParams1>> call, Response<List<SearchParams1>> response) {
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "게시물 검색 성공");
+                    postResult = response.body();
+                    setViewPager();
+
+                } else {
+                    Log.e(TAG, "게시물 검색 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<SearchParams1>> call, Throwable t) {
+                Log.e("연결실패", t.getMessage());
+            }
+        });
     }
 
     private void getFilterHashtags() {
@@ -104,6 +226,7 @@ public class SearchResultActivity extends AppCompatActivity {
                                 }
 
                                 setFilterOnClick();
+                                getObservation();
 
                             } else {
                                 Log.d(TAG, "해쉬태그 호출 실패");
@@ -126,6 +249,7 @@ public class SearchResultActivity extends AppCompatActivity {
     }
 
     private void setFilterOnClick() {
+
         if (filterFragment == null) {
             filterFragment = new BottomFilterFragment();
             filterFragment.setDataLists(areaList, transportList, peopleList, themeList);
