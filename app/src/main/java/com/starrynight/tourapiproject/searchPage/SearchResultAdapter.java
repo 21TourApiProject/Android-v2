@@ -100,7 +100,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
                     int position = getAdapterPosition();
 
                     if (listener != null) {
-                        listener.onItemClick(SearchResultAdapter.ViewHolder.this, view, position);
+//                        listener.onItemClick(SearchResultAdapter.ViewHolder.this, view, position);
                     }
                 }
             });

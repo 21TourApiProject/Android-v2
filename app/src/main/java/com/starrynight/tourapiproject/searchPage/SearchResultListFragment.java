@@ -1,5 +1,6 @@
 package com.starrynight.tourapiproject.searchPage;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.starrynight.tourapiproject.R;
+import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchParams1;
 
 import java.util.List;
@@ -48,6 +50,16 @@ public class SearchResultListFragment extends Fragment {
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        adapter.setOnSearchResultItemClickListener(new OnSearchResultItemClickListener() {
+            @Override
+            public void onItemClick(SearchItemRecyclerAdapter.MyViewHolder holder, View view, int position) {
+                SearchParams1 item = adapter.getItem(position);
+                System.out.println("실행되는지 확인");
+                Intent intent = new Intent(getContext(), ObservationsiteActivity.class);
+                intent.putExtra("observationId", item.getItemId());
+                startActivity(intent);
+            }
+        });
 
         return v;
     }

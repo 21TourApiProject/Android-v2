@@ -28,6 +28,7 @@ public class SearchItemRecyclerAdapter extends RecyclerView.Adapter<SearchItemRe
 
     static final String TAG = "FilterRecyclerAdapter";
 
+    OnSearchResultItemClickListener listener;
     Context context;
     List<SearchParams1> list = new ArrayList<>();
 
@@ -38,12 +39,16 @@ public class SearchItemRecyclerAdapter extends RecyclerView.Adapter<SearchItemRe
         this.list = list;
     }
 
+    public void setOnSearchResultItemClickListener(OnSearchResultItemClickListener listener) {
+        this.listener = listener;
+    }
+
     @NonNull
     @Override
     public SearchItemRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View itemView = inflater.inflate(R.layout.search__recycler_item, parent, false);
-        return new MyViewHolder(itemView);
+        return new MyViewHolder(itemView, listener);
     }
 
     @Override
@@ -60,6 +65,10 @@ public class SearchItemRecyclerAdapter extends RecyclerView.Adapter<SearchItemRe
         return list.size();
     }
 
+    public SearchParams1 getItem(int position) {
+        return list.get(position);
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
         ImageView imageView;
@@ -67,7 +76,7 @@ public class SearchItemRecyclerAdapter extends RecyclerView.Adapter<SearchItemRe
         TextView name;
         TextView savedNum;
 
-        public MyViewHolder(View itemView) {
+        public MyViewHolder(View itemView , final OnSearchResultItemClickListener listener) {
             super(itemView);
             imageView = itemView.findViewById(R.id.sr_item_image);
             name = itemView.findViewById(R.id.sr_item_name);
@@ -79,7 +88,9 @@ public class SearchItemRecyclerAdapter extends RecyclerView.Adapter<SearchItemRe
                 public void onClick(View view) {
                     int position = getAbsoluteAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-
+                        if (listener != null) {
+                            listener.onItemClick(SearchItemRecyclerAdapter.MyViewHolder.this, view, position);
+                        }
                     }
                     notifyDataSetChanged();
                 }

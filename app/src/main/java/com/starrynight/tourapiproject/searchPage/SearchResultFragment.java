@@ -474,15 +474,15 @@ public class SearchResultFragment extends Fragment {
                             if (obResult.isEmpty()){
                                 no_result.setVisibility(View.VISIBLE);
                             }else{no_result.setVisibility(View.GONE);}
-                            searchResultAdapter.setOnSearchResultItemClickListener(new OnSearchResultItemClickListener() {
-                                @Override
-                                public void onItemClick(SearchResultAdapter.ViewHolder holder, View view, int position) {
-                                    SearchParams1 item = searchResultAdapter.getItem(position);
-                                    Intent intent = new Intent(getContext(), ObservationsiteActivity.class);
-                                    intent.putExtra("observationId", item.getItemId());
-                                    startActivity(intent);
-                                }
-                            });
+//                            searchResultAdapter.setOnSearchResultItemClickListener(new OnSearchResultItemClickListener() {
+//                                @Override
+//                                public void onItemClick(SearchResultAdapter.ViewHolder holder, View view, int position) {
+//                                    SearchParams1 item = searchResultAdapter.getItem(position);
+//                                    Intent intent = new Intent(getContext(), ObservationsiteActivity.class);
+//                                    intent.putExtra("observationId", item.getItemId());
+//                                    startActivity(intent);
+//                                }
+//                            });
                         } else {
                             Log.e(TAG, "관측지 검색 실패");
                             moreObText.setVisibility(View.GONE);
@@ -737,15 +737,15 @@ public class SearchResultFragment extends Fragment {
                             //게시물은 어댑터 따로 만들어야 함
                             SearchResultAdapter searchResultAdapter = new SearchResultAdapter(obResult, getContext());
                             searchResult4.setAdapter(searchResultAdapter);
-                            searchResultAdapter.setOnSearchResultItemClickListener(new OnSearchResultItemClickListener() {
-                                @Override
-                                public void onItemClick(SearchResultAdapter.ViewHolder holder, View view, int position) {
-                                    SearchParams1 item = searchResultAdapter.getItem(position);
-                                    Intent intent = new Intent(getContext(), ObservationsiteActivity.class);
-                                    intent.putExtra("observationId", item.getItemId());
-                                    startActivity(intent);
-                                }
-                            });
+//                            searchResultAdapter.setOnSearchResultItemClickListener(new OnSearchResultItemClickListener() {
+//                                @Override
+//                                public void onItemClick(SearchResultAdapter.ViewHolder holder, View view, int position) {
+//                                    SearchParams1 item = searchResultAdapter.getItem(position);
+//                                    Intent intent = new Intent(getContext(), ObservationsiteActivity.class);
+//                                    intent.putExtra("observationId", item.getItemId());
+//                                    startActivity(intent);
+//                                }
+//                            });
                         } else {
                             Log.e(TAG, "관측지 검색 실패");
                             moreObText.setVisibility(View.GONE);
@@ -1035,15 +1035,15 @@ public class SearchResultFragment extends Fragment {
                     if (finalObResult.isEmpty()){
                         no_result.setVisibility(View.VISIBLE);
                     }else{no_result.setVisibility(View.GONE);}
-                    searchResultAdapter.setOnSearchResultItemClickListener(new OnSearchResultItemClickListener() {
-                        @Override
-                        public void onItemClick(SearchResultAdapter.ViewHolder holder, View view, int position) {
-                            SearchParams1 item = searchResultAdapter.getItem(position);
-                            Intent intent = new Intent(getContext(), ObservationsiteActivity.class);
-                            intent.putExtra("observationId", item.getItemId());
-                            startActivity(intent);
-                        }
-                    });
+//                    searchResultAdapter.setOnSearchResultItemClickListener(new OnSearchResultItemClickListener() {
+//                        @Override
+//                        public void onItemClick(SearchResultAdapter.ViewHolder holder, View view, int position) {
+//                            SearchParams1 item = searchResultAdapter.getItem(position);
+//                            Intent intent = new Intent(getContext(), ObservationsiteActivity.class);
+//                            intent.putExtra("observationId", item.getItemId());
+//                            startActivity(intent);
+//                        }
+//                    });
                 } else {
                     Log.e(TAG, "관측지 검색 실패");
                     moreObText.setVisibility(View.GONE);
