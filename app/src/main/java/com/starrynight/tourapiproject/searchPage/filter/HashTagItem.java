@@ -3,6 +3,17 @@ package com.starrynight.tourapiproject.searchPage.filter;
 import com.google.gson.annotations.SerializedName;
 
 public class HashTagItem {
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getIsActive() {
+        return isActive;
+    }
 
     public static final int VIEWTYPE_INACTIVE = 0;
     public static final int VIEWTYPE_ACTIVE = 1;

@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class SearchParams1 {
+
     //검색결과에 쓸 관측지 params
     @SerializedName("itemId")
     Long itemId; //관측지id
@@ -24,6 +25,8 @@ public class SearchParams1 {
     Double latitude; //위도
     @SerializedName("light")
     Double light; //광공해
+    @SerializedName("saved")
+    Long saved; //저장수
     @SerializedName("hashTagNames")
     List<String> hashTagNames; //해시태그 배열
 
@@ -119,4 +122,9 @@ public class SearchParams1 {
     public void setHashTagNames(List<String> hashTagNames) {
         this.hashTagNames = hashTagNames;
     }
+
+    public Long getSaved() {
+        return saved;
+    }
+
 }

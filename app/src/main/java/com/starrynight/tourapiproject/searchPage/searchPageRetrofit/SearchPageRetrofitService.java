@@ -23,7 +23,7 @@ public interface SearchPageRetrofitService {
     Call<List<SearchParams1>> getObservationWithFilter(@Body SearchKey searchKey);
 
     @POST("search/post")
-    Call<List<MyPost>> getPostWithFilter(@Body SearchKey searchKey);
+    Call<List<SearchParams1>> getPostWithFilter(@Body SearchKey searchKey);
 
     @GET("searchFirst/{typeName}")
     Call<List<SearchFirst>> getSearchFirst(@Path("typeName") String typeName);
