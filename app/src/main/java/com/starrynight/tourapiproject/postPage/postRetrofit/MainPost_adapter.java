@@ -3,6 +3,7 @@ package com.starrynight.tourapiproject.postPage.postRetrofit;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
@@ -28,7 +29,9 @@ import com.bumptech.glide.Glide;
 import com.starrynight.tourapiproject.MainActivity;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.mapPage.Activities;
+import com.starrynight.tourapiproject.postItemPage.MainPostHashTagItemAdapter;
 import com.starrynight.tourapiproject.postItemPage.OnPostHashTagClickListener;
+import com.starrynight.tourapiproject.postItemPage.OnPostWriteHashTagItemAdapter;
 import com.starrynight.tourapiproject.postItemPage.PostHashTagItem;
 import com.starrynight.tourapiproject.postItemPage.PostHashTagItemAdapter;
 import com.starrynight.tourapiproject.postPage.ImageSliderAdapter;
@@ -191,7 +194,7 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(viewHolder.hashTagRecyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false);
         viewHolder.hashTagRecyclerView.setLayoutManager(layoutManager);
-        PostHashTagItemAdapter adapter = new PostHashTagItemAdapter();
+        MainPostHashTagItemAdapter adapter = new MainPostHashTagItemAdapter();
         if (!item.getMainObservation().equals("나만의 관측지")) {
             adapter.addItem(new PostHashTagItem(item.getMainObservation(), null, item.getObservationId(), null));
         } else {
@@ -229,9 +232,9 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
                     Bundle bundle = new Bundle();  // 아직 게시물 상세페이지에서는 에러나서 보류
                     bundle.putInt("type", 1);
                     final String[] keyword = new String[adapter.getItemCount()];
-                    adapter.setOnItemClicklistener(new OnPostHashTagClickListener() {
+                    adapter.setOnItemClicklistener(new OnPostWriteHashTagItemAdapter() {
                         @Override
-                        public void onItemClick(PostHashTagItemAdapter.ViewHolder holder, View view, int position) {
+                        public void onItemClick(MainPostHashTagItemAdapter.ViewHolder holder, View view, int position) {
                             Intent intent1 = new Intent(viewHolder.itemView.getContext(), MainActivity.class);
                             PostHashTagItem item1 = adapter.getItem(position);
                             if (position!=0) {
@@ -283,7 +286,7 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
         TextView title;
         ViewPager2 mainslider;
         LinearLayout indicator;
-        Button bookmark;
+        ImageView bookmark;
         LinearLayout titleLinear;
 
         public ViewHolder(View itemView, final OnMainPostClickListener listener) {
@@ -294,6 +297,7 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
             mainslider = itemView.findViewById(R.id.mainslider);
             indicator = itemView.findViewById(R.id.mainindicator);
             bookmark = itemView.findViewById(R.id.mainplus_btn);
+            bookmark.setColorFilter(Color.parseColor("#84838D"));
             titleLinear = itemView.findViewById(R.id.linear_title);
 //            profileimage.setBackground(new ShapeDrawable(new OvalShape()));
 //            profileimage.setClipToOutline(true);

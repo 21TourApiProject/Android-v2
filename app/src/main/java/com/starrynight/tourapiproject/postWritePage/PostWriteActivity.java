@@ -2,8 +2,6 @@ package com.starrynight.tourapiproject.postWritePage;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,7 +11,6 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.media.ExifInterface;
@@ -27,13 +24,10 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -62,7 +56,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.postItemPage.PostWriteHashTagItem2;
-import com.starrynight.tourapiproject.postItemPage.PostWriteHashTagItem2Adapter;
+import com.starrynight.tourapiproject.postItemPage.PostWriteHashTagItemAdapter;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostHashTagParams;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostImageParams;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostParams;
@@ -70,7 +64,6 @@ import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostWriteL
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.RetrofitClient;
 
 import org.jetbrains.annotations.NotNull;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -81,9 +74,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import retrofit2.Call;
@@ -126,6 +117,7 @@ public class PostWriteActivity extends AppCompatActivity {
     String[] INTERNET_PERMISSION = new String[]{Manifest.permission.INTERNET};
     EditText addContext;
     TextView dateText,timeText;
+    ImageView hashTagPin;
     boolean dayOrNight;
     TextView exampleHashTagText;
 
@@ -143,6 +135,7 @@ public class PostWriteActivity extends AppCompatActivity {
         dialog = new PostWriteLoadingDialog(PostWriteActivity.this);
         addContext = findViewById(R.id.postContentText);
         exampleHashTagText = findViewById(R.id.exampleHashTagTextView);
+        hashTagPin=(ImageView) findViewById(R.id.postwrite_hashTagpin);
 
 //      앱 내부저장소에서 userId 가져오기
         String fileName = "userId";
@@ -430,6 +423,7 @@ public class PostWriteActivity extends AppCompatActivity {
                     postObservePointItem.setText(observationName);
                     postObservePointName = observationName;
                     postObservePointItem.setTextColor(getColor(R.color.point_blue));
+                    hashTagPin.setVisibility(View.VISIBLE);
                 } else {
                     postObservePointItem.setText(optionobservationName);
                     ob_linear.setVisibility(View.VISIBLE);
@@ -451,7 +445,7 @@ public class PostWriteActivity extends AppCompatActivity {
                 exampleHashTagText.setVisibility(View.GONE);
                 StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
                 recyclerView.setLayoutManager(layoutManager);
-                PostWriteHashTagItem2Adapter adapter = new PostWriteHashTagItem2Adapter();
+                PostWriteHashTagItemAdapter adapter = new PostWriteHashTagItemAdapter();
                 if (hashTagList.size() != 0) {
                     for (int i = 0; i < hashTagList.size(); i++) {
                         adapter.addItem(new PostWriteHashTagItem2(hashTagList.get(i)));

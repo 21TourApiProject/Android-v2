@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
     String[] WRITE_PERMISSION = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
     String[] READ_PERMISSION = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
     String[] INTERNET_PERMISSION = new String[]{Manifest.permission.INTERNET};
+    String[] PERMISSION = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.INTERNET,
+            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
     int PERMISSIONS_REQUEST_CODE = 100;
 
     Fragment map, searchResult, filter;
@@ -79,18 +81,21 @@ public class MainActivity extends AppCompatActivity {
         //권한 설정
         int permission = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
         int permission2 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
-        int permission3 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.INTERNET);//denied면 -1
+        int permission3 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.INTERNET);
+        int permission4 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+        int permission5 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION);
 
         Log.d("test", "onClick: location clicked");
-        if (permission == PackageManager.PERMISSION_GRANTED && permission2 == PackageManager.PERMISSION_GRANTED && permission3 == PackageManager.PERMISSION_GRANTED) {
+        if (permission == PackageManager.PERMISSION_GRANTED && permission2 == PackageManager.PERMISSION_GRANTED && permission3 == PackageManager.PERMISSION_GRANTED && permission4 == PackageManager.PERMISSION_GRANTED && permission5 == PackageManager.PERMISSION_GRANTED) {
             Log.d("MyTag", "읽기,쓰기,인터넷 권한이 있습니다.");
 
-        } else if (permission == PackageManager.PERMISSION_DENIED) {
+        } else {
             Log.d("test", "permission denied");
-            Toast.makeText(getApplicationContext(), "쓰기권한이 없습니다.", Toast.LENGTH_SHORT).show();
-            ActivityCompat.requestPermissions(MainActivity.this, WRITE_PERMISSION, PERMISSIONS_REQUEST_CODE);
-            ActivityCompat.requestPermissions(MainActivity.this, READ_PERMISSION, PERMISSIONS_REQUEST_CODE);
-            ActivityCompat.requestPermissions(MainActivity.this, INTERNET_PERMISSION, PERMISSIONS_REQUEST_CODE);
+//            Toast.makeText(getApplicationContext(), "쓰기권한이 없습니다.", Toast.LENGTH_SHORT).show();
+//            ActivityCompat.requestPermissions(MainActivity.this, WRITE_PERMISSION, PERMISSIONS_REQUEST_CODE);
+//            ActivityCompat.requestPermissions(MainActivity.this, READ_PERMISSION, PERMISSIONS_REQUEST_CODE);
+//            ActivityCompat.requestPermissions(MainActivity.this, INTERNET_PERMISSION, PERMISSIONS_REQUEST_CODE);
+            ActivityCompat.requestPermissions(MainActivity.this, PERMISSION, PERMISSIONS_REQUEST_CODE);
         }
         //메인 페이지 초기화 상태
         if (mainFragment == null) {
@@ -127,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
                             removeFragments();
                         }
                         return true;
-                    case R.id.navigation_search:
+                    case R.id.navigation_observation:
                         if (searchFragment == null) {
                             searchFragment = new SearchFragment();
                             getSupportFragmentManager().beginTransaction().add(R.id.main_view, searchFragment).commit();
@@ -187,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle(); // 번들을 통해 값 전달
                 bundle.putSerializable("FromWhere", Activities.OBSERVATION);//번들에 넘길 값 저장
                 bundle.putSerializable("BalloonObject", intent.getSerializableExtra("BalloonObject"));    //지도에 필요한 내용
-                bottomNavigationView.setSelectedItemId(R.id.navigation_search);
+                bottomNavigationView.setSelectedItemId(R.id.navigation_observation);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 Fragment mapfragment = new MapFragment();
                 mapfragment.setArguments(bundle);
@@ -199,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle(); // 번들을 통해 값 전달
                 bundle.putSerializable("FromWhere", Activities.TOURISTPOINT);//번들에 넘길 값 저장
                 bundle.putSerializable("BalloonObject", intent.getSerializableExtra("BalloonObject"));    //지도에 필요한 내용
-                bottomNavigationView.setSelectedItemId(R.id.navigation_search);
+                bottomNavigationView.setSelectedItemId(R.id.navigation_observation);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 Fragment mapfragment = new MapFragment();
                 mapfragment.setArguments(bundle);
@@ -208,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
                 map = mapfragment;
                 transaction.commit();
             } else if (fromWhere == Activities.POST) {
-                bottomNavigationView.setSelectedItemId(R.id.navigation_search);
+                bottomNavigationView.setSelectedItemId(R.id.navigation_observation);
                 getSupportFragmentManager().beginTransaction().hide(searchFragment).commit();
                 Bundle bundle = new Bundle();
                 bundle.putInt("type", 1);
@@ -240,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("1번이니");
             if (fragmentManager.getBackStackEntryCount() > 0) {
                 fragmentManager.beginTransaction().remove(fragment).commit();
-                bottomNavigationView.setSelectedItemId(R.id.navigation_search);
+                bottomNavigationView.setSelectedItemId(R.id.navigation_observation);
             } else {
                 super.onBackPressed();
             }
@@ -281,11 +286,11 @@ public class MainActivity extends AppCompatActivity {
                 System.exit(0);
 //                finish();
             }
-        } else if (bottomNavigationView.getSelectedItemId() == R.id.navigation_person || bottomNavigationView.getSelectedItemId() == R.id.navigation_search) {
+        } else if (bottomNavigationView.getSelectedItemId() == R.id.navigation_person || bottomNavigationView.getSelectedItemId() == R.id.navigation_observation) {
             System.out.println("3번이니");
             if (map != null || searchResult != null) {
                 if (fragmentManager.getBackStackEntryCount() > 0) {
-                    bottomNavigationView.setSelectedItemId(R.id.navigation_search);
+                    bottomNavigationView.setSelectedItemId(R.id.navigation_observation);
                 } else {
                     finish();
                 }

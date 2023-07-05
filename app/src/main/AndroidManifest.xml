@@ -37,6 +37,8 @@
             android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".starPage.StarCompassActivity" />
         <activity android:name=".postWritePage.SelectTimeActivity"></activity>
+        <activity android:name=".weatherPage2.WeatherLocationSearchActivity"></activity>
+        <activity android:name=".postWritePage.SelectTimeActivity" />
         <activity android:name=".starPage.StarCompassActivity" />
         <activity android:name=".starPage.StarCameraActivity" />
         <activity android:name=".weatherPage2.WeatherActivity2" />

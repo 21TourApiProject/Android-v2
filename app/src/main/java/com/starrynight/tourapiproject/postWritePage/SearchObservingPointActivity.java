@@ -56,6 +56,7 @@ public class SearchObservingPointActivity extends AppCompatActivity {
     RecyclerView addRecyclerView;
     RecyclerView nearRecyclerView;
     LinearLayout addLinearLayout, nearLinearLayout,searchLinearLayout;
+    TextView optionText;
     EditText editText;
 
     @Override
@@ -73,6 +74,8 @@ public class SearchObservingPointActivity extends AppCompatActivity {
         findObservePoint = findViewById(R.id.findObservePoint);
         searchitemArrayList = new ArrayList<>();
         filteredList = new ArrayList<>();
+
+        optionText = findViewById(R.id.optionText);
 
         //검색어 입력했을 때 나오는 관측지 리스트
         search_item_adapter = new Search_item_adapter(searchitemArrayList, this);
@@ -145,6 +148,18 @@ public class SearchObservingPointActivity extends AppCompatActivity {
             }
         });
 
+        //임의 관측지 클릭 시
+        optionText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                observePoint = ((EditText) (findViewById(R.id.findObservePoint))).getText().toString();
+                Intent intent = new Intent();
+                intent.putExtra("optionObservationName", observePoint);
+                setResult(2, intent);
+                finish();
+            }
+        });
+
         //관측지 돋보기 클릭 버튼
         Button addObservePoint = findViewById(R.id.addObservePoint);
         addObservePoint.setOnClickListener(new View.OnClickListener() {
@@ -164,20 +179,16 @@ public class SearchObservingPointActivity extends AppCompatActivity {
 
         //키보드 입력시 변화
         editText = findViewById(R.id.findObservePoint);
-        editText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addLinearLayout.setVisibility(View.GONE);
-                nearLinearLayout.setVisibility(View.GONE);
-                searchLinearLayout.setVisibility(View.VISIBLE);
-            }
-        });
         editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                     if (!editText.getText().toString().equals("")) {
                         observePoint = ((EditText) (findViewById(R.id.findObservePoint))).getText().toString();
+                        Intent intent = new Intent();
+                        intent.putExtra("optionObservationName", observePoint);
+                        setResult(2, intent);
+                        finish();
                     }
                 } else {
                     return false;
@@ -193,6 +204,12 @@ public class SearchObservingPointActivity extends AppCompatActivity {
         for (int i = 0; i < searchitemArrayList.size(); i++) {
             if (searchitemArrayList.get(i).getItemName().toLowerCase().contains(searchText.toLowerCase())) {
                 filteredList.add(searchitemArrayList.get(i));
+                optionText.setVisibility(View.GONE);
+            }
+        }
+        if (filteredList.size() == 0) {
+            {
+                optionText.setVisibility(View.VISIBLE);
             }
         }
         search_item_adapter.filterList(filteredList);

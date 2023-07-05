@@ -255,14 +255,20 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
         // 여름(6/22 ~ 9/22)
         else if ((compareDataSummer == 1 || compareDataSummer == 0) && compareDataFall == -1) {
             touchImageView.setImageResource(R.drawable.star__summer);
+            bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.star__summer);
+            touchImageView.setImageBitmap(bitmap);
         }
         // 가을(9/23 ~ 12/20)
         else if ((compareDataFall == 1 || compareDataFall == 0) && compareDataWinter == -1) {
             touchImageView.setImageResource(R.drawable.star__fall);
+            bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.star__fall);
+            touchImageView.setImageBitmap(bitmap);
         }
         // 겨울(12/21 ~ 12/31)
         else if ((compareDataWinter == 1 || compareDataWinter == 0) && compareDataYearEnd == -1) {
             touchImageView.setImageResource(R.drawable.star__winter);
+            bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.star__winter);
+            touchImageView.setImageBitmap(bitmap);
         }
         // 겨울(01/01 ~ 03/20)
         else if ((compareDataYearStart == 1 || compareDataYearStart == 0) && compareDataSpring == -1) {

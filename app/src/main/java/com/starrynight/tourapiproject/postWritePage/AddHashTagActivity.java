@@ -3,25 +3,18 @@ package com.starrynight.tourapiproject.postWritePage;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.starrynight.tourapiproject.R;
-import com.starrynight.tourapiproject.postItemPage.OnPostWriteHashTagItemAdapter;
-import com.starrynight.tourapiproject.postItemPage.PostWriteHashTagItem;
-import com.starrynight.tourapiproject.postItemPage.PostWriteHashTagItemAdapter;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostHashTagParams;
 
 import java.io.Serializable;
@@ -166,7 +159,6 @@ public class AddHashTagActivity extends AppCompatActivity {
 
         Arrays.fill(hashTaglist, "");
         final List<String> finallist = new ArrayList<>(); //메인 해시태그 리스트
-        PostWriteHashTagItemAdapter adapter = new PostWriteHashTagItemAdapter();
 
         //완료 버튼 클릭 이벤트
         TextView plusHashTag = findViewById(R.id.finish_add_hashTag);
@@ -197,16 +189,6 @@ public class AddHashTagActivity extends AppCompatActivity {
                 intent.putExtra("hashTagList", (Serializable) finallist);
                 setResult(3, intent);
                 finish();
-            }
-        });
-
-
-        //해시태그 삭제
-        adapter.setOnItemClicklistener(new OnPostWriteHashTagItemAdapter() {
-            @Override
-            public void onItemClick(PostWriteHashTagItemAdapter.ViewHolder holder, View view, int position) {
-                adapter.removeItem(position);
-                adapter.notifyDataSetChanged();
             }
         });
 
