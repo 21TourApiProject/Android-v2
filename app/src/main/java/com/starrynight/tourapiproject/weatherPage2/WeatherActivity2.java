@@ -93,6 +93,8 @@ public class WeatherActivity2 extends AppCompatActivity {
 
         TextView todayDate = findViewById(R.id.today_date); // 9.17(토)
         TextView currentPosition = findViewById(R.id.current_position); // 양천읍
+        View observatory = findViewById(R.id.observatory);
+        TextView observatoryName = findViewById(R.id.observatory_name); // 의정부과학도서관
         lightPollutionLevel = findViewById(R.id.light_pollution_level);
 
         todayComment1 = findViewById(R.id.today_comment_1);
@@ -131,21 +133,26 @@ public class WeatherActivity2 extends AppCompatActivity {
         min = mm.format(date);
 
         todayDate.setText(MM_dd_EE.format(date).replace("0", ""));
-//        currentPosition.setText();
+
         detailHour.setText(hour + Const.Weather.DETAIL_HOUR);
 
         // 메인 페이지에서 위경도, 지역 또는 관측지 정보를 받아옴 (메인 페이지 완성 시 주석 해제)
-//        Intent mainIntent = getIntent();
-//        LocationDTO locationDTO = (LocationDTO) mainIntent.getSerializableExtra("location");
-//        latitude = locationDTO.getLatitude(); // 위도
-//        longitude = locationDTO.getLongitude(); // 경도
-//        areaId = locationDTO.getAreaId();
-//        observationId = locationDTO.getObservationId();
+        Intent mainIntent = getIntent();
+        LocationDTO locationDTO = (LocationDTO) mainIntent.getSerializableExtra("locationDTO");
+        latitude = locationDTO.getLatitude(); // 위도
+        longitude = locationDTO.getLongitude(); // 경도
+        areaId = locationDTO.getAreaId();
+        observationId = locationDTO.getObservationId();
 
-        latitude = 36.7009038747495D;
-        longitude = 128.5048274D;
-        areaId = 3044L;
-        observationId = 1L;
+        if(Objects.nonNull(areaId)){
+            observatory.setVisibility(View.GONE);
+            currentPosition.setVisibility(View.VISIBLE);
+            currentPosition.setText(locationDTO.getLocation());
+        } if(Objects.nonNull(observationId)){
+            observatory.setVisibility(View.VISIBLE);
+            currentPosition.setVisibility(View.GONE);
+            observatoryName.setText(locationDTO.getLocation());
+        }
 
         AreaTimeDTO areaTimeDTO = new AreaTimeDTO(yyyy_MM_dd.format(date), Integer.valueOf(hour), latitude, longitude);
         if (Objects.nonNull(areaId)) areaTimeDTO.setAreaId(areaId);

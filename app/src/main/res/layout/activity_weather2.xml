@@ -19,8 +19,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:paddingTop="14dp"
                 android:paddingLeft="16dp"
+                android:paddingTop="14dp"
                 android:paddingRight="16dp">
 
                 <ImageView
@@ -35,6 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="관측적합도"
+                    android:textFontWeight="600"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@id/weather_back"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/wt__help"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -59,8 +60,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="23dp"
                 android:layout_marginEnd="16dp"
-                android:orientation="vertical"
-                android:visibility="visible">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -72,7 +72,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="9. 17(토)"
                         android:textColor="#84838D"
                         android:textSize="16dp" />
 
@@ -81,31 +80,30 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="양천읍"
                         android:textColor="#84838D"
-                        android:textSize="16dp" />
+                        android:textSize="16sp"
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:id="@+id/observatory"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/observatory_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="의정부과학도서관"
                             android:textColor="#84838D"
-                            android:textSize="16dp" />
+                            android:textSize="16sp" />
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="6dp"
-                            android:src="@drawable/tonight__right_arrow" />
+                            android:src="@drawable/weather__observation_arrow" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -122,15 +120,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="28dp"
-                    android:text="오늘 "
-                    android:textSize="22dp" />
+                    android:textFontWeight="600"
+                    android:textSize="22sp" />
 
                 <TextView
                     android:id="@+id/today_comment_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="관측하면 가장 좋아요"
-                    android:textSize="22dp" />
+                    android:textFontWeight="600"
+                    android:textSize="22sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -145,7 +143,7 @@
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/wt__best_observational_fit"
                         android:text="관측적합도 최대 80%"
-                        android:textSize="14dp" />
+                        android:textColor="#DADAE5" />
 
                     <TextView
                         android:id="@+id/main_effect"
@@ -153,7 +151,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/wt__best_observational_fit"
                         android:text="높은 광공해"
-                        android:textSize="14dp"
+                        android:textColor="#DADAE5"
                         android:visibility="invisible" />
                 </LinearLayout>
 
@@ -167,7 +165,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/alarm__star" />
+                        android:src="@drawable/main__weather_star" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -175,6 +173,7 @@
                         android:layout_marginStart="4dp"
                         android:layout_weight="1"
                         android:text="시간별 관측적합도"
+                        android:textFontWeight="600"
                         android:textSize="16dp" />
                 </LinearLayout>
 
@@ -191,7 +190,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="52dp"
                     android:text="주간 예보"
-                    android:textSize="16dp" />
+                    android:textFontWeight="600"
+                    android:textSize="16sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/day_recycler"
@@ -204,22 +204,22 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="12.5dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <!--                    <ImageView-->
-                    <!--                        android:id="@+id/caution"-->
-                    <!--                        android:layout_width="wrap_content"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:src="@drawable/weather__alert_circle" />-->
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/weather__alert" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="4.33dp"
-                        android:text="3일 이상 이후의 정보는 정확하지 않을 수 있습니다."
-                        android:textSize="14dp" />
+                        android:layout_marginLeft="3dp"
+                        android:text="3일 이후의 정보는 정확하지 않을 수 있습니다."
+                        android:textColor="#84838D" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -235,7 +235,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:text="상세 날씨"
-                    android:textSize="18dp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/detail_hour"
@@ -244,8 +244,8 @@
                     android:layout_gravity="end"
                     android:layout_marginEnd="16dp"
                     android:gravity="right"
-                    android:textColor="#84838D"
-                    android:text="12시 기준" />
+                    android:text="12시 기준"
+                    android:textColor="#84838D" />
 
             </LinearLayout>
 
@@ -271,8 +271,8 @@
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/wt__detail"
                         android:orientation="vertical"
-                        android:paddingTop="20dp"
-                        android:paddingStart="16dp">
+                        android:paddingStart="16dp"
+                        android:paddingTop="20dp">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -282,7 +282,7 @@
                             <ImageView
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
-                                app:srcCompat="@drawable/alarm__star" />
+                                app:srcCompat="@drawable/weather__detail_weather" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -297,7 +297,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
-                            android:text="하루종일 맑음" />
+                            android:textColor="#84838D" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -306,8 +306,8 @@
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/wt__detail"
                         android:orientation="vertical"
-                        android:paddingTop="20dp"
-                        android:paddingStart="16dp">
+                        android:paddingStart="16dp"
+                        android:paddingTop="20dp">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -317,7 +317,7 @@
                             <ImageView
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
-                                app:srcCompat="@drawable/alarm__star" />
+                                app:srcCompat="@drawable/weather__detail_rain" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -332,7 +332,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
-                            android:text="NN%" />
+                            android:textColor="#84838D" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -341,8 +341,8 @@
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/wt__detail"
                         android:orientation="vertical"
-                        android:paddingTop="20dp"
-                        android:paddingStart="16dp">
+                        android:paddingStart="16dp"
+                        android:paddingTop="20dp">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -352,7 +352,7 @@
                             <ImageView
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
-                                app:srcCompat="@drawable/alarm__star" />
+                                app:srcCompat="@drawable/weather__detail_cloud" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -367,7 +367,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="20dp"
-                            android:text="NN%" />
+                            android:textColor="#84838D" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -376,8 +376,8 @@
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/wt__detail"
                         android:orientation="vertical"
-                        android:paddingTop="20dp"
-                        android:paddingStart="16dp">
+                        android:paddingStart="16dp"
+                        android:paddingTop="20dp">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -387,7 +387,7 @@
                             <ImageView
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
-                                app:srcCompat="@drawable/alarm__star" />
+                                app:srcCompat="@drawable/weather__detail_wind" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -402,7 +402,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="20dp"
-                            android:text="1m/s" />
+                            android:textColor="#84838D" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -410,8 +410,9 @@
                         android:layout_height="122dp"
                         android:background="@drawable/wt__detail"
                         android:orientation="vertical"
+                        android:paddingStart="16dp"
                         android:paddingTop="20dp"
-                        android:paddingStart="16dp">
+                        android:paddingBottom="20dp">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -421,7 +422,7 @@
                             <ImageView
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
-                                app:srcCompat="@drawable/alarm__star" />
+                                app:srcCompat="@drawable/weather__detail_sun" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -437,35 +438,43 @@
                             android:orientation="horizontal"
                             android:paddingTop="20dp">
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="일출" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="일출" />
+
+                                <TextView
+                                    android:id="@+id/detail_sunrise"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:textColor="#84838D" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="41.5dp"
-                                android:text="일몰" />
-                        </LinearLayout>
+                                android:layout_marginStart="40dp"
+                                android:orientation="vertical">
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="일몰" />
 
-                            <TextView
-                                android:id="@+id/detail_sunrise"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="6시" />
-
-                            <TextView
-                                android:id="@+id/detail_sunset"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="42.5dp"
-                                android:text="18시" />
+                                <TextView
+                                    android:id="@+id/detail_sunset"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:textColor="#84838D" />
+                            </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -483,8 +492,8 @@
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/wt__detail"
                         android:orientation="vertical"
-                        android:paddingTop="20dp"
-                        android:paddingStart="16dp">
+                        android:paddingStart="16dp"
+                        android:paddingTop="20dp">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -494,7 +503,7 @@
                             <ImageView
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
-                                app:srcCompat="@drawable/alarm__star" />
+                                app:srcCompat="@drawable/weather__detail_temp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -511,45 +520,17 @@
                             android:paddingTop="20dp">
 
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="최고 " />
-
-                            <TextView
                                 android:id="@+id/detail_temp_highest"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="31"
-                                android:textColor="#EC3E4D" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="°"
-                                android:textColor="#EC3E4D" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="4dp"
-                                android:text="최저 " />
+                                android:textColor="#84838D" />
 
                             <TextView
                                 android:id="@+id/detail_temp_lowest"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="20"
-                                android:textColor="#455CFF" />
-
-                            <TextView
-                                android:id="@+id/textView21"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="°"
-                                android:textColor="#455CFF" />
+                                android:layout_marginStart="4dp"
+                                android:textColor="#84838D" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -557,12 +538,12 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="96dp"
-                        
+
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/wt__detail"
                         android:orientation="vertical"
-                        android:paddingTop="20dp"
-                        android:paddingStart="16dp">
+                        android:paddingStart="16dp"
+                        android:paddingTop="20dp">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -572,7 +553,7 @@
                             <ImageView
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
-                                app:srcCompat="@drawable/alarm__star" />
+                                app:srcCompat="@drawable/weather__detail_humidity" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -587,18 +568,18 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="20dp"
-                            android:text="NN%" />
+                            android:textColor="#84838D" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="96dp"
-                        
+
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/wt__detail"
                         android:orientation="vertical"
-                        android:paddingTop="20dp"
-                        android:paddingStart="16dp">
+                        android:paddingStart="16dp"
+                        android:paddingTop="20dp">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -608,7 +589,7 @@
                             <ImageView
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
-                                app:srcCompat="@drawable/alarm__star" />
+                                app:srcCompat="@drawable/weather__detail_finedust" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -623,18 +604,18 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="20dp"
-                            android:text="매우 좋음" />
+                            android:textColor="#84838D" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="96dp"
-                        
+
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/wt__detail"
                         android:orientation="vertical"
-                        android:paddingTop="20dp"
-                        android:paddingStart="16dp">
+                        android:paddingStart="16dp"
+                        android:paddingTop="20dp">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -644,7 +625,7 @@
                             <ImageView
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
-                                app:srcCompat="@drawable/alarm__star" />
+                                app:srcCompat="@drawable/weather__detail_moonlight" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -659,18 +640,19 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="20dp"
-                            android:text="좋음" />
+                            android:textColor="#84838D" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="122dp"
-                        
+
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/wt__detail"
                         android:orientation="vertical"
+                        android:paddingStart="16dp"
                         android:paddingTop="20dp"
-                        android:paddingStart="16dp">
+                        android:paddingBottom="20dp">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -680,7 +662,7 @@
                             <ImageView
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
-                                app:srcCompat="@drawable/alarm__star" />
+                                app:srcCompat="@drawable/weather__detail_moon" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -696,35 +678,42 @@
                             android:orientation="horizontal"
                             android:paddingTop="20dp">
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="월출" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="월출" />
+
+                                <TextView
+                                    android:id="@+id/detail_moonrise"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:textColor="#84838D" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="41.5dp"
-                                android:text="월몰" />
-                        </LinearLayout>
+                                android:layout_marginStart="40dp"
+                                android:orientation="vertical">
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="월몰" />
 
-                            <TextView
-                                android:id="@+id/detail_moonrise"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="18시" />
-
-                            <TextView
-                                android:id="@+id/detail_moonset"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="42.5dp"
-                                android:text="6시" />
+                                <TextView
+                                    android:id="@+id/detail_moonset"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:textColor="#84838D" />
+                            </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -743,14 +732,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="실시간 날씨지도 "
-                    android:textSize="14dp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/tonight__right_arrow" />
+                    android:text="실시간 날씨 지도 >"
+                    android:textColor="#84838D" />
             </LinearLayout>
 
         </LinearLayout>

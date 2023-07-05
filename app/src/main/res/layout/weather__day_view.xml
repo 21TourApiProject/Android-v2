@@ -12,7 +12,6 @@
         android:layout_gravity="center"
         android:text="월"
         android:textColor="#84838D"
-        android:textFontWeight="500"
         android:textSize="14sp" />
 
     <TextView
@@ -23,7 +22,6 @@
         android:layout_marginTop="4sp"
         android:text="3.1"
         android:textColor="#84838D"
-        android:textFontWeight="500"
         android:textSize="10sp" />
 
     <TextView
@@ -34,7 +32,6 @@
         android:layout_marginTop="8dp"
         android:text="NN%"
         android:textColor="#84838D"
-        android:textFontWeight="500"
         android:textSize="14sp" />
 
 </LinearLayout>

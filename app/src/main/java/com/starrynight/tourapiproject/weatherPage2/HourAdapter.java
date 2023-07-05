@@ -59,12 +59,14 @@ public class HourAdapter extends RecyclerView.Adapter<HourAdapter.HourHolder> {
 
     public static class HourHolder extends RecyclerView.ViewHolder {
 
+        View hourLayout;
         TextView hour;
         TextView observationFit;
 
         public HourHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 
+            hourLayout = itemView.findViewById(R.id.hour_layout);
             hour = itemView.findViewById(R.id.hour_hour);
             observationFit = itemView.findViewById(R.id.hour_observation_fit);
 
@@ -72,6 +74,7 @@ public class HourAdapter extends RecyclerView.Adapter<HourAdapter.HourHolder> {
         }
 
         public void setItem(HourObservationalFit item) {
+            if (item.getHour().equals("23")) hourLayout.setPadding(0, 0, 24, 0);
             hour.setText(item.getHour());
             observationFit.setText(item.getObservationalFit());
         }
