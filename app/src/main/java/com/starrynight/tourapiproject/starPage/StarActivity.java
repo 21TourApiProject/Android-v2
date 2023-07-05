@@ -47,8 +47,8 @@ public class StarActivity extends AppCompatActivity {
     TextView constName,rightNow,hashTag;
 
     // 별자리 상세정보 뷰
-    TextView constMtdTv, constBestMonthTv, constStoryTv;
-    ImageView constImage;
+    TextView constMtdTv, constBestMonthTv, constStoryTv, constSummary;
+    ImageView constImage,constFeatureImg;
     ImageView story_play_btn;
     Long constId;
     List<StarHashTag> starHashTags;
@@ -75,10 +75,12 @@ public class StarActivity extends AppCompatActivity {
 
         constName = findViewById(R.id.detail_const_name);
         constImage = findViewById(R.id.detail_const_image);
+        constFeatureImg = findViewById(R.id.const_feature_img);
 
         constStoryTv = findViewById(R.id.const_story);
         constMtdTv = findViewById(R.id.const_mtd_tv);
         constBestMonthTv = findViewById(R.id.const_best_month_tv);
+        constSummary = findViewById(R.id.constSummary);
 
         story_play_btn = findViewById(R.id.story_play_btn);
         rightNow = findViewById(R.id.rightNow);
@@ -107,7 +109,15 @@ public class StarActivity extends AppCompatActivity {
                     constStoryTv.setText(constData.getConstStory());
                     constMtdTv.setText(constData.getConstMtd());
                     constBestMonthTv.setText(constData.getConstBestMonth());
+                    //매일 볼수 있는 별자리일 경우 배너 추가
+                    if(!constBestMonthTv.equals("1월~3월")
+                            &&!constBestMonthTv.equals("4월~6월")
+                            &&!constBestMonthTv.equals("7월~9월")
+                            &&!constBestMonthTv.equals("10월~12월")){
+                        Glide.with(StarActivity.this).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/feature_" + "see_every_day" + ".png").fitCenter().into(constFeatureImg);
+                    }
                     constId= constData.getConstId();
+                    constSummary.setText(constData.getSummary());
 
                     ttsClient.setSpeechText(constData.getConstStory());   //뉴톤톡 하고자 하는 문자열을 미리 세팅.
                 } else {
@@ -174,6 +184,18 @@ public class StarActivity extends AppCompatActivity {
                                     startActivity(intent);
                                 }
                             });
+                            if(sh.getHashTagName().equals("봄")){
+                                Glide.with(StarActivity.this).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/feature_" + "spring" + ".png").fitCenter().into(constFeatureImg);
+                            }else if(sh.getHashTagName().equals("여름")) {
+                                Glide.with(StarActivity.this).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/feature_" + "summer" + ".png").fitCenter().into(constFeatureImg);
+                            }else if(sh.getHashTagName().equals("가을")) {
+                                Glide.with(StarActivity.this).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/feature_" + "fall" + ".png").fitCenter().into(constFeatureImg);
+                            } else if(sh.getHashTagName().equals("겨울")) {
+                                Glide.with(StarActivity.this).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/feature_" + "winter" + ".png").fitCenter().into(constFeatureImg);
+                            } else if(sh.getHashTagName().equals("황도 12궁")) {
+                                Glide.with(StarActivity.this).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/feature_" + "ecliptic" + ".png").fitCenter().into(constFeatureImg);
+                            }
+
                             params.rightMargin = 20;
                             hashTag.setLayoutParams(params);
                             hashTagList.addView(hashTag);

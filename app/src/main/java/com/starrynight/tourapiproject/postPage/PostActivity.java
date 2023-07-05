@@ -9,7 +9,6 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,19 +44,14 @@ import com.starrynight.tourapiproject.postItemPage.PostHashTagItem;
 import com.starrynight.tourapiproject.postItemPage.PostHashTagItemAdapter;
 import com.starrynight.tourapiproject.postItemPage.Post_point_item_Adapter;
 import com.starrynight.tourapiproject.postItemPage.post_point_item;
-import com.starrynight.tourapiproject.postPage.postRetrofit.Like;
-import com.starrynight.tourapiproject.postPage.postRetrofit.OnPostCommentItemClickListener;
 import com.starrynight.tourapiproject.postPage.postRetrofit.Post;
 import com.starrynight.tourapiproject.postPage.postRetrofit.PostComment;
 import com.starrynight.tourapiproject.postPage.postRetrofit.PostCommentAdapter;
 import com.starrynight.tourapiproject.postPage.postRetrofit.PostCommentParams;
 import com.starrynight.tourapiproject.postPage.postRetrofit.PostHashTag;
 import com.starrynight.tourapiproject.postPage.postRetrofit.PostImage;
-import com.starrynight.tourapiproject.postPage.postRetrofit.PostPageRetrofitService;
 import com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostParams;
-
-import org.w3c.dom.Comment;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -192,7 +186,7 @@ public class PostActivity extends AppCompatActivity {
                     postRealTime = postRealTime.substring(0, postRealTime.length() - 3);
                     postTime.setText(postRealTime);
                     postDate.setText(post.getYearDate());
-                    postLike.setText(String.valueOf(post.getPostLike()));
+                    postLike.setText(String.valueOf(post.getLiked()));
                     //관측지
                     Call<Observation> call2 = RetrofitClient.getApiService().getObservation(post.getObservationId());
                     call2.enqueue(new Callback<Observation>() {
@@ -769,20 +763,20 @@ public class PostActivity extends AppCompatActivity {
         });
 
         //좋아요 수 업데이트
-        Call<Like> loveCall4 = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().getLikeCount(postId,2);
-        loveCall4.enqueue(new Callback<Like>() {
+        Call<Long> loveCall4 = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().getLikeCount(postId,2);
+        loveCall4.enqueue(new Callback<Long>() {
             @Override
-            public void onResponse(Call<Like> call, Response<Like> response) {
+            public void onResponse(Call<Long> call, Response<Long> response) {
                 if(response.isSuccessful()){
-                    Like like = response.body();
-                    loveCount.setText(like.getLikeCount());
+                    Long like = response.body();
+                    loveCount.setText(String.valueOf(like));
                 }else{
                     Log.d("myLike", "게시글 좋아요 수 업데이트 실패");
                 }
             }
 
             @Override
-            public void onFailure(Call<Like> call, Throwable t) {
+            public void onFailure(Call<Long> call, Throwable t) {
                 Log.d("myLike", "게시글 좋아요 수 업데이트 인터넷 오류");
             }
         });
@@ -824,20 +818,20 @@ public class PostActivity extends AppCompatActivity {
                                 isLove = true;
                                 v.setSelected(!v.isSelected());
                                 //좋아요 수 업데이트
-                                Call<Like> loveCall4 = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().getLikeCount(postId,2);
-                                loveCall4.enqueue(new Callback<Like>() {
+                                Call<Long> loveCall4 = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().getLikeCount(postId,2);
+                                loveCall4.enqueue(new Callback<Long>() {
                                     @Override
-                                    public void onResponse(Call<Like> call, Response<Like> response) {
+                                    public void onResponse(Call<Long> call, Response<Long> response) {
                                         if(response.isSuccessful()){
-                                            Like like = response.body();
-                                            loveCount.setText(like.getLikeCount());
+                                            Long like = response.body();
+                                            loveCount.setText(String.valueOf(like));
                                         }else{
                                             Log.d("myLike", "게시글 좋아요 수 업데이트 실패");
                                         }
                                     }
 
                                     @Override
-                                    public void onFailure(Call<Like> call, Throwable t) {
+                                    public void onFailure(Call<Long> call, Throwable t) {
                                         Log.d("myLike", "게시글 좋아요 수 업데이트 인터넷 오류");
                                     }
                                 });
@@ -870,20 +864,20 @@ public class PostActivity extends AppCompatActivity {
                                 v.setSelected(!v.isSelected());
                                 love_btn.setEnabled(false);
                                 //좋아요 수 업데이트
-                                Call<Like> loveCall4 = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().getLikeCount(postId,2);
-                                loveCall4.enqueue(new Callback<Like>() {
+                                Call<Long> loveCall4 = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().getLikeCount(postId,2);
+                                loveCall4.enqueue(new Callback<Long>() {
                                     @Override
-                                    public void onResponse(Call<Like> call, Response<Like> response) {
+                                    public void onResponse(Call<Long> call, Response<Long> response) {
                                         if(response.isSuccessful()){
-                                            Like like = response.body();
-                                            loveCount.setText(like.getLikeCount());
+                                            Long like = response.body();
+                                            loveCount.setText(String.valueOf(like));
                                         }else{
                                             Log.d("myLike", "게시글 좋아요 수 업데이트 실패");
                                         }
                                     }
 
                                     @Override
-                                    public void onFailure(Call<Like> call, Throwable t) {
+                                    public void onFailure(Call<Long> call, Throwable t) {
                                         Log.d("myLike", "게시글 좋아요 수 업데이트 인터넷 오류");
                                     }
                                 });
