@@ -24,6 +24,9 @@ public class Constellation {
     @SerializedName("constStory")
     private String constStory;
 
+    @SerializedName("summary")
+    private String summary;
+
     @SerializedName("constMtd")
     private String constMtd;
 
@@ -62,6 +65,14 @@ public class Constellation {
 
     public void setConstName(String constName) {
         this.constName = constName;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 
     public String getConstStory() {
