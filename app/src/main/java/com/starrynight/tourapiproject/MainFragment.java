@@ -1,7 +1,11 @@
-
 package com.starrynight.tourapiproject;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,8 +15,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -25,9 +31,13 @@ import com.starrynight.tourapiproject.postPage.postRetrofit.MainPost;
 import com.starrynight.tourapiproject.postPage.postRetrofit.MainPost_adapter;
 import com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.postWritePage.PostWriteActivity;
-import com.starrynight.tourapiproject.searchPage.SearchResultAdapter2;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.Filter;
+import com.starrynight.tourapiproject.weatherPage2.GpsTracker;
+import com.starrynight.tourapiproject.weatherPage2.LocationDTO;
 import com.starrynight.tourapiproject.weatherPage2.WeatherActivity2;
+import com.starrynight.tourapiproject.weatherPage2.weatherRetrofit.AreaTimeDTO;
+import com.starrynight.tourapiproject.weatherPage2.weatherRetrofit.MainInfo;
+import com.starrynight.tourapiproject.weatherPage2.weatherRetrofit.WeatherRetrofitClient;
 import com.starrynight.tourapiproject.weatherPage2.WeatherLocationSearchActivity;
 
 import java.io.BufferedReader;
@@ -35,8 +45,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -75,6 +88,29 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     MainPost_adapter adapter;
     ProgressBar progressBar;
     LinearLayout weatherLinearLayout;
+
+    private static final String TAG = "Main Fragment";
+    @SuppressLint("SimpleDateFormat")
+    SimpleDateFormat hh = new SimpleDateFormat("HH");
+    @SuppressLint("SimpleDateFormat")
+    SimpleDateFormat mm = new SimpleDateFormat("mm");
+    @SuppressLint("SimpleDateFormat")
+    SimpleDateFormat yyyy_MM_dd = new SimpleDateFormat("yyyy-MM-dd");
+    String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+    private static final int PERMISSIONS_REQUEST_CODE = 100;
+    GpsTracker gpsTracker;
+    double latitude;
+    double longitude;
+    String location;
+    Long areaId; // WEATHER_AREA id
+    String hour; // 현재 hour ex) 18
+    String min; // 현재 min ex) 10
+    private TextView weatherComment;
+    private TextView currentLocation;
+    private TextView mainBestObservationFit;
+    private TextView recommendTime;
+    private Button weatherDetail;
+
     public MainFragment() {
         // Required empty public constructor
     }
@@ -88,7 +124,6 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -104,6 +139,59 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         weatherLinearLayout = v.findViewById(R.id.mainpage_weatherLinearLayout);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
+
+        weatherComment = v.findViewById(R.id.weather_comment);
+        currentLocation = v.findViewById(R.id.current_location);
+        mainBestObservationFit = v.findViewById(R.id.main_best_observation_fit);
+        recommendTime = v.findViewById(R.id.recommend_time);
+        weatherDetail = v.findViewById(R.id.weather_detail);
+
+        checkLocationPermission();
+
+        gpsTracker = new GpsTracker(getContext());
+        latitude = gpsTracker.getLatitude();
+        longitude = gpsTracker.getLongitude();
+        location = getCurrentAddress(latitude, longitude);
+        System.out.println("위치 = " + latitude + " " + longitude + " " + location);
+        currentLocation.setText(location);
+
+        long now = System.currentTimeMillis();
+        Date date = new Date(now);
+        hour = hh.format(date);
+        min = mm.format(date);
+
+        AreaTimeDTO areaTimeDTO = new AreaTimeDTO(yyyy_MM_dd.format(date), Integer.valueOf(hour), latitude, longitude);
+        areaTimeDTO.setAddress(location);
+        WeatherRetrofitClient.getApiService()
+                .getMainInfo(areaTimeDTO)
+                .enqueue(new Callback<MainInfo>() {
+                    @Override
+                    public void onResponse(Call<MainInfo> call, Response<MainInfo> response) {
+                        if (response.isSuccessful()) {
+                            MainInfo info = response.body();
+                            weatherComment.setText(info.getComment());
+                            mainBestObservationFit.setText(info.getBestObservationalFit());
+                            recommendTime.setText(info.getBestTime());
+                            areaId = info.getAreaId();
+
+                        } else {
+                            Log.e(TAG, "서버 api 호출 실패");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<MainInfo> call, Throwable t) {
+                        Log.e("연결실패", t.getMessage());
+                    }
+                });
+
+        weatherDetail.setOnClickListener(v1 -> {
+            Intent intent = new Intent(getActivity().getApplicationContext(), WeatherActivity2.class);
+            LocationDTO locationDTO = new LocationDTO(latitude, longitude, areaId, null, location.split(" ")[2]);
+            intent.putExtra("locationDTO", locationDTO);
+            startActivityForResult(intent, 104);
+        });
+
         String fileName = "userId"; // 유저 아이디 가져오기
         try {
             FileInputStream fis = getActivity().openFileInput(fileName);
@@ -172,6 +260,15 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
 
+        //날씨 버튼
+        ImageButton button = (ImageButton) v.findViewById(R.id.weather_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), WeatherActivity2.class);
+                startActivity(intent);
+            }
+        });
 
         // 게시물 작성 페이지로 넘어가는 이벤트
         Button postWrite = (Button) v.findViewById(R.id.postWrite);
@@ -206,10 +303,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         return v;
     }
 
-
-
     public void toTheTop() {
-        LinearLayoutManager linearLayoutManager = (LinearLayoutManager)recyclerView.getLayoutManager();
+        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         if (linearLayoutManager != null) {
             nestedScrollView.fullScroll(View.FOCUS_UP);
         }
@@ -237,5 +332,49 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         swipeRefreshLayout.setRefreshing(false);
     }
 
+    public void checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE);
+        }
+    }
 
+    // 위도, 경도를 사용하여 주소로 변환하는 메서드
+    public String getCurrentAddress(double latitude, double longitude) {
+        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+        List<Address> addressList;
+        try {
+            addressList = geocoder.getFromLocation(latitude, longitude, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "지오코더 서비스 사용불가";
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return "잘못된 GPS 좌표";
+        }
+
+        if (addressList == null || addressList.isEmpty()) {
+            return "주소 미발견";
+        }
+        Address address = addressList.get(0);
+        System.out.println("address.getAddressLine(0) = " + address.getAddressLine(0));
+        System.out.println("address.getAdminArea() = " + address.getAdminArea());
+        System.out.println("address.getLocality() = " + address.getLocality());
+        System.out.println("address.getSubLocality() = " + address.getSubLocality());
+        System.out.println("address.getFeatureName() = " + address.getFeatureName());
+        System.out.println("address.getPostalCode() = " + address.getPostalCode());
+
+
+        String addressLine = address.getAddressLine(0);
+        if (addressLine.startsWith("대한민국")) {
+            addressLine = addressLine.substring(5);
+        }
+        System.out.println("addressLine = " + addressLine);
+        String[] s = addressLine.split(" ");
+        if (s.length <= 3) {
+            return addressLine;
+        } else {
+            return s[0] + " " + s[1] + " " + s[2];
+        }
+    }
 }

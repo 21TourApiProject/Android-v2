@@ -11,126 +11,124 @@ import com.starrynight.tourapiproject.R;
 
 public class WeatherHelpActivity extends AppCompatActivity {
 
-    private ImageView help_light_pollution_button; //광공해 버튼
-    private ImageView help_temp_button; // 기온 버튼
-    private ImageView help_rainfall_probability_button; // 강수확률 버튼
-    private ImageView help_humidity_button; // 습도 버튼
-    private ImageView help_cloud_button; // 구름량 버튼
-    private ImageView help_fine_dust_button; // 미세먼지 버튼
-    private ImageView help_wind_speed_button; // 풍속 버튼
-    private ImageView help_moon_age_button; // 월령 버튼
+    private ImageView help_1_button;
+    private ImageView help_2_button;
+    private ImageView help_3_button;
+    private ImageView help_4_button;
+    private ImageView help_5_button;
+    private ImageView help_6_button;
+    private ImageView help_7_button;
+    private ImageView help_8_button;
 
-
-    private TextView help_light_pollution_text; //광공해 설명
-    private TextView help_temp_text; // 기온 설명
-    private TextView help_rainfall_probability_text; // 강수확률 설명
-    private TextView help_humidity_text; // 습도 설명
-    private TextView help_cloud_text; // 구름량 설명
-    private TextView help_fine_dust_text; // 미세먼지 설명
-    private TextView help_wind_speed_text; // 풍속 설명
-    private TextView help_moon_age_text; // 월령 설명
-
+    private TextView help_1_text;
+    private TextView help_2_text;
+    private TextView help_3_text;
+    private TextView help_4_text;
+    private TextView help_5_text;
+    private TextView help_6_text;
+    private TextView help_7_text;
+    private TextView help_8_text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather_help);
 
-        help_light_pollution_button = findViewById(R.id.help_light_pollution_button);
-        help_temp_button = findViewById(R.id.help_temp_button);
-        help_rainfall_probability_button = findViewById(R.id.help_rainfall_probability_button);
-        help_humidity_button = findViewById(R.id.help_humidity_button);
-        help_cloud_button = findViewById(R.id.help_cloud_button);
-        help_fine_dust_button = findViewById(R.id.help_fine_dust_button);
-        help_wind_speed_button = findViewById(R.id.help_wind_speed_button);
-        help_moon_age_button = findViewById(R.id.help_moon_age_button);
+        help_1_button = findViewById(R.id.help_1_button);
+        help_2_button = findViewById(R.id.help_2_button);
+        help_3_button = findViewById(R.id.help_3_button);
+        help_4_button = findViewById(R.id.help_4_button);
+        help_5_button = findViewById(R.id.help_5_button);
+        help_6_button = findViewById(R.id.help_6_button);
+        help_7_button = findViewById(R.id.help_7_button);
+        help_8_button = findViewById(R.id.help_8_button);
 
-        help_light_pollution_text = findViewById(R.id.help_light_pollution_text);
-        help_temp_text = findViewById(R.id.help_temp_text);
-        help_rainfall_probability_text = findViewById(R.id.help_rainfall_probability_text);
-        help_humidity_text = findViewById(R.id.help_humidity_text);
-        help_cloud_text = findViewById(R.id.help_cloud_text);
-        help_fine_dust_text = findViewById(R.id.help_fine_dust_text);
-        help_wind_speed_text = findViewById(R.id.help_wind_speed_text);
-        help_moon_age_text = findViewById(R.id.help_moon_age_text);
+        help_1_text = findViewById(R.id.help_1_text);
+        help_2_text = findViewById(R.id.help_2_text);
+        help_3_text = findViewById(R.id.help_3_text);
+        help_4_text = findViewById(R.id.help_4_text);
+        help_5_text = findViewById(R.id.help_5_text);
+        help_6_text = findViewById(R.id.help_6_text);
+        help_7_text = findViewById(R.id.help_7_text);
+        help_8_text = findViewById(R.id.help_8_text);
 
-        help_light_pollution_button.setOnClickListener(view -> {
-            if (help_light_pollution_text.getVisibility() == View.GONE) {
-                help_light_pollution_button.setRotation(270);
-                help_light_pollution_text.setVisibility(View.VISIBLE);
+        help_1_button.setOnClickListener(view -> {
+            if (help_1_text.getVisibility() == View.GONE) {
+                help_1_button.setRotation(180);
+                help_1_text.setVisibility(View.VISIBLE);
             } else {
-                help_light_pollution_button.setRotation(90);
-                help_light_pollution_text.setVisibility(View.GONE);
+                help_1_button.setRotation(0);
+                help_1_text.setVisibility(View.GONE);
             }
         });
 
-        help_temp_button.setOnClickListener(view -> {
-            if (help_temp_text.getVisibility() == View.GONE) {
-                help_temp_button.setRotation(270);
-                help_temp_text.setVisibility(View.VISIBLE);
+        help_2_button.setOnClickListener(view -> {
+            if (help_2_text.getVisibility() == View.GONE) {
+                help_2_button.setRotation(180);
+                help_2_text.setVisibility(View.VISIBLE);
             } else {
-                help_temp_button.setRotation(90);
-                help_temp_text.setVisibility(View.GONE);
+                help_2_button.setRotation(0);
+                help_2_text.setVisibility(View.GONE);
             }
         });
 
-        help_rainfall_probability_button.setOnClickListener(view -> {
-            if (help_rainfall_probability_text.getVisibility() == View.GONE) {
-                help_rainfall_probability_button.setRotation(270);
-                help_rainfall_probability_text.setVisibility(View.VISIBLE);
+        help_3_button.setOnClickListener(view -> {
+            if (help_3_text.getVisibility() == View.GONE) {
+                help_3_button.setRotation(180);
+                help_3_text.setVisibility(View.VISIBLE);
             } else {
-                help_rainfall_probability_button.setRotation(90);
-                help_rainfall_probability_text.setVisibility(View.GONE);
+                help_3_button.setRotation(0);
+                help_3_text.setVisibility(View.GONE);
             }
         });
 
-        help_humidity_button.setOnClickListener(view -> {
-            if (help_humidity_text.getVisibility() == View.GONE) {
-                help_humidity_button.setRotation(270);
-                help_humidity_text.setVisibility(View.VISIBLE);
+        help_4_button.setOnClickListener(view -> {
+            if (help_4_text.getVisibility() == View.GONE) {
+                help_4_button.setRotation(180);
+                help_4_text.setVisibility(View.VISIBLE);
             } else {
-                help_humidity_button.setRotation(90);
-                help_humidity_text.setVisibility(View.GONE);
+                help_4_button.setRotation(0);
+                help_4_text.setVisibility(View.GONE);
             }
         });
 
-        help_cloud_button.setOnClickListener(view -> {
-            if (help_cloud_text.getVisibility() == View.GONE) {
-                help_cloud_button.setRotation(270);
-                help_cloud_text.setVisibility(View.VISIBLE);
+        help_5_button.setOnClickListener(view -> {
+            if (help_5_text.getVisibility() == View.GONE) {
+                help_5_button.setRotation(180);
+                help_5_text.setVisibility(View.VISIBLE);
             } else {
-                help_cloud_button.setRotation(90);
-                help_cloud_text.setVisibility(View.GONE);
+                help_5_button.setRotation(0);
+                help_5_text.setVisibility(View.GONE);
             }
         });
 
-        help_fine_dust_button.setOnClickListener(view -> {
-            if (help_fine_dust_text.getVisibility() == View.GONE) {
-                help_fine_dust_button.setRotation(270);
-                help_fine_dust_text.setVisibility(View.VISIBLE);
+        help_6_button.setOnClickListener(view -> {
+            if (help_6_text.getVisibility() == View.GONE) {
+                help_6_button.setRotation(180);
+                help_6_text.setVisibility(View.VISIBLE);
             } else {
-                help_fine_dust_button.setRotation(90);
-                help_fine_dust_text.setVisibility(View.GONE);
+                help_6_button.setRotation(0);
+                help_6_text.setVisibility(View.GONE);
             }
         });
 
-        help_wind_speed_button.setOnClickListener(view -> {
-            if (help_wind_speed_text.getVisibility() == View.GONE) {
-                help_wind_speed_button.setRotation(270);
-                help_wind_speed_text.setVisibility(View.VISIBLE);
+        help_7_button.setOnClickListener(view -> {
+            if (help_7_text.getVisibility() == View.GONE) {
+                help_7_button.setRotation(180);
+                help_7_text.setVisibility(View.VISIBLE);
             } else {
-                help_wind_speed_button.setRotation(90);
-                help_wind_speed_text.setVisibility(View.GONE);
+                help_7_button.setRotation(0);
+                help_7_text.setVisibility(View.GONE);
             }
         });
 
-        help_moon_age_button.setOnClickListener(view -> {
-            if (help_moon_age_text.getVisibility() == View.GONE) {
-                help_moon_age_button.setRotation(270);
-                help_moon_age_text.setVisibility(View.VISIBLE);
+        help_8_button.setOnClickListener(view -> {
+            if (help_8_text.getVisibility() == View.GONE) {
+                help_8_button.setRotation(180);
+                help_8_text.setVisibility(View.VISIBLE);
             } else {
-                help_moon_age_button.setRotation(90);
-                help_moon_age_text.setVisibility(View.GONE);
+                help_8_button.setRotation(0);
+                help_8_text.setVisibility(View.GONE);
             }
         });
 
