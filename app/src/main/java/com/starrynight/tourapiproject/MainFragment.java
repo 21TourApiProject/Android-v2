@@ -260,16 +260,6 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
 
-        //날씨 버튼
-        ImageButton button = (ImageButton) v.findViewById(R.id.weather_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), WeatherActivity2.class);
-                startActivity(intent);
-            }
-        });
-
         // 게시물 작성 페이지로 넘어가는 이벤트
         Button postWrite = (Button) v.findViewById(R.id.postWrite);
         postWrite.setOnClickListener(new View.OnClickListener() {
