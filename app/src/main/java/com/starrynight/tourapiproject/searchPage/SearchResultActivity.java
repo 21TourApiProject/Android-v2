@@ -43,12 +43,14 @@ public class SearchResultActivity extends AppCompatActivity {
     List<HashTagItem> areaList = new ArrayList<>();
     List<HashTagItem> themeList = new ArrayList<>();
     List<HashTagItem> peopleList = new ArrayList<>();
-    List<HashTagItem> transportList = new ArrayList<>();
+    List<HashTagItem> facilityList = new ArrayList<>();
+    List<HashTagItem> feeList = new ArrayList<>();
 
     LinearLayout locationBtn;
-    LinearLayout transportBtn;
     LinearLayout peopleBtn;
     LinearLayout themeBtn;
+    LinearLayout facilityBtn;
+    LinearLayout feeBtn;
 
     ViewPager2 resultViewPager;
     TabLayout tabLayout;
@@ -68,9 +70,10 @@ public class SearchResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_result);
 
         locationBtn = findViewById(R.id.sr_location_btn);
-        transportBtn = findViewById(R.id.sr_transport_btn);
         peopleBtn = findViewById(R.id.sr_people_btn);
         themeBtn = findViewById(R.id.sr_theme_btn);
+        facilityBtn = findViewById(R.id.sr_facility_btn);
+        feeBtn = findViewById(R.id.sr_fee_btn);
 
         resultViewPager = findViewById(R.id.sr_result_view_pager);
         tabLayout = findViewById(R.id.sr_tab_layout);
@@ -146,7 +149,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
         Filter filter = new Filter(areaCodeList, hashTagIdList);
         SearchKey searchKey = new SearchKey(filter, keyword);
-        Call<List<SearchParams1>> call = RetrofitClient.getApiService().getObservationWithFilter(searchKey);
+        Call<List<SearchParams1>> call = RetrofitClient.getApiService().getObservationWithFilter(searchKey,0);
         call.enqueue(new Callback<List<SearchParams1>>() {
             @Override
             public void onResponse(Call<List<SearchParams1>> call, Response<List<SearchParams1>> response) {
@@ -216,11 +219,14 @@ public class SearchResultActivity extends AppCompatActivity {
                                         case "THEME":
                                             themeList.add(item);
                                             break;
-                                        case "TRANSPORT":
-                                            transportList.add(item);
-                                            break;
                                         case "PEOPLE":
                                             peopleList.add(item);
+                                            break;
+                                        case "FACILITY":
+                                            facilityList.add(item);
+                                            break;
+                                        case "FEE":
+                                            feeList.add(item);
                                             break;
                                     }
                                 }
@@ -252,21 +258,13 @@ public class SearchResultActivity extends AppCompatActivity {
 
         if (filterFragment == null) {
             filterFragment = new BottomFilterFragment();
-            filterFragment.setDataLists(areaList, transportList, peopleList, themeList);
+            filterFragment.setDataLists(areaList, peopleList, themeList, facilityList, feeList);
         }
 
         locationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 filterFragment.setFirstTab(FilterType.AREA);
-                filterFragment.show(getSupportFragmentManager(), filterFragment.getTag());
-            }
-        });
-
-        transportBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                filterFragment.setFirstTab(FilterType.TRANSPORT);
                 filterFragment.show(getSupportFragmentManager(), filterFragment.getTag());
             }
         });
@@ -283,6 +281,22 @@ public class SearchResultActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 filterFragment.setFirstTab(FilterType.THEME);
+                filterFragment.show(getSupportFragmentManager(), filterFragment.getTag());
+            }
+        });
+
+        facilityBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                filterFragment.setFirstTab(FilterType.FACILITY);
+                filterFragment.show(getSupportFragmentManager(), filterFragment.getTag());
+            }
+        });
+
+        feeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                filterFragment.setFirstTab(FilterType.FEE);
                 filterFragment.show(getSupportFragmentManager(), filterFragment.getTag());
             }
         });

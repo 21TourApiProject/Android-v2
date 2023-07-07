@@ -505,7 +505,7 @@ public class MapFragment extends Fragment {
 
                 Filter filter = new Filter(areaCodeList, hashTagIdList);
                 SearchKey searchKey = new SearchKey(filter, keyword);
-                Call<List<SearchParams1>> call1 = RetrofitClient.getApiService().getObservationWithFilter(searchKey);
+                Call<List<SearchParams1>> call1 = RetrofitClient.getApiService().getObservationWithFilter(searchKey,0);
                 call1.enqueue(new Callback<List<SearchParams1>>() {
                     @Override
                     public void onResponse(Call<List<SearchParams1>> call, Response<List<SearchParams1>> response) {
@@ -664,7 +664,7 @@ public class MapFragment extends Fragment {
 
                 Filter filter = new Filter(areaCodeList, hashTagIdList);
                 SearchKey searchKey = new SearchKey(filter, keyword);
-                Call<List<SearchParams1>> call1 = RetrofitClient.getApiService().getObservationWithFilter(searchKey);
+                Call<List<SearchParams1>> call1 = RetrofitClient.getApiService().getObservationWithFilter(searchKey,0);
                 call1.enqueue(new Callback<List<SearchParams1>>() {
                     @Override
                     public void onResponse(Call<List<SearchParams1>> call, Response<List<SearchParams1>> response) {
@@ -784,7 +784,7 @@ public class MapFragment extends Fragment {
 
                 Filter filter = new Filter(areaCodeList, hashTagIdList);
                 SearchKey searchKey = new SearchKey(filter, keyword);
-                Call<List<SearchParams1>> call1 = RetrofitClient.getApiService().getObservationWithFilter(searchKey);
+                Call<List<SearchParams1>> call1 = RetrofitClient.getApiService().getObservationWithFilter(searchKey,0);
                 call1.enqueue(new Callback<List<SearchParams1>>() {
                     @Override
                     public void onResponse(Call<List<SearchParams1>> call, Response<List<SearchParams1>> response) {
