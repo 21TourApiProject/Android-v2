@@ -33,21 +33,24 @@ public class BottomFilterFragment extends BottomSheetDialogFragment {
     List<HashTagItem> areaList;
     List<HashTagItem> themeList;
     List<HashTagItem> peopleList;
-    List<HashTagItem> transportList;
+    List<HashTagItem> facilityList;
+    List<HashTagItem> feeList;
 
     RecyclerView tagRecycler;
     FilterRecyclerAdapter adapter;
     FlexboxLayoutManager layoutManager;
 
     TextView locationBtn;
-    TextView transportBtn;
     TextView peopleBtn;
     TextView themeBtn;
+    TextView facilityBtn;
+    TextView feeBtn;
 
     ImageView locationDot;
-    ImageView transportDot;
     ImageView peopleDot;
     ImageView themeDot;
+    ImageView facilityDot;
+    ImageView feeDot;
 
     FilterType firstTab = FilterType.AREA;
 
@@ -82,14 +85,16 @@ public class BottomFilterFragment extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         locationBtn = view.findViewById(R.id.filter_location);
-        transportBtn = view.findViewById(R.id.filter_transport);
         peopleBtn = view.findViewById(R.id.filter_people);
         themeBtn = view.findViewById(R.id.filter_theme);
+        facilityBtn = view.findViewById(R.id.filter_facility);
+        feeBtn = view.findViewById(R.id.filter_fee);
 
         locationDot = view.findViewById(R.id.filter_location_dot);
         peopleDot = view.findViewById(R.id.filter_people_dot);
-        transportDot = view.findViewById(R.id.filter_transport_dot);
         themeDot = view.findViewById(R.id.filter_theme_dot);
+        facilityDot = view.findViewById(R.id.filter_facility_dot);
+        feeDot = view.findViewById(R.id.filter_fee_dot);
 
         tagRecycler = view.findViewById(R.id.filter_tag_recycler);
 
@@ -97,7 +102,7 @@ public class BottomFilterFragment extends BottomSheetDialogFragment {
 
 
 
-        adapter = new FilterRecyclerAdapter(getContext(), areaList, transportList, peopleList, themeList);
+        adapter = new FilterRecyclerAdapter(getContext(), areaList, peopleList, themeList, facilityList, feeList);
 
         layoutManager = new FlexboxLayoutManager(getContext());
         layoutManager.setFlexDirection(FlexDirection.ROW);
@@ -128,13 +133,6 @@ public class BottomFilterFragment extends BottomSheetDialogFragment {
             }
         });
 
-        transportBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchTab(FilterType.TRANSPORT);
-            }
-        });
-
         peopleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,24 +146,34 @@ public class BottomFilterFragment extends BottomSheetDialogFragment {
                 switchTab(FilterType.THEME);
             }
         });
+
+        facilityBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchTab(FilterType.FACILITY);
+            }
+        });
+
+        feeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchTab(FilterType.FEE);
+            }
+        });
     }
 
     public void switchTab(FilterType type){
         setDotActivate();
         locationBtn.setTextColor(getActivity().getColor(R.color.gray_500));
-        transportBtn.setTextColor(getActivity().getColor(R.color.gray_500));
         peopleBtn.setTextColor(getActivity().getColor(R.color.gray_500));
         themeBtn.setTextColor(getActivity().getColor(R.color.gray_500));
+        facilityBtn.setTextColor(getActivity().getColor(R.color.gray_500));
+        feeBtn.setTextColor(getActivity().getColor(R.color.gray_500));
 
         switch (type) {
             case AREA:
                 adapter.switchTab(FilterType.AREA);
                 locationBtn.setTextColor(getActivity().getColor(R.color.white));
-                break;
-            case TRANSPORT:
-                adapter.switchTab(FilterType.TRANSPORT);
-                setDotActivate();
-                transportBtn.setTextColor(getActivity().getColor(R.color.white));
                 break;
             case PEOPLE:
                 adapter.switchTab(FilterType.PEOPLE);
@@ -175,24 +183,27 @@ public class BottomFilterFragment extends BottomSheetDialogFragment {
                 adapter.switchTab(FilterType.THEME);
                 themeBtn.setTextColor(getActivity().getColor(R.color.white));
                 break;
+            case FACILITY:
+                adapter.switchTab(FilterType.FACILITY);
+                facilityBtn.setTextColor(getActivity().getColor(R.color.white));
+                break;
+            case FEE:
+                adapter.switchTab(FilterType.FEE);
+                feeBtn.setTextColor(getActivity().getColor(R.color.white));
+                break;
         }
     }
 
     private void setDotActivate(){
         locationDot.setVisibility(View.GONE);
-        transportDot.setVisibility(View.GONE);
         peopleDot.setVisibility(View.GONE);
         themeDot.setVisibility(View.GONE);
+        facilityDot.setVisibility(View.GONE);
+        feeDot.setVisibility(View.GONE);
 
         for (HashTagItem item : areaList) {
             if (item.isActive == 1) {
                 locationDot.setVisibility(View.VISIBLE);
-                break;
-            }
-        }
-        for (HashTagItem item : transportList) {
-            if (item.isActive == 1) {
-                transportDot.setVisibility(View.VISIBLE);
                 break;
             }
         }
@@ -208,14 +219,27 @@ public class BottomFilterFragment extends BottomSheetDialogFragment {
                 break;
             }
         }
+        for (HashTagItem item : facilityList) {
+            if (item.isActive == 1) {
+                facilityDot.setVisibility(View.VISIBLE);
+                break;
+            }
+        }
+        for (HashTagItem item : feeList) {
+            if (item.isActive == 1) {
+                feeDot.setVisibility(View.VISIBLE);
+                break;
+            }
+        }
     }
 
-    public void setDataLists(List<HashTagItem> areaList, List<HashTagItem> transportList, List<HashTagItem> peopleList, List<HashTagItem> themeList){
+    public void setDataLists(List<HashTagItem> areaList, List<HashTagItem> peopleList, List<HashTagItem> themeList, List<HashTagItem> facilityList, List<HashTagItem> feeList){
 
         this.areaList = areaList;
-        this.transportList = transportList;
         this.peopleList = peopleList;
         this.themeList = themeList;
+        this.facilityList = facilityList;
+        this.feeList = feeList;
 
     }
 

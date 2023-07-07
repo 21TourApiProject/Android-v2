@@ -25,18 +25,20 @@ public class FilterRecyclerAdapter extends RecyclerView.Adapter<FilterRecyclerAd
     List<HashTagItem> list;
     List<HashTagItem> themeList = new ArrayList<>();
     List<HashTagItem> peopleList = new ArrayList<>();
-    List<HashTagItem> transportList = new ArrayList<>();
     List<HashTagItem> areaList = new ArrayList<>();
+    List<HashTagItem> facilityList = new ArrayList<>();
+    List<HashTagItem> feeList = new ArrayList<>();
 
-    public FilterRecyclerAdapter(Context context, List<HashTagItem> areaList, List<HashTagItem> transportList, List<HashTagItem> peopleList , List<HashTagItem> themeList) {
+    public FilterRecyclerAdapter(Context context, List<HashTagItem> areaList, List<HashTagItem> peopleList , List<HashTagItem> themeList, List<HashTagItem> facilityList, List<HashTagItem> feeList) {
         super();
         this.context = context;
 
         this.list = areaList;
         this.areaList = areaList;
         this.themeList = themeList;
-        this.transportList = transportList;
         this.peopleList = peopleList;
+        this.facilityList = facilityList;
+        this.feeList = feeList;
     }
 
     @NonNull
@@ -82,8 +84,11 @@ public class FilterRecyclerAdapter extends RecyclerView.Adapter<FilterRecyclerAd
             case PEOPLE:
                 list = peopleList;
                 break;
-            case TRANSPORT:
-                list = transportList;
+            case FACILITY:
+                list = facilityList;
+                break;
+            case FEE:
+                list = feeList;
                 break;
         }
         notifyDataSetChanged();
