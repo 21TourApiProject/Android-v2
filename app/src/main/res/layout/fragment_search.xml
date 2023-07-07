@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="12dp"
-                    android:src="@drawable/search_btn" />
+                    android:src="@drawable/main__search" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"

@@ -77,6 +77,7 @@ public class SearchObservingPointActivity extends AppCompatActivity {
 
         optionText = findViewById(R.id.optionText);
 
+        // TODO
         //검색어 입력했을 때 나오는 관측지 리스트
         search_item_adapter = new Search_item_adapter(searchitemArrayList, this);
         layoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false);
@@ -199,6 +200,7 @@ public class SearchObservingPointActivity extends AppCompatActivity {
 
     }
 
+    // TODO
     public void searchFilter(String searchText) {
         filteredList.clear();
         for (int i = 0; i < searchitemArrayList.size(); i++) {

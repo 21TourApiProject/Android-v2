@@ -57,7 +57,7 @@
                 android:layout_height="22dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="4dp"
-                android:src="@drawable/search_btn" />
+                android:src="@drawable/main__search" />
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/edit_search"
