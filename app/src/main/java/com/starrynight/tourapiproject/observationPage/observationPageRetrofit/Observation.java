@@ -57,7 +57,7 @@ public class Observation {
     @SerializedName("saved")
     Long saved;
     @SerializedName("reserve")
-    Long reserve;
+    String reserve;
     @SerializedName("observeHashTags")
     List<ObserveHashTag> observeHashTags;
     @SerializedName("observeImages")
@@ -76,7 +76,7 @@ public class Observation {
     }
 
 
-    public Long getReserve() {
+    public String getReserve() {
         return reserve;
     }
 
