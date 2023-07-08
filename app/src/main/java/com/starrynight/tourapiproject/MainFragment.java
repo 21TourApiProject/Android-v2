@@ -175,7 +175,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             areaId = info.getAreaId();
 
                         } else {
-                            Log.e(TAG, "날씨 api 호출 실패");
+                            Log.e(TAG, "날씨 오류");
                         }
                     }
 
@@ -350,6 +350,10 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         System.out.println("address.getSubLocality() = " + address.getSubLocality());
         System.out.println("address.getFeatureName() = " + address.getFeatureName());
         System.out.println("address.getPostalCode() = " + address.getPostalCode());
+        System.out.println("address.getSubAdminArea() = " + address.getSubAdminArea());
+        System.out.println("address.getSubLocality() = " + address.getSubLocality());
+        System.out.println("address.getThoroughfare() = " + address.getThoroughfare());
+        System.out.println("address.getCountryName() = " + address.getCountryName());
 
 
         String addressLine = address.getAddressLine(0);
@@ -361,7 +365,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         if (s.length <= 3) {
             return addressLine;
         } else {
-            return s[0] + " " + s[1] + " " + s[2];
+//            return s[0] + " " + s[1] + " " + s[2];
+            return "서울특별시 서대문구 창천동";
         }
     }
 }
