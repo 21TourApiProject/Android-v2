@@ -112,8 +112,7 @@
                     android:id="@+id/light_pollution_level"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:src="@drawable/light_bad" />
+                    android:layout_marginTop="8dp" />
 
                 <TextView
                     android:id="@+id/today_comment_1"
