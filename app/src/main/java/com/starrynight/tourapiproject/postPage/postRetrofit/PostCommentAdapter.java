@@ -72,68 +72,67 @@ public class PostCommentAdapter extends RecyclerView.Adapter<PostCommentAdapter.
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         PostComment item = items.get(position);
         viewHolder.setItem(item);
-        viewHolder.love.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(userId.equals(item.getUserId())){
-                    Call<Void> removeCall = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().removeLove(userId,item.getCommentId());
-                    removeCall.enqueue(new Callback<Void>() {
-                        @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
-                            if(response.isSuccessful()){
-                                Toast.makeText(v.getContext(), "댓글 좋아요 삭제 성공", Toast.LENGTH_SHORT).show();
-                                viewHolder.love.setEnabled(false);
-                                Handler handle = new Handler();
-                                handle.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        viewHolder.love.setEnabled(true);
-                                    }
-                                },1500);
-                            }
-                            else{
-                                Log.d("commentLove", "댓글 좋아요 삭제 실패");
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Void> call, Throwable t) {
-                            Log.d("commentLove", "댓글 좋아요 인터넷 오류");
-                        }
-                    });
-                }else{
-                    Call<Void> addCall = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().addLove(userId,item.getCommentId());
-                    addCall.enqueue(new Callback<Void>() {
-                        @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
-                            if(response.isSuccessful()){
-                                Toast.makeText(v.getContext(), "댓글 좋아요 추가 성공", Toast.LENGTH_SHORT).show();
-                                viewHolder.love.setEnabled(false);
-                                Handler handle = new Handler();
-                                handle.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        viewHolder.love.setEnabled(true);
-                                    }
-                                },1500);
-                            }
-                            else{
-                                Log.d("commentLove", "댓글 좋아요 삭제 실패");
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Void> call, Throwable t) {
-                            Log.d("commentLove", "댓글 좋아요 인터넷 오류");
-                        }
-                    });
-                }
-            }
-        });
+//        viewHolder.love.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(userId.equals(item.getUserId())){
+//                    Call<Void> removeCall = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().removeLove(userId,item.getCommentId());
+//                    removeCall.enqueue(new Callback<Void>() {
+//                        @Override
+//                        public void onResponse(Call<Void> call, Response<Void> response) {
+//                            if(response.isSuccessful()){
+//                                Toast.makeText(v.getContext(), "댓글 좋아요 삭제 성공", Toast.LENGTH_SHORT).show();
+//                                viewHolder.love.setEnabled(false);
+//                                Handler handle = new Handler();
+//                                handle.postDelayed(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        viewHolder.love.setEnabled(true);
+//                                    }
+//                                },1500);
+//                            }
+//                            else{
+//                                Log.d("commentLove", "댓글 좋아요 삭제 실패");
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<Void> call, Throwable t) {
+//                            Log.d("commentLove", "댓글 좋아요 인터넷 오류");
+//                        }
+//                    });
+//                }else{
+//                    Call<Void> addCall = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().addLove(userId,item.getCommentId());
+//                    addCall.enqueue(new Callback<Void>() {
+//                        @Override
+//                        public void onResponse(Call<Void> call, Response<Void> response) {
+//                            if(response.isSuccessful()){
+//                                Toast.makeText(v.getContext(), "댓글 좋아요 추가 성공", Toast.LENGTH_SHORT).show();
+//                                viewHolder.love.setEnabled(false);
+//                                Handler handle = new Handler();
+//                                handle.postDelayed(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        viewHolder.love.setEnabled(true);
+//                                    }
+//                                },1500);
+//                            }
+//                            else{
+//                                Log.d("commentLove", "댓글 좋아요 삭제 실패");
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<Void> call, Throwable t) {
+//                            Log.d("commentLove", "댓글 좋아요 인터넷 오류");
+//                        }
+//                    });
+//                }
+//            }
+//        });
         if(item.getUserId().equals(userId)){
             viewHolder.option.setVisibility(View.VISIBLE);
         }else{viewHolder.option.setVisibility(View.INVISIBLE);}
-
         viewHolder.option.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -212,8 +211,8 @@ public class PostCommentAdapter extends RecyclerView.Adapter<PostCommentAdapter.
             postComment = itemView.findViewById(R.id.postComment);
             time = itemView.findViewById(R.id.comment_time);
             user = itemView.findViewById(R.id.post_nickname);
-            love = itemView.findViewById(R.id.comment_love);
-            loveCount = itemView.findViewById(R.id.comment_love_count);
+            //love = itemView.findViewById(R.id.comment_love);
+            //loveCount = itemView.findViewById(R.id.comment_love_count);
             option = itemView.findViewById(R.id.comment_option);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -230,8 +229,7 @@ public class PostCommentAdapter extends RecyclerView.Adapter<PostCommentAdapter.
 
         public void setItem(PostComment item) {
             postComment.setText(item.getComment());
-            time.setText(item.getYearDate()+""+item.getTime());
-            loveCount.setText(item.getLoveList().size());
+            time.setText(item.getYearDate()+" "+item.getTime());
 
 
             Call<User> call3 = RetrofitClient.getApiService().getUser(item.getUserId());

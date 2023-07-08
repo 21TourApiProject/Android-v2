@@ -44,8 +44,8 @@ public class AddHashTagActivity extends AppCompatActivity {
     ArrayList<String> hashtag = new ArrayList<>();
     HashMap<String, Integer> hashTagMap = new HashMap<String, Integer>();
     String[] hashTagName = {"서울","강원","경기","전남","전북","경남","경북",
-            "뚜벅이", "자전거","드라이브", "가족", "연인", "친구", "혼자", "반려동물",
-            "공기좋은", "분위기 있는", "깔끔한", "감성적인", "이색적인", "인생샷","전문적인","캠핑","차박","대한민국 구석구석"};
+            "뚜벅이", "자전거","드라이브", "연인","가족", "친구", "혼자", "반려동물",
+            "공기 좋은", "분위기 있는", "깔끔한", "감성적인", "이색적인", "인생샷","전문적인","캠핑","차박","대한민국 구석구석"};
     Button[] buttons = new Button[26];
 
     @Override
@@ -151,8 +151,6 @@ public class AddHashTagActivity extends AppCompatActivity {
             if (!clicked[i].equals("")) {
                 buttons[i].setTag("isClicked");
                 buttons[i].setBackground(ContextCompat.getDrawable(this, R.drawable.selectmyhashtag_hashtag));
-                buttons[i].setHeight(buttons[i].getHeight());
-                buttons[i].setWidth(buttons[i].getWidth());
                 buttons[i].setTextColor(ContextCompat.getColor(this, R.color.gray_700));
             }
         }

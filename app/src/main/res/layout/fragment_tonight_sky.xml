@@ -52,7 +52,7 @@
             android:focusableInTouchMode="true"
             android:orientation="vertical"
             android:layout_marginBottom="@dimen/bottom_nav_size"
-            app:layout_constraintBottom_toBottomOf="@+id/touchImage"
+            app:layout_constraintBottom_toBottomOf="parent"
             >
 
 
@@ -80,7 +80,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50sp"
                 android:layout_below="@id/Nest"
-                android:src="@drawable/ic_star_camera" />
+                android:src="@drawable/ic_star_camera"
+                android:visibility="gone"/>
         </RelativeLayout>
 
         <LinearLayout

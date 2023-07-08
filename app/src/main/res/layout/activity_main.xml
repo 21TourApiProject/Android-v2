@@ -12,7 +12,7 @@
         android:id="@+id/bottom_nav_view"
         android:layout_width="0dp"
         android:layout_height="@dimen/bottom_nav_size"
-        android:background="@drawable/main__bar"
+        android:background="@color/bg_black"
         app:itemIconSize="80dp"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"

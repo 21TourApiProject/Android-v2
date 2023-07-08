@@ -69,23 +69,10 @@
             android:text="시간" />
 
         <TextView
-            android:id="@+id/comment_love"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="2dp"
-            android:text="좋아요" />
-
-        <TextView
-            android:id="@+id/comment_love_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:text="1" />
-
-        <TextView
             android:id="@+id/reComment_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:text="답글" />
     </LinearLayout>
 </LinearLayout>

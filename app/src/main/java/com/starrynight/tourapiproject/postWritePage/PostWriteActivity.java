@@ -475,12 +475,15 @@ public class PostWriteActivity extends AppCompatActivity {
                 dayOrNight = (boolean)data.getSerializableExtra("day");
                 dateText.setText(yearDate);
                 dateText.setTextColor(getColor(R.color.point_blue));
-                if(dayOrNight){
-                    timeText.setText("오전 "+time);
-                }else{timeText.setText("오후 "+time);}
-                timeText.setTextColor(getColor(R.color.point_blue));
-                timeText.setVisibility(View.VISIBLE);
-
+                if(time.equals("00:00")){
+                    timeText.setVisibility(View.GONE);
+                }else{
+                    if(dayOrNight){
+                        timeText.setText("오전 "+time);
+                    }else{timeText.setText("오후 "+time);}
+                    timeText.setTextColor(getColor(R.color.point_blue));
+                    timeText.setVisibility(View.VISIBLE);
+                }
             }
         }
         if (resultCode != RESULT_OK || data == null) {
