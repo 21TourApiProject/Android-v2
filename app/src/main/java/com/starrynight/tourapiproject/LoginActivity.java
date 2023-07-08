@@ -55,22 +55,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public boolean getLogin() {
-        userId = 1L;
-        return true;
+//        userId = 1L;
+//        return true;
 
-//        String fileName = "userId";
-//        try {
-//            FileInputStream fis = openFileInput(fileName);
-//            String line = new BufferedReader(new InputStreamReader(fis)).readLine();
-//            userId = Long.parseLong(line);
-//            fis.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        if (userId != null) {
-//            return true;
-//        } else return false;
+        String fileName = "userId";
+        try {
+            FileInputStream fis = openFileInput(fileName);
+            String line = new BufferedReader(new InputStreamReader(fis)).readLine();
+            userId = Long.parseLong(line);
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (userId != null) {
+            return true;
+        } else return false;
     }
 }
