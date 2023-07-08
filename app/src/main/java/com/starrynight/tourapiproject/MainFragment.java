@@ -153,7 +153,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         longitude = gpsTracker.getLongitude();
         location = getCurrentAddress(latitude, longitude);
         System.out.println("위치 = " + latitude + " " + longitude + " " + location);
-        currentLocation.setText(location);
+        currentLocation.setText("새로고침이 필요합니다.");
 
         long now = System.currentTimeMillis();
         Date date = new Date(now);
