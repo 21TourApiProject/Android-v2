@@ -41,24 +41,6 @@
 
 
                 <TextView
-                    android:id="@+id/filter_transport"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="이동수단"
-                    android:textColor="@color/gray_500"
-                    android:textFontWeight="600"
-                    android:textSize="18sp" />
-
-                <ImageView
-                    android:id="@+id/filter_transport_dot"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/search__filter_dot"
-                    android:visibility="gone" />
-
-
-                <TextView
                     android:id="@+id/filter_people"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -91,6 +73,41 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/search__filter_dot"
                     android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/filter_facility"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text=" 시설"
+                    android:textColor="@color/gray_500"
+                    android:textFontWeight="600"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/filter_facility_dot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/search__filter_dot"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/filter_fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="요금"
+                    android:textColor="@color/gray_500"
+                    android:textFontWeight="600"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/filter_fee_dot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/search__filter_dot"
+                    android:visibility="gone" />
+
             </LinearLayout>
 
             <ImageView

@@ -19,8 +19,8 @@ public interface SearchPageRetrofitService {
     @POST("search/touristPoint")
     Call<List<SearchParams1>> getTouristPointWithFilter(@Body SearchKey searchKey);
 
-    @POST("search/observation")
-    Call<List<SearchParams1>> getObservationWithFilter(@Body SearchKey searchKey);
+    @POST("search/observation/{pageNo}")
+    Call<List<SearchParams1>> getObservationWithFilter(@Body SearchKey searchKey, @Path("pageNo") Integer pageNo);
 
     @POST("search/post")
     Call<List<SearchParams1>> getPostWithFilter(@Body SearchKey searchKey);
