@@ -26,15 +26,12 @@ public class PostCommentParams {
     private String time;
     @SerializedName("yearDate")
     private String yearDate;
-    @SerializedName("loveList")
-    private List<User> loveList;
 
-    public PostCommentParams(String comment, Long userId, String time, String yearDate,List<User> loveList) {
+    public PostCommentParams(String comment, Long userId, String time, String yearDate) {
         this.comment = comment;
         this.userId = userId;
         this.time = time;
         this.yearDate = yearDate;
-        this.loveList = loveList;
     }
 
     public PostCommentParams() {
@@ -72,11 +69,4 @@ public class PostCommentParams {
         this.yearDate = yearDate;
     }
 
-    public List<User> getLoveList() {
-        return loveList;
-    }
-
-    public void setLoveList(List<User> loveList) {
-        this.loveList = loveList;
-    }
 }

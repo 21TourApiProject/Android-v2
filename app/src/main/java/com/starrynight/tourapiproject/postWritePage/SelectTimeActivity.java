@@ -64,7 +64,8 @@ public class SelectTimeActivity extends AppCompatActivity {
                     day = "0" + Integer.toString(dayOfMonth);
                 }
                 datePicker.setText(year + "." + month + "." + day);
-                yearDate = datePicker.getText().toString();
+                String realDate = year+"-"+month+"-"+day;
+                yearDate = realDate;
 
             }
         };
@@ -98,6 +99,7 @@ public class SelectTimeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(timeCheckbox.isChecked()){
                     timePicker.setText("모르겠음");
+                    time = "00:00";
                 }else{
                     timePicker.setText("관측 시간대");
                 }

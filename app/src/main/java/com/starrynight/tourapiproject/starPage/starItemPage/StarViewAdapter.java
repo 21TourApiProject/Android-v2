@@ -79,8 +79,8 @@ public class StarViewAdapter extends RecyclerView.Adapter<StarViewAdapter.ViewHo
         public ViewHolder(View itemView, final OnStarItemClickListener listener) {
             super(itemView);
 
-            constImage = itemView.findViewById(R.id.const_image);
-            constName = itemView.findViewById(R.id.const_name);
+            constImage = itemView.findViewById(R.id.const_image1);
+            constName = itemView.findViewById(R.id.const_name1);
 
             itemView.setClickable(true);
             itemView.setOnClickListener(new View.OnClickListener() {
