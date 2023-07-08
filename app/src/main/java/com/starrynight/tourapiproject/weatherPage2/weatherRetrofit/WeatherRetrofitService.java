@@ -1,5 +1,7 @@
 package com.starrynight.tourapiproject.weatherPage2.weatherRetrofit;
 
+import com.starrynight.tourapiproject.weatherPage2.SearchLocationItem;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -22,4 +24,6 @@ public interface WeatherRetrofitService {
     @POST("weather/v2/observationalFit/mainPage")
     Call<MainInfo> getMainInfo(@Body AreaTimeDTO areaTimeDTO);
 
+    @GET("weather/v2/locations")
+    Call<List<SearchLocationItem>> getWeatherLocations();
 }

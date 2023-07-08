@@ -17,28 +17,23 @@
             android:layout_height="52dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
             android:paddingVertical="14dp">
 
-            <FrameLayout
+            <ImageView
+                android:id="@+id/weatherLocationSearch_finish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/postwrite_xbtn" />
+
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/weatherSearch__back_btn"
-                    style="@style/ImageButton.size49"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:src="@drawable/postwrite_xbtn" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/scdream"
-                    android:text="위치 검색"
-                    android:textSize="16sp" />
-            </FrameLayout>
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingEnd="24dp"
+                android:text="위치 검색"
+                android:textFontWeight="600"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
@@ -48,45 +43,39 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
-
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
-                    android:paddingVertical="12dp"
-                    android:paddingHorizontal="16dp">
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="12dp">
 
                     <LinearLayout
-                        android:id="@+id/linearLayout"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:background="@drawable/postwrite__search_bar"
                         android:orientation="horizontal"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        >
+                        app:layout_constraintTop_toTopOf="parent">
 
-                        <Button
-                            android:id="@+id/search_locationBtn"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:background="@drawable/search_btn"
-                            android:visibility="visible" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="8dp"
+                            android:src="@drawable/main__search" />
 
                         <EditText
-                            android:id="@+id/locationEdit"
-                            android:layout_width="0dp"
+                            android:id="@+id/location_search"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
                             android:background="@null"
-                            android:ems="13"
-                            android:fontFamily="@font/spoqahansansneoregular"
                             android:hint="날씨가 궁금한 지역, 관측지명을 검색하세요"
-                            android:inputType="textPersonName"
-                            android:paddingStart="10dp"
+                            android:inputType="text"
+                            android:textColorHint="#84838D"
                             android:textSize="14sp" />
 
                     </LinearLayout>
@@ -94,14 +83,13 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
-                    android:id="@+id/weatherSeachLinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:paddingHorizontal="26dp">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/searchLocationRecyclerView"
+                        android:id="@+id/location_result"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </LinearLayout>

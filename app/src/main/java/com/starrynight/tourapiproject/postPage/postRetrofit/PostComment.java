@@ -30,24 +30,18 @@ public class PostComment {
     private Long userId;
     @SerializedName("comment")
     private String comment;
-    @SerializedName("parentId")
-    private Long parentId;
-    @SerializedName("loveList")
-    private List<User> loveList;
     @SerializedName("time")
     private String time;
     @SerializedName("yearDate")
     private String yearDate;
 
-    public PostComment(Long commentId, Post post, Long postId, User user, Long userId, String comment, Long parentId, List<User> loveList, String time, String yearDate) {
+    public PostComment(Long commentId, Post post, Long postId, User user, Long userId, String comment, String time, String yearDate) {
         this.commentId = commentId;
         this.post = post;
         this.postId = postId;
         this.user = user;
         this.userId = userId;
         this.comment = comment;
-        this.parentId = parentId;
-        this.loveList = loveList;
         this.time = time;
         this.yearDate = yearDate;
     }
@@ -98,22 +92,6 @@ public class PostComment {
 
     public void setComment(String comment) {
         this.comment = comment;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public List<User> getLoveList() {
-        return loveList;
-    }
-
-    public void setLoveList(List<User> loveList) {
-        this.loveList = loveList;
     }
 
     public String getTime() {

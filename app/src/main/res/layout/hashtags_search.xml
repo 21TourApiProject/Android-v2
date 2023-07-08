@@ -4,15 +4,18 @@
     android:layout_height="wrap_content"
     android:background="@drawable/hashtag_background"
     android:gravity="center"
+    android:paddingHorizontal="12dp"
+    android:paddingVertical="6dp"
     android:layout_marginEnd="8dp">
 
     <TextView
         android:id="@+id/recycler_hashTagName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/spoqahansansneomedium"
-        android:gravity="center"
-        android:paddingHorizontal="4dp"
+        android:fontFamily="@font/pretendard_variable"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:textAlignment="center"
         android:text="#해쉬태그"
         android:textColor="@color/white"
         android:textSize="10sp" />

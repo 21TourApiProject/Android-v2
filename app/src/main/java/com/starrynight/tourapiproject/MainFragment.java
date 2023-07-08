@@ -87,7 +87,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     RecyclerView recyclerView;
     MainPost_adapter adapter;
     ProgressBar progressBar;
-    LinearLayout weatherLinearLayout;
+    LinearLayout weatherLocationSearch;
 
     private static final String TAG = "Main Fragment";
     @SuppressLint("SimpleDateFormat")
@@ -136,7 +136,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         nestedScrollView = v.findViewById(R.id.scroll_layout);
         recyclerView = v.findViewById(R.id.recyclerView);
         progressBar = v.findViewById(R.id.mainProgressBar);
-        weatherLinearLayout = v.findViewById(R.id.mainpage_weatherLinearLayout);
+        weatherLocationSearch = v.findViewById(R.id.weather_location_search);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -175,13 +175,13 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             areaId = info.getAreaId();
 
                         } else {
-                            Log.e(TAG, "서버 api 호출 실패");
+                            Log.e(TAG, "날씨 api 호출 실패");
                         }
                     }
 
                     @Override
                     public void onFailure(Call<MainInfo> call, Throwable t) {
-                        Log.e("연결실패", t.getMessage());
+                        Log.e(TAG, t.getMessage());
                     }
                 });
 
@@ -282,12 +282,9 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         });
 
         //위치 검색바 클릭 시 위치 검색 페이지로 이동하는 이벤트
-        weatherLinearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
-                startActivityForResult(intent, 105);
-            }
+        weatherLocationSearch.setOnClickListener(v12 -> {
+            Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
+            startActivityForResult(intent, 105);
         });
 
         return v;

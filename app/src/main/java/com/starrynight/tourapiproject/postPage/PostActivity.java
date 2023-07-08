@@ -91,7 +91,7 @@ public class PostActivity extends AppCompatActivity {
     Long userId;
     int allsize = 0;
     TextView nickname;
-    TextView postTitle,postContent,postTime,postDate,postLike,loveCount,postObservation;
+    TextView postTitle,postContent,postTime,postDate,postLike,loveCount,postObservation,postCommentCount;
     ImageView profileImage,postObservationbtn;
     RecyclerView commentRecyclerView;
     List<String> postHashTags;
@@ -172,6 +172,8 @@ public class PostActivity extends AppCompatActivity {
         postObservationbtn = findViewById(R.id.postObservationbtn);
         profileImage.setBackground(new ShapeDrawable(new OvalShape()));
         profileImage.setClipToOutline(true);
+        loveCount = findViewById(R.id.love_count);
+        postCommentCount = findViewById(R.id.comment_count);
         //게시물 정보가져오는 get api
         Call<Post> call1 = RetrofitClient.getApiService().getPost(postId);
         call1.enqueue(new Callback<Post>() {
@@ -182,9 +184,9 @@ public class PostActivity extends AppCompatActivity {
                     post = response.body();
                     postTitle.setText(post.getPostTitle());
                     postContent.setText(post.getPostContent());
-                    String postRealTime = post.getTime();
-                    postRealTime = postRealTime.substring(0, postRealTime.length() - 3);
-                    postTime.setText(postRealTime);
+                    //String postRealTime = post.getTime();
+                    //postRealTime = postRealTime.substring(0, postRealTime.length() - 3);
+                    postTime.setText(post.getTime());
                     postDate.setText(post.getYearDate());
                     postLike.setText(String.valueOf(post.getLiked()));
                     //관측지
@@ -574,6 +576,7 @@ public class PostActivity extends AppCompatActivity {
                     List<PostComment> result = response.body();
                     for(int i=0;i<result.size();i++){
                         commentAdapter.addItem(result.get(i));
+                        postCommentCount.setText(String.valueOf(result.size()));
                     }
                     commentRecyclerView.setAdapter(commentAdapter);
                 }

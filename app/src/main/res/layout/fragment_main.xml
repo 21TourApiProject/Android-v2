@@ -66,68 +66,32 @@
                 android:layout_gravity="center_horizontal"
                 android:orientation="vertical">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal"
-                    android:paddingVertical="12dp"
-                    android:paddingHorizontal="16dp">
-
-                    <LinearLayout
-                        android:id="@+id/mainpage_weatherLinearLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@drawable/postwrite__search_bar"
-                        android:orientation="horizontal"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        >
-
-                        <Button
-                            android:id="@+id/mainpage_addObservePoint"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:background="@drawable/search_btn"
-                            android:visibility="visible" />
-
-                        <EditText
-                            android:id="@+id/mainpage_findObservePoint"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@null"
-                            android:ems="13"
-                            android:fontFamily="@font/spoqahansansneoregular"
-                            android:hint="날씨가 궁금한 지역, 관측지명을 검색하세요"
-                            android:inputType="textPersonName"
-                            android:paddingStart="10dp"
-                            android:textSize="14sp" />
-
-                    </LinearLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
                 <LinearLayout
+                    android:id="@+id/weather_location_search"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/main__search_back"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/main_post_textView"
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="20dp"
-                        android:textSize="16sp"
-                        android:fontFamily="@font/pretendard_variable"
-                        android:text="최근 관측후기" />
-                </LinearLayout>
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/main__search" />
 
-                <ImageView
-                    android:id="@+id/todayEvent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="날씨가 궁금한 지역, 관측지명을 검색하세요"
+                        android:textColor="#84838D" />
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -214,8 +178,8 @@
                             android:layout_height="34dp"
                             android:layout_marginTop="20dp"
                             android:background="@drawable/main__weather_button_back"
-                            android:padding="10dp"
                             android:drawableEnd="@drawable/main__weather_arrow"
+                            android:padding="10dp"
                             android:text="날씨 자세히"
                             android:textColor="#2C2C34"
                             android:textFontWeight="600"
@@ -224,12 +188,21 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="20dp"
+                    android:text="최근 관측후기"
+                    android:textFontWeight="600"
+                    android:textSize="16sp" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="40dp"
                     tools:itemCount="5">
 
                 </androidx.recyclerview.widget.RecyclerView>

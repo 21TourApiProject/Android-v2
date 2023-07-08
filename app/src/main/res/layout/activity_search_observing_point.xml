@@ -73,7 +73,7 @@
                             android:id="@+id/addObservePoint"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:background="@drawable/search_btn"
+                            android:background="@drawable/main__search"
                             android:visibility="visible" />
 
                         <EditText
