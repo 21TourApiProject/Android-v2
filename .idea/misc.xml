@@ -74,15 +74,18 @@
         <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/drawable/wt__help_white2.xml" value="0.367" />
         <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/drawable/wt__star.xml" value="0.175" />
         <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/font/font.xml" value="0.3963541666666667" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_general_sign_up.xml" value="0.36614583333333334" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_login.xml" value="0.36614583333333334" />
         <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_main.xml" value="0.36614583333333334" />
         <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_search_observing_point.xml" value="0.18032786885245902" />
         <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_search_result.xml" value="0.3496376811594203" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_sign_up.xml" value="0.36614583333333334" />
         <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_star.xml" value="0.3523550724637681" />
         <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_tourist_point.xml" value="0.3220108695652174" />
-        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_weather.xml" value="0.36614583333333334" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_weather.xml" value="0.33" />
         <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_weather2.xml" value="0.33" />
         <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_weather_help.xml" value="0.25" />
-        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_weather_location_search.xml" value="0.1696969696969697" />
+        <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/activity_weather_location_search.xml" value="0.25" />
         <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/custom_search_item.xml" value="0.3496376811594203" />
         <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/fragment_main.xml" value="0.36614583333333334" />
         <entry key="..\:/Sein/StarryNight-v2/Android-v2/app/src/main/res/layout/fragment_search.xml" value="0.36614583333333334" />
@@ -93,5 +96,5 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="11" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>

@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -32,13 +31,13 @@ import com.starrynight.tourapiproject.postPage.postRetrofit.MainPost_adapter;
 import com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.postWritePage.PostWriteActivity;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.Filter;
-import com.starrynight.tourapiproject.weatherPage2.GpsTracker;
-import com.starrynight.tourapiproject.weatherPage2.LocationDTO;
-import com.starrynight.tourapiproject.weatherPage2.WeatherActivity2;
-import com.starrynight.tourapiproject.weatherPage2.weatherRetrofit.AreaTimeDTO;
-import com.starrynight.tourapiproject.weatherPage2.weatherRetrofit.MainInfo;
-import com.starrynight.tourapiproject.weatherPage2.weatherRetrofit.WeatherRetrofitClient;
-import com.starrynight.tourapiproject.weatherPage2.WeatherLocationSearchActivity;
+import com.starrynight.tourapiproject.weatherPage.GpsTracker;
+import com.starrynight.tourapiproject.weatherPage.LocationDTO;
+import com.starrynight.tourapiproject.weatherPage.WeatherActivity;
+import com.starrynight.tourapiproject.weatherPage.WeatherLocationSearchActivity;
+import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.AreaTimeDTO;
+import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.MainInfo;
+import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.WeatherRetrofitClient;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -60,18 +59,18 @@ import retrofit2.Response;
  * Use the {@link MainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-/**
-* @className : MainFragment
-* @description : 홈 화면 Fragment 입니다.
-* @modification : 2022-09-02 (jinhyeok) 주석 수정
-* @author : jinhyeok
-* @date : 2022-09-02
-* @version : 1.0
-   ====개정이력(Modification Information)====
-  수정일        수정자        수정내용
-   -----------------------------------------
-   2022-09-02      jinhyeok       주석 수정
 
+/**
+ * @author : jinhyeok
+ * @version : 1.0
+ * ====개정이력(Modification Information)====
+ * 수정일        수정자        수정내용
+ * -----------------------------------------
+ * 2022-09-02      jinhyeok       주석 수정
+ * @className : MainFragment
+ * @description : 홈 화면 Fragment 입니다.
+ * @modification : 2022-09-02 (jinhyeok) 주석 수정
+ * @date : 2022-09-02
  */
 public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     Long userId;
@@ -152,8 +151,9 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         latitude = gpsTracker.getLatitude();
         longitude = gpsTracker.getLongitude();
         location = getCurrentAddress(latitude, longitude);
-        System.out.println("위치 = " + latitude + " " + longitude + " " + location);
-        currentLocation.setText("새로고침이 필요합니다.");
+        Log.d(TAG, "위치 = " + latitude + " " + longitude + " " + location);
+        if (location.equals("주소 미발견")) currentLocation.setText("새로고침이 필요합니다.");
+        else currentLocation.setText(location);
 
         long now = System.currentTimeMillis();
         Date date = new Date(now);
@@ -186,7 +186,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 });
 
         weatherDetail.setOnClickListener(v1 -> {
-            Intent intent = new Intent(getActivity().getApplicationContext(), WeatherActivity2.class);
+            Intent intent = new Intent(getActivity().getApplicationContext(), WeatherActivity.class);
             LocationDTO locationDTO = new LocationDTO(latitude, longitude, areaId, null, location.split(" ")[2]);
             intent.putExtra("locationDTO", locationDTO);
             startActivityForResult(intent, 104);
@@ -222,7 +222,9 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                 noMorePost = false;
                                 limit = result.size();
                                 mainPostList = new ArrayList<>();
-                                if (limit < end) { noMorePost = true; }
+                                if (limit < end) {
+                                    noMorePost = true;
+                                }
                                 adapter = new MainPost_adapter(result.subList(0, Math.min(end, limit)), getContext());
                                 recyclerView.setAdapter(adapter);
                             }
@@ -237,12 +239,13 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
                         @Override
                         public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                            if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())
-                            {
-                                if (!noMorePost){
+                            if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
+                                if (!noMorePost) {
                                     progressBar.setVisibility(View.VISIBLE);
                                     end += count;
-                                    if (limit < end) { noMorePost = true; }
+                                    if (limit < end) {
+                                        noMorePost = true;
+                                    }
                                     adapter = new MainPost_adapter(result.subList(0, Math.min(end, limit)), getContext());
                                     recyclerView.setAdapter(adapter);
                                     progressBar.setVisibility(View.GONE);
@@ -344,18 +347,6 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             return "주소 미발견";
         }
         Address address = addressList.get(0);
-        System.out.println("address.getAddressLine(0) = " + address.getAddressLine(0));
-        System.out.println("address.getAdminArea() = " + address.getAdminArea());
-        System.out.println("address.getLocality() = " + address.getLocality());
-        System.out.println("address.getSubLocality() = " + address.getSubLocality());
-        System.out.println("address.getFeatureName() = " + address.getFeatureName());
-        System.out.println("address.getPostalCode() = " + address.getPostalCode());
-        System.out.println("address.getSubAdminArea() = " + address.getSubAdminArea());
-        System.out.println("address.getSubLocality() = " + address.getSubLocality());
-        System.out.println("address.getThoroughfare() = " + address.getThoroughfare());
-        System.out.println("address.getCountryName() = " + address.getCountryName());
-
-
         String addressLine = address.getAddressLine(0);
         if (addressLine.startsWith("대한민국")) {
             addressLine = addressLine.substring(5);
@@ -365,8 +356,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         if (s.length <= 3) {
             return addressLine;
         } else {
-//            return s[0] + " " + s[1] + " " + s[2];
-            return "서울특별시 서대문구 창천동";
+            return s[0] + " " + s[1] + " " + s[2];
         }
     }
 }

@@ -35,14 +35,12 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
-        <activity android:name=".starPage.StarCompassActivity" />
-        <activity android:name=".postWritePage.SelectTimeActivity"></activity>
-        <activity android:name=".weatherPage2.WeatherLocationSearchActivity"></activity>
+        <activity android:name=".weatherPage.WeatherLocationSearchActivity"></activity>
         <activity android:name=".postWritePage.SelectTimeActivity" />
         <activity android:name=".starPage.StarCompassActivity" />
         <activity android:name=".starPage.StarCameraActivity" />
-        <activity android:name=".weatherPage2.WeatherActivity2" />
-        <activity android:name=".weatherPage2.WeatherHelpActivity" />
+        <activity android:name=".weatherPage.WeatherActivity" />
+        <activity android:name=".weatherPage.WeatherHelpActivity" />
         <activity android:name=".starPage.StarHelpActivity" />
         <activity android:name=".starPage.StarSearchActivity" />
         <activity android:name=".myPage.ThanksToActivity" />
