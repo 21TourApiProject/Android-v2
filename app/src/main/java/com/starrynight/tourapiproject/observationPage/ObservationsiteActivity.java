@@ -772,7 +772,7 @@ public class ObservationsiteActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     try {
-                        Intent homepageurl = new Intent(Intent.ACTION_VIEW, Uri.parse("http://"+observation.getLink()));
+                        Intent homepageurl = new Intent(Intent.ACTION_VIEW, Uri.parse("https://"+observation.getLink()));
                         startActivity(homepageurl);
                     } catch (Exception e) {
                         Log.e(TAG, "홈페이지 이동 불가");
@@ -816,7 +816,7 @@ public class ObservationsiteActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     try {
-                        Intent homepageurl = new Intent(Intent.ACTION_VIEW, Uri.parse("http://"+observation.getReserve()));
+                        Intent homepageurl = new Intent(Intent.ACTION_VIEW, Uri.parse("https://"+observation.getReserve()));
                         startActivity(homepageurl);
                     } catch (Exception e) {
                         Log.e(TAG, "홈페이지 이동 불가");

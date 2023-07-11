@@ -85,6 +85,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
 
+        searchView.requestFocus();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
