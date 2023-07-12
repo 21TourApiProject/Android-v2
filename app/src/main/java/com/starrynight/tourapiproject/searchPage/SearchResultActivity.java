@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -52,13 +53,17 @@ public class SearchResultActivity extends AppCompatActivity {
     LinearLayout facilityBtn;
     LinearLayout feeBtn;
 
+    int pagenum=0;
+
+    NestedScrollView scrollView;
+
     ViewPager2 resultViewPager;
     TabLayout tabLayout;
     ResultViewPagerAdapter resultViewPagerAdapter;
 
     List<Long> areaCodeList = new ArrayList<>();
     List<Long> hashTagIdList = new ArrayList<>();
-    List<SearchParams1> observationResult;
+    List<SearchParams1> observationResult = new ArrayList<>();
     List<SearchParams1> postResult;
 
     FragmentManager fragmentManager;
@@ -78,6 +83,8 @@ public class SearchResultActivity extends AppCompatActivity {
         resultViewPager = findViewById(R.id.sr_result_view_pager);
         tabLayout = findViewById(R.id.sr_tab_layout);
 
+        scrollView = findViewById(R.id.sr_scroll_view);
+
         ImageView back = findViewById(R.id.sr_back_btn);
         back.setOnClickListener(v -> finish());
 
@@ -90,7 +97,8 @@ public class SearchResultActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 keyword = query;
-                getObservation();
+                pagenum = 0;
+                getObservation(0);
                 return true;
             }
 
@@ -102,13 +110,22 @@ public class SearchResultActivity extends AppCompatActivity {
 
         getFilterHashtags();
 
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (v.getChildAt(0).getBottom() <= (v.getHeight() + scrollY)) {
+                    getObservation(++pagenum);
+                }
+            }
+        });
+
     }
 
     @Override
     protected void onResume() {
         System.out.println("resume실행중");
         super.onResume();
-        getObservation();
+        getObservation(0);
     }
 
     private void setViewPager() {
@@ -144,19 +161,19 @@ public class SearchResultActivity extends AppCompatActivity {
         }
     }
 
-    private void getObservation(){
+    private void getObservation(int page){
 
         setFilter();
 
         Filter filter = new Filter(areaCodeList, hashTagIdList);
         SearchKey searchKey = new SearchKey(filter, keyword);
-        Call<List<SearchParams1>> call = RetrofitClient.getApiService().getObservationWithFilter(searchKey,0);
+        Call<List<SearchParams1>> call = RetrofitClient.getApiService().getObservationWithFilter(searchKey,page);
         call.enqueue(new Callback<List<SearchParams1>>() {
             @Override
             public void onResponse(Call<List<SearchParams1>> call, Response<List<SearchParams1>> response) {
                 if (response.isSuccessful()) {
                     Log.d(TAG, "관측지 검색 성공");
-                    observationResult = response.body();
+                    observationResult.addAll(response.body());
                     getPosts();
 
                 } else {
@@ -233,7 +250,7 @@ public class SearchResultActivity extends AppCompatActivity {
                                 }
 
                                 setFilterOnClick();
-                                getObservation();
+                                getObservation(pagenum);
 
                             } else {
                                 Log.d(TAG, "해쉬태그 호출 실패");
