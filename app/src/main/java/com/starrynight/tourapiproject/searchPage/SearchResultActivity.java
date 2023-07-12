@@ -259,6 +259,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
         if (filterFragment == null) {
             filterFragment = new BottomFilterFragment();
+            filterFragment.setCancelable(true);
             filterFragment.setDataLists(areaList, peopleList, themeList, facilityList, feeList);
         }
 
@@ -266,7 +267,7 @@ public class SearchResultActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 filterFragment.setFirstTab(FilterType.AREA);
-                filterFragment.show(getSupportFragmentManager(), filterFragment.getTag());
+                filterFragment.show(fragmentManager, filterFragment.getTag());
             }
         });
 
@@ -274,7 +275,7 @@ public class SearchResultActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 filterFragment.setFirstTab(FilterType.PEOPLE);
-                filterFragment.show(getSupportFragmentManager(), filterFragment.getTag());
+                filterFragment.show(fragmentManager, filterFragment.getTag());
             }
         });
 
@@ -282,7 +283,7 @@ public class SearchResultActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 filterFragment.setFirstTab(FilterType.THEME);
-                filterFragment.show(getSupportFragmentManager(), filterFragment.getTag());
+                filterFragment.show(fragmentManager, filterFragment.getTag());
             }
         });
 
@@ -290,7 +291,7 @@ public class SearchResultActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 filterFragment.setFirstTab(FilterType.FACILITY);
-                filterFragment.show(getSupportFragmentManager(), filterFragment.getTag());
+                filterFragment.show(fragmentManager, filterFragment.getTag());
             }
         });
 
@@ -298,7 +299,7 @@ public class SearchResultActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 filterFragment.setFirstTab(FilterType.FEE);
-                filterFragment.show(getSupportFragmentManager(), filterFragment.getTag());
+                filterFragment.show(fragmentManager, filterFragment.getTag());
             }
         });
     }

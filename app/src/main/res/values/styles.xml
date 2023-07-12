@@ -47,5 +47,9 @@
         <item name="android:fontFamily">@font/pretendard_variable</item>
     </style>
 
+    <style name="FilterBottomSheetDialogTheme" parent="Theme.AppCompat.Light">
+        <item name="android:colorBackground">@android:color/transparent</item>
+    </style>
+
 
 </resources>
