@@ -11,12 +11,13 @@
         android:background="@drawable/bottom__background"
         android:minHeight="296dp"
         android:orientation="vertical"
-        android:paddingTop="32dp"
+        android:paddingTop="20dp"
         android:paddingBottom="20dp">
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingVertical="12dp"
             android:layout_marginHorizontal="20dp">
 
             <LinearLayout
@@ -79,7 +80,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:text=" 시설"
+                    android:text="시설"
                     android:textColor="@color/gray_500"
                     android:textFontWeight="600"
                     android:textSize="18sp" />
@@ -123,7 +124,8 @@
             android:id="@+id/filter_tag_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="12dp"
             android:orientation="horizontal"
             tools:itemCount="5" />
 
