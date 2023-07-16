@@ -43,7 +43,7 @@ public class SearchResultListFragment extends Fragment {
         View v =  inflater.inflate(R.layout.fragment_search_result_list, container, false);
 
         recyclerView = v.findViewById(R.id.srf_recycler);
-
+        recyclerView.addItemDecoration(new SearchItemDecoration(20));
         adapter = new SearchItemRecyclerAdapter(getContext(), list);
 
         layoutManager = new GridLayoutManager(getContext(),2);
@@ -54,7 +54,6 @@ public class SearchResultListFragment extends Fragment {
             @Override
             public void onItemClick(SearchItemRecyclerAdapter.MyViewHolder holder, View view, int position) {
                 SearchParams1 item = adapter.getItem(position);
-                System.out.println("실행되는지 확인");
                 Intent intent = new Intent(getContext(), ObservationsiteActivity.class);
                 intent.putExtra("observationId", item.getItemId());
                 startActivity(intent);
