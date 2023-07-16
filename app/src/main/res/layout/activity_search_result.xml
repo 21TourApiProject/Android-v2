@@ -76,12 +76,14 @@
                         android:paddingVertical="8dp">
 
                         <TextView
+                            android:id="@+id/sr_location_btn_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="지역"
                             android:textFontWeight="600" />
 
                         <ImageView
+                            android:id="@+id/sr_location_btn_img"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -100,12 +102,14 @@
                         android:paddingVertical="8dp">
 
                         <TextView
+                            android:id="@+id/sr_people_btn_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="동행"
                             android:textFontWeight="600" />
 
                         <ImageView
+                            android:id="@+id/sr_people_btn_img"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -124,12 +128,14 @@
                         android:paddingVertical="8dp">
 
                         <TextView
+                            android:id="@+id/sr_theme_btn_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="테마"
                             android:textFontWeight="600" />
 
                         <ImageView
+                            android:id="@+id/sr_theme_btn_img"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -148,12 +154,14 @@
                         android:paddingVertical="8dp">
 
                         <TextView
+                            android:id="@+id/sr_facility_btn_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="시설"
                             android:textFontWeight="600" />
 
                         <ImageView
+                            android:id="@+id/sr_facility_btn_img"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -172,12 +180,14 @@
                         android:paddingVertical="8dp">
 
                         <TextView
+                            android:id="@+id/sr_fee_btn_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="요금"
                             android:textFontWeight="600" />
 
                         <ImageView
+                            android:id="@+id/sr_fee_btn_img"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -193,7 +203,8 @@
                 android:id="@+id/sr_tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginHorizontal="8dp">
+                android:layout_marginHorizontal="8dp"
+                app:tabIndicatorColor="@color/white">
 
                 <com.google.android.material.tabs.TabItem
                     android:id="@+id/sr_tab_observation"

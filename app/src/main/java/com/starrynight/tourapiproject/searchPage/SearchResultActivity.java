@@ -64,13 +64,12 @@ public class SearchResultActivity extends AppCompatActivity {
     List<Long> areaCodeList = new ArrayList<>();
     List<Long> hashTagIdList = new ArrayList<>();
     List<SearchParams1> observationResult = new ArrayList<>();
-    List<SearchParams1> postResult;
+    List<SearchParams1> postResult = new ArrayList<>();
 
     FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println("create실행중");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
 
@@ -98,6 +97,8 @@ public class SearchResultActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 keyword = query;
                 pagenum = 0;
+                observationResult.clear();
+                postResult.clear();
                 getObservation(0);
                 return true;
             }
@@ -119,14 +120,11 @@ public class SearchResultActivity extends AppCompatActivity {
             }
         });
 
+        setViewPager();
+        getObservation(0);
+
     }
 
-    @Override
-    protected void onResume() {
-        System.out.println("resume실행중");
-        super.onResume();
-        getObservation(0);
-    }
 
     private void setViewPager() {
         resultViewPagerAdapter = new ResultViewPagerAdapter(getSupportFragmentManager(),getLifecycle(),observationResult,postResult);
@@ -137,9 +135,6 @@ public class SearchResultActivity extends AppCompatActivity {
         new TabLayoutMediator(tabLayout, resultViewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull @NotNull TabLayout.Tab tab, int position) {
-//                LinearLayout tabview = new LinearLayout(SearchResultActivity.this);
-//                textView.setText(tabElement.get(position));
-//                tab.setCustomView(textView);
                 tab.setText(tabElement.get(position));
             }
 
@@ -161,7 +156,7 @@ public class SearchResultActivity extends AppCompatActivity {
         }
     }
 
-    private void getObservation(int page){
+    public void getObservation(int page){
 
         setFilter();
 
@@ -201,8 +196,7 @@ public class SearchResultActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Log.d(TAG, "게시물 검색 성공");
                     postResult = response.body();
-                    setViewPager();
-
+                    resultViewPagerAdapter.setData(observationResult,postResult);
                 } else {
                     Log.e(TAG, "게시물 검색 실패");
                 }
@@ -250,7 +244,7 @@ public class SearchResultActivity extends AppCompatActivity {
                                 }
 
                                 setFilterOnClick();
-                                getObservation(pagenum);
+//                                getObservation(pagenum);
 
                             } else {
                                 Log.d(TAG, "해쉬태그 호출 실패");
