@@ -5,6 +5,7 @@ public class MainInfo {
     public String comment;
     public String bestObservationalFit;
     public String bestTime;
+    public String mainEffect;
     public Long areaId;
 
     public String getComment() {
@@ -17,6 +18,10 @@ public class MainInfo {
 
     public String getBestTime() {
         return bestTime;
+    }
+
+    public String getMainEffect() {
+        return mainEffect;
     }
 
     public Long getAreaId() {

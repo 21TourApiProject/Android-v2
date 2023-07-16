@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -49,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -106,9 +108,10 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     String min; // 현재 min ex) 10
     private TextView weatherComment;
     private TextView currentLocation;
+    private ImageView star;
     private TextView mainBestObservationFit;
     private TextView recommendTime;
-    private Button weatherDetail;
+    private View weatherDetail;
 
     public MainFragment() {
         // Required empty public constructor
@@ -139,8 +142,10 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
+        View mainLocation = v.findViewById(R.id.main__location);
         weatherComment = v.findViewById(R.id.weather_comment);
         currentLocation = v.findViewById(R.id.current_location);
+        star = v.findViewById(R.id.main__star);
         mainBestObservationFit = v.findViewById(R.id.main_best_observation_fit);
         recommendTime = v.findViewById(R.id.recommend_time);
         weatherDetail = v.findViewById(R.id.weather_detail);
@@ -171,9 +176,14 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             MainInfo info = response.body();
                             weatherComment.setText(info.getComment());
                             mainBestObservationFit.setText(info.getBestObservationalFit());
-                            recommendTime.setText(info.getBestTime());
+                            if (Objects.nonNull(info.getBestTime())) {
+                                recommendTime.setText(info.getBestTime());
+                            } else {
+                                mainLocation.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.main__location_back_red));
+                                star.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.main__weather_star_gray));
+                                recommendTime.setText(info.getMainEffect());
+                            }
                             areaId = info.getAreaId();
-
                         } else {
                             Log.e(TAG, "날씨 오류");
                         }
