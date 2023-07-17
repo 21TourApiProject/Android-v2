@@ -20,6 +20,7 @@ import com.kakao.sdk.newtoneapi.TextToSpeechManager;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.starPage.constNameRetrofit.ConstellationParams2;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.Constellation;
+import com.starrynight.tourapiproject.starPage.starPageRetrofit.OnStarHashTagClickListener;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.StarHashTag;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.StarHashTagAdapter;
@@ -81,6 +82,7 @@ public class StarActivity extends AppCompatActivity {
         constMtdTv = findViewById(R.id.const_mtd_tv);
         constBestMonthTv = findViewById(R.id.const_best_month_tv);
         constSummary = findViewById(R.id.constSummary);
+        hashTagList = findViewById(R.id.starHashTags);
 
         story_play_btn = findViewById(R.id.story_play_btn);
         rightNow = findViewById(R.id.rightNow);
@@ -117,6 +119,55 @@ public class StarActivity extends AppCompatActivity {
                         Glide.with(StarActivity.this).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/feature_" + "see_every_day" + ".png").fitCenter().into(constFeatureImg);
                     }
                     constId= constData.getConstId();
+
+                    //별자리 해시태그 특성 이미지 가져오기
+                    Call<List<StarHashTag>> hashTagCall = RetrofitClient.getApiService().getStarHashTags(constId);
+                    hashTagCall.enqueue(new Callback<List<StarHashTag>>() {
+                        @Override
+                        public void onResponse(Call<List<StarHashTag>> call, Response<List<StarHashTag>> response) {
+                            if (response.isSuccessful()){
+                                Log.d("starFeature","별자리 해시태그 이미지 가져오기 성공");
+                                starHashTags=response.body();
+                                if (starHashTags!=null){
+                                    for(StarHashTag sh : starHashTags){
+                                        starHashTagAdapter.addItem(sh);
+                                        if(sh.getHashTagName().equals("봄")){
+                                            Glide.with(StarActivity.this).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/feature_" + "spring" + ".png").fitCenter().into(constFeatureImg);
+                                        }else if(sh.getHashTagName().equals("여름")) {
+                                            Glide.with(StarActivity.this).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/feature_" + "summer" + ".png").fitCenter().into(constFeatureImg);
+                                        }else if(sh.getHashTagName().equals("가을")) {
+                                            Glide.with(StarActivity.this).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/feature_" + "fall" + ".png").fitCenter().into(constFeatureImg);
+                                        } else if(sh.getHashTagName().equals("겨울")) {
+                                            Glide.with(StarActivity.this).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/feature_" + "winter" + ".png").fitCenter().into(constFeatureImg);
+                                        } else if(sh.getHashTagName().equals("황도 12궁")) {
+                                            Glide.with(StarActivity.this).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/feature_" + "ecliptic" + ".png").fitCenter().into(constFeatureImg);
+                                        }
+                                    }
+                                    recyclerView.setAdapter(starHashTagAdapter);
+                                    //별자리 해시태그 클릭시 이벤트
+                                    starHashTagAdapter.setOnItemClickListener(new OnStarHashTagClickListener() {
+                                        @Override
+                                        public void onItemClick(StarHashTagAdapter.ViewHolder holder, View view, int position) {
+                                            StarHashTag item = starHashTagAdapter.getItem(position);
+                                            Intent intent= new Intent(getApplicationContext(),StarSearchActivity.class);
+                                            intent.putExtra("starHashTag",item.getHashTagId());
+                                            intent.putExtra("starHashTagName",item.getHashTagName());
+                                            intent.putExtra("type",2);
+                                            Log.d("starHashTag","해시태그 전송"+item.getHashTagId());
+                                            startActivity(intent);
+                                        }
+                                    });
+                                }
+                            }else{
+                                Log.e("starFeature","별자리 해시태그 이미지 가져오기 실패");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<StarHashTag>> call, Throwable t) {
+                            Log.e("starFeature","별자리 해시태그 인터넷 오류");
+                        }
+                    });
                     constSummary.setText(constData.getSummary());
 
                     ttsClient.setSpeechText(constData.getConstStory());   //뉴톤톡 하고자 하는 문자열을 미리 세팅.
@@ -156,63 +207,7 @@ public class StarActivity extends AppCompatActivity {
         });
 
 
-        //별자리 해시태그 특성 이미지 가져오기
-        Call<List<StarHashTag>> hashTagCall = RetrofitClient.getApiService().getStarHashTags(constId);
-        hashTagCall.enqueue(new Callback<List<StarHashTag>>() {
-            @Override
-            public void onResponse(Call<List<StarHashTag>> call, Response<List<StarHashTag>> response) {
-                if (response.isSuccessful()){
-                    Log.d("starFeature","별자리 해시태그 이미지 가져오기 성공");
-                    starHashTags=response.body();
-                    if (starHashTags!=null){
-                        for(StarHashTag sh : starHashTags){
-                            starHashTagAdapter.addItem(sh);
-                            hashTag = new TextView(getApplicationContext());
-                            hashTag.setText(sh.getHashTagName());
-                            hashTag.setTextSize(16);
-                            hashTag.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
-                            hashTag.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.hashtag_background));
-                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                            hashTag.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Intent intent= new Intent(getApplicationContext(),StarSearchActivity.class);
-                                    intent.putExtra("starHashTag",sh.getHashTagId());
-                                    intent.putExtra("starHashTagName",sh.getHashTagName());
-                                    intent.putExtra("type",2);
-                                    Log.d("starHashTag","해시태그 전송"+sh.getHashTagId());
-                                    startActivity(intent);
-                                }
-                            });
-                            if(sh.getHashTagName().equals("봄")){
-                                Glide.with(StarActivity.this).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/feature_" + "spring" + ".png").fitCenter().into(constFeatureImg);
-                            }else if(sh.getHashTagName().equals("여름")) {
-                                Glide.with(StarActivity.this).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/feature_" + "summer" + ".png").fitCenter().into(constFeatureImg);
-                            }else if(sh.getHashTagName().equals("가을")) {
-                                Glide.with(StarActivity.this).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/feature_" + "fall" + ".png").fitCenter().into(constFeatureImg);
-                            } else if(sh.getHashTagName().equals("겨울")) {
-                                Glide.with(StarActivity.this).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/feature_" + "winter" + ".png").fitCenter().into(constFeatureImg);
-                            } else if(sh.getHashTagName().equals("황도 12궁")) {
-                                Glide.with(StarActivity.this).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/feature_" + "ecliptic" + ".png").fitCenter().into(constFeatureImg);
-                            }
 
-                            params.rightMargin = 20;
-                            hashTag.setLayoutParams(params);
-                            hashTagList.addView(hashTag);
-                            hashTagList.setDividerPadding(5);
-                        }
-                        recyclerView.setAdapter(starHashTagAdapter);
-                    }
-                }else{
-                    Log.e("starFeature","별자리 해시태그 이미지 가져오기 실패");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<StarHashTag>> call, Throwable t) {
-                Log.e("starFeature","별자리 해시태그 인터넷 오류");
-            }
-        });
 
 
         story_play_btn.setOnClickListener(new View.OnClickListener() {

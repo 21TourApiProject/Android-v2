@@ -74,7 +74,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -119,7 +121,7 @@ public class PostWriteActivity extends AppCompatActivity {
     TextView dateText,timeText;
     ImageView hashTagPin;
     boolean dayOrNight;
-    TextView exampleHashTagText;
+    TextView exampleHashTagText,registBtn;
 
     int PERMISSIONS_REQUEST_CODE = 100;
 
@@ -136,6 +138,7 @@ public class PostWriteActivity extends AppCompatActivity {
         addContext = findViewById(R.id.postContentText);
         exampleHashTagText = findViewById(R.id.exampleHashTagTextView);
         hashTagPin=(ImageView) findViewById(R.id.postwrite_hashTagpin);
+        registBtn = findViewById(R.id.save);
 
 //      앱 내부저장소에서 userId 가져오기
         String fileName = "userId";
@@ -325,10 +328,20 @@ public class PostWriteActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "관측지를 입력해주세요.", Toast.LENGTH_SHORT).show();
                             return;
                         }
+
+                        long now = System.currentTimeMillis();//게시물을 쓴 현재시간 가져오기
+                        Date date = new Date(now);
+                        SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+                        String writeDate= dateFormat1.format(date);
+                        SimpleDateFormat dateFormat2 = new SimpleDateFormat("HH:mm");
+                        String writeTime= dateFormat2.format(date);
+
                         PostParams postParams = new PostParams();
                         postParams.setPostContent(postContent);
                         postParams.setYearDate(yearDate);
                         postParams.setTime(time);
+                        postParams.setWriteDate(writeDate);
+                        postParams.setWriteTime(writeTime);
                         postParams.setUserId(userId);
                         postParams.setPostTitle(postTitle);
                         postParams.setOptionObservation(optionobservationName);
@@ -412,6 +425,7 @@ public class PostWriteActivity extends AppCompatActivity {
         if (requestCode == 202) {
             if (resultCode == 2) {
                 Log.d("postObservation", "검색 관측지 데이터 로드");
+                canRegist();
                 observationName = (String) data.getSerializableExtra("observationName");
                 optionobservationName = (String) data.getSerializableExtra("optionObservationName");
                 if (observationName != null) {
@@ -434,6 +448,7 @@ public class PostWriteActivity extends AppCompatActivity {
             if (resultCode == 3) {
                 Log.d("postHashTag", "게시물 해시태그 넘어옴");
                 int allsize = 0;
+                canRegist();
                 postHashTagParams = (List<PostHashTagParams>) data.getSerializableExtra("postHashTagParams");
                 hashTagList = (List<String>) data.getSerializableExtra("hashTagList");
                 RecyclerView recyclerView = findViewById(R.id.postHashTagrecyclerView);
@@ -465,6 +480,7 @@ public class PostWriteActivity extends AppCompatActivity {
         }
         if(requestCode==204){
             if(resultCode==4){
+                canRegist();
                 Log.d("postTime", "게시물 관측 시간 넘어옴");
                 yearDate = (String)data.getSerializableExtra("date");
                 time = (String)data.getSerializableExtra("time");
@@ -533,6 +549,14 @@ public class PostWriteActivity extends AppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    //등록가능한 경우 등록 버튼 글씨 활성화
+    public void canRegist(){
+        if (!postContent.isEmpty()&&numOfPicture != 0&&!postTitle.isEmpty()&&!yearDate.isEmpty()&&!hashTagList.isEmpty()&&!postObservePointName.isEmpty()) {
+            registBtn.setTextColor(getColor(R.color.white));
+        }
+
     }
 
     // 이미지 uri 경로 함수

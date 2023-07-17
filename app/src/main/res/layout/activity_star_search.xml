@@ -27,7 +27,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/scdream"
+            android:fontFamily="@font/pretendard_variable"
+            android:textFontWeight="600"
             android:text="별자리 검색"
             android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="@+id/star_search_back_btn"
@@ -75,6 +76,8 @@
             android:id="@+id/cancel_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_variable"
+            android:textFontWeight="500"
             android:layout_weight="7"
             android:text="취소"
             android:textSize="14sp"
@@ -108,7 +111,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:fontFamily="@font/spoqahansansneobold"
+                android:fontFamily="@font/pretendard_variable"
+                android:textFontWeight="600"
                 android:text="검색 결과"
                 android:textSize="14sp" />
 

@@ -49,6 +49,10 @@ public class Post {
     String yearDate;
     @SerializedName("time")
     String time;
+    @SerializedName("writeDate")
+    String writeDate;
+    @SerializedName("writeTime")
+    String writeTime;
     @SerializedName("liked")
     int liked;
     @SerializedName("postHashTag")
@@ -139,6 +143,14 @@ public class Post {
 
     public String getTime() {
         return time;
+    }
+
+    public String getWriteTime() {
+        return writeTime;
+    }
+
+    public String getWriteDate() {
+        return writeDate;
     }
 
     public List<PostImage> getPostImages() {

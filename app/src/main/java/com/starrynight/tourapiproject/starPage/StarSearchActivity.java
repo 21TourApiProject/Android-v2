@@ -20,21 +20,16 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.starrynight.tourapiproject.R;
-import com.starrynight.tourapiproject.searchPage.SearchResultFragment;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.Filter;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchKey;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchLoadingDialog;
-import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchParams1;
-import com.starrynight.tourapiproject.starPage.constNameRetrofit.ConstNameAdapter;
 import com.starrynight.tourapiproject.starPage.constNameRetrofit.ConstellationParams2;
 import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener2;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdpater2;
-import com.starrynight.tourapiproject.starPage.starPageRetrofit.Constellation;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.RetrofitClient;
 
 import java.util.ArrayList;
@@ -71,7 +66,7 @@ public class StarSearchActivity extends AppCompatActivity {
     TextView resultText;
 
     String constName;
-    int starHashTag;
+    Long starHashTag;
     String keyword;
     String hashTagName;
     List<StarItem> searchResult;
@@ -99,15 +94,9 @@ public class StarSearchActivity extends AppCompatActivity {
         //이전 페이지 해시태그 및 검색어 받아오기
         Intent intent = getIntent();
         int Type = (int) intent.getSerializableExtra("type");
-        if(Type ==1){
-            keyword=(String) intent.getSerializableExtra("keyword");
-            Log.d("keyword 받아오기", keyword);
-            resultText.setText(" ' "+keyword+" ' 검색결과");
-            constSearch.setQuery(keyword,false);
-        }
-        else if(Type ==2){
+        if(Type ==2){
             hashTagIdList = new ArrayList<>();
-            starHashTag = (int)intent.getSerializableExtra("starHashTag");
+            starHashTag = (long)intent.getSerializableExtra("starHashTag");
             hashTagName = (String)intent.getSerializableExtra("starHashTagName");
             resultText.setText(" ' "+hashTagName+" ' 검색결과");
             hashTagIdList.add((long)starHashTag);

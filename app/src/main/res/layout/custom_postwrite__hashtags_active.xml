@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/hashtag_linearLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/hashtag_background"
-    android:gravity="center"
-    android:paddingHorizontal="12dp"
-    android:paddingVertical="6dp"
-    android:layout_marginEnd="8dp">
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp">
 
     <TextView
-        android:id="@+id/recycler_hashTagName"
+        android:id="@+id/postwrite_hashtags_activeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minWidth="0dp"
-        android:minHeight="0dp"
+        android:background="@drawable/selectmyhashtag_hashtag_non"
         android:fontFamily="@font/pretendard_variable"
+        android:gravity="center"
+        android:text="해쉬태그"
+        android:textColor="@color/gray_300"
         android:textFontWeight="500"
-        android:text="#해쉬태그"
-        android:textColor="@color/gray_500"
         android:textSize="14sp" />
 
 </LinearLayout>

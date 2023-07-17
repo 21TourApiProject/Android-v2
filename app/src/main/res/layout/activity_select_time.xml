@@ -37,7 +37,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:fontFamily="@font/scdream"
+                        android:fontFamily="@font/pretendard_variable"
+                        android:textFontWeight="600"
                         android:text="관측 날짜"
                         android:textSize="16sp" />
 
@@ -47,10 +48,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|end"
                         android:layout_marginEnd="10dp"
-                        android:fontFamily="@font/scdream"
+                        android:fontFamily="@font/pretendard_variable"
+                        android:textFontWeight="500"
                         android:padding="10dp"
                         android:text="저장"
-                        android:textSize="15sp" />
+                        android:textSize="14sp" />
                 </FrameLayout>
 
             </LinearLayout>
@@ -61,6 +63,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginVertical="20dp"
+                android:fontFamily="@font/pretendard_variable"
+                android:textFontWeight="600"
                 android:text="관측 날짜와 시간대를 알려주세요"
                 android:textSize="20sp" />
 
@@ -76,6 +80,8 @@
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/postwrite_time_non"
+                    android:fontFamily="@font/pretendard_variable"
+                    android:textFontWeight="500"
                     android:onClick="onClickDatePicker"
                     android:textSize="16sp"
                     android:layout_marginEnd="12dp"
@@ -86,6 +92,8 @@
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/postwrite_time_non"
+                    android:fontFamily="@font/pretendard_variable"
+                    android:textFontWeight="500"
                     android:onClick="onClickTimePicker"
                     android:textSize="16sp"
                     android:text="관측 시간대" />
@@ -101,6 +109,8 @@
                     android:id="@+id/timeCheckBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_variable"
+                    android:textFontWeight="600"
                     android:text="정확한 시간을 모르겠어요" />
             </LinearLayout>
 

@@ -1,6 +1,7 @@
 package com.starrynight.tourapiproject.postPage.postRetrofit;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
@@ -9,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +49,7 @@ import retrofit2.Response;
  */
 public class PostCommentAdapter extends RecyclerView.Adapter<PostCommentAdapter.ViewHolder> {
     ArrayList<PostComment> items = new ArrayList<>();
+    private Context context;
     OnPostCommentItemClickListener listener;
     private static Long userId;
     @NonNull
@@ -148,7 +152,11 @@ public class PostCommentAdapter extends RecyclerView.Adapter<PostCommentAdapter.
                             public void onResponse(Call<Void> call, Response<Void> response) {
                                 if(response.isSuccessful()){
                                     Toast.makeText(v.getContext(), "내가 쓴 게시글 댓글을 삭제했어요.", Toast.LENGTH_SHORT).show();
-                                    notifyItemRemoved(position); //recyclerView가 삭제 인식
+                                    Intent intent =  ((Activity)v.getContext()).getIntent();
+                                    ((Activity)v.getContext()).finish();
+                                    ((Activity)v.getContext()).overridePendingTransition(0,0);
+                                    ((Activity)v.getContext()).startActivity(intent);
+                                    ((Activity)v.getContext()).overridePendingTransition(0,0);
                                 }else{
                                     Log.d("deletePostComment", "게시물 댓글 삭제 실패");
                                 }
@@ -192,6 +200,8 @@ public class PostCommentAdapter extends RecyclerView.Adapter<PostCommentAdapter.
         items.set(position, item);
     }
 
+
+
     public void setOnPostCommentItemClickListener(OnPostCommentItemClickListener listener) {
         this.listener = listener;
     }
@@ -202,7 +212,7 @@ public class PostCommentAdapter extends RecyclerView.Adapter<PostCommentAdapter.
         TextView user;
         TextView love;
         TextView loveCount;
-        Button option;
+        LinearLayout option;
 
 
         public ViewHolder(View itemView, final OnPostCommentItemClickListener listener) {
