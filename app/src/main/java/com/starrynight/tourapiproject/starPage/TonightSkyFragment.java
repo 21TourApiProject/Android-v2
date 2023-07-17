@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.PointF;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -20,12 +21,16 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.davemorrissey.labs.subscaleview.ImageSource;
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.ortiz.touchview.TouchImageView;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener;
@@ -80,6 +85,7 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
     LinearLayout allConstBtn;
 
     ImageView compass;
+    TextView monthText;
 
     TouchImageView touchImageView;
 
@@ -146,6 +152,14 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
                 startActivity(intent);
             }
         });
+
+        //n월에 볼 수 있는 별자리 택스트 가져오기
+        monthText = v.findViewById(R.id.monthStarText);
+        long now = System.currentTimeMillis();//현재시간 가져오기
+        Date date = new Date(now);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("M");
+        String month = simpleDateFormat.format(date);
+        monthText.setText(month);
 
         // recyclerview 설정
         constList = v.findViewById(R.id.today_cel_recycler);
@@ -257,6 +271,7 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
             touchImageView.setImageResource(R.drawable.star__summer);
             bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.star__summer);
             touchImageView.setImageBitmap(bitmap);
+            touchImageView.setMinZoom(0.8f);
         }
         // 가을(9/23 ~ 12/20)
         else if ((compareDataFall == 1 || compareDataFall == 0) && compareDataWinter == -1) {

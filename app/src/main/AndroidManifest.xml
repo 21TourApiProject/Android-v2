@@ -29,6 +29,7 @@
         android:theme="@style/StarryNight"
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
+        <activity android:name=".myPage.MyCommentActivity"></activity>
         <activity
             android:name=".MainActivity"
             android:exported="false"
@@ -36,10 +37,8 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".starPage.StarCompassActivity" />
-        <activity android:name=".postWritePage.SelectTimeActivity"></activity>
-        <activity android:name=".weatherPage2.WeatherLocationSearchActivity"></activity>
         <activity android:name=".postWritePage.SelectTimeActivity" />
-        <activity android:name=".starPage.StarCompassActivity" />
+        <activity android:name=".weatherPage2.WeatherLocationSearchActivity" />
         <activity android:name=".starPage.StarCameraActivity" />
         <activity android:name=".weatherPage2.WeatherActivity2" />
         <activity android:name=".weatherPage2.WeatherHelpActivity" />

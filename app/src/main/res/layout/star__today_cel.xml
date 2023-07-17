@@ -21,9 +21,20 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="20dp"
-                android:fontFamily="@font/spoqahansansneobold"
-                android:text="이번 달에 볼 수 있는 별자리"
-                android:textSize="17sp" />
+                android:fontFamily="@font/pretendard_variable"
+                android:textFontWeight="600"
+                android:text="6"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/pretendard_variable"
+                android:textFontWeight="600"
+                android:textSize="16sp"
+                android:text="월에 볼 수 있는 별자리" />
 
             <View
                 android:id="@+id/view"
@@ -43,15 +54,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="전체 별자리"
+                    android:fontFamily="@font/pretendard_variable"
+                    android:textFontWeight="600"
+                    android:textColor="@color/gray_500"
                     android:textSize="14sp" />
 
                 <ImageView
                     android:id="@+id/imageView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="7dp"
+                    android:layout_height="12dp"
                     android:layout_gravity="center"
                     android:layout_marginLeft="7.5sp"
-                    app:srcCompat="@drawable/tonight__right_arrow" />
+                    app:srcCompat="@drawable/move_text" />
             </LinearLayout>
 
         </LinearLayout>

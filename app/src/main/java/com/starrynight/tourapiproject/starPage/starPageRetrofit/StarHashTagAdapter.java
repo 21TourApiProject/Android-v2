@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,9 +45,6 @@ public class StarHashTagAdapter  extends RecyclerView.Adapter<StarHashTagAdapter
         public void onBindViewHolder(@NonNull StarHashTagAdapter.ViewHolder viewHolder, int position) {
             StarHashTag item = items.get(position);
             viewHolder.setItem(item);
-            Glide.with(viewHolder.itemView.getContext())
-                    .load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/feature_" + item.getHashTagName() + ".png")
-                    .into(viewHolder.constImage);
         }
 
 
@@ -72,12 +70,12 @@ public class StarHashTagAdapter  extends RecyclerView.Adapter<StarHashTagAdapter
         }
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
-            ImageView constImage;
+            TextView starhashtagText;
 
             public ViewHolder(View itemView, final OnStarHashTagClickListener listener) {
                 super(itemView);
 
-                constImage = itemView.findViewById(R.id.feature_image);
+                starhashtagText = itemView.findViewById(R.id.starhashtagtext);
 
                 itemView.setClickable(true);
                 itemView.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +91,7 @@ public class StarHashTagAdapter  extends RecyclerView.Adapter<StarHashTagAdapter
             }
 
             public void setItem(StarHashTag item) {
+                starhashtagText.setText(item.getHashTagName());
             }
         }
     }

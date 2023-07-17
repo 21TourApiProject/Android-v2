@@ -20,6 +20,10 @@ public class PostParams implements Serializable {
 
     private String time;
 
+    private String writeDate;
+
+    private String writeTime;
+
     private String postTitle;
 
     private String optionHashTag;
@@ -136,6 +140,22 @@ public class PostParams implements Serializable {
         return time;
     }
 
+    public String getWriteTime() {
+        return writeTime;
+    }
+
+    public void setWriteTime(String writeTime) {
+        this.writeTime = writeTime;
+    }
+
+    public String getWriteDate() {
+        return writeDate;
+    }
+
+    public void setWriteDate(String writeDate) {
+        this.writeDate = writeDate;
+    }
+
     public Long getUserId() {
         return userId;
     }
@@ -169,10 +189,12 @@ public class PostParams implements Serializable {
     }
 
 
-    public PostParams(String postContent, String yearDate, String time, String postTitle, String optionHashTag, String optionObservation, Long userId) {
+    public PostParams(String postContent, String yearDate, String time,String writeDate, String writeTime, String postTitle, String optionHashTag, String optionObservation, Long userId) {
         this.postContent = postContent;
         this.yearDate = yearDate;
         this.time = time;
+        this.writeTime = writeDate;
+        this.writeTime = writeTime;
         this.postTitle = postTitle;
         this.optionHashTag = optionHashTag;
         this.optionObservation = optionObservation;

@@ -28,7 +28,7 @@
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:adjustViewBounds="true"
-                android:paddingTop="10dp" />
+                />
 
             <TextView
                 android:id="@+id/const_name1"
@@ -37,6 +37,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="2dp"
                 android:fontFamily="@font/pretendard_variable"
+                android:textFontWeight="500"
                 android:paddingHorizontal="2dp"
                 android:text="TextView"
                 android:textSize="12sp" />

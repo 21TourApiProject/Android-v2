@@ -35,6 +35,8 @@ import com.starrynight.tourapiproject.starPage.starPageRetrofit.RetrofitClient;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -55,10 +57,12 @@ import retrofit2.Response;
  */
 public class StarAllActivity extends AppCompatActivity {
 
-    String[] hashtagList={"황도 12궁", "길잡이별", "봄","여름","가을","겨울"};
+    String[] hashtagList={"황도 12궁", "봄","여름","가을","겨울"};
     RecyclerView recyclerView;
     StarViewAdpater2 constAdapter;
     StarViewAdapter constTodayAdapter;
+    TextView monthText,starNumber;
+    LinearLayout moreStarLinearLayout;
 
     LinearLayout starFilterItem;
     RecyclerView constTodayList;
@@ -69,23 +73,13 @@ public class StarAllActivity extends AppCompatActivity {
         setContentView(R.layout.activity_star_all);
 
         //검색바 설정
-        androidx.appcompat.widget.SearchView searchView = findViewById(R.id.starSearch);
-        searchView.setIconifiedByDefault(false);
-        searchView.setQueryHint("궁금한 별자리를 검색해보세요!");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        TextView searchView = findViewById(R.id.starSearch);
+        searchView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),StarSearchActivity.class);
-                intent.putExtra("keyword",query);
                 intent.putExtra("type",1);
-                Log.d("keyword", query);
                 startActivity(intent);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
             }
         });
 
@@ -98,6 +92,25 @@ public class StarAllActivity extends AppCompatActivity {
             }
         });
 
+        //n월 달 텍스트 가져오기
+        monthText = findViewById(R.id.allMonthStarText);
+        long now = System.currentTimeMillis();//현재시간 가져오기
+        Date date = new Date(now);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("M");
+        String month = simpleDateFormat.format(date);
+        monthText.setText(month);
+
+        //더보기 클릭
+        moreStarLinearLayout = findViewById(R.id.moreStar);
+        moreStarLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),StarSearchActivity.class);
+                intent.putExtra("starHashTagName",month+"월");
+                intent.putExtra("type",2);
+                startActivity(intent);
+            }
+        });
 
         //recyclerView 설정
         recyclerView = findViewById(R.id.all_const_recycler);
@@ -107,7 +120,9 @@ public class StarAllActivity extends AppCompatActivity {
         constAdapter = new StarViewAdpater2();
         recyclerView.setAdapter(constAdapter);
 
-        // 이름, 이미지를 불러오기 위한 get api
+        starNumber=findViewById(R.id.star_number_text);
+
+        // 전체 별자리 가져오는 이벤트
         Call<List<StarItem>> starItemCall = RetrofitClient.getApiService().getConstellation();
         starItemCall.enqueue(new Callback<List<StarItem>>() {
             @SuppressLint("ResourceAsColor")
@@ -115,6 +130,7 @@ public class StarAllActivity extends AppCompatActivity {
             public void onResponse(Call<List<StarItem>> call, Response<List<StarItem>> response) {
                 if (response.isSuccessful()) {
                     List<StarItem> result = response.body();
+                    starNumber.setText(result.size());
                     for (StarItem si : result) {
                         constAdapter.addItem(new StarItem(si.getConstId(), si.getConstName(), si.getConstEng()));
                     }
@@ -129,6 +145,7 @@ public class StarAllActivity extends AppCompatActivity {
             }
         });
 
+
         // item 클릭 시 해당 아이템 constId 넘겨주기
         constAdapter.setOnItemClickListener(new OnStarItemClickListener2() {
             @Override
@@ -141,7 +158,7 @@ public class StarAllActivity extends AppCompatActivity {
             }
         });
 
-        constTodayList = findViewById(R.id.today_cel_recycler);
+        constTodayList = findViewById(R.id.today_cel_recyclerview);
         constTodayList.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
         constTodayList.addItemDecoration(new StarRecyclerViewWidth(20,0));
         constTodayAdapter = new StarViewAdapter();
@@ -181,34 +198,8 @@ public class StarAllActivity extends AppCompatActivity {
             }
         });
 
-        TextView[] hashList= new TextView[6];
         //검색 해시태그 목록
         starFilterItem = findViewById(R.id.selectStarFilterItem);
         starFilterItem.removeAllViews(); //초기화
-        for (int i = 0; i < hashList.length; i++) {
-                String hashTagName= hashtagList[i];
-                hashList[i] = new TextView(getApplicationContext());
-                hashList[i].setText(" " + hashtagList[i] + " >");
-                hashList[i].setTextSize(16);
-                hashList[i].setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
-                hashList[i].setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.hashtag_background));
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            int index = i+23;
-            hashList[i].setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent= new Intent(getApplicationContext(),StarSearchActivity.class);
-                        intent.putExtra("starHashTag",index);
-                        intent.putExtra("starHashTagName",hashTagName);
-                        intent.putExtra("type",2);
-                        Log.d("starHashTag","해시태그 전송"+index);
-                        startActivity(intent);
-                    }
-                });
-                params.rightMargin = 20;
-                hashList[i].setLayoutParams(params);
-                starFilterItem.addView(hashList[i]);
-                starFilterItem.setDividerPadding(5);
-        }
     }
 }
