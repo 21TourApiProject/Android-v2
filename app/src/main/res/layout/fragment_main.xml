@@ -89,6 +89,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        style="@style/medium_single_14"
                         android:text="날씨가 궁금한 지역, 관측지명을 검색하세요"
                         android:textColor="#84838D" />
 
@@ -195,8 +196,8 @@
                     android:layout_marginTop="20dp"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="20dp"
+                    style="@style/semiBold_single_16"
                     android:text="최근 관측후기"
-                    android:textFontWeight="600"
                     android:textSize="16sp" />
 
                 <androidx.recyclerview.widget.RecyclerView

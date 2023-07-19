@@ -107,7 +107,7 @@ public class StarAllActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),StarSearchActivity.class);
                 intent.putExtra("starHashTagName",month+"월");
-                intent.putExtra("type",2);
+                intent.putExtra("type",3);
                 startActivity(intent);
             }
         });
@@ -130,7 +130,7 @@ public class StarAllActivity extends AppCompatActivity {
             public void onResponse(Call<List<StarItem>> call, Response<List<StarItem>> response) {
                 if (response.isSuccessful()) {
                     List<StarItem> result = response.body();
-                    starNumber.setText(result.size());
+                    starNumber.setText(String.valueOf(result.size()));
                     for (StarItem si : result) {
                         constAdapter.addItem(new StarItem(si.getConstId(), si.getConstName(), si.getConstEng()));
                     }

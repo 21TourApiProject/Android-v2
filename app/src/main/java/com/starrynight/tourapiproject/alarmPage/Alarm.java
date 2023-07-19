@@ -17,8 +17,8 @@ import com.google.gson.annotations.SerializedName;
 public class Alarm {
     @SerializedName("alarmTitle")
     private String alarmTitle;
-    @SerializedName("yearDate")
-    private String yearDate;
+    @SerializedName("alarmDate")
+    private String alarmDate;
     @SerializedName("alarmContent")
     private String alarmContent;
 
@@ -33,12 +33,12 @@ public class Alarm {
         this.alarmTitle = alarmTitle;
     }
 
-    public String getYearDate() {
-        return yearDate;
+    public String getAlarmDate() {
+        return alarmDate;
     }
 
-    public void setYearDate(String yearDate) {
-        this.yearDate = yearDate;
+    public void setAlarmDate(String alarmDate) {
+        this.alarmDate = alarmDate;
     }
 
     public String getAlarmContent() {
@@ -49,9 +49,9 @@ public class Alarm {
         this.alarmContent = alarmContent;
     }
 
-    public Alarm(String alarmTitle, String yearDate, String alarmContent) {
+    public Alarm(String alarmTitle, String alarmDate, String alarmContent) {
         this.alarmTitle = alarmTitle;
-        this.yearDate = yearDate;
+        this.alarmDate = alarmDate;
         this.alarmContent = alarmContent;
     }
 }
