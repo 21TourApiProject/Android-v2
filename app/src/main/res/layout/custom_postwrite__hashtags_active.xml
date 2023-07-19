@@ -11,11 +11,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/selectmyhashtag_hashtag_non"
-        android:fontFamily="@font/pretendard_variable"
         android:gravity="center"
         android:text="해쉬태그"
         android:textColor="@color/gray_300"
-        android:textFontWeight="500"
-        android:textSize="14sp" />
+        style="@style/medium_single_14"
+        />
 
 </LinearLayout>

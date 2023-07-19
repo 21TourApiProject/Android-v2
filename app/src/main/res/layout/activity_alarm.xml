@@ -29,10 +29,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:fontFamily="@font/pretendard_variable"
-                        android:textFontWeight="600"
                         android:text="알림"
-                        android:textSize="17sp" />
+                        style="@style/semiBold_single_16"
+                         />
 
                     <FrameLayout
                         android:id="@+id/alarmBack"
@@ -76,11 +75,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:fontFamily="@font/pretendard_variable"
-                    android:textFontWeight="500"
+                    style="@style/medium_single_16"
                     android:text="받은 알림이 없어요."
                     android:textColor="@color/gray_300"
-                    android:textSize="16sp"/>
+                    />
             </LinearLayout>
 
         </LinearLayout>
