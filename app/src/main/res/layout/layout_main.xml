@@ -60,10 +60,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:fontFamily="@font/pretendard_variable"
-            android:text="제목"
-            android:textFontWeight="600"
-            android:textSize="15sp" />
+            style="@style/semiBold_single_14"
+            android:text="제목" />
 
         <LinearLayout
             android:layout_width="20dp"

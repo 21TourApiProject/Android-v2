@@ -1,5 +1,6 @@
 package com.starrynight.tourapiproject.alarmPage;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +14,11 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.starrynight.tourapiproject.R;
+import com.starrynight.tourapiproject.myPage.notice.Notice;
 
 import java.util.ArrayList;
+import java.util.List;
+
 /**
 * @className : AlarmAdapter
 * @description : 알림 클래스 adapter 입니다.
@@ -29,8 +33,14 @@ import java.util.ArrayList;
 
  */
 public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> {
-    ArrayList<Alarm> items = new ArrayList<Alarm>();
+    List<Alarm> items = new ArrayList<Alarm>();
+    Context context;
     OnAlarmClickListener listener;
+
+    public AlarmAdapter(Context context, List<Alarm> items) {
+        this.context = context;
+        this.items = items;
+    }
 
     public void addItem(Alarm item) {
         items.add(item);
@@ -66,14 +76,14 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
             @Override
             public void onClick(View v) {
                 if (viewHolder.alarmOpen.getVisibility() == View.GONE) { //닫혀있으면 열기
-                    viewHolder.alarmBtn.setRotation(90);
+                    viewHolder.alarmBtn.setBackground(ContextCompat.getDrawable(viewHolder.itemView.getContext(),R.drawable.down_dense));
                     viewHolder.alarmOpen.setVisibility(View.VISIBLE);
-                    viewHolder.alarmtitle.setTextColor(ContextCompat.getColor(viewHolder.itemView.getContext(),R.color.name_purple));
+                    viewHolder.alarmtitle.setTextColor(ContextCompat.getColor(viewHolder.itemView.getContext(),R.color.white));
                     viewHolder.star.setImageDrawable(ContextCompat.getDrawable(viewHolder.itemView.getContext(),R.drawable.alarm__star));
                 } else { //열려있으면 닫기
-                    viewHolder.alarmBtn.setRotation(360);
+                    viewHolder.alarmBtn.setBackground(ContextCompat.getDrawable(viewHolder.itemView.getContext(),R.drawable.up_dense));
                     viewHolder.alarmOpen.setVisibility(View.GONE);
-                    viewHolder.alarmtitle.setTextColor(ContextCompat.getColor(viewHolder.itemView.getContext(),R.color.white));
+                    viewHolder.alarmtitle.setTextColor(ContextCompat.getColor(viewHolder.itemView.getContext(),R.color.gray_400));
                     viewHolder.star.setImageDrawable(ContextCompat.getDrawable(viewHolder.itemView.getContext(),R.drawable.alarm__star_non));
                 }
             }
@@ -112,7 +122,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
 
         public void setItem(Alarm item) {
             alarmtitle.setText(item.getAlarmTitle());
-            alarmdate.setText(item.getYearDate());
+            alarmdate.setText(item.getAlarmDate());
             alarmcontent.setText(item.getAlarmContent());
             alarmOpen.setVisibility(View.GONE);
         }
