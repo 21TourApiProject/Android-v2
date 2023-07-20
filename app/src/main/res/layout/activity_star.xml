@@ -22,23 +22,27 @@
                 android:paddingHorizontal="16dp"
                 android:layout_height="49dp">
 
-                <ImageView
+                <LinearLayout
                     android:id="@+id/detail_star_back_btn"
-                    style="@style/ImageButton.size49"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/back_btn"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:gravity="center"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent" >
+                    <ImageView
+                        style="@style/ImageButton.size49"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/back_btn" />
+                </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/starTitle_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendard_variable"
-                    android:textFontWeight="600"
+                    style="@style/semiBold_single_16"
                     android:text="별자리 정보"
-                    android:textSize="17sp"
                     app:layout_constraintBottom_toBottomOf="@+id/detail_star_back_btn"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -70,10 +74,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="8dp"
-                    android:fontFamily="@font/pretendard_variable"
-                    android:textFontWeight="600"
-                    android:text="사자 자리"
-                    android:textSize="24sp" />
+                    style="@style/semiBold_single_24"
+                    android:text="사자 자리" />
 
 
 
@@ -103,10 +105,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendard_variable"
-                    android:textFontWeight="600"
+                    style="@style/semiBold_single_18"
                     android:text="가장 보기 좋은 달"
-                    android:textSize="18sp" />
+                    />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -118,23 +119,20 @@
                         android:id="@+id/const_best_month_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/pretendard_variable"
-                        android:textFontWeight="600"
                         android:layout_marginRight="8dp"
                         android:lineSpacingExtra="4dp"
+                        style="@style/semiBold_single_20"
                         android:text="4월 ~ 6월"
                         android:textAlignment="center"
-                        android:textSize="20sp" />
+                        />
 
                     <TextView
                         android:id="@+id/rightNow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/search_point_background"
-                        android:fontFamily="@font/pretendard_variable"
-                        android:textFontWeight="600"
-                        android:text="지금!"
-                        android:textSize="16sp" />
+                        style="@style/semiBold_single_16"
+                        android:text="지금!" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -161,10 +159,9 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="20dp"
                     android:textColor="@color/point_blue"
-                    android:fontFamily="@font/pretendard_variable"
-                    android:textFontWeight="600"
+                    style="@style/semiBold_single_18"
                     android:text="별자리 관측 정보"
-                    android:textSize="16sp" />
+                    />
 
                 <TextView
                     android:id="@+id/const_mtd_tv"
@@ -174,11 +171,11 @@
                     android:layout_marginBottom="26dp"
                     android:lineSpacingExtra="4dp"
                     android:paddingHorizontal="22dp"
-                    android:fontFamily="@font/pretendard_variable"
-                    android:textFontWeight="600"
+                    style="@style/medium_multi_14"
+                    android:textColor="@color/gray_400"
                     android:text="봄철 저녁"
                     android:layout_gravity="center"
-                    android:textSize="12sp" />
+                    />
 
             </LinearLayout>
 
@@ -211,11 +208,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="56dp"
-                        android:fontFamily="@font/pretendard_variable"
-                        android:textFontWeight="600"
                         android:text="별별 이야기"
+                        style="@style/semiBold_single_18"
                         android:textColor="@color/point_blue"
-                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -223,11 +218,10 @@
                         android:id="@+id/constSummary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/pretendard_variable"
-                        android:textFontWeight="500"
                         android:text="요약"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="8dp"
+                        style="@style/semiBold_single_16"
                         app:layout_constraintTop_toBottomOf="@id/constStory"
                         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -252,9 +246,8 @@
                     android:layout_marginBottom="21dp"
                     android:lineSpacingExtra="4dp"
                     android:paddingHorizontal="24dp"
-                    android:fontFamily="@font/pretendard_variable"
-                    android:textFontWeight="500"
-                    android:textSize="12sp" />
+                    style="@style/medium_multi_14"
+                    android:textColor="@color/gray_400"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -263,10 +256,9 @@
                     android:layout_marginVertical="15sp"
                     android:layout_marginEnd="24dp"
                     android:text="(출처:한국천문연구원-별자리전설)"
-                    android:fontFamily="@font/pretendard_variable"
-                    android:textFontWeight="500"
+                    style="@style/medium_single_12"
                     android:textColor="@color/gray"
-                    android:textSize="12sp" />
+                     />
             </LinearLayout>
 
         </LinearLayout>

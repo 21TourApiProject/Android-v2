@@ -31,7 +31,13 @@ import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdapter;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdpater2;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.GridItemDecoration;
+import com.starrynight.tourapiproject.starPage.starPageRetrofit.OnStarFeatureClickListener;
+import com.starrynight.tourapiproject.starPage.starPageRetrofit.OnStarHashTagClickListener;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.RetrofitClient;
+import com.starrynight.tourapiproject.starPage.starPageRetrofit.StarFeature;
+import com.starrynight.tourapiproject.starPage.starPageRetrofit.StarFeatureAdapter;
+import com.starrynight.tourapiproject.starPage.starPageRetrofit.StarHashTag;
+import com.starrynight.tourapiproject.starPage.starPageRetrofit.StarHashTagAdapter;
 
 import org.w3c.dom.Text;
 
@@ -61,11 +67,12 @@ public class StarAllActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     StarViewAdpater2 constAdapter;
     StarViewAdapter constTodayAdapter;
+    StarFeatureAdapter starFeatureAdapter;
     TextView monthText,starNumber;
     LinearLayout moreStarLinearLayout;
 
     LinearLayout starFilterItem;
-    RecyclerView constTodayList;
+    RecyclerView constTodayList,starHashTagList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +91,7 @@ public class StarAllActivity extends AppCompatActivity {
         });
 
         // 뒤로가기 버튼 클릭 이벤트
-        ImageView backBtn = findViewById(R.id.all_star_back_btn);
+        LinearLayout backBtn = findViewById(R.id.all_star_back_btn);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +123,7 @@ public class StarAllActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.all_const_recycler);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.addItemDecoration(new StarRecyclerViewWidth(0,40));
+        recyclerView.addItemDecoration(new StarRecyclerViewWidth(0,35));
         constAdapter = new StarViewAdpater2();
         recyclerView.setAdapter(constAdapter);
 
@@ -200,6 +207,42 @@ public class StarAllActivity extends AppCompatActivity {
 
         //검색 해시태그 목록
         starFilterItem = findViewById(R.id.selectStarFilterItem);
-        starFilterItem.removeAllViews(); //초기화
+        starHashTagList =findViewById(R.id.starHashtagRecyclerView);
+        starHashTagList.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
+        starFeatureAdapter = new StarFeatureAdapter();
+
+        Call<List<StarFeature>> starFeatureCall = RetrofitClient.getApiService().getAllStarFeature();
+        starFeatureCall.enqueue(new Callback<List<StarFeature>>() {
+            @Override
+            public void onResponse(Call<List<StarFeature>> call, Response<List<StarFeature>> response) {
+                if(response.isSuccessful()){
+                    List<StarFeature> result = response.body();
+                    for(StarFeature starFeature: result){
+                        starFeatureAdapter.addItem(starFeature);
+                    }
+                    starHashTagList.setAdapter(starFeatureAdapter);
+                }else{
+                    Log.d("starHashtag", "별자리 해시태그 불러오기 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<StarFeature>> call, Throwable t) {
+                Log.e("starHashtag", "별자리 해시태그 불러오기 인터넷 연결 실패");
+            }
+        });
+
+        //해시태그 클릭 시 이벤트
+        starFeatureAdapter.setOnItemClickListener(new OnStarFeatureClickListener() {
+            @Override
+            public void onItemClick(StarFeatureAdapter.ViewHolder holder, View view, int position) {
+                StarFeature item = starFeatureAdapter.getItem(position);
+                Intent intent = new Intent(getApplicationContext(), StarSearchActivity.class);
+                intent.putExtra("starHashTagName", item.getStarFeatureName());
+                intent.putExtra("starHashTag",item.getStarFeatureId());
+                intent.putExtra("type",2);
+                startActivity(intent);
+            }
+        });
     }
 }

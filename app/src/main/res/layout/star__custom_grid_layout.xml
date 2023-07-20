@@ -7,8 +7,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/star_card_view"
-        android:layout_width="100sp"
-        android:layout_height="100sp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/hashtag_background_click"
-            android:padding="5dp"
+            android:padding="4dp"
             android:orientation="vertical">
 
             <ImageView
@@ -36,12 +36,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="2dp"
-                android:fontFamily="@font/pretendard_variable"
-                android:textFontWeight="500"
                 android:paddingHorizontal="2dp"
-                android:text="TextView"
-                android:textSize="12sp" />
+                style="@style/medium_single_12"
+                android:text="별자리" />
 
         </LinearLayout>
 
