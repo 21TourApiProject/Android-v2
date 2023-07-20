@@ -27,8 +27,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.starrynight.tourapiproject.mapPage.Activities;
 import com.starrynight.tourapiproject.mapPage.MapFragment;
-import com.starrynight.tourapiproject.searchPage.filter.FilterFragment;
-import com.starrynight.tourapiproject.searchPage.SearchResultFragment;
 import com.starrynight.tourapiproject.starPage.TonightSkyFragment;
 
 import java.util.ArrayList;
@@ -220,12 +218,6 @@ public class MainActivity extends AppCompatActivity {
                 bundle.putSerializable("keyword", intent.getSerializableExtra("keyword"));
                 bundle.putIntegerArrayList("hashTag", (ArrayList<Integer>) intent.getSerializableExtra("hashTag"));
                 bundle.putIntegerArrayList("area", (ArrayList<Integer>) intent.getSerializableExtra("area"));
-                Fragment searchResultFragment = new SearchResultFragment();
-                searchResultFragment.setArguments(bundle);
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.add(R.id.main_view, searchResultFragment);
-                searchResult = searchResultFragment;
-                transaction.commit();
             }
         }
     }
@@ -241,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_view);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if (searchResult != null && fragment instanceof SearchResultFragment) {
+        if (searchResult != null) {
             System.out.println("1번이니");
             if (fragmentManager.getBackStackEntryCount() > 0) {
                 fragmentManager.beginTransaction().remove(fragment).commit();
@@ -250,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
                 super.onBackPressed();
             }
 //                fragmentManager.popBackStackImmediate("result", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        } else if (filter!=null && fragment instanceof FilterFragment) {
+        } else if (filter!=null ) {
             System.out.println("2번이니");
             fragmentManager.beginTransaction().hide(fragment).commit();
             if (fragmentManager.getBackStackEntryCount() > 0) {

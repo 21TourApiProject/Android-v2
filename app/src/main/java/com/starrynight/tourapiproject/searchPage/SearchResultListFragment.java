@@ -16,6 +16,7 @@ import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchParams1;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchResultListFragment extends Fragment {
@@ -26,7 +27,7 @@ public class SearchResultListFragment extends Fragment {
     LinearLayout noResultLayout;
 
 
-    List<SearchParams1> list;
+    List<SearchParams1> list = new ArrayList<>();
 
     public SearchResultListFragment() {}
 

@@ -8,44 +8,30 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.starrynight.tourapiproject.MainActivity;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
-import com.starrynight.tourapiproject.observationPage.RecyclerDecoration;
 import com.starrynight.tourapiproject.observationPage.RecyclerHashTagAdapter;
 import com.starrynight.tourapiproject.observationPage.RecyclerHashTagItem;
-import com.starrynight.tourapiproject.searchPage.filter.FilterFragment;
-import com.starrynight.tourapiproject.searchPage.SearchResultFragment;
-import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.Filter;
-import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.RetrofitClient;
-import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchKey;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchParams1;
-import com.starrynight.tourapiproject.touristPointPage.TouristPointActivity;
 
 import net.daum.mf.map.api.CalloutBalloonAdapter;
 import net.daum.mf.map.api.MapPOIItem;
@@ -58,7 +44,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -111,7 +96,7 @@ public class MapFragment extends Fragment {
     private MapeventListner mapeventListner = new MapeventListner();
 
     List<String> observeHashTags;
-    private RecyclerHashTagAdapter recyclerHashTagAdapter;
+    private RecyclerMapHashTagAdapter recyclerHashTagAdapter;
 
     boolean from_detail = false;
 
@@ -529,7 +514,7 @@ public class MapFragment extends Fragment {
         //해쉬태그 리사이클러 초기화
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
         hashTagsrecyclerView.setLayoutManager(linearLayoutManager);
-        recyclerHashTagAdapter = new RecyclerHashTagAdapter();
+        recyclerHashTagAdapter = new RecyclerMapHashTagAdapter();
         hashTagsrecyclerView.setAdapter(recyclerHashTagAdapter);
     }
 
