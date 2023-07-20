@@ -31,6 +31,9 @@ public class BalloonObject implements Serializable {
     private Long id;    //관측지나 관광지 id
     private String image;
     private List<String> hashtags;
+    private Long saved;
+
+    private boolean isWished;
 
     public String getImage() {
         return image;
@@ -120,6 +123,21 @@ public class BalloonObject implements Serializable {
         this.intro = intro;
     }
 
+    public Long getSaved() {
+        return saved;
+    }
+
+    public void setSaved(Long saved) {
+        this.saved = saved;
+    }
+
+    public boolean isWished() {
+        return isWished;
+    }
+
+    public void setWished(boolean wished) {
+        isWished = wished;
+    }
 
     public BalloonObject(Long id, int tag, double longitude, double latitude, String name, String address, String point_type, String intro) {
         this.id = id;

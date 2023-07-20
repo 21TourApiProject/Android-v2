@@ -83,6 +83,7 @@ public class SearchItemRecyclerAdapter extends RecyclerView.Adapter<SearchItemRe
             savedNum = itemView.findViewById(R.id.sr_item_save_text);
             savedImg = itemView.findViewById(R.id.sr_item_save_img);
 
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

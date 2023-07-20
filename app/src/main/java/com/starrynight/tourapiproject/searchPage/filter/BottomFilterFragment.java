@@ -2,6 +2,7 @@ package com.starrynight.tourapiproject.searchPage.filter;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +23,17 @@ import com.google.android.flexbox.JustifyContent;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.searchPage.SearchResultActivity;
+import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.Filter;
+import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.RetrofitClient;
+import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchKey;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class BottomFilterFragment extends BottomSheetDialogFragment {
@@ -38,6 +47,11 @@ public class BottomFilterFragment extends BottomSheetDialogFragment {
     List<HashTagItem> peopleList;
     List<HashTagItem> facilityList;
     List<HashTagItem> feeList;
+
+    List<Long> areaCodeList = new ArrayList<>();
+    List<Long> hashTagIdList = new ArrayList<>();
+
+    String keyword;
 
     RecyclerView tagRecycler;
     FilterRecyclerAdapter adapter;
@@ -138,7 +152,14 @@ public class BottomFilterFragment extends BottomSheetDialogFragment {
         facilityParentImg = getActivity().findViewById(R.id.sr_facility_btn_img);
         feeParentImg = getActivity().findViewById(R.id.sr_fee_btn_img);
 
-        adapter = new FilterRecyclerAdapter(getContext(), areaList, peopleList, themeList, facilityList, feeList);
+        FilterOnClickItem filterOnClickItem = new FilterOnClickItem() {
+            @Override
+            public void onClick() {
+                getSearchCount();
+            }
+        };
+
+        adapter = new FilterRecyclerAdapter(getContext(), areaList, peopleList, themeList, facilityList, feeList, filterOnClickItem);
 
         layoutManager = new FlexboxLayoutManager(getContext());
         layoutManager.setFlexDirection(FlexDirection.ROW);
@@ -154,6 +175,7 @@ public class BottomFilterFragment extends BottomSheetDialogFragment {
         closeBtn.setOnClickListener(view1 -> dismiss());
 
         resultBtn.setOnClickListener(view12 -> {
+            ((SearchResultActivity)getActivity()).clearResult();
             ((SearchResultActivity)getActivity()).getObservation(0);
             setParentFilterActive();
             dismiss();
@@ -164,6 +186,7 @@ public class BottomFilterFragment extends BottomSheetDialogFragment {
             public void onClick(View view) {
                 setFilterRefresh();
                 setFilterActivate();
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -359,13 +382,15 @@ public class BottomFilterFragment extends BottomSheetDialogFragment {
         }
     }
 
-    public void setDataLists(List<HashTagItem> areaList, List<HashTagItem> peopleList, List<HashTagItem> themeList, List<HashTagItem> facilityList, List<HashTagItem> feeList){
+    public void setDataLists(List<HashTagItem> areaList, List<HashTagItem> peopleList, List<HashTagItem> themeList, List<HashTagItem> facilityList, List<HashTagItem> feeList, String keyword){
 
         this.areaList = areaList;
         this.peopleList = peopleList;
         this.themeList = themeList;
         this.facilityList = facilityList;
         this.feeList = feeList;
+
+        this.keyword = keyword;
 
     }
 
@@ -374,6 +399,63 @@ public class BottomFilterFragment extends BottomSheetDialogFragment {
 
     }
 
+    private void setFilter(){
+        hashTagIdList.clear();
+        areaCodeList.clear();
+        for (HashTagItem h : themeList) {
+            if (h.getIsActive() == HashTagItem.VIEWTYPE_ACTIVE) {
+                hashTagIdList.add(h.getId());
+            }
+        }
+        for (HashTagItem h : peopleList) {
+            if (h.getIsActive() == HashTagItem.VIEWTYPE_ACTIVE) {
+                hashTagIdList.add(h.getId());
+            }
+        }
+        for (HashTagItem h : facilityList) {
+            if (h.getIsActive() == HashTagItem.VIEWTYPE_ACTIVE) {
+                hashTagIdList.add(h.getId());
+            }
+        }
+        for (HashTagItem h : feeList) {
+            if (h.getIsActive() == HashTagItem.VIEWTYPE_ACTIVE) {
+                hashTagIdList.add(h.getId());
+            }
+        }
+        for (HashTagItem h : areaList) {
+            if (h.getIsActive() == HashTagItem.VIEWTYPE_ACTIVE) {
+                areaCodeList.add(h.getId());
+            }
+        }
+    }
+
+    private void getSearchCount() {
+
+        setFilter();
+
+        com.starrynight.tourapiproject.searchPage.searchPageRetrofit.Filter filter = new Filter(areaCodeList, hashTagIdList);
+        SearchKey searchKey = new SearchKey(filter, keyword);
+
+        Call<Long> call = RetrofitClient.getApiService().getSearchCountWithFilter(searchKey);
+        call.enqueue(new Callback<Long>() {
+            @Override
+            public void onResponse(Call<Long> call, Response<Long> response) {
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "해쉬태그 호출 성공");
+                    Long count = response.body();
+
+                    resultBtn.setText(count+"개의 결과보기");
+
+                } else {
+                    Log.d(TAG, "해쉬태그 호출 실패");
+                }
+            }
+            @Override
+            public void onFailure(Call<Long> call, Throwable t) {
+                Log.d(TAG, "해쉬태그 호출 오류");
+            }
+        });
+    }
 
 
 }

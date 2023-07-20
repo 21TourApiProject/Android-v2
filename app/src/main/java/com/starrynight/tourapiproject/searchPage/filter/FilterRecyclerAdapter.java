@@ -29,7 +29,9 @@ public class FilterRecyclerAdapter extends RecyclerView.Adapter<FilterRecyclerAd
     List<HashTagItem> facilityList = new ArrayList<>();
     List<HashTagItem> feeList = new ArrayList<>();
 
-    public FilterRecyclerAdapter(Context context, List<HashTagItem> areaList, List<HashTagItem> peopleList , List<HashTagItem> themeList, List<HashTagItem> facilityList, List<HashTagItem> feeList) {
+    FilterOnClickItem mCallback;
+
+    public FilterRecyclerAdapter(Context context, List<HashTagItem> areaList, List<HashTagItem> peopleList , List<HashTagItem> themeList, List<HashTagItem> facilityList, List<HashTagItem> feeList, FilterOnClickItem listner) {
         super();
         this.context = context;
 
@@ -39,6 +41,8 @@ public class FilterRecyclerAdapter extends RecyclerView.Adapter<FilterRecyclerAd
         this.peopleList = peopleList;
         this.facilityList = facilityList;
         this.feeList = feeList;
+
+        this.mCallback = listner;
     }
 
     @NonNull
@@ -116,6 +120,7 @@ public class FilterRecyclerAdapter extends RecyclerView.Adapter<FilterRecyclerAd
                         }
 
                     }
+                    mCallback.onClick();
                     notifyDataSetChanged();
                 }
             });

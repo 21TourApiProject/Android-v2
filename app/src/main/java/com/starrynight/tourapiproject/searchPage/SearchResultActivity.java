@@ -3,19 +3,17 @@ package com.starrynight.tourapiproject.searchPage;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
-import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 import com.starrynight.tourapiproject.R;
+import com.starrynight.tourapiproject.mapPage.MapFragment;
 import com.starrynight.tourapiproject.searchPage.filter.BottomFilterFragment;
 import com.starrynight.tourapiproject.searchPage.filter.FilterType;
 import com.starrynight.tourapiproject.searchPage.filter.HashTagItem;
@@ -24,10 +22,7 @@ import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.RetrofitClie
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchKey;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchParams1;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -53,13 +48,19 @@ public class SearchResultActivity extends AppCompatActivity {
     LinearLayout facilityBtn;
     LinearLayout feeBtn;
 
+    ImageView mapBtn;
+    ImageView listBtn;
+
+    FrameLayout fragment;
+
     int pagenum=0;
 
     NestedScrollView scrollView;
 
-    ViewPager2 resultViewPager;
-    TabLayout tabLayout;
-    ResultViewPagerAdapter resultViewPagerAdapter;
+    SearchResultTabFragment tabFragment;
+    MapFragment mapFragment;
+
+
 
     List<Long> areaCodeList = new ArrayList<>();
     List<Long> hashTagIdList = new ArrayList<>();
@@ -79,8 +80,10 @@ public class SearchResultActivity extends AppCompatActivity {
         facilityBtn = findViewById(R.id.sr_facility_btn);
         feeBtn = findViewById(R.id.sr_fee_btn);
 
-        resultViewPager = findViewById(R.id.sr_result_view_pager);
-        tabLayout = findViewById(R.id.sr_tab_layout);
+        mapBtn = findViewById(R.id.sr_map_btn);
+        listBtn = findViewById(R.id.sr_list_btn);
+
+        fragment = findViewById(R.id.sr_fragment);
 
         scrollView = findViewById(R.id.sr_scroll_view);
 
@@ -119,27 +122,34 @@ public class SearchResultActivity extends AppCompatActivity {
                 }
             }
         });
+        tabFragment = new SearchResultTabFragment(observationResult, postResult);
+        mapFragment = new MapFragment(observationResult);
 
-        setViewPager();
+        fragmentManager.beginTransaction().replace(R.id.sr_fragment,tabFragment).commit();
+
         getObservation(0);
 
-    }
-
-
-    private void setViewPager() {
-        resultViewPagerAdapter = new ResultViewPagerAdapter(getSupportFragmentManager(),getLifecycle(),observationResult,postResult);
-        resultViewPager.setAdapter(resultViewPagerAdapter);
-        final List<String> tabElement = Arrays.asList("관측지","게시글");
-
-        //tabLyout와 viewPager 연결
-        new TabLayoutMediator(tabLayout, resultViewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+        mapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onConfigureTab(@NonNull @NotNull TabLayout.Tab tab, int position) {
-                tab.setText(tabElement.get(position));
+            public void onClick(View view) {
+                mapBtn.setVisibility(View.GONE);
+                listBtn.setVisibility(View.VISIBLE);
+                fragmentManager.beginTransaction().replace(R.id.sr_fragment,mapFragment).commit();
             }
+        });
 
-        }).attach();
+        listBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listBtn.setVisibility(View.GONE);
+                mapBtn.setVisibility(View.VISIBLE);
+                fragmentManager.beginTransaction().replace(R.id.sr_fragment,tabFragment).commit();
+            }
+        });
     }
+
+
+
 
     private void setFilter(){
         hashTagIdList.clear();
@@ -196,7 +206,8 @@ public class SearchResultActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Log.d(TAG, "게시물 검색 성공");
                     postResult = response.body();
-                    resultViewPagerAdapter.setData(observationResult,postResult);
+                    tabFragment.setData(observationResult,postResult);
+                    mapFragment.setData(observationResult);
                 } else {
                     Log.e(TAG, "게시물 검색 실패");
                 }
@@ -271,7 +282,7 @@ public class SearchResultActivity extends AppCompatActivity {
         if (filterFragment == null) {
             filterFragment = new BottomFilterFragment();
             filterFragment.setCancelable(true);
-            filterFragment.setDataLists(areaList, peopleList, themeList, facilityList, feeList);
+            filterFragment.setDataLists(areaList, peopleList, themeList, facilityList, feeList,keyword);
         }
 
         locationBtn.setOnClickListener(new View.OnClickListener() {
@@ -313,5 +324,10 @@ public class SearchResultActivity extends AppCompatActivity {
                 filterFragment.show(fragmentManager, filterFragment.getTag());
             }
         });
+    }
+
+    public void clearResult(){
+        observationResult.clear();
+        postResult.clear();
     }
 }

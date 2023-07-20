@@ -73,13 +73,15 @@ public class SearchResultListFragment extends Fragment {
 
     public void setData(List<SearchParams1> list) {
         this.list  = list;
-        if (list.isEmpty()) {
-            noResultLayout.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
-        } else {
-            noResultLayout.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
+        if (noResultLayout != null) {
+            if (list.isEmpty()) {
+                noResultLayout.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+            } else {
+                noResultLayout.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+            adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
     }
 }
