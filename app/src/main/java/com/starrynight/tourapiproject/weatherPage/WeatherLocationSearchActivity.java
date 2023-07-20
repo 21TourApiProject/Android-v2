@@ -1,5 +1,6 @@
 package com.starrynight.tourapiproject.weatherPage;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,6 +18,7 @@ import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.WeatherRetrofi
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,6 +47,7 @@ public class WeatherLocationSearchActivity extends AppCompatActivity {
         searchItemArrayList = new ArrayList<>();
         filteredList = new ArrayList<>();
 
+        locationSearch.requestFocus(); // 키보드 바로 올라오게
         locationSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -62,6 +65,15 @@ public class WeatherLocationSearchActivity extends AppCompatActivity {
 
         //검색어 입력했을 때 나오는 관측지 리스트
         searchAdapter = new SearchLocationItemAdapter(searchItemArrayList, this);
+        searchAdapter.setOnItemClicklistener((holder, view, position) -> {
+            SearchLocationItem item = searchAdapter.getItem(position);
+            Intent intent = new Intent(getApplicationContext(), WeatherActivity.class);
+            LocationDTO locationDTO = new LocationDTO(item.getLatitude(), item.getLongitude(), null, null, item.getTitle());
+            if (Objects.nonNull(item.getAreaId())) locationDTO.setAreaId(item.areaId);
+            if (Objects.nonNull(item.getObservationId())) locationDTO.setObservationId(item.observationId);
+            intent.putExtra("locationDTO", locationDTO);
+            startActivity(intent);
+        });
         layoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false);
         locationResult.setLayoutManager(layoutManager);
         locationResult.setAdapter(searchAdapter);
@@ -70,10 +82,7 @@ public class WeatherLocationSearchActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<SearchLocationItem>> call, Response<List<SearchLocationItem>> response) {
                 if (response.isSuccessful()) {
-                    List<SearchLocationItem> locationList = response.body();
-                    for (int i = 0; i < locationList.size() - 1; i++) {
-                        searchItemArrayList.add(new SearchLocationItem(locationList.get(i).getTitle(), locationList.get(i).getSubtitle(), locationList.get(i).getLocationId(), locationList.get(i).getObservationValue()));
-                    }
+                    searchItemArrayList.addAll(response.body());
                 } else {
                     Log.d(TAG, "날씨 location 리스트 업로드 실패");
                 }

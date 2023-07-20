@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.common.Const;
+import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
 import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.AreaTimeDTO;
 import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.DayObservationalFit;
 import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.HourObservationalFit;
@@ -128,30 +129,32 @@ public class WeatherActivity extends AppCompatActivity {
         // 현재 시간(hour) 조회
         long now = System.currentTimeMillis();
         Date date = new Date(now);
-        System.out.println("yyyy_MM_dd_hh_mm : " + yyyy_MM_dd_hh_mm.format(date));
         hour = hh.format(date);
         min = mm.format(date);
-
         todayDate.setText(MM_dd_EE.format(date).replace("0", ""));
-
         detailHour.setText(hour + Const.Weather.DETAIL_HOUR);
 
-        // 메인 페이지에서 위경도, 지역 또는 관측지 정보를 받아옴 (메인 페이지 완성 시 주석 해제)
-        Intent mainIntent = getIntent();
-        LocationDTO locationDTO = (LocationDTO) mainIntent.getSerializableExtra("locationDTO");
+        Intent intent = getIntent();
+        LocationDTO locationDTO = (LocationDTO) intent.getSerializableExtra("locationDTO");
+        Boolean fromObserve = (Boolean) intent.getSerializableExtra("fromObserve"); // 관측지 페이지에서 넘어왔음을 의미
         latitude = locationDTO.getLatitude(); // 위도
         longitude = locationDTO.getLongitude(); // 경도
         areaId = locationDTO.getAreaId();
         observationId = locationDTO.getObservationId();
 
-        if(Objects.nonNull(areaId)){
-            observatory.setVisibility(View.GONE);
+        if (Objects.nonNull(areaId)) {
             currentPosition.setVisibility(View.VISIBLE);
             currentPosition.setText(locationDTO.getLocation());
-        } if(Objects.nonNull(observationId)){
+        }
+        if (Objects.nonNull(observationId)) {
             observatory.setVisibility(View.VISIBLE);
-            currentPosition.setVisibility(View.GONE);
             observatoryName.setText(locationDTO.getLocation());
+            observatory.setOnClickListener(v -> {
+                Intent observationIntent = new Intent(getApplicationContext(), ObservationsiteActivity.class);
+                observationIntent.putExtra("observationId", observationId);
+                if (Objects.nonNull(fromObserve) && fromObserve) observationIntent.putExtra("fromWeather", true);
+                startActivity(observationIntent);
+            });
         }
 
         AreaTimeDTO areaTimeDTO = new AreaTimeDTO(yyyy_MM_dd.format(date), Integer.valueOf(hour), latitude, longitude);
@@ -218,8 +221,7 @@ public class WeatherActivity extends AppCompatActivity {
 
         //날씨 도움말 페이지 이동
         weatherHelp.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), WeatherHelpActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(getApplicationContext(), WeatherHelpActivity.class));
         });
 
         // 실시간 날씨 지도

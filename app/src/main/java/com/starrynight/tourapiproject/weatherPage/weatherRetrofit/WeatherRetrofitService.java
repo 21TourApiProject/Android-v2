@@ -18,12 +18,12 @@ public interface WeatherRetrofitService {
     @GET("observationFit/hour/{date}")
     Call<List<HourObservationalFit>> getHourObservationFit(@Path("date") String date);
 
-    @POST("weather/v2/observationalFit/weatherPage")
+    @POST("weather/observationalFit/weatherPage")
     Call<WeatherInfo> getWeatherInfo(@Body AreaTimeDTO areaTimeDTO);
 
-    @POST("weather/v2/observationalFit/mainPage")
+    @POST("weather/observationalFit/mainPage")
     Call<MainInfo> getMainInfo(@Body AreaTimeDTO areaTimeDTO);
 
-    @GET("weather/v2/locations")
+    @GET("weather/locations")
     Call<List<SearchLocationItem>> getWeatherLocations();
 }

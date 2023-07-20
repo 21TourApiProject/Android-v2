@@ -5,8 +5,8 @@ import java.io.Serializable;
 public class LocationDTO implements Serializable {
     private final Double latitude;
     private final Double longitude;
-    private final Long areaId; // WEATHER_AREA id
-    private final Long observationId; // WEATHER_OBSERVATION id
+    private Long areaId; // WEATHER_AREA id
+    private Long observationId; // WEATHER_OBSERVATION id
     private final String location; // 읍면동 또는 관측지
 
     public LocationDTO(Double latitude, Double longitude, Long areaId, Long observationId, String location) {
@@ -35,5 +35,13 @@ public class LocationDTO implements Serializable {
 
     public String getLocation() {
         return location;
+    }
+
+    public void setAreaId(Long areaId){
+        this.areaId = areaId;
+    }
+
+    public void setObservationId(Long observationId) {
+        this.observationId = observationId;
     }
 }

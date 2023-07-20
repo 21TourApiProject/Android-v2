@@ -3,15 +3,10 @@ package com.starrynight.tourapiproject.weatherPage;
 public class SearchLocationItem {
     String title;
     String subtitle;
-    Long locationId; // 날씨 상세 페이지 이동을 위한 id
-    String observationValue;
-
-    public SearchLocationItem(String title, String subtitle, Long locationId, String observationValue) {
-        this.title = title;
-        this.subtitle = subtitle;
-        this.locationId = locationId;
-        this.observationValue = observationValue;
-    }
+    Long areaId; // WEATHER_AREA id
+    Long observationId; // WEATHER_OBSERVATION id
+    Double latitude;
+    Double longitude;
 
     public String getTitle() {
         return title;
@@ -21,11 +16,19 @@ public class SearchLocationItem {
         return subtitle;
     }
 
-    public Long getLocationId() {
-        return locationId;
+    public Long getAreaId() {
+        return areaId;
     }
 
-    public String getObservationValue() {
-        return observationValue;
+    public Long getObservationId() {
+        return observationId;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
     }
 }
