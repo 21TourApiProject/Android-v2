@@ -9,6 +9,7 @@
         android:id="@+id/sr_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         tools:layout_editor_absoluteX="31dp"
         tools:layout_editor_absoluteY="16dp">
 
@@ -54,11 +55,33 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
-                        android:paddingRight="16dp"
                         android:paddingLeft="9dp"
+                        android:paddingRight="16dp"
                         android:src="@drawable/search__map_btn" />
 
+                    <ImageView
+                        android:id="@+id/sr_list_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:paddingLeft="9dp"
+                        android:paddingRight="16dp"
+                        android:src="@drawable/search__list_btn"
+                        android:visibility="gone" />
+
                 </LinearLayout>
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:id="@+id/sr_fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -76,12 +99,14 @@
                         android:paddingVertical="8dp">
 
                         <TextView
+                            android:id="@+id/sr_location_btn_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="지역"
                             android:textFontWeight="600" />
 
                         <ImageView
+                            android:id="@+id/sr_location_btn_img"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -100,12 +125,14 @@
                         android:paddingVertical="8dp">
 
                         <TextView
+                            android:id="@+id/sr_people_btn_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="동행"
                             android:textFontWeight="600" />
 
                         <ImageView
+                            android:id="@+id/sr_people_btn_img"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -124,12 +151,14 @@
                         android:paddingVertical="8dp">
 
                         <TextView
+                            android:id="@+id/sr_theme_btn_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="테마"
                             android:textFontWeight="600" />
 
                         <ImageView
+                            android:id="@+id/sr_theme_btn_img"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -148,12 +177,14 @@
                         android:paddingVertical="8dp">
 
                         <TextView
+                            android:id="@+id/sr_facility_btn_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="시설"
                             android:textFontWeight="600" />
 
                         <ImageView
+                            android:id="@+id/sr_facility_btn_img"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -172,12 +203,14 @@
                         android:paddingVertical="8dp">
 
                         <TextView
+                            android:id="@+id/sr_fee_btn_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="요금"
                             android:textFontWeight="600" />
 
                         <ImageView
+                            android:id="@+id/sr_fee_btn_img"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -187,36 +220,7 @@
 
                 </LinearLayout>
 
-            </LinearLayout>
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/sr_tab_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="8dp">
-
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/sr_tab_observation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="4dp"
-                    android:text="관측지" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/sr_tab_review"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:text="게시글" />
-
-            </com.google.android.material.tabs.TabLayout>
-
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/sr_result_view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="10dp"/>
-
+            </RelativeLayout>
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

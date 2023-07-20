@@ -1,45 +1,29 @@
 package com.starrynight.tourapiproject.starPage;
 
 import android.annotation.SuppressLint;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.starrynight.tourapiproject.MainActivity;
 import com.starrynight.tourapiproject.R;
-import com.starrynight.tourapiproject.SearchFragment;
-import com.starrynight.tourapiproject.searchPage.SearchResultFragment;
-import com.starrynight.tourapiproject.starPage.StarActivity;
 import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener;
 import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener2;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdapter;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdpater2;
-import com.starrynight.tourapiproject.starPage.starPageRetrofit.GridItemDecoration;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.OnStarFeatureClickListener;
-import com.starrynight.tourapiproject.starPage.starPageRetrofit.OnStarHashTagClickListener;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.StarFeature;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.StarFeatureAdapter;
-import com.starrynight.tourapiproject.starPage.starPageRetrofit.StarHashTag;
-import com.starrynight.tourapiproject.starPage.starPageRetrofit.StarHashTagAdapter;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

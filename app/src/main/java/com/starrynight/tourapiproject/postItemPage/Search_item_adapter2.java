@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.postWritePage.SearchObservingPointActivity;
-import com.starrynight.tourapiproject.searchPage.OnSearchResultItemClickListener2;
 
 import java.util.ArrayList;
 
