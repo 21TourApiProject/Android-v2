@@ -15,9 +15,8 @@ import com.starrynight.tourapiproject.BuildConfig;
  */
 public class TaskServer {
 
-
-//    public static final String v1Server = "http://52.79.111.70:8080/v1/";
-    public static final String v1Server = "http://192.168.45.69:8080/v1/";
+    //    public static final String v1Server = "http://52.79.111.70:8080/v1/";
+    public static final String v1Server = "http://192.168.189.177:8080/v2/";
 
     public static final String kkoMapURL = "https://dapi.kakao.com/";
 

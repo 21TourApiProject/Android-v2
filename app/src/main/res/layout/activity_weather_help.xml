@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".weatherPage2.WeatherHelpActivity">
+    tools:context=".weatherPage.WeatherHelpActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -18,6 +18,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
+                android:layout_gravity="center_vertical"
                 android:paddingLeft="16dp"
                 android:paddingTop="14dp"
                 android:paddingRight="16dp">
@@ -35,8 +36,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="관측적합도란?"
-                    android:textSize="16dp"
                     android:textFontWeight="600"
+                    android:textSize="16dp"
                     app:layout_constraintBottom_toBottomOf="@id/weather_help_back"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -208,8 +209,9 @@
                     android:paddingBottom="20dp">
 
                     <LinearLayout
+                        android:id="@+id/help_1"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -245,8 +247,7 @@
                         android:layout_marginTop="16dp"
                         android:text="별빛은 아주 어둡기 때문에, 훨씬 밝은 불빛들이 가득한 도심 속에서는 별을 보기 힘들어요. 이처럼 불빛들로 인해 생기는 공해를 바로 ‘광공해’라고 한답니다.\n\n내 주변의 광공해가 0에 가까울수록 관측적합도 점수가 높아져요."
                         android:textColor="#84838D"
-                        android:textSize="12sp"
-                        android:visibility="gone" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -261,6 +262,7 @@
                     android:paddingBottom="20dp">
 
                     <LinearLayout
+                        android:id="@+id/help_2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -298,8 +300,7 @@
                         android:layout_marginTop="16dp"
                         android:text="기온은 별을 보는 데에는 직접적인 영향을 주진 않아요. 하지만 밤 시간대는 우리 생각보다 쌀쌀할 수 있으니, 일교차에 유의하셔서 적절한 옷차림을 준비해 주세요."
                         android:textColor="#84838D"
-                        android:textSize="12sp"
-                        android:visibility="gone" />
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -315,6 +316,7 @@
                     android:paddingBottom="20dp">
 
                     <LinearLayout
+                        android:id="@+id/help_3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -352,8 +354,7 @@
                         android:layout_marginTop="16dp"
                         android:text="0.1mm 이상의 비가 내릴 확률이에요. 비가 오는 날에는, 아쉽지만 별 보기가 참 어려울 거에요. 그렇지만 비가 온 다음에는 오히려 대기가 깨끗해지기 때문에, 별 보기 가장 좋은 상태가 된답니다.\n\n강수확률이 0%에 가까울 수록 관측적합도 점수가 높아져요."
                         android:textColor="#84838D"
-                        android:textSize="12sp"
-                        android:visibility="gone" />
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -369,6 +370,7 @@
                     android:paddingBottom="20dp">
 
                     <LinearLayout
+                        android:id="@+id/help_4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -406,8 +408,7 @@
                         android:layout_marginTop="16dp"
                         android:text="습도가 높으면 공기 중의 물 분자에 빛이 굴절되어 별빛이 다소 흐리게 보일 수 있다고 해요. 습도가 높은 여름보다, 건조한 겨울이 밤하늘 별 관측에 선호되는 계절인 이유가 바로 여기에 있답니다."
                         android:textColor="#84838D"
-                        android:textSize="12sp"
-                        android:visibility="gone" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -422,6 +423,7 @@
                     android:paddingBottom="20dp">
 
                     <LinearLayout
+                        android:id="@+id/help_5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -459,8 +461,7 @@
                         android:layout_marginTop="16dp"
                         android:text="구름 한 점 없는 밤하늘이 반짝이는 별들을 보기 가장 좋은 날이랍니다.\n\n구름량이 0%에 가까울수록 하늘이 깨끗해 관측적합도 점수가 높아져요."
                         android:textColor="#84838D"
-                        android:textSize="12sp"
-                        android:visibility="gone" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -475,6 +476,7 @@
                     android:paddingBottom="20dp">
 
                     <LinearLayout
+                        android:id="@+id/help_6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -512,8 +514,7 @@
                         android:layout_marginTop="16dp"
                         android:text="미세먼지가 높은 날 고도가 낮은 지역에서는 밤하늘조차 뿌옇게 보일 수 있어요. 무엇보다도 건강에 좋지 않으니, 장기간 노출되는 것을 피해주세요."
                         android:textColor="#84838D"
-                        android:textSize="12sp"
-                        android:visibility="gone" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -528,6 +529,7 @@
                     android:paddingBottom="20dp">
 
                     <LinearLayout
+                        android:id="@+id/help_7"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -565,8 +567,7 @@
                         android:layout_marginTop="16dp"
                         android:text="적당히 선선한 바람은 별을 관측하는 기분을 보다 상쾌하게 해 줄 거에요. 다만, 바람이 너무 센 날을 고르지 않도록 유의해 주세요."
                         android:textColor="#84838D"
-                        android:textSize="12sp"
-                        android:visibility="gone" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -582,6 +583,7 @@
                     android:paddingBottom="20dp">
 
                     <LinearLayout
+                        android:id="@+id/help_8"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -619,8 +621,7 @@
                         android:layout_marginTop="16dp"
                         android:text="월령은 간단히 말해 달이 차오른 정도를 알 수 있는 지표에요. 0은 초승달, 0.5는 보름달, 1은 그믐달을 의미합니다. 달이 너무 밝다면, 달빛에 가려 별들이 제대로 보이지 않을 거에요.\n\n월령이 0이나 1에 가까울수록 달빛이 적어 관측적합도 점수가 높아져요."
                         android:textColor="#84838D"
-                        android:textSize="12sp"
-                        android:visibility="gone" />
+                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

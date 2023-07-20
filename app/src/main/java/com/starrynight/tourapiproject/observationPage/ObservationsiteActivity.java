@@ -44,8 +44,8 @@ import com.starrynight.tourapiproject.observationPage.observationPageRetrofit.Re
 import com.starrynight.tourapiproject.postPage.PostActivity;
 import com.starrynight.tourapiproject.postPage.postRetrofit.PostImage;
 import com.starrynight.tourapiproject.postWritePage.PostWriteActivity;
-import com.starrynight.tourapiproject.weatherPage2.LocationDTO;
-import com.starrynight.tourapiproject.weatherPage2.WeatherActivity2;
+import com.starrynight.tourapiproject.weatherPage.LocationDTO;
+import com.starrynight.tourapiproject.weatherPage.WeatherActivity;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -197,7 +197,7 @@ public class ObservationsiteActivity extends AppCompatActivity {
                     to_light_btn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(getApplicationContext(), WeatherActivity2.class);
+                            Intent intent = new Intent(getApplicationContext(), WeatherActivity.class);
                             LocationDTO locationDTO = new LocationDTO(observation.getLatitude(), observation.getLongitude(), null, observationId, observation.getObservationName());
                             intent.putExtra("locationDTO", locationDTO);
                             intent.putExtra("fromObserve", true);

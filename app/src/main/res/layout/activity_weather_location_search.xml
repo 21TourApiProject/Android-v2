@@ -86,7 +86,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:paddingHorizontal="26dp">
+                    android:layout_marginTop="20dp"
+                    android:paddingHorizontal="27dp">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/location_result"
