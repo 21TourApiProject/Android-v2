@@ -13,28 +13,33 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="49dp">
+            android:layout_height="wrap_content"
+            android:paddingVertical="14dp"
+            android:paddingHorizontal="16dp">
 
-            <ImageView
+            <LinearLayout
                 android:id="@+id/myWishBack"
-                style="@style/ImageButton.size49"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="7dp"
-                android:paddingVertical="18dp"
-                android:paddingStart="22dp"
-                android:paddingEnd="21dp"
-                android:src="@drawable/star__search_back"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:gravity="center"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" >
+            <ImageView
+            style="@style/ImageButton.size49"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back_btn"/>
+
+            </LinearLayout>
+
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/scdream"
                 android:text="북마크"
-                android:textSize="17sp"
-                app:layout_constraintBottom_toBottomOf="@id/myWishBack"
+                style="@style/semiBold_single_16"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -43,8 +48,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="38dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -53,21 +59,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center|bottom"
-                android:layout_marginBottom="5.24dp"
                 android:onClick="clickOb"
                 android:text="관측지"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/myWishTp"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:onClick="clickTp"
-                android:gravity="center|bottom"
-                android:layout_marginBottom="5.24dp"
-                android:text="관광지"
-                android:textSize="14sp" />
+                style="@style/semiBold_single_16" />
 
             <TextView
                 android:id="@+id/myWishPost"
@@ -76,9 +70,8 @@
                 android:layout_weight="1"
                 android:onClick="clickPost"
                 android:gravity="center|bottom"
-                android:layout_marginBottom="5.24dp"
                 android:text="게시글"
-                android:textSize="14sp" />
+                style="@style/semiBold_single_16" />
         </LinearLayout>
 
         <LinearLayout
@@ -94,14 +87,6 @@
                 android:layout_weight="1"
                 android:onClick="clickOb"
                 app:srcCompat="@drawable/mywish_tapclick" />
-
-            <ImageView
-                android:id="@+id/myWishTpLine"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="clickTp"
-                app:srcCompat="@drawable/mywish_tap" />
 
             <ImageView
                 android:id="@+id/myWishPostLine"
@@ -125,9 +110,7 @@
                     android:id="@+id/myWishs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginTop="32dp" />
+                   />
 
             </LinearLayout>
         </ScrollView>

@@ -8,6 +8,8 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -91,7 +93,7 @@ public class PostActivity extends AppCompatActivity {
     Long userId;
     int allsize = 0;
     TextView nickname;
-    TextView postTitle,postContent,postTime,postDate,postLike,loveCount,postObservation,postCommentCount;
+    TextView postTitle,postContent,postTime,postDate,writeTime,postLike,loveCount,postObservation,postCommentCount;
     ImageView profileImage,postObservationbtn;
     RecyclerView commentRecyclerView;
     List<String> postHashTags;
@@ -165,6 +167,7 @@ public class PostActivity extends AppCompatActivity {
         postContent = findViewById(R.id.postContent);
         postTime = findViewById(R.id.postTime);
         postDate = findViewById(R.id.postDate);
+        writeTime = findViewById(R.id.writeTime);
         profileImage = findViewById(R.id.post_profileImage);
         nickname = findViewById(R.id.post_nickname);
         postLike = findViewById(R.id.love_count);
@@ -177,6 +180,7 @@ public class PostActivity extends AppCompatActivity {
         //게시물 정보가져오는 get api
         Call<Post> call1 = RetrofitClient.getApiService().getPost(postId);
         call1.enqueue(new Callback<Post>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<Post> call, Response<Post> response) {
                 if (response.isSuccessful()) {
@@ -188,6 +192,11 @@ public class PostActivity extends AppCompatActivity {
                     //postRealTime = postRealTime.substring(0, postRealTime.length() - 3);
                     postTime.setText(post.getTime());
                     postDate.setText(post.getYearDate());
+                    if(post.getWriteDate()!=null && post.getWriteTime()!=null){
+                        String tmpDate= post.getWriteDate();
+                        tmpDate=tmpDate.substring(5);
+                        writeTime.setText(tmpDate+" "+post.getWriteTime());
+                    }
                     postLike.setText(String.valueOf(post.getLiked()));
                     //관측지
                     Call<Observation> call2 = RetrofitClient.getApiService().getObservation(post.getObservationId());
@@ -617,7 +626,11 @@ public class PostActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
                                 if(response.isSuccessful()){
-                                    commentAdapter.notifyDataSetChanged(); // 댓글 추가 변화 인식
+                                    Intent intent = getIntent();
+                                    finish(); //페이지 새로고침
+                                    overridePendingTransition(0, 0);
+                                    startActivity(intent);
+                                    overridePendingTransition(0, 0);
                                 }else{
                                     Log.d("postComment", "게시물 댓글 정보 추가 실패");
                                 }
@@ -628,11 +641,29 @@ public class PostActivity extends AppCompatActivity {
                                 Log.d("postComment", "게시물 댓글 추가 인터넷 오류");
                             }
                         });
-                    }else{
-                        return false;
                     }
+                }else{
+                    return false;
                 }
                 return true;
+            }
+        });
+
+        //댓글 입력 텍스트 변화
+        commentEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String text = commentEditText.getText().toString();
             }
         });
 

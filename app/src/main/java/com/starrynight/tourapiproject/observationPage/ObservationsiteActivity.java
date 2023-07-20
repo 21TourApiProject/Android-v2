@@ -32,6 +32,7 @@ import com.starrynight.tourapiproject.mapPage.BalloonObject;
 import com.starrynight.tourapiproject.observationPage.course.CourseDividerDecorator;
 import com.starrynight.tourapiproject.observationPage.course.ObservationCourseAdapter;
 import com.starrynight.tourapiproject.observationPage.course.ObservationCourseItem;
+import com.starrynight.tourapiproject.observationPage.fee.ExpandableHeightGridView;
 import com.starrynight.tourapiproject.observationPage.fee.ObservationFeeAdapter;
 import com.starrynight.tourapiproject.observationPage.fee.ObservationFeeDecoration;
 import com.starrynight.tourapiproject.observationPage.fee.ObservationFeeItem;
@@ -43,7 +44,8 @@ import com.starrynight.tourapiproject.observationPage.observationPageRetrofit.Re
 import com.starrynight.tourapiproject.postPage.PostActivity;
 import com.starrynight.tourapiproject.postPage.postRetrofit.PostImage;
 import com.starrynight.tourapiproject.postWritePage.PostWriteActivity;
-import com.starrynight.tourapiproject.weatherPage.WeatherActivity;
+import com.starrynight.tourapiproject.weatherPage2.LocationDTO;
+import com.starrynight.tourapiproject.weatherPage2.WeatherActivity2;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -83,6 +85,7 @@ public class ObservationsiteActivity extends AppCompatActivity {
     ImageView relateImage1;
     ImageView relateImage2;
     ImageView relateImage3;
+    LinearLayout to_light_btn;
 
     private ViewPager2 obs_slider;
     private LinearLayout obs_indicator;
@@ -114,11 +117,16 @@ public class ObservationsiteActivity extends AppCompatActivity {
         relateImage2 = findViewById(R.id.relateImage2);
         relateImage3 = findViewById(R.id.relateImage3);
         relateImageFrame = findViewById(R.id.relateImageFrame);
+        to_light_btn = findViewById(R.id.obs_move_light);
 
         Intent intent = getIntent();
 
         Long observationId = (Long) intent.getSerializableExtra("observationId"); //전 페이지에서 받아온 contentId
+        Boolean fromWeather = (Boolean) intent.getSerializableExtra("fromWeather");//날씨에서 왔는지 확인
 
+        if (fromWeather!=null && fromWeather) {
+            to_light_btn.setVisibility(View.GONE);
+        }
         postId = (Long) intent.getSerializableExtra("postId");
 
 
@@ -186,12 +194,14 @@ public class ObservationsiteActivity extends AppCompatActivity {
                     setOutlineButton(); //개요 더보기 설정
                     setLightIcon(observation.getLight());
 
-                    LinearLayout to_light_btn = findViewById(R.id.obs_move_light);
                     to_light_btn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(getApplicationContext(), WeatherActivity.class);
-                            startActivity(intent);
+                            Intent intent = new Intent(getApplicationContext(), WeatherActivity2.class);
+                            LocationDTO locationDTO = new LocationDTO(observation.getLatitude(), observation.getLongitude(), null, observationId, observation.getObservationName());
+                            intent.putExtra("locationDTO", locationDTO);
+                            intent.putExtra("fromObserve", true);
+                            startActivityForResult(intent, 104);
                         }
                     });
 

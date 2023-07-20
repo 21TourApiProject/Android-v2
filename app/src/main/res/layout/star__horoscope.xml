@@ -20,7 +20,8 @@
             android:id="@+id/today_horoscope"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/spoqahansansneobold"
+            android:fontFamily="@font/pretendard_variable"
+            android:textFontWeight="600"
             android:text="탄생별 별자리"
             android:textSize="14sp" />
 

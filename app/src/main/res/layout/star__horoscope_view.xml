@@ -21,7 +21,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
-                android:fontFamily="@font/spoqahansansneobold"
+                android:fontFamily="@font/pretendard_variable"
+                android:textFontWeight="600"
                 android:text="황소자리"
                 android:textColor="@color/point_purple"
                 android:textSize="16sp" />
@@ -78,7 +79,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:fontFamily="@font/spoqahansansneobold"
+                android:fontFamily="@font/pretendard_variable"
+                android:textFontWeight="600"
                 android:text="이달의 별자리 운세"
                 android:textSize="14sp" />
 
@@ -96,7 +98,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="29dp"
-                android:fontFamily="@font/spoqahansansneobold"
+                android:fontFamily="@font/pretendard_variable"
+                android:textFontWeight="600"
                 android:text="별자리 성격"
                 android:textSize="14sp" />
 
@@ -114,7 +117,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="29dp"
-                android:fontFamily="@font/spoqahansansneobold"
+                android:fontFamily="@font/pretendard_variable"
+                android:textFontWeight="600"
                 android:text="별자리 여행취향"
                 android:textSize="14sp" />
 

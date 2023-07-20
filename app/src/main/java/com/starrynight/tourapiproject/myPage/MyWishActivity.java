@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -55,10 +56,8 @@ public class MyWishActivity extends AppCompatActivity {
     Long userId;
 
     TextView myWishOb;
-    TextView myWishTp;
     TextView myWishPost;
     ImageView myWishObLine;
-    ImageView myWishTpLine;
     ImageView myWishPostLine;
     RecyclerView myWishRecyclerview;
 
@@ -75,15 +74,13 @@ public class MyWishActivity extends AppCompatActivity {
         userId = (Long) intent.getSerializableExtra("userId"); //전 페이지에서 받아온 사용자 id
 
         myWishOb = findViewById(R.id.myWishOb);
-        myWishTp = findViewById(R.id.myWishTp);
         myWishPost = findViewById(R.id.myWishPost);
         myWishObLine = findViewById(R.id.myWishObLine);
-        myWishTpLine = findViewById(R.id.myWishTpLine);
         myWishPostLine = findViewById(R.id.myWishPostLine);
         myWishRecyclerview = findViewById(R.id.myWishs);
 
         //뒤로 가기
-        ImageView myWishBack = findViewById(R.id.myWishBack);
+        LinearLayout myWishBack = findViewById(R.id.myWishBack);
         myWishBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,7 +91,6 @@ public class MyWishActivity extends AppCompatActivity {
         LinearLayoutManager myWishLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         myWishRecyclerview.setLayoutManager(myWishLayoutManager);
         obResult = new ArrayList<>();
-        tpResult = new ArrayList<>();
         postResult = new ArrayList<>();
 
 
@@ -143,7 +139,6 @@ public class MyWishActivity extends AppCompatActivity {
 
     public void clickOb(View v) {
         myWishObLine.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.mywish_tapclick));
-        myWishTpLine.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.mywish_tap));
         myWishPostLine.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.mywish_tap));
         Call<List<MyWishObTp>> call = RetrofitClient.getApiService().getMyWishObservation(userId);
         call.enqueue(new Callback<List<MyWishObTp>>() {
@@ -177,7 +172,6 @@ public class MyWishActivity extends AppCompatActivity {
 
     public void clickTp(View v) {
         myWishObLine.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.mywish_tap));
-        myWishTpLine.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.mywish_tapclick));
         myWishPostLine.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.mywish_tap));
         Call<List<MyWishObTp>> call = RetrofitClient.getApiService().getMyWishTouristPoint(userId);
         call.enqueue(new Callback<List<MyWishObTp>>() {
@@ -211,7 +205,6 @@ public class MyWishActivity extends AppCompatActivity {
 
     public void clickPost(View v) {
         myWishObLine.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.mywish_tap));
-        myWishTpLine.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.mywish_tap));
         myWishPostLine.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.mywish_tapclick));
         Call<List<MyPost>> call = RetrofitClient.getApiService().getMyWishPost(userId);
         call.enqueue(new Callback<List<MyPost>>() {

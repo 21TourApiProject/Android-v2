@@ -35,9 +35,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/scdream"
-                    android:text="관측 위치"
-                    android:textSize="16sp" />
+                    android:text="위치 검색"
+                    style="@style/semiBold_single_16" />
             </FrameLayout>
 
         </LinearLayout>
@@ -83,11 +82,10 @@
                             android:layout_weight="1"
                             android:background="@null"
                             android:ems="13"
-                            android:fontFamily="@font/spoqahansansneoregular"
                             android:hint="지역,관측지명을 검색하세요"
                             android:inputType="textPersonName"
-                            android:paddingStart="10dp"
-                            android:textSize="14sp" />
+                            style="@style/medium_single_14"
+                            android:paddingStart="10dp" />
 
                     </LinearLayout>
 
@@ -168,7 +166,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text=" ↑나만의 관측지로 추가해보세요."
-                        android:textSize="14sp"
+                        style="@style/medium_single_14"
                         android:visibility="gone" />
 
                     <androidx.recyclerview.widget.RecyclerView

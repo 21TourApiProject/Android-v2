@@ -26,8 +26,8 @@
             android:background="@drawable/tonight__compass_body"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="49dp"
-            android:layout_marginStart="30dp"
+            android:layout_marginTop="43dp"
+            android:layout_marginStart="19dp"
             app:layout_editor_absoluteX="0dp"
             app:layout_editor_absoluteY="56dp"
             tools:layout_editor_absoluteY="56dp" />
@@ -98,6 +98,7 @@
                 android:id="@+id/starSeekBar"
                 android:layout_width="270dp"
                 android:layout_height="33dp"
+                android:visibility="gone"
                 android:max="360"/>
         </LinearLayout>
 

@@ -3,18 +3,17 @@ package com.starrynight.tourapiproject.searchPage;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
-import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 import com.starrynight.tourapiproject.R;
+import com.starrynight.tourapiproject.mapPage.MapFragment;
 import com.starrynight.tourapiproject.searchPage.filter.BottomFilterFragment;
 import com.starrynight.tourapiproject.searchPage.filter.FilterType;
 import com.starrynight.tourapiproject.searchPage.filter.HashTagItem;
@@ -23,10 +22,7 @@ import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.RetrofitClie
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchKey;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchParams1;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -52,20 +48,29 @@ public class SearchResultActivity extends AppCompatActivity {
     LinearLayout facilityBtn;
     LinearLayout feeBtn;
 
-    ViewPager2 resultViewPager;
-    TabLayout tabLayout;
-    ResultViewPagerAdapter resultViewPagerAdapter;
+    ImageView mapBtn;
+    ImageView listBtn;
+
+    FrameLayout fragment;
+
+    int pagenum=0;
+
+    NestedScrollView scrollView;
+
+    SearchResultTabFragment tabFragment;
+    MapFragment mapFragment;
+
+
 
     List<Long> areaCodeList = new ArrayList<>();
     List<Long> hashTagIdList = new ArrayList<>();
-    List<SearchParams1> observationResult;
-    List<SearchParams1> postResult;
+    List<SearchParams1> observationResult = new ArrayList<>();
+    List<SearchParams1> postResult = new ArrayList<>();
 
     FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println("create실행중");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
 
@@ -75,8 +80,12 @@ public class SearchResultActivity extends AppCompatActivity {
         facilityBtn = findViewById(R.id.sr_facility_btn);
         feeBtn = findViewById(R.id.sr_fee_btn);
 
-        resultViewPager = findViewById(R.id.sr_result_view_pager);
-        tabLayout = findViewById(R.id.sr_tab_layout);
+        mapBtn = findViewById(R.id.sr_map_btn);
+        listBtn = findViewById(R.id.sr_list_btn);
+
+        fragment = findViewById(R.id.sr_fragment);
+
+        scrollView = findViewById(R.id.sr_scroll_view);
 
         ImageView back = findViewById(R.id.sr_back_btn);
         back.setOnClickListener(v -> finish());
@@ -90,7 +99,10 @@ public class SearchResultActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 keyword = query;
-                getObservation();
+                pagenum = 0;
+                observationResult.clear();
+                postResult.clear();
+                getObservation(0);
                 return true;
             }
 
@@ -102,32 +114,42 @@ public class SearchResultActivity extends AppCompatActivity {
 
         getFilterHashtags();
 
-    }
-
-    @Override
-    protected void onResume() {
-        System.out.println("resume실행중");
-        super.onResume();
-        getObservation();
-    }
-
-    private void setViewPager() {
-        resultViewPagerAdapter = new ResultViewPagerAdapter(getSupportFragmentManager(),getLifecycle(),observationResult,postResult);
-        resultViewPager.setAdapter(resultViewPagerAdapter);
-        final List<String> tabElement = Arrays.asList("관측지","게시글");
-
-        //tabLyout와 viewPager 연결
-        new TabLayoutMediator(tabLayout, resultViewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
-            public void onConfigureTab(@NonNull @NotNull TabLayout.Tab tab, int position) {
-//                LinearLayout tabview = new LinearLayout(SearchResultActivity.this);
-//                textView.setText(tabElement.get(position));
-//                tab.setCustomView(textView);
-                tab.setText(tabElement.get(position));
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (v.getChildAt(0).getBottom() <= (v.getHeight() + scrollY)) {
+                    getObservation(++pagenum);
+                }
             }
+        });
+        tabFragment = new SearchResultTabFragment(observationResult, postResult);
+        mapFragment = new MapFragment(observationResult);
 
-        }).attach();
+        fragmentManager.beginTransaction().replace(R.id.sr_fragment,tabFragment).commit();
+
+        getObservation(0);
+
+        mapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mapBtn.setVisibility(View.GONE);
+                listBtn.setVisibility(View.VISIBLE);
+                fragmentManager.beginTransaction().replace(R.id.sr_fragment,mapFragment).commit();
+            }
+        });
+
+        listBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listBtn.setVisibility(View.GONE);
+                mapBtn.setVisibility(View.VISIBLE);
+                fragmentManager.beginTransaction().replace(R.id.sr_fragment,tabFragment).commit();
+            }
+        });
     }
+
+
+
 
     private void setFilter(){
         hashTagIdList.clear();
@@ -144,19 +166,19 @@ public class SearchResultActivity extends AppCompatActivity {
         }
     }
 
-    private void getObservation(){
+    public void getObservation(int page){
 
         setFilter();
 
         Filter filter = new Filter(areaCodeList, hashTagIdList);
         SearchKey searchKey = new SearchKey(filter, keyword);
-        Call<List<SearchParams1>> call = RetrofitClient.getApiService().getObservationWithFilter(searchKey,0);
+        Call<List<SearchParams1>> call = RetrofitClient.getApiService().getObservationWithFilter(searchKey,page);
         call.enqueue(new Callback<List<SearchParams1>>() {
             @Override
             public void onResponse(Call<List<SearchParams1>> call, Response<List<SearchParams1>> response) {
                 if (response.isSuccessful()) {
                     Log.d(TAG, "관측지 검색 성공");
-                    observationResult = response.body();
+                    observationResult.addAll(response.body());
                     getPosts();
 
                 } else {
@@ -184,8 +206,8 @@ public class SearchResultActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Log.d(TAG, "게시물 검색 성공");
                     postResult = response.body();
-                    setViewPager();
-
+                    tabFragment.setData(observationResult,postResult);
+                    mapFragment.setData(observationResult);
                 } else {
                     Log.e(TAG, "게시물 검색 실패");
                 }
@@ -233,7 +255,7 @@ public class SearchResultActivity extends AppCompatActivity {
                                 }
 
                                 setFilterOnClick();
-                                getObservation();
+//                                getObservation(pagenum);
 
                             } else {
                                 Log.d(TAG, "해쉬태그 호출 실패");
@@ -260,7 +282,7 @@ public class SearchResultActivity extends AppCompatActivity {
         if (filterFragment == null) {
             filterFragment = new BottomFilterFragment();
             filterFragment.setCancelable(true);
-            filterFragment.setDataLists(areaList, peopleList, themeList, facilityList, feeList);
+            filterFragment.setDataLists(areaList, peopleList, themeList, facilityList, feeList,keyword);
         }
 
         locationBtn.setOnClickListener(new View.OnClickListener() {
@@ -302,5 +324,10 @@ public class SearchResultActivity extends AppCompatActivity {
                 filterFragment.show(fragmentManager, filterFragment.getTag());
             }
         });
+    }
+
+    public void clearResult(){
+        observationResult.clear();
+        postResult.clear();
     }
 }

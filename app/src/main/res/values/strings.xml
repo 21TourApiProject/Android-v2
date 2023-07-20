@@ -41,4 +41,5 @@
     <string name="termsAndConditionsTestText">이용약관 내용\n이용약관 내용 <b>진하게</b></string>
 
 
+    <string name="searchResult_noResult">‘검색어’에 대한\n 검색 결과가 없어요</string>
 </resources>

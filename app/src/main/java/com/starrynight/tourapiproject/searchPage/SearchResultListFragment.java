@@ -10,11 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchParams1;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchResultListFragment extends Fragment {
@@ -22,8 +24,10 @@ public class SearchResultListFragment extends Fragment {
     RecyclerView recyclerView;
     SearchItemRecyclerAdapter adapter;
     GridLayoutManager layoutManager;
+    LinearLayout noResultLayout;
 
-    List<SearchParams1> list;
+
+    List<SearchParams1> list = new ArrayList<>();
 
     public SearchResultListFragment() {}
 
@@ -42,6 +46,8 @@ public class SearchResultListFragment extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_search_result_list, container, false);
 
+        noResultLayout = v.findViewById(R.id.srf_no_result);
+
         recyclerView = v.findViewById(R.id.srf_recycler);
         recyclerView.addItemDecoration(new SearchItemDecoration(20));
         adapter = new SearchItemRecyclerAdapter(getContext(), list);
@@ -59,12 +65,24 @@ public class SearchResultListFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
+        if (list.isEmpty()) {
+            noResultLayout.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        }
         return v;
     }
 
     public void setData(List<SearchParams1> list) {
         this.list  = list;
-        adapter.notifyDataSetChanged();
+        if (noResultLayout != null) {
+            if (list.isEmpty()) {
+                noResultLayout.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+            } else {
+                noResultLayout.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+            adapter.notifyDataSetChanged();
+        }
     }
 }

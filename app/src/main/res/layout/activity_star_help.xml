@@ -36,7 +36,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/scdream"
+                    android:fontFamily="@font/pretendard_variable"
+                    android:textFontWeight="600"
                     android:text="도움말"
                     android:textSize="17sp"
                     app:layout_constraintBottom_toBottomOf="@+id/star_help_back_btn"
@@ -86,7 +87,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/spoqahansansneobold"
+                            android:fontFamily="@font/pretendard_variable"
+                            android:textFontWeight="600"
                             android:text="별 쉽게 관찰하기"
                             android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="@+id/observe_easily_layout"
@@ -147,7 +149,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/spoqahansansneobold"
+                            android:fontFamily="@font/pretendard_variable"
+                            android:textFontWeight="600"
                             android:text="은하수를 보는 법"
                             android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="@+id/look_milkyWay_layout"
@@ -208,7 +211,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/spoqahansansneobold"
+                            android:fontFamily="@font/pretendard_variable"
+                            android:textFontWeight="600"
                             android:text="별 사진 제대로 찍기"
                             android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="@+id/star_photo_layout"
@@ -269,7 +273,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/spoqahansansneobold"
+                            android:fontFamily="@font/pretendard_variable"
+                            android:textFontWeight="600"
                             android:text="별 관측 준비물"
                             android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="@+id/observe_preparation_layout"
@@ -331,7 +336,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/spoqahansansneobold"
+                            android:fontFamily="@font/pretendard_variable"
+                            android:textFontWeight="600"
                             android:text="별 관측 에티켓"
                             android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="@+id/observe_etiquette_layout"

@@ -34,4 +34,7 @@ public interface SearchPageRetrofitService {
     @GET("area/filter")
     Call<List<HashTagItem>> getAreaFilter();
 
+    @POST("search/observation/count")
+    Call<Long> getSearchCountWithFilter(@Body SearchKey searchKey);
+
 }

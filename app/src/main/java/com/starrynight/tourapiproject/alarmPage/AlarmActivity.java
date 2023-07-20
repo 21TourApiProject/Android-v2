@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -41,23 +42,26 @@ public class AlarmActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
-        List<Notice> finalAlarmList= new ArrayList<>();
+        List<Alarm> finalAlarmList= new ArrayList<>();
+        LinearLayout nothingAlarm = findViewById(R.id.nothingAlarm);
         RecyclerView recyclerView = findViewById(R.id.alarm_recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        Call<List<Notice>> call = RetrofitClient.getApiService().getAllNotice();
-        call.enqueue(new Callback<List<Notice>>() {
+        Call<List<Alarm>> call = RetrofitClient.getApiService().getAllAlarm();
+        call.enqueue(new Callback<List<Alarm>>() {
             @Override
-            public void onResponse(Call<List<Notice>> call, Response<List<Notice>> response) {
+            public void onResponse(Call<List<Alarm>> call, Response<List<Alarm>> response) {
                 if (response.isSuccessful()) {
-                    List<Notice> alarms = response.body();
+                    List<Alarm> alarms = response.body();
+                    Log.d("alarm", "알림 업로드 성공");
                     for (int i=0;i<alarms.size();i++){
-                        if (alarms.get(i).getNoticeTitle().contains("$")){
-                            alarms.get(i).setNoticeTitle(alarms.get(i).getNoticeTitle().substring(1));
+                        if (alarms.get(i).getAlarmTitle().contains("$")){
+                            alarms.get(i).setAlarmTitle(alarms.get(i).getAlarmTitle().substring(1));
                             finalAlarmList.add(alarms.get(i));
+                            Log.d("alarm", "알림 내용"+alarms.get(i).getAlarmContent());
                         }
                     }
-                    NoticeAdapter adapter = new NoticeAdapter(getApplicationContext(),finalAlarmList);
+                    AlarmAdapter adapter = new AlarmAdapter(getApplicationContext(),finalAlarmList);
                     recyclerView.setAdapter(adapter);
                 } else {
                     Log.d("alarm", "알림 업로드 실패");
@@ -65,12 +69,18 @@ public class AlarmActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<Notice>> call, Throwable t) {
+            public void onFailure(Call<List<Alarm>> call, Throwable t) {
                 Log.d("alarm", "알림 인터넷 오류");
             }
         });
 
-        FrameLayout back_btn = findViewById(R.id.alarmBack);
+        if(!finalAlarmList.isEmpty()){
+            nothingAlarm.setVisibility(View.VISIBLE);
+        }else {
+            nothingAlarm.setVisibility(View.GONE);
+        }
+
+        LinearLayout back_btn = findViewById(R.id.alarmBack);
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
