@@ -58,8 +58,9 @@ public class StarSearchActivity extends AppCompatActivity {
 
     androidx.appcompat.widget.SearchView constSearch;
     ListView searchList;
-    LinearLayout searchWordLayout;
-    ImageView backBtn;
+    LinearLayout backBtn,searchWordLayout;
+    ImageView deleteBtn;
+
     List<Long> hashTagIdList;
     SearchLoadingDialog dialog;
 
@@ -90,6 +91,7 @@ public class StarSearchActivity extends AppCompatActivity {
         constSearch = findViewById(R.id.edit_search);
         searchList = findViewById(R.id.const_list_view);
         searchWordLayout = findViewById(R.id.search_word_layout);
+        deleteBtn = findViewById(R.id.cancel_btn);
 
         constSearch.setIconifiedByDefault(false);
         constSearch.setQueryHint("궁금한 별자리를 입력해보세요");
@@ -98,7 +100,7 @@ public class StarSearchActivity extends AppCompatActivity {
         constRecycler = findViewById(R.id.star_search_list);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
         constRecycler.setLayoutManager(gridLayoutManager);
-        constRecycler.addItemDecoration(new StarRecyclerViewWidth(0,40));
+        constRecycler.addItemDecoration(new StarRecyclerViewWidth(0,35));
         constAdapter = new StarViewAdpater2();
         constRecycler.setAdapter(constAdapter);
 
@@ -141,6 +143,15 @@ public class StarSearchActivity extends AppCompatActivity {
                 }
             });
         }
+
+        //x버튼 클릭시 searchView 비우기
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                constSearch.setQuery("",false);
+                constSearch.clearFocus();
+            }
+        });
 
         // item 클릭 시 해당 아이템 constId 넘겨주기
       constAdapter.setOnItemClickListener(new OnStarItemClickListener2() {

@@ -80,7 +80,7 @@ public class AlarmActivity extends AppCompatActivity {
             nothingAlarm.setVisibility(View.GONE);
         }
 
-        FrameLayout back_btn = findViewById(R.id.alarmBack);
+        LinearLayout back_btn = findViewById(R.id.alarmBack);
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

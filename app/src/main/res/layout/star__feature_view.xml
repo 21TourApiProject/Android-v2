@@ -12,10 +12,10 @@
         android:id="@+id/starhashtagtext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/pretendard_variable"
+        style="@style/medium_single_14"
         android:text="해시태그"
         android:textColor="@color/gray_500"
-        android:textFontWeight="500" />
+         />
 
     <ImageView
         android:id="@+id/feature_image"

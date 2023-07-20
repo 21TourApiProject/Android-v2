@@ -222,7 +222,7 @@ public class StarActivity extends AppCompatActivity {
         });
 
         // 뒤로 가기 버튼 이벤트
-        ImageView backBtn = findViewById(R.id.detail_star_back_btn);
+        LinearLayout backBtn = findViewById(R.id.detail_star_back_btn);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

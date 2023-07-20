@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,7 +40,7 @@ public class MyCommentActivity extends AppCompatActivity {
         userId = (Long) intent.getSerializableExtra("userId"); //전 페이지에서 받아온 사용자 id
 
         //뒤로 가기
-        ImageView myCommentBack = findViewById(R.id.myCommentBack);
+        LinearLayout myCommentBack = findViewById(R.id.myCommentBack);
         myCommentBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
