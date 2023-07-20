@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.starrynight.tourapiproject.alarmPage.AlarmActivity;
 import com.starrynight.tourapiproject.postPage.postRetrofit.MainPost;
 import com.starrynight.tourapiproject.postPage.postRetrofit.MainPost_adapter;
@@ -88,6 +89,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     MainPost_adapter adapter;
     ProgressBar progressBar;
     LinearLayout weatherLocationSearch;
+    FloatingActionButton postwritebtn;
 
     private static final String TAG = "Main Fragment";
     @SuppressLint("SimpleDateFormat")
@@ -263,6 +265,16 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         // 게시물 작성 페이지로 넘어가는 이벤트
         Button postWrite = (Button) v.findViewById(R.id.postWrite);
         postWrite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), PostWriteActivity.class);
+                startActivityForResult(intent, 101);
+            }
+        });
+
+        //플로팅 버튼으로 게시글 작성 페이지로 넘어가기
+        postwritebtn = (FloatingActionButton) v.findViewById(R.id.floatingActionButton);
+        postwritebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), PostWriteActivity.class);

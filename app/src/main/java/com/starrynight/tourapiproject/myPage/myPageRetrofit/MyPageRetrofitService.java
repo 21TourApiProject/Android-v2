@@ -4,6 +4,7 @@ import com.starrynight.tourapiproject.alarmPage.Alarm;
 import com.starrynight.tourapiproject.myPage.myPost.MyPost3;
 import com.starrynight.tourapiproject.myPage.myWish.MyWish;
 import com.starrynight.tourapiproject.myPage.myWish.obtp.MyWishObTp;
+import com.starrynight.tourapiproject.myPage.myWish.post.MyComment;
 import com.starrynight.tourapiproject.myPage.myWish.post.MyPost;
 import com.starrynight.tourapiproject.myPage.notice.Notice;
 
@@ -98,4 +99,7 @@ public interface MyPageRetrofitService {
 
     @GET("notice/all")
     Call<List<Notice>> getAllNotice();
+
+    @GET("myCommentList/{userId}")
+    Call<List<MyComment>> getMyComments(@Path("userId") Long userId);
 }

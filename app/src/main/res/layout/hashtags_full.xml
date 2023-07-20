@@ -15,9 +15,8 @@
         android:layout_height="wrap_content"
         android:minWidth="0dp"
         android:minHeight="0dp"
-        android:fontFamily="@font/pretendard_variable"
+        style="@style/medium_single_14"
         android:text="#해쉬태그"
-        android:textColor="@color/gray_500"
-        android:textSize="14sp" />
+        android:textColor="@color/gray_500" />
 
 </LinearLayout>

@@ -46,4 +46,8 @@ public interface StarPageRetrofitService {
 
     @GET("starHashTag/{constId}")
     Call<List<StarHashTag>> getStarHashTags(@Path("constId") Long constId);
+
+    @GET("starFeatures/")
+    Call<List<StarFeature>> getAllStarFeature();
+
 }

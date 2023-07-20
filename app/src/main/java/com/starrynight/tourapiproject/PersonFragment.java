@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.starrynight.tourapiproject.myPage.ChangeProfileActivity;
+import com.starrynight.tourapiproject.myPage.MyCommentActivity;
 import com.starrynight.tourapiproject.myPage.MyHashTagAdapter;
 import com.starrynight.tourapiproject.myPage.MyPostActivity;
 import com.starrynight.tourapiproject.myPage.MyWishActivity;
@@ -30,6 +31,7 @@ import com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.myPage.myPageRetrofit.User2;
 import com.starrynight.tourapiproject.myPage.myPost.MyPost3;
 import com.starrynight.tourapiproject.myPage.myWish.MyWish;
+import com.starrynight.tourapiproject.myPage.myWish.post.MyCommentAdapter;
 import com.starrynight.tourapiproject.postWritePage.PostWriteActivity;
 import com.starrynight.tourapiproject.signUpPage.SelectMyHashTagActivity;
 
@@ -351,6 +353,17 @@ public class PersonFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MyPostActivity.class);
+                intent.putExtra("userId", userId);
+                startActivityForResult(intent, HAVE_TO_REFRESH);
+            }
+        });
+
+        //내가 쓴 댓글 페이지로 이동
+        LinearLayout myCommentBtn = v.findViewById(R.id.myCommentLinearLayout);
+        myCommentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MyCommentActivity.class);
                 intent.putExtra("userId", userId);
                 startActivityForResult(intent, HAVE_TO_REFRESH);
             }

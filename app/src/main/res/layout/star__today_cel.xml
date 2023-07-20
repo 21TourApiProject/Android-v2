@@ -11,9 +11,10 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingVertical="9dp">
+            android:paddingTop="24dp"
+            android:paddingBottom="12dp">
 
             <TextView
                 android:id="@+id/monthStarText"
@@ -21,9 +22,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="20dp"
-                android:fontFamily="@font/spoqahansansneobold"
-                android:text="이번 달에 볼 수 있는 별자리"
-                android:textSize="17sp" />
+                style="@style/semiBold_single_16"
+                android:text="6"
+                 />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                style="@style/semiBold_single_16"
+                android:text="월에 볼 수 있는 별자리" />
 
             <View
                 android:id="@+id/view"
@@ -43,15 +52,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="전체 별자리"
-                    android:textSize="14sp" />
+                    style="@style/semiBold_single_14"
+                    android:textColor="@color/gray_500"
+                    />
 
                 <ImageView
                     android:id="@+id/imageView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="7dp"
+                    android:layout_height="12dp"
                     android:layout_gravity="center"
                     android:layout_marginLeft="7.5sp"
-                    app:srcCompat="@drawable/tonight__right_arrow" />
+                    app:srcCompat="@drawable/move_text" />
             </LinearLayout>
 
         </LinearLayout>
@@ -61,9 +72,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp"
             android:paddingStart="20dp"
-            android:paddingBottom="16dp">
+            android:paddingBottom="20dp">
 
         </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>

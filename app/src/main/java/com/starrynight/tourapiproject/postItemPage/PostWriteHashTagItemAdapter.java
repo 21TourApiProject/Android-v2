@@ -62,7 +62,7 @@ public class PostWriteHashTagItemAdapter extends RecyclerView.Adapter<PostWriteH
     public void onBindViewHolder(@NonNull PostWriteHashTagItemAdapter.ViewHolder viewHolder, int position) {
         PostWriteHashTagItem2 item = items.get(position);
         viewHolder.setItem(item);
-        viewHolder.postHashTagName.setTextColor(ContextCompat.getColor(viewHolder.itemView.getContext(),R.color.point_blue));
+        viewHolder.postHashTagName.setTextColor(ContextCompat.getColor(viewHolder.itemView.getContext(),R.color.gray_500));
     }
 
     @Override

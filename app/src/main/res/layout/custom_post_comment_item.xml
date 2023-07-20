@@ -26,23 +26,30 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
-            android:fontFamily="@font/spoqahansansneobold"
+            style="@style/semiBold_single_14"
+            android:textColor="@color/gray_500"
             android:text="닉네임"
-            android:textSize="12sp" />
+            />
 
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <Button
+        <LinearLayout
             android:id="@+id/comment_option"
-            android:layout_width="5dp"
-            android:layout_height="12dp"
-            android:background="@drawable/comment__option"
-            android:layout_marginEnd="23dp"
-            android:layout_gravity="center"
-            />
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <Button
+                android:layout_width="16dp"
+                android:layout_height="4dp"
+                android:background="@drawable/comment_option"
+                android:layout_marginEnd="23dp"
+                android:layout_gravity="center"
+                />
+        </LinearLayout>
+
+
     </LinearLayout>
 
     <TextView
@@ -51,6 +58,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="44dp"
         android:layout_marginTop="4dp"
+        style="@style/semiBold_multi_14"
+        android:textColor="@color/gray_300"
         android:text="댓글" />
 
     <LinearLayout
@@ -66,6 +75,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
             android:layout_marginEnd="16dp"
+            style="@style/medium_single_12"
+            android:textColor="@color/gray_500"
             android:text="시간" />
 
         <TextView
