@@ -17,6 +17,11 @@
     <style name="MySearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="searchIcon">@null</item>
         <item name="queryBackground">@null</item>
+        <item name="android:fontFamily">@font/pretendard_variable</item>
+        <item name="android:textSize">14sp</item>
+        <item name="fontStyle">normal</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="lineHeight">17.5sp</item>
     </style>
 
     <style name="StarryNight" parent="Theme.AppCompat.NoActionBar">

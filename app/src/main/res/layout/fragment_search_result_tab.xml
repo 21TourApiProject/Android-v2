@@ -20,14 +20,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="4dp"
-            android:text="관측지" />
+            android:text="관측지"
+            style="@style/semiBold_single_16"/>
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/sr_tab_review"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
-            android:text="게시글" />
+            android:text="게시글"
+            style="@style/semiBold_single_16"/>
 
     </com.google.android.material.tabs.TabLayout>
 
