@@ -30,18 +30,18 @@ import com.starrynight.tourapiproject.mapPage.MapFragment;
 import com.starrynight.tourapiproject.starPage.TonightSkyFragment;
 
 import java.util.ArrayList;
-/**
-* @className : MainActivity
-* @description : 메인 페이지 입니다.
-* @modification : 2022-09-02 (jinhyeok) 주석 수정
-* @author : jinhyeok
-* @date : 2022-09-02
-* @version : 1.0
-   ====개정이력(Modification Information)====
-  수정일        수정자        수정내용
-   -----------------------------------------
-   2022-09-02      jinhyeok       주석 수정
 
+/**
+ * @author : jinhyeok
+ * @version : 1.0
+ * ====개정이력(Modification Information)====
+ * 수정일        수정자        수정내용
+ * -----------------------------------------
+ * 2022-09-02      jinhyeok       주석 수정
+ * @className : MainActivity
+ * @description : 메인 페이지 입니다.
+ * @modification : 2022-09-02 (jinhyeok) 주석 수정
+ * @date : 2022-09-02
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -71,10 +71,10 @@ public class MainActivity extends AppCompatActivity {
 
         mContext = this;
 
-//        mainFragment = new MainFragment();
-//        searchFragment = new SearchFragment();
-//        tonightSkyFragment = new TonightSkyFragment();
-//        personFragment = new PersonFragment();
+        mainFragment = new MainFragment();
+        searchFragment = new SearchFragment();
+        tonightSkyFragment = new TonightSkyFragment();
+        personFragment = new PersonFragment();
 
         //권한 설정
         int permission = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -96,10 +96,7 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(MainActivity.this, PERMISSION, PERMISSIONS_REQUEST_CODE);
         }
         //메인 페이지 초기화 상태
-        if (mainFragment == null) {
-            mainFragment = new MainFragment();
-            getSupportFragmentManager().beginTransaction().add(R.id.main_view, mainFragment).commit();
-        }
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_view, mainFragment).commitAllowingStateLoss();
 
         bottomNavigationView = findViewById(R.id.bottom_nav_view);
 
@@ -111,115 +108,34 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navigation_main:
-                        if(bottomNavigationView.getSelectedItemId() == R.id.navigation_main) {
-                            mainFragment.toTheTop();
-                        }else{
-                            if (mainFragment == null) {
-                                mainFragment = new MainFragment();
-                                getSupportFragmentManager().beginTransaction().add(R.id.main_view, mainFragment).commit();
-                            }
-                            if (mainFragment != null)
-                                getSupportFragmentManager().beginTransaction().show(mainFragment).commit();
-                            if (searchFragment != null)
-                                getSupportFragmentManager().beginTransaction().hide(searchFragment).commit();
-                            if (tonightSkyFragment != null)
-                                getSupportFragmentManager().beginTransaction().hide(tonightSkyFragment).commit();
-                            if (personFragment != null)
-                                getSupportFragmentManager().beginTransaction().hide(personFragment).commit();
-                            showBottom();
-                            removeFragments();
+                        if (mainFragment == null) {
+                            mainFragment = new MainFragment();
                         }
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_view, mainFragment).commitAllowingStateLoss();
                         return true;
                     case R.id.navigation_observation:
                         if (searchFragment == null) {
                             searchFragment = new SearchFragment();
-                            getSupportFragmentManager().beginTransaction().add(R.id.main_view, searchFragment).commit();
                         }
-                        if (mainFragment != null)
-                            getSupportFragmentManager().beginTransaction().hide(mainFragment).commit();
-                        if (searchFragment != null)
-                            getSupportFragmentManager().beginTransaction().show(searchFragment).commit();
-                        if (tonightSkyFragment != null)
-                            getSupportFragmentManager().beginTransaction().hide(tonightSkyFragment).commit();
-                        if (personFragment != null)
-                            getSupportFragmentManager().beginTransaction().hide(personFragment).commit();
-                        removeFragments();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_view, searchFragment).commitAllowingStateLoss();
                         return true;
 
                     case R.id.navigation_star:
                         if (tonightSkyFragment == null) {
                             tonightSkyFragment = new TonightSkyFragment();
-                            getSupportFragmentManager().beginTransaction().add(R.id.main_view, tonightSkyFragment).commit();
                         }
-                        if (mainFragment != null)
-                            getSupportFragmentManager().beginTransaction().hide(mainFragment).commit();
-                        if (searchFragment != null)
-                            getSupportFragmentManager().beginTransaction().hide(searchFragment).commit();
-                        if (tonightSkyFragment != null)
-                            getSupportFragmentManager().beginTransaction().show(tonightSkyFragment).commit();
-                        if (personFragment != null)
-                            getSupportFragmentManager().beginTransaction().hide(personFragment).commit();
-
-                        showBottom();
-                        removeFragments();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_view, tonightSkyFragment).commitAllowingStateLoss();
                         return true;
                     case R.id.navigation_person:
                         if (personFragment == null) {
                             personFragment = new PersonFragment();
-                            getSupportFragmentManager().beginTransaction().add(R.id.main_view, personFragment).commit();
                         }
-                        getSupportFragmentManager().beginTransaction().detach(personFragment).attach(personFragment).commit();
-                        if (mainFragment != null)
-                            getSupportFragmentManager().beginTransaction().hide(mainFragment).commit();
-                        if (searchFragment != null)
-                            getSupportFragmentManager().beginTransaction().hide(searchFragment).commit();
-                        if (tonightSkyFragment != null)
-                            getSupportFragmentManager().beginTransaction().hide(tonightSkyFragment).commit();
-                        if (personFragment != null)
-                            getSupportFragmentManager().beginTransaction().show(personFragment).commit();
-                        removeFragments();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_view, personFragment).commitAllowingStateLoss();
                         return true;
                 }
                 return false;
             }
         });
-        if (getIntent() != null) {
-            Intent intent = getIntent();
-            Activities fromWhere = (Activities) intent.getSerializableExtra("FromWhere");
-            if (fromWhere == Activities.OBSERVATION) {
-                Bundle bundle = new Bundle(); // 번들을 통해 값 전달
-                bundle.putSerializable("FromWhere", Activities.OBSERVATION);//번들에 넘길 값 저장
-                bundle.putSerializable("BalloonObject", intent.getSerializableExtra("BalloonObject"));    //지도에 필요한 내용
-                bottomNavigationView.setSelectedItemId(R.id.navigation_observation);
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                Fragment mapfragment = new MapFragment();
-                mapfragment.setArguments(bundle);
-                transaction.hide(searchFragment);
-                transaction.add(R.id.main_view, mapfragment);
-                map = mapfragment;
-                transaction.commit();
-            } else if (fromWhere == Activities.TOURISTPOINT) {
-                Bundle bundle = new Bundle(); // 번들을 통해 값 전달
-                bundle.putSerializable("FromWhere", Activities.TOURISTPOINT);//번들에 넘길 값 저장
-                bundle.putSerializable("BalloonObject", intent.getSerializableExtra("BalloonObject"));    //지도에 필요한 내용
-                bottomNavigationView.setSelectedItemId(R.id.navigation_observation);
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                Fragment mapfragment = new MapFragment();
-                mapfragment.setArguments(bundle);
-                transaction.hide(searchFragment);
-                transaction.add(R.id.main_view, mapfragment);
-                map = mapfragment;
-                transaction.commit();
-            } else if (fromWhere == Activities.POST) {
-                bottomNavigationView.setSelectedItemId(R.id.navigation_observation);
-                getSupportFragmentManager().beginTransaction().hide(searchFragment).commit();
-                Bundle bundle = new Bundle();
-                bundle.putInt("type", 1);
-                bundle.putSerializable("keyword", intent.getSerializableExtra("keyword"));
-                bundle.putIntegerArrayList("hashTag", (ArrayList<Integer>) intent.getSerializableExtra("hashTag"));
-                bundle.putIntegerArrayList("area", (ArrayList<Integer>) intent.getSerializableExtra("area"));
-            }
-        }
     }
 
     public void changeFragment(Fragment f) {
@@ -228,38 +144,13 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.add(R.id.main_view, f);
         fragmentTransaction.commit();
     }
+
     //뒤로가기 버튼 클릭 시
     @Override
     public void onBackPressed() {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_view);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if (searchResult != null) {
-            System.out.println("1번이니");
-            if (fragmentManager.getBackStackEntryCount() > 0) {
-                fragmentManager.beginTransaction().remove(fragment).commit();
-                bottomNavigationView.setSelectedItemId(R.id.navigation_observation);
-            } else {
-                super.onBackPressed();
-            }
-//                fragmentManager.popBackStackImmediate("result", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        } else if (filter!=null ) {
-            System.out.println("2번이니");
-            fragmentManager.beginTransaction().hide(fragment).commit();
-            if (fragmentManager.getBackStackEntryCount() > 0) {
-                fragmentManager.popBackStack();
-            } else {
-                super.onBackPressed();
-            }
-            showBottom();
-        } else if (fragment instanceof MapFragment) {
-            fragmentManager.beginTransaction().remove(fragment).commit();
-            if (fragmentManager.getBackStackEntryCount() > 0) {
-                fragmentManager.popBackStack();
-                map = null;
-            } else {
-                super.onBackPressed();
-            }
-        } else if (bottomNavigationView.getSelectedItemId() == R.id.navigation_star) {
+        if (bottomNavigationView.getSelectedItemId() == R.id.navigation_star) {
             if (tonightSkyFragment != null)
                 getSupportFragmentManager().beginTransaction().hide(tonightSkyFragment).commit();
             bottomNavigationView.setSelectedItemId(R.id.navigation_main);
@@ -279,18 +170,8 @@ public class MainActivity extends AppCompatActivity {
 //                finish();
             }
         } else if (bottomNavigationView.getSelectedItemId() == R.id.navigation_person || bottomNavigationView.getSelectedItemId() == R.id.navigation_observation) {
-            System.out.println("3번이니");
-            if (map != null || searchResult != null) {
-                if (fragmentManager.getBackStackEntryCount() > 0) {
-                    bottomNavigationView.setSelectedItemId(R.id.navigation_observation);
-                } else {
-                    finish();
-                }
-            } else {
-                bottomNavigationView.setSelectedItemId(R.id.navigation_main);
-            }
+            bottomNavigationView.setSelectedItemId(R.id.navigation_main);
         } else {
-            System.out.println("4번이니");
             if (fragmentManager.getBackStackEntryCount() > 0) {
                 fragmentManager.popBackStack();
             } else {
@@ -382,10 +263,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-         * TODO 남아있는 프래그먼트를 전부 없앰
-         * @param   -
-         * @return
-         * @throws
+     * TODO 남아있는 프래그먼트를 전부 없앰
+     *
+     * @param -
+     * @return
+     * @throws
      */
     private void removeFragments() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
