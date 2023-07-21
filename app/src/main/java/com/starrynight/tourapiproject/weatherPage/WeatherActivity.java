@@ -146,15 +146,15 @@ public class WeatherActivity extends AppCompatActivity {
             currentPosition.setText(locationDTO.getLocation());
         }
         if (Objects.nonNull(observationId)) {
+            if (Objects.nonNull(fromObserve) && fromObserve) {
+                observatory_arrow.setVisibility(View.GONE);
+            }
             observatory.setVisibility(View.VISIBLE);
             observatoryName.setText(locationDTO.getLocation());
             observatory.setOnClickListener(v -> {
                 Intent observationIntent = new Intent(getApplicationContext(), ObservationsiteActivity.class);
                 observationIntent.putExtra("observationId", observationId);
-                if (Objects.nonNull(fromObserve) && fromObserve) {
-                    observatory_arrow.setVisibility(View.GONE);
-                    observationIntent.putExtra("fromWeather", true);
-                }
+                observationIntent.putExtra("fromWeather", true);
                 startActivity(observationIntent);
             });
         }
