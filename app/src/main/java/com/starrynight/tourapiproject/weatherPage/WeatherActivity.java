@@ -44,8 +44,6 @@ public class WeatherActivity extends AppCompatActivity {
     SimpleDateFormat MM_dd_EE = new SimpleDateFormat("MM. dd(EE)");
     @SuppressLint("SimpleDateFormat")
     SimpleDateFormat yyyy_MM_dd = new SimpleDateFormat("yyyy-MM-dd");
-    @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat yyyy_MM_dd_hh_mm = new SimpleDateFormat("yyyy-MM-dd:HH:mm");
 
     private ImageView lightPollutionLevel;
     private TextView todayComment1;
@@ -96,6 +94,7 @@ public class WeatherActivity extends AppCompatActivity {
         TextView currentPosition = findViewById(R.id.current_position); // 양천읍
         View observatory = findViewById(R.id.observatory);
         TextView observatoryName = findViewById(R.id.observatory_name); // 의정부과학도서관
+        ImageView observatory_arrow = findViewById(R.id.observatory_arrow); // 화살표
         lightPollutionLevel = findViewById(R.id.light_pollution_level);
 
         todayComment1 = findViewById(R.id.today_comment_1);
@@ -152,7 +151,10 @@ public class WeatherActivity extends AppCompatActivity {
             observatory.setOnClickListener(v -> {
                 Intent observationIntent = new Intent(getApplicationContext(), ObservationsiteActivity.class);
                 observationIntent.putExtra("observationId", observationId);
-                if (Objects.nonNull(fromObserve) && fromObserve) observationIntent.putExtra("fromWeather", true);
+                if (Objects.nonNull(fromObserve) && fromObserve) {
+                    observatory_arrow.setVisibility(View.GONE);
+                    observationIntent.putExtra("fromWeather", true);
+                }
                 startActivity(observationIntent);
             });
         }
