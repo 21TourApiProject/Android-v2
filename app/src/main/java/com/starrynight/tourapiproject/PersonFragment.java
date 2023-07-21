@@ -202,10 +202,10 @@ public class PersonFragment extends Fragment {
         changeMyHashTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SelectMyHashTagActivity.class);
-                intent.putExtra("userId", userId);
-                intent.putExtra("hashtag", myHashTagResult);
-                startActivityForResult(intent, HAVE_TO_REFRESH);
+//                Intent intent = new Intent(getActivity(), SelectMyHashTagActivity.class);
+//                intent.putExtra("userId", userId);
+//                intent.putExtra("hashtag", myHashTagResult);
+//                startActivityForResult(intent, HAVE_TO_REFRESH);
             }
         });
 

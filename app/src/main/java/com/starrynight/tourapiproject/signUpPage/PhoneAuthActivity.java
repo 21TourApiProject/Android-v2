@@ -31,6 +31,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.starrynight.tourapiproject.MainActivity;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.signUpPage.signUpRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.signUpPage.signUpRetrofit.UserParams;
@@ -335,9 +336,13 @@ public class PhoneAuthActivity extends AppCompatActivity implements
                                         signOut();
 
                                         //선호 해시태그 선택 창으로 전환
-                                        Intent intent = new Intent(PhoneAuthActivity.this, SelectMyHashTagActivity.class);
-                                        intent.putExtra("email", userParams.getEmail());
-                                        startActivityForResult(intent, SELECT_HASH_TAG);
+//                                        Intent intent = new Intent(PhoneAuthActivity.this, SelectMyHashTagActivity.class);
+//                                        intent.putExtra("email", userParams.getEmail());
+//                                        startActivityForResult(intent, SELECT_HASH_TAG);
+
+                                        Intent intent = new Intent(PhoneAuthActivity.this, MainActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP); //액티비티 스택제거
+                                        startActivity(intent);
                                     } else {
                                         Log.e(TAG, "회원가입 실패");
                                     }
