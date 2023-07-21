@@ -260,7 +260,6 @@ public class ObservationsiteActivity extends AppCompatActivity {
                             if (response.isSuccessful()) {
                                 Log.d(TAG, "관측지 해쉬태그 호출 성공");
                                 observeHashTags = response.body();
-                                balloonObject.setHashtags(observeHashTags); //지도에 넣을 bundle
                                 for (String p : observeHashTags) {
                                     RecyclerHashTagItem item = new RecyclerHashTagItem();
                                     item.setHashtagName(p);
@@ -494,7 +493,6 @@ public class ObservationsiteActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         hashTagsrecyclerView.setLayoutManager(linearLayoutManager);
         hashTagsrecyclerView.addItemDecoration(hashtagDecoration);
-        recyclerHashTagAdapter = new RecyclerHashTagAdapter();
         recyclerHashTagAdapter = new RecyclerHashTagAdapter();
         hashTagsrecyclerView.setAdapter(recyclerHashTagAdapter);
     }
@@ -781,7 +779,8 @@ public class ObservationsiteActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     try {
-                        Intent homepageurl = new Intent(Intent.ACTION_VIEW, Uri.parse("https://"+observation.getLink()));
+                        Log.i(TAG,"Connect to " + observation.getLink());
+                        Intent homepageurl = new Intent(Intent.ACTION_VIEW, Uri.parse(observation.getLink()));
                         startActivity(homepageurl);
                     } catch (Exception e) {
                         Log.e(TAG, "홈페이지 이동 불가");
@@ -813,7 +812,7 @@ public class ObservationsiteActivity extends AppCompatActivity {
 
     private void setReserve(boolean is_nature){
         TextView reserve_btn = findViewById(R.id.obs_reserve);
-        if(is_nature){
+        if(is_nature || observation.getReserve()==null){
             //홈페이지 없는 경우
             reserve_btn.setText("입장 예약이 불가능해요.");
             reserve_btn.setBackground(getDrawable(R.drawable.observation__reserve_none));
@@ -825,7 +824,8 @@ public class ObservationsiteActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     try {
-                        Intent homepageurl = new Intent(Intent.ACTION_VIEW, Uri.parse("https://"+observation.getReserve()));
+                        Log.i(TAG,"Connect to " + observation.getReserve());
+                        Intent homepageurl = new Intent(Intent.ACTION_VIEW, Uri.parse(observation.getReserve()));
                         startActivity(homepageurl);
                     } catch (Exception e) {
                         Log.e(TAG, "홈페이지 이동 불가");

@@ -29,8 +29,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="지역"
-                    android:textFontWeight="600"
-                    android:textSize="18sp" />
+                    style="@style/semiBold_single_18"/>
 
                 <ImageView
                     android:id="@+id/filter_location_dot"
@@ -47,8 +46,7 @@
                     android:layout_marginLeft="8dp"
                     android:text="동행"
                     android:textColor="@color/gray_500"
-                    android:textFontWeight="600"
-                    android:textSize="18sp" />
+                    style="@style/semiBold_single_18" />
 
                 <ImageView
                     android:id="@+id/filter_people_dot"
@@ -64,8 +62,7 @@
                     android:layout_marginLeft="8dp"
                     android:text="테마"
                     android:textColor="@color/gray_500"
-                    android:textFontWeight="600"
-                    android:textSize="18sp" />
+                    style="@style/semiBold_single_18"/>
 
                 <ImageView
                     android:id="@+id/filter_theme_dot"
@@ -81,8 +78,7 @@
                     android:layout_marginLeft="8dp"
                     android:text="시설"
                     android:textColor="@color/gray_500"
-                    android:textFontWeight="600"
-                    android:textSize="18sp" />
+                    style="@style/semiBold_single_18"/>
 
                 <ImageView
                     android:id="@+id/filter_facility_dot"
@@ -98,8 +94,7 @@
                     android:layout_marginLeft="8dp"
                     android:text="요금"
                     android:textColor="@color/gray_500"
-                    android:textFontWeight="600"
-                    android:textSize="18sp" />
+                    style="@style/semiBold_single_18"/>
 
                 <ImageView
                     android:id="@+id/filter_fee_dot"
@@ -160,8 +155,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="초기화"
-                android:textSize="16sp"
-                android:textFontWeight="600"/>
+                style="@style/semiBold_single_16"/>
 
         </LinearLayout>
 
@@ -173,8 +167,7 @@
             android:layout_marginLeft="20dp"
             android:background="@drawable/search__filter_result_background"
             android:layout_weight="1"
-            android:textSize="16sp"
-            android:textFontWeight="600"
+            style="@style/semiBold_single_16"
             android:text="NN개의 결과보기"/>
 
     </LinearLayout>

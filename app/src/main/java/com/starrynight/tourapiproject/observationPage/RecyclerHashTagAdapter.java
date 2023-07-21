@@ -50,7 +50,7 @@ public class RecyclerHashTagAdapter extends RecyclerView.Adapter<RecyclerHashTag
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.hashtags_full, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.observation__hashtags_full, parent, false);
         return new ViewHolder(view);
     }
 

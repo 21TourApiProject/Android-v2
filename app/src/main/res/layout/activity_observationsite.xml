@@ -79,8 +79,7 @@
                             android:layout_gravity="center_horizontal"
                             android:gravity="center"
                             android:text="관측지 이름"
-                            android:textFontWeight="600"
-                            android:textSize="20sp" />
+                            style="@style/semiBold_single_20" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -105,9 +104,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="관측적합도"
-                                    android:textFontWeight="600"
-                                    android:textColor="@color/gray_500"
-                                    android:textSize="14sp" />
+                                    style="@style/semiBold_single_14"
+                                    android:textColor="@color/gray_500" />
 
                                 <ImageView
                                     android:layout_width="wrap_content"
@@ -144,10 +142,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="전화문의"
-                                android:textFontWeight="600"
                                 android:layout_marginLeft="4dp"
                                 android:textColor="@color/gray_500"
-                                android:textSize="14sp" />
+                                style="@style/semiBold_single_14"/>
 
                         </LinearLayout>
 
@@ -175,10 +172,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="홈페이지"
-                                android:textFontWeight="600"
                                 android:textColor="@color/gray_500"
                                 android:layout_marginLeft="4dp"
-                                android:textSize="14sp" />
+                                style="@style/semiBold_single_14" />
 
                         </LinearLayout>
                     </LinearLayout>
@@ -210,7 +206,7 @@
                     android:lineSpacingExtra="3sp"
                     android:maxLines="4"
                     android:text="개요"
-                    android:textSize="16sp"
+                    style="@style/medium_multi_16"
                     android:layout_marginHorizontal="20dp"
                     android:textColor="@color/gray_500"/>
 
@@ -277,8 +273,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="정보"
-                                android:textFontWeight="600"
-                                android:layout_marginTop="16dp"
+                                style="@style/semiBold_single_16"
                                 android:layout_gravity="center_horizontal"/>
 
                             <TextView
@@ -300,14 +295,13 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="16dp" >
+                                android:layout_gravity="center">
 
                                 <TextView
                                     android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
+                                    android:layout_height="wrap_content"
                                     android:text="후기"
-                                    android:textFontWeight="600"
+                                    style="@style/semiBold_single_16"
                                     android:textColor="@color/gray_500" />
 
                                 <ImageView
@@ -475,7 +469,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="더보기"
                                 android:textColor="@color/gray_500"
-                                android:textSize="14sp"
+                                style="@style/semiBold_single_14"
                                 android:layout_marginRight="4.5dp"/>
                             <ImageView
                                 android:id="@+id/obs_fee_more_img"
@@ -563,15 +557,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="추천코스"
-                        android:layout_weight="600"
-                        android:textSize="18sp" />
+                        style="@style/semiBold_single_16" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="by 별밤에디터"
                         android:textColor="@color/point_blue"
-                        android:textSize="14dp"
+                        style="@style/medium_single_14"
                         android:layout_marginLeft="8dp"/>
 
                 </LinearLayout>
@@ -584,7 +577,7 @@
                     android:textColor="@color/gray_300"
                     android:layout_marginTop="14dp"
                     android:text="1번장소 > 2번장소 > 3번장소 > 4번장소"
-                    android:textSize="16sp" />
+                    style="@style/medium_multi_16"/>
                 <ImageView
                     android:id="@+id/obs_course_image"
                     android:visibility="gone"
@@ -643,7 +636,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="정보"
-                                android:textFontWeight="600"
+                                style="@style/semiBold_single_16"
                                 android:layout_marginTop="16dp"
                                 android:textColor="@color/gray_500"
                                 android:layout_gravity="center_horizontal"/>
@@ -673,7 +666,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textFontWeight="600"
+                                    style="@style/semiBold_single_16"
                                     android:text="후기" />
 
                                 <ImageView
@@ -848,8 +841,7 @@
                 android:layout_height="wrap_content"
                 android:text="000"
                 android:layout_marginTop="3dp"
-                android:textFontWeight="600"
-                android:textSize="12sp" />
+                style="@style/semiBold_single_12" />
         </LinearLayout>
 
         <Button
@@ -860,8 +852,7 @@
             android:background="@drawable/observation__reserve_back"
             android:paddingVertical="16dp"
             android:text="입장 예약하러 가기"
-            android:textFontWeight="600"
-            android:textSize="16sp" />
+            style="@style/semiBold_single_16" />
 
 
     </LinearLayout>

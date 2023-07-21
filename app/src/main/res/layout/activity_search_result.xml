@@ -103,7 +103,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="지역"
-                            android:textFontWeight="600" />
+                            style="@style/semiBold_single_14"/>
 
                         <ImageView
                             android:id="@+id/sr_location_btn_img"
@@ -129,7 +129,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="동행"
-                            android:textFontWeight="600" />
+                            style="@style/semiBold_single_14" />
 
                         <ImageView
                             android:id="@+id/sr_people_btn_img"
@@ -155,7 +155,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="테마"
-                            android:textFontWeight="600" />
+                            style="@style/semiBold_single_14" />
 
                         <ImageView
                             android:id="@+id/sr_theme_btn_img"
@@ -181,7 +181,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="시설"
-                            android:textFontWeight="600" />
+                            style="@style/semiBold_single_14"/>
 
                         <ImageView
                             android:id="@+id/sr_facility_btn_img"
@@ -207,7 +207,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="요금"
-                            android:textFontWeight="600" />
+                            style="@style/semiBold_single_14" />
 
                         <ImageView
                             android:id="@+id/sr_fee_btn_img"
