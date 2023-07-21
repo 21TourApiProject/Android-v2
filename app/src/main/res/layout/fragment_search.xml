@@ -45,14 +45,14 @@
                         android:layout_height="wrap_content"
                         android:text="어디로 별 보러 갈까요? 💫"
                         android:textColor="@color/gray_300"
-                        android:textSize="14sp" />
+                        style="@style/medium_single_14" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="키워드·필터로 검색"
                         android:textColor="@color/gray_500"
-                        android:textSize="12sp" />
+                        style="@style/medium_single_12" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -77,7 +77,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="요즘 핫한"
-                        android:textSize="17sp" />
+                        style="@style/semiBold_single_16"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -117,7 +117,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="인스타 감성"
-                        android:textSize="17sp" />
+                        style="@style/semiBold_single_16"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -155,7 +155,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="캠핑족을 위한"
-                        android:textSize="17sp" />
+                        style="@style/semiBold_single_16" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -193,7 +193,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="도심 속"
-                        android:textSize="17sp" />
+                        style="@style/semiBold_single_16" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -232,7 +232,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="숨겨진"
-                        android:textSize="17sp" />
+                        style="@style/semiBold_single_16" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -271,7 +271,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="뚜벅이를 위한"
-                        android:textSize="17sp" />
+                        style="@style/semiBold_single_16" />
 
                     <TextView
                         android:layout_width="wrap_content"

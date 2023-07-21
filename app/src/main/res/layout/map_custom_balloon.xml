@@ -23,8 +23,7 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="Custom Marker"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                style="@style/semiBold_single_16" />
 
 
         </LinearLayout>

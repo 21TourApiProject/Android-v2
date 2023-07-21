@@ -36,17 +36,22 @@
     </style>
 
     <style name="Textview_observation_details" parent="">
-        <item name="android:textSize">16sp</item>
         <item name="android:layout_marginBottom">12dp</item>
         <item name="android:textColor">@color/gray_300</item>
-        <item name="android:layout_columnWeight">500</item>
+        <item name="android:fontFamily">@font/pretendard_variable</item>
+        <item name="android:textSize">16sp</item>
+        <item name="fontStyle">normal</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="lineHeight">19.52sp</item>
     </style>
 
     <style name="Textview_observation_details_title" parent="">
-        <item name="fontFamily">@font/spoqahansansneomedium</item>
-        <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/gray_300</item>
-        <item name="android:layout_columnWeight">600</item>
+        <item name="android:fontFamily">@font/pretendard_variable</item>
+        <item name="android:textSize">16sp</item>
+        <item name="fontStyle">normal</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="lineHeight">19.52sp</item>
     </style>
 
 

@@ -55,6 +55,7 @@ public class ObservationCourseAdapter extends RecyclerView.Adapter<ObservationCo
         private TextView tp_type_txt;
         private TextView overview_txt;
         private TextView address_txt;
+        private ImageView divider;
 
 
         ViewHolder(@NonNull View itemView) {
@@ -65,6 +66,8 @@ public class ObservationCourseAdapter extends RecyclerView.Adapter<ObservationCo
             tp_type_txt = itemView.findViewById(R.id.course_tptype_txt);
             overview_txt = itemView.findViewById(R.id.course_outline_txt);
             address_txt = itemView.findViewById(R.id.course_tpaddress_txt);
+
+            divider = itemView.findViewById(R.id.course_divider);
         }
 
         void onBind(ObservationCourseItem item) {
@@ -77,6 +80,10 @@ public class ObservationCourseAdapter extends RecyclerView.Adapter<ObservationCo
 
         private void setOutlineButton(int position) {
             TextView outline_btn = itemView.findViewById(R.id.course_outline_btn);
+
+            if (position == listTouristPoint.size() - 1) {
+                divider.setVisibility(View.GONE);
+            }
 
             ViewTreeObserver vto = overview_txt.getViewTreeObserver();
             vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {

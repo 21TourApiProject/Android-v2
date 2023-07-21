@@ -15,5 +15,5 @@
         android:paddingVertical="8dp"
         android:text="해쉬태그"
         android:textColor="@color/gray_300"
-        android:textSize="14sp" />
+        style="@style/medium_single_14" />
 </LinearLayout>
