@@ -86,10 +86,10 @@
                         android:src="@drawable/main__search" />
 
                     <TextView
+                        style="@style/medium_single_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        style="@style/medium_single_14"
                         android:text="날씨가 궁금한 지역, 관측지명을 검색하세요"
                         android:textColor="#84838D" />
 
@@ -104,11 +104,10 @@
 
                     <TextView
                         android:id="@+id/weather_comment"
+                        style="@style/bold_multi_24"
                         android:layout_width="wrap_content"
                         android:layout_height="64dp"
-                        android:textColor="#FFFFFF"
-                        android:textFontWeight="600"
-                        android:textSize="24sp" />
+                        android:textColor="#FFFFFF" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -135,11 +134,11 @@
 
                             <TextView
                                 android:id="@+id/current_location"
+                                style="@style/medium_single_14"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_marginStart="8dp"
-                                android:textFontWeight="500" />
+                                android:layout_marginStart="8dp" />
 
                         </LinearLayout>
 
@@ -157,24 +156,21 @@
 
                             <TextView
                                 android:id="@+id/main_best_observation_fit"
+                                style="@style/semiBold_single_16"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
-                                android:layout_weight="1"
-                                android:text="관측 적합도 ~"
-                                android:textFontWeight="600"
-                                android:textSize="16sp" />
+                                android:layout_weight="1" />
 
                         </LinearLayout>
 
                         <TextView
                             android:id="@+id/recommend_time"
+                            style="@style/medium_single_14"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="추천 관측시간"
-                            android:textColor="#84838D"
-                            android:textFontWeight="500" />
+                            android:textColor="#84838D" />
 
 
                         <LinearLayout
@@ -189,12 +185,11 @@
                             android:paddingVertical="10dp">
 
                             <TextView
+                                style="@style/semiBold_single_12"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="날씨 자세히"
-                                android:textColor="#2C2C34"
-                                android:textFontWeight="600"
-                                android:textSize="12sp" />
+                                android:textColor="#2C2C34" />
 
                             <ImageView
                                 android:id="@+id/imageView6"
@@ -207,12 +202,12 @@
                 </LinearLayout>
 
                 <TextView
+                    style="@style/semiBold_single_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="20dp"
-                    style="@style/semiBold_single_16"
                     android:text="최근 관측후기"
                     android:textSize="16sp" />
 
