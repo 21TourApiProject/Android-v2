@@ -48,8 +48,7 @@ public class WeatherActivity extends AppCompatActivity {
     WeatherLoadingDialog dialog; // 로딩
 
     private ImageView lightPollutionLevel;
-    private TextView todayComment1;
-    private TextView todayComment2;
+    private TextView todayComment;
     private TextView bestObservationalFit;
     private TextView mainEffect;
 
@@ -98,8 +97,7 @@ public class WeatherActivity extends AppCompatActivity {
         ImageView observatory_arrow = findViewById(R.id.observatory_arrow); // 화살표
         lightPollutionLevel = findViewById(R.id.light_pollution_level);
 
-        todayComment1 = findViewById(R.id.today_comment_1);
-        todayComment2 = findViewById(R.id.today_comment_2);
+        todayComment = findViewById(R.id.today_comment);
         bestObservationalFit = findViewById(R.id.best_observation_fit);
         mainEffect = findViewById(R.id.main_effect);
 
@@ -176,8 +174,7 @@ public class WeatherActivity extends AppCompatActivity {
                             WeatherInfo.DetailWeather detail = info.getDetailWeather();
 
                             setLightPollutionLevel(info.getLightPollutionLevel());
-                            todayComment1.setText(info.getTodayComment1());
-                            todayComment2.setText(info.getTodayComment2());
+                            todayComment.setText(info.getTodayComment1() + "\n" + info.getTodayComment2());
                             bestObservationalFit.setText(Const.Weather.BEST_OBSERVATIONAL_FIT + info.getBestObservationalFit() + Const.Weather.PERCENT);
                             if (info.getBestObservationalFit() < 60) {
                                 bestObservationalFit.setBackgroundResource(R.drawable.wt__bad_observational_fit);
