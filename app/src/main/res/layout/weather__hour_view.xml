@@ -9,21 +9,19 @@
 
     <TextView
         android:id="@+id/hour_hour"
+        style="@style/medium_single_14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="00시"
-        android:textColor="#84838D"
-        android:textSize="14sp" />
+        android:textColor="#84838D" />
 
     <TextView
         android:id="@+id/hour_observation_fit"
+        style="@style/medium_single_14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="12dp"
-        android:text="NN%"
-        android:textColor="#DADAE5"
-        android:textSize="14sp" />
+        android:textColor="#DADAE5" />
 
 </LinearLayout>
