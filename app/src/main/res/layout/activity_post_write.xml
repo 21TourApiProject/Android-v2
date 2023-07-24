@@ -65,7 +65,7 @@
                         style="@style/medium_single_14"
                         android:padding="10dp"
                         android:text="등록"
-                        android:textColor="@color/gray_600"
+                        android:textColor="@color/white"
                         />
                 </FrameLayout>
 
