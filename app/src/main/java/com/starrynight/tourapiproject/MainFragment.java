@@ -215,63 +215,49 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //유저 아이디를 통해 선호 해시태그 목록 가져오기
-        Call<List<Long>> call = RetrofitClient.getApiService().getMyHashTagIdList(userId);
-        call.enqueue(new Callback<List<Long>>() {
+
+        Call<List<MainPost>> call2 = RetrofitClient.getApiService().getMainPosts();
+        call2.enqueue(new Callback<List<MainPost>>() {
             @Override
-            public void onResponse(Call<List<Long>> call, Response<List<Long>> response) {
+            public void onResponse(Call<List<MainPost>> call, Response<List<MainPost>> response) {
                 if (response.isSuccessful()) {
-                    myhashTagIdList = response.body();
-                    Filter filter = new Filter(null, myhashTagIdList);
-                    //선호 해시태그 목록에 따라 선호 게시물 메인화면에 먼저 가져오기
-                    Call<List<MainPost>> call2 = RetrofitClient.getApiService().getMainPosts(filter);
-                    call2.enqueue(new Callback<List<MainPost>>() {
-                        @Override
-                        public void onResponse(Call<List<MainPost>> call, Response<List<MainPost>> response) {
-                            if (response.isSuccessful()) {
-                                result = response.body();
-                                end = count;
-                                noMorePost = false;
-                                limit = result.size();
-                                mainPostList = new ArrayList<>();
-                                if (limit < end) {
-                                    noMorePost = true;
-                                }
-                                adapter = new MainPost_adapter(result.subList(0, Math.min(end, limit)), getContext());
-                                recyclerView.setAdapter(adapter);
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<List<MainPost>> call, Throwable t) {
-                            Log.d("mainPostList", "인터넷 오류");
-                        }
-                    });
-                    // 밑으로 스크롤시 게시물 목록 업로딩
-                    nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-                        @Override
-                        public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                            if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
-                                if (!noMorePost) {
-                                    progressBar.setVisibility(View.VISIBLE);
-                                    end += count;
-                                    if (limit < end) {
-                                        noMorePost = true;
-                                    }
-                                    adapter = new MainPost_adapter(result.subList(0, Math.min(end, limit)), getContext());
-                                    recyclerView.setAdapter(adapter);
-                                    progressBar.setVisibility(View.GONE);
-                                }
-                            }
-                        }
-                    });
-
+                    Log.d("mainPostList", "메인 게시물 리스트 성공");
+                    result = response.body();
+                    end = count;
+                    noMorePost = false;
+                    limit = result.size();
+                    mainPostList = new ArrayList<>();
+                    if (limit < end) {
+                        noMorePost = true;
+                    }
+                    adapter = new MainPost_adapter(result.subList(0, Math.min(end, limit)), getContext());
+                    recyclerView.setAdapter(adapter);
+                }else{
+                    Log.e("mainPostList", "메인 게시물 리스트 실패");
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Long>> call, Throwable t) {
-                Log.d("mainPostIdList", "인터넷 오류");
+            public void onFailure(Call<List<MainPost>> call, Throwable t) {
+                Log.e("mainPostList", "인터넷 오류");
+            }
+        });
+        // 밑으로 스크롤시 게시물 목록 업로딩
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
+                    if (!noMorePost) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        end += count;
+                        if (limit < end) {
+                            noMorePost = true;
+                        }
+                        adapter = new MainPost_adapter(result.subList(0, Math.min(end, limit)), getContext());
+                        recyclerView.setAdapter(adapter);
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }
             }
         });
 

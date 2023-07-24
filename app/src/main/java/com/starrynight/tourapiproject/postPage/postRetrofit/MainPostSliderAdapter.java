@@ -1,4 +1,4 @@
-package com.starrynight.tourapiproject.postPage;
+package com.starrynight.tourapiproject.postPage.postRetrofit;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,40 +13,40 @@ import com.bumptech.glide.Glide;
 import com.starrynight.tourapiproject.R;
 
 import java.util.ArrayList;
-/**
-* @className : ImageSliderAdapter
-* @description : 게시물 이미지 슬라이드 adpater 입니다.
-* @modification : jinhyeok (2022-08-12) 주석 수정
-* @author : 2022-08-12
-* @date : jinhyeok
-* @version : 1.0
-   ====개정이력(Modification Information)====
-  수정일        수정자        수정내용
-   -----------------------------------------
-   jinhyeok      2022-08-12       주석 수정
 
+/**
+ * className :  MainPostSliderAdapter
+ * description : TODO 예시 클래스 입니다.
+ * modification : 2022.08.01(박진혁) methodA수정
+ * author : jinhyeok
+ * date : 2023-07-24
+ * version : 1.0
+ * ====개정이력(Modification Information)====
+ * 수정일        수정자        수정내용
+ * -----------------------------------------
+ * 2023-07-24      jinhyeok      최초생성
  */
-public class ImageSliderAdapter extends RecyclerView.Adapter<ImageSliderAdapter.MyViewHolder> {
+public class MainPostSliderAdapter extends RecyclerView.Adapter<MainPostSliderAdapter.MyViewHolder> {
     private Context context;
     private ArrayList<String> sliderImage;
-    ImageSliderItemClickListener listener;
+    MainPostImageSliderItemClickListener listener;
 
-    public ImageSliderAdapter(Context context, ArrayList<String> sliderImage) {
+    public MainPostSliderAdapter(Context context, ArrayList<String> sliderImage) {
         this.context = context;
         this.sliderImage = sliderImage;
     }
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MainPostSliderAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.custom_post_image, parent, false);
-        return new MyViewHolder(view, listener);
+                .inflate(R.layout.custom_main_image, parent, false);
+        return new MainPostSliderAdapter.MyViewHolder(view, listener);
 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MainPostSliderAdapter.MyViewHolder holder, int position) {
         holder.bindSliderImage(sliderImage.get(position));
     }
 
@@ -55,7 +55,7 @@ public class ImageSliderAdapter extends RecyclerView.Adapter<ImageSliderAdapter.
         return sliderImage.size();
     }
 
-    public void OnItemClicklistener(ImageSliderItemClickListener listener) {
+    public void OnItemClicklistener(MainPostImageSliderItemClickListener listener) {
         this.listener = listener;
     }
 
@@ -63,15 +63,15 @@ public class ImageSliderAdapter extends RecyclerView.Adapter<ImageSliderAdapter.
 
         private ImageView mImageView;
 
-        public MyViewHolder(@NonNull View itemView, final ImageSliderItemClickListener listener) {
+        public MyViewHolder(@NonNull View itemView, final MainPostImageSliderItemClickListener listener) {
             super(itemView);
-            mImageView = itemView.findViewById(R.id.custom_post_image);
+            mImageView = itemView.findViewById(R.id.custom_main_image);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if (listener != null) {
-                        listener.onItemClick(ImageSliderAdapter.MyViewHolder.this, v, position);
+                        listener.onItemClick(MainPostSliderAdapter.MyViewHolder.this, v, position);
                     }
                 }
             });

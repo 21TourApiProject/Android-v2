@@ -62,6 +62,7 @@ public class MainPostHashTagItemAdapter extends RecyclerView.Adapter<MainPostHas
     public void onBindViewHolder(@NonNull MainPostHashTagItemAdapter.ViewHolder viewHolder, int position){
         if (position != 0) {
             viewHolder.observationpin.setVisibility(View.GONE);
+            viewHolder.postHashTagName.setPadding(12,0,0,0);
             PostHashTagItem item = items.get(position);
             viewHolder.setItem(item);
         } else {

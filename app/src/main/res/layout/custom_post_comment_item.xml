@@ -10,13 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:layout_marginTop="3dp">
+        android:layout_marginTop="20dp">
         <ImageView
             android:id="@+id/post_profileImage"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:layout_marginStart="16dp"
             android:layout_gravity="center"
-            android:layout_marginStart="17.86dp"
             android:scaleType="centerCrop"
             app:srcCompat="@drawable/post__profile_no_image" />
 
@@ -44,7 +44,7 @@
                 android:layout_width="16dp"
                 android:layout_height="4dp"
                 android:background="@drawable/comment_option"
-                android:layout_marginEnd="23dp"
+                android:layout_marginEnd="16dp"
                 android:layout_gravity="center"
                 />
         </LinearLayout>
@@ -56,7 +56,7 @@
         android:id="@+id/postComment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
+        android:layout_marginStart="48dp"
         android:layout_marginTop="4dp"
         style="@style/semiBold_multi_14"
         android:textColor="@color/gray_300"
@@ -73,7 +73,7 @@
             android:id="@+id/comment_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="48dp"
             android:layout_marginEnd="16dp"
             style="@style/medium_single_12"
             android:textColor="@color/gray_500"
