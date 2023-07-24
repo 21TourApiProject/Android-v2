@@ -101,6 +101,7 @@ public class AddHashTagActivity extends AppCompatActivity {
         FlexboxLayoutManager flexboxLayoutManager1;
         FlexboxLayoutManager flexboxLayoutManager2;
         FlexboxLayoutManager flexboxLayoutManager3;
+        FlexboxLayoutManager flexboxLayoutManager4;
 
         flexboxLayoutManager = new FlexboxLayoutManager(this);
         flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
@@ -114,6 +115,10 @@ public class AddHashTagActivity extends AppCompatActivity {
         flexboxLayoutManager3 = new FlexboxLayoutManager(this);
         flexboxLayoutManager3.setFlexDirection(FlexDirection.ROW);
         flexboxLayoutManager3.setJustifyContent(JustifyContent.FLEX_START);
+        flexboxLayoutManager4 = new FlexboxLayoutManager(this);
+        flexboxLayoutManager4.setFlexDirection(FlexDirection.ROW);
+        flexboxLayoutManager4.setJustifyContent(JustifyContent.FLEX_START);
+
         themeRecyclerView= findViewById(R.id.themePostHashTag);
         peopleRecyclerView=findViewById(R.id.whoPostHashTag);
         facilityRecyclerView=findViewById(R.id.facilityPostHashtag);
@@ -140,9 +145,9 @@ public class AddHashTagActivity extends AppCompatActivity {
                     }
                     for(HashTagItem item: hashTaglist){
                         switch (item.getCategory()){
-                           // case "LOCAL":
-                             //   areaList.add(item);
-                              //  break;
+                            case "LOCAL":
+                                localAdapter.addItem(item);
+                                break;
                             case "THEME":
                                 themeAdapter.addItem(item);
                                 break;
@@ -166,6 +171,8 @@ public class AddHashTagActivity extends AppCompatActivity {
                     facilityRecyclerView.setAdapter(facilityAdapter);
                     feeRecyclerView.setLayoutManager(flexboxLayoutManager3);
                     feeRecyclerView.setAdapter(feeAdapter);
+                    areaRecyclerView.setLayoutManager(flexboxLayoutManager4);
+                    areaRecyclerView.setAdapter(localAdapter);
                 }else{
                     Log.e("postHashTag", "모든 해쉬태그 호출 실패");
                 }
@@ -188,6 +195,14 @@ public class AddHashTagActivity extends AppCompatActivity {
         plusHashTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                for(int i=0;i<localAdapter.getItemCount();i++){
+                    if(localAdapter.getItem(i).getIsActive()==VIEWTYPE_ACTIVE){
+                        PostHashTagParams postHashTagParam = new PostHashTagParams();
+                        postHashTagParam.setHashTagName(localAdapter.getItem(i).getName());
+                        postHashTagParams.add(postHashTagParam);
+                        finallist.add(localAdapter.getItem(i).getName());
+                    }
+                }
                 for(int i=0;i<themeAdapter.getItemCount();i++){
                     if(themeAdapter.getItem(i).getIsActive()==VIEWTYPE_ACTIVE){
                         PostHashTagParams postHashTagParam = new PostHashTagParams();
