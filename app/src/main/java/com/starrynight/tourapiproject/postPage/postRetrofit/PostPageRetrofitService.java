@@ -34,7 +34,7 @@ public interface PostPageRetrofitService {
     Call<Void> deletePost(@Path("postId") Long postId);
 
     @POST("post/main")
-    Call<List<MainPost>> getMainPosts(@Body Filter filter);
+    Call<List<MainPost>> getMainPosts();
 
     @GET("user/{userId}")
     Call<User> getUser(@Path("userId") Long userId);

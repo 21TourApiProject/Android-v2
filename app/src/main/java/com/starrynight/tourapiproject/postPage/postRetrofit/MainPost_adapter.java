@@ -318,8 +318,8 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
 //            nickname.setText(item.getMainNickName());
             mainslider.setOffscreenPageLimit(3);
 
-            ImageSliderAdapter imageSliderAdapter = new ImageSliderAdapter(mainslider.getContext(), item.getImages());
-            mainslider.setAdapter(imageSliderAdapter);
+            MainPostSliderAdapter mainPostSliderAdapter = new MainPostSliderAdapter(mainslider.getContext(), item.getImages());
+            mainslider.setAdapter(mainPostSliderAdapter);
 
             mainslider.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
                 @Override
