@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
@@ -25,6 +26,9 @@ public class SearchResultListFragment extends Fragment {
     SearchItemRecyclerAdapter adapter;
     GridLayoutManager layoutManager;
     LinearLayout noResultLayout;
+    TextView noResultText;
+
+    String keyword;
 
 
     List<SearchParams1> list = new ArrayList<>();
@@ -47,6 +51,7 @@ public class SearchResultListFragment extends Fragment {
         View v =  inflater.inflate(R.layout.fragment_search_result_list, container, false);
 
         noResultLayout = v.findViewById(R.id.srf_no_result);
+        noResultText = v.findViewById(R.id.srl_no_result_text);
 
         recyclerView = v.findViewById(R.id.srf_recycler);
         recyclerView.addItemDecoration(new SearchItemDecoration(20));
@@ -72,10 +77,13 @@ public class SearchResultListFragment extends Fragment {
         return v;
     }
 
-    public void setData(List<SearchParams1> list) {
+    public void setData(List<SearchParams1> list, String keyword) {
         this.list  = list;
+        this.keyword = keyword;
         if (noResultLayout != null) {
+//            noResultText.setText("'"+keyword+"'에 대한\n 검색 결과가 없어요");
             if (list.isEmpty()) {
+                noResultText.setText("'"+keyword+"'에 대한\n 검색 결과가 없어요");
                 noResultLayout.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
             } else {

@@ -87,6 +87,8 @@ public class ObservationsiteActivity extends AppCompatActivity {
     ImageView relateImage3;
     LinearLayout to_light_btn;
 
+    Long count_tmp;
+
     private ViewPager2 obs_slider;
     private LinearLayout obs_indicator;
     private TextView imageSource_txt;
@@ -410,6 +412,7 @@ public class ObservationsiteActivity extends AppCompatActivity {
         ImageView save_img = findViewById(R.id.obs_save_img);
         TextView save_count = findViewById(R.id.obs_save_count);
         save_count.setText(observation.getSaved().toString());
+        count_tmp = observation.getSaved();
 
         //이미 찜한건지 확인
         Call<Boolean> call0 = com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient.getApiService().isThereMyWish(userId, observation.getObservationId(), 0);
@@ -447,7 +450,7 @@ public class ObservationsiteActivity extends AppCompatActivity {
                                 //버튼 디자인 바뀌게 구현하기
                                 isWish = true;
                                 save_img.setImageResource(R.drawable.bookmark);
-                                Long count_tmp = observation.getSaved()+1;
+                                count_tmp++;
                                 save_count.setText(count_tmp.toString());
                                 Toast.makeText(getApplicationContext(), "나의 여행버킷리스트에 저장되었습니다.", Toast.LENGTH_SHORT).show();
                             } else {
@@ -468,7 +471,7 @@ public class ObservationsiteActivity extends AppCompatActivity {
                             if (response.isSuccessful()) {
                                 isWish = false;
                                 save_img.setImageResource(R.drawable.bookmark_non);
-                                Long count_tmp = observation.getSaved()-1;
+                                count_tmp--;
                                 save_count.setText(count_tmp.toString());
                                 Toast.makeText(getApplicationContext(), "나의 여행버킷리스트에서 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                             } else {

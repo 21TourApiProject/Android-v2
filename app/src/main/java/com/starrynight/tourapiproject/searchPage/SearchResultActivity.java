@@ -21,6 +21,8 @@ import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.Filter;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchKey;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchParams1;
+import com.starrynight.tourapiproject.weatherPage.WeatherActivity;
+import com.starrynight.tourapiproject.weatherPage.WeatherLoadingDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,8 @@ import retrofit2.Response;
 
 public class SearchResultActivity extends AppCompatActivity {
     static final String TAG = "SearchResultActivity";
+
+    WeatherLoadingDialog loadingDialog; // 로딩
 
     String keyword = null;
     BottomFilterFragment filterFragment;
@@ -94,6 +98,8 @@ public class SearchResultActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
 
+        loadingDialog = new WeatherLoadingDialog(SearchResultActivity.this);
+
         searchView.requestFocus();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -102,6 +108,7 @@ public class SearchResultActivity extends AppCompatActivity {
                 pagenum = 0;
                 observationResult.clear();
                 postResult.clear();
+                loadingDialog.show();
                 getObservation(0);
                 return true;
             }
@@ -132,6 +139,10 @@ public class SearchResultActivity extends AppCompatActivity {
         mapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                observationResult = observationResult.subList(0,10);
+                pagenum = 0;
+                tabFragment.setData(observationResult,postResult,keyword);
+                mapFragment.setData(observationResult);
                 mapBtn.setVisibility(View.GONE);
                 listBtn.setVisibility(View.VISIBLE);
                 fragmentManager.beginTransaction().replace(R.id.sr_fragment,mapFragment).commit();
@@ -205,8 +216,9 @@ public class SearchResultActivity extends AppCompatActivity {
             public void onResponse(Call<List<SearchParams1>> call, Response<List<SearchParams1>> response) {
                 if (response.isSuccessful()) {
                     Log.d(TAG, "게시물 검색 성공");
+                    loadingDialog.dismiss();
                     postResult = response.body();
-                    tabFragment.setData(observationResult,postResult);
+                    tabFragment.setData(observationResult,postResult,keyword);
                     mapFragment.setData(observationResult);
                 } else {
                     Log.e(TAG, "게시물 검색 실패");

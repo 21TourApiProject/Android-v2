@@ -189,7 +189,7 @@ public class BottomFilterFragment extends BottomSheetDialogFragment {
                 adapter.notifyDataSetChanged();
             }
         });
-
+        getSearchCount();
     }
 
     private void setFilterRefresh() {
@@ -441,18 +441,18 @@ public class BottomFilterFragment extends BottomSheetDialogFragment {
             @Override
             public void onResponse(Call<Long> call, Response<Long> response) {
                 if (response.isSuccessful()) {
-                    Log.d(TAG, "해쉬태그 호출 성공");
+                    Log.d(TAG, "검색 개수 호출 성공");
                     Long count = response.body();
 
                     resultBtn.setText(count+"개의 결과보기");
 
                 } else {
-                    Log.d(TAG, "해쉬태그 호출 실패");
+                    Log.d(TAG, "검색개수 호출 실패");
                 }
             }
             @Override
             public void onFailure(Call<Long> call, Throwable t) {
-                Log.d(TAG, "해쉬태그 호출 오류");
+                Log.d(TAG, "검색개수 호출 오류");
             }
         });
     }
