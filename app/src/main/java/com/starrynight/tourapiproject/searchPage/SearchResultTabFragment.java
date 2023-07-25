@@ -28,6 +28,8 @@ public class SearchResultTabFragment extends Fragment {
     TabLayout tabLayout;
     ResultViewPagerAdapter resultViewPagerAdapter;
 
+    String keyword;
+
 
     List<SearchParams1> observationResult = new ArrayList<>();
     List<SearchParams1> postResult = new ArrayList<>();
@@ -57,7 +59,7 @@ public class SearchResultTabFragment extends Fragment {
 
         resultViewPager = v.findViewById(R.id.sr_result_view_pager);
         tabLayout = v.findViewById(R.id.sr_tab_layout);
-
+        resultViewPager.setSaveEnabled(false);
         setViewPager();
         return v;
     }
@@ -77,9 +79,10 @@ public class SearchResultTabFragment extends Fragment {
         }).attach();
     }
 
-    public void setData(List<SearchParams1> observationResult, List<SearchParams1> postResult) {
+    public void setData(List<SearchParams1> observationResult, List<SearchParams1> postResult, String keyword) {
         this.observationResult = observationResult;
         this.postResult = postResult;
-        resultViewPagerAdapter.setData(observationResult,postResult);
+        this.keyword = keyword;
+        resultViewPagerAdapter.setData(observationResult,postResult,keyword);
     }
 }

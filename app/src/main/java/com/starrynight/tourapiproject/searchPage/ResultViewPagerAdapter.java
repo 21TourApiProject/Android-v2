@@ -40,8 +40,8 @@ public class ResultViewPagerAdapter extends FragmentStateAdapter {
         return items.size();
     }
 
-    public void setData(List<SearchParams1> observationList, List<SearchParams1> postList) {
-        items.get(0).setData(observationList);
-        items.get(1).setData(postList);
+    public void setData(List<SearchParams1> observationList, List<SearchParams1> postList, String keyword) {
+        items.get(0).setData(observationList,keyword);
+        items.get(1).setData(postList,keyword);
     }
 }

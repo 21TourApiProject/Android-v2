@@ -426,15 +426,17 @@
                             style="@style/Textview_observation_details_title"
                             android:layout_alignBaseline="@id/obs_guide_txt"
                             android:text="이용안내" />
+
                         <TextView
                             android:id="@+id/obs_guide_txt"
+                            style="@style/medium_multi_16"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="이용안내 글 전체"
-                            android:lineSpacingExtra="4dp"
-                            style="@style/Textview_observation_details"
                             android:layout_below="@id/obs_parking_txt"
-                            android:layout_alignLeft="@id/obs_address_txt" />
+                            android:layout_alignLeft="@id/obs_address_txt"
+                            android:layout_marginBottom="12dp"
+                            android:textColor="@color/gray_300"
+                            android:text="이용안내 글 전체" />
 
 
                         <TextView
@@ -450,9 +452,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/obs_fee_name"
-                            android:orientation="vertical"
+                            android:layout_marginTop="12dp"
                             android:isScrollContainer="false"
-                            android:layout_marginTop="12dp"/>
+                            android:orientation="vertical" />
 
                         <LinearLayout
                             android:id="@+id/obs_fee_more_btn"
@@ -528,15 +530,17 @@
                         style="@style/Textview_observation_details_title"
                         android:layout_alignBaseline="@id/obs_nature_guide_txt"
                         android:text="여행팁" />
-                    <TextView
-                        android:id="@+id/obs_nature_guide_txt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="이용안내 글 전체"
-                        android:lineSpacingExtra="4dp"
-                        style="@style/Textview_observation_details"
-                        android:layout_below="@id/obs_nature_parking_txt"
-                        android:layout_alignLeft="@id/obs_nature_address_txt"/>
+
+                <TextView
+                    android:id="@+id/obs_nature_guide_txt"
+                    style="@style/medium_multi_16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/obs_nature_parking_txt"
+                    android:layout_alignLeft="@id/obs_nature_address_txt"
+                    android:layout_marginBottom="12dp"
+                    android:textColor="@color/gray_300"
+                    android:text="이용안내 글 전체" />
 
 
             </RelativeLayout>
@@ -637,7 +641,6 @@
                                 android:layout_height="wrap_content"
                                 android:text="정보"
                                 style="@style/semiBold_single_16"
-                                android:layout_marginTop="16dp"
                                 android:textColor="@color/gray_500"
                                 android:layout_gravity="center_horizontal"/>
 
@@ -660,8 +663,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="16dp" >
+                                android:layout_gravity="center">
 
                                 <TextView
                                     android:layout_width="wrap_content"

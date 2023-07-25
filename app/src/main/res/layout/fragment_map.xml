@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
+
         <ImageButton
             android:id="@+id/map_myLocation_btn"
             android:layout_width="wrap_content"
@@ -61,12 +62,12 @@
 
                 <TextView
                     android:id="@+id/map_name_txt"
+                    style="@style/semiBold_multi_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="12dp"
                     android:layout_marginBottom="12dp"
-                    android:text="이름"
-                    style="@style/semiBold_multi_16"/>
+                    android:text="이름" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/map_hashtags_layout"
@@ -92,12 +93,12 @@
 
                     <TextView
                         android:id="@+id/map_item_save_text"
+                        style="@style/medium_single_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
                         android:text="000"
-                        android:textColor="@color/gray_500"
-                        style="@style/medium_single_14" />
+                        android:textColor="@color/gray_500" />
 
                 </LinearLayout>
 
@@ -114,10 +115,10 @@
                 android:paddingVertical="16dp">
 
                 <TextView
+                    style="@style/semiBold_single_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="상세페이지 보기"
-                    style="@style/semiBold_single_16"/>
+                    android:text="상세페이지 보기" />
 
                 <ImageView
                     android:layout_width="wrap_content"
