@@ -19,20 +19,24 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="49dp">
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="14dp">
 
-                <ImageView
+                <LinearLayout
                     android:id="@+id/thanksToBack"
-                    style="@style/ImageButton.size49"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:paddingVertical="18dp"
-                    android:paddingStart="22dp"
-                    android:paddingEnd="21dp"
-                    android:src="@drawable/star__search_back"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:gravity="center"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        style="@style/ImageButton.size49"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/back_btn" />
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -42,16 +46,17 @@
                 android:layout_marginTop="80dp"
                 app:srcCompat="@drawable/signup_logo" />
 
-            <Button
-                android:layout_width="80dp"
-                android:layout_height="32dp"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16sp"
+                android:paddingVertical="4sp"
                 android:layout_marginTop="69dp"
                 android:layout_gravity="center"
                 android:background="@drawable/selectmyhashtag_hashtag_non"
                 android:text="기획"
-                android:fontFamily="@font/spoqahansansneoregular"
-                android:textColor="@color/point_purple"
-                android:textSize="12sp" />
+                style="@style/semiBold_single_14"
+                />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -66,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:layout_marginEnd="30dp"
-                    android:fontFamily="@font/spoqahansansneomedium"
+                    style="@style/semiBold_single_14"
                     android:text="류재준" />
 
                 <TextView
@@ -74,27 +79,34 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:layout_marginEnd="30dp"
-                    android:fontFamily="@font/spoqahansansneomedium"
+                    style="@style/semiBold_single_14"
                     android:text="서교혁" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
-                    android:fontFamily="@font/spoqahansansneomedium"
+                    android:layout_marginEnd="30dp"
+                    style="@style/semiBold_single_14"
                     android:text="김진우" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    style="@style/semiBold_single_14"
+                    android:text="홍서경" />
             </LinearLayout>
 
-            <Button
-                android:layout_width="80dp"
-                android:layout_height="32dp"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="43dp"
                 android:layout_gravity="center"
                 android:background="@drawable/selectmyhashtag_hashtag_non"
                 android:text="개발"
-                android:fontFamily="@font/spoqahansansneoregular"
-                android:textColor="@color/point_purple"
-                android:textSize="12sp" />
+                android:paddingHorizontal="16sp"
+                android:paddingVertical="4sp"
+                style="@style/semiBold_single_14" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -109,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:layout_marginEnd="30dp"
-                    android:fontFamily="@font/spoqahansansneomedium"
+                    style="@style/semiBold_single_14"
                     android:text="이세인" />
 
                 <TextView
@@ -117,7 +129,7 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:layout_marginEnd="30dp"
-                    android:fontFamily="@font/spoqahansansneomedium"
+                    style="@style/semiBold_single_14"
                     android:text="하채형" />
 
                 <TextView
@@ -125,27 +137,27 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:layout_marginEnd="30dp"
-                    android:fontFamily="@font/spoqahansansneomedium"
+                    style="@style/semiBold_single_14"
                     android:text="박진혁" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
-                    android:fontFamily="@font/spoqahansansneomedium"
+                    style="@style/semiBold_single_14"
                     android:text="박현지" />
             </LinearLayout>
 
-            <Button
-                android:layout_width="80dp"
-                android:layout_height="32dp"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="45dp"
                 android:layout_gravity="center"
                 android:background="@drawable/selectmyhashtag_hashtag_non"
                 android:text="디자인"
-                android:fontFamily="@font/spoqahansansneoregular"
-                android:textColor="@color/point_purple"
-                android:textSize="12sp" />
+                android:paddingHorizontal="16sp"
+                android:paddingVertical="4sp"
+                style="@style/semiBold_single_14" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -159,22 +171,14 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:layout_marginEnd="30dp"
-                    android:fontFamily="@font/spoqahansansneomedium"
-                    android:text="권강희" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:layout_marginEnd="30dp"
-                    android:fontFamily="@font/spoqahansansneomedium"
+                    style="@style/semiBold_single_14"
                     android:text="정범환" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
-                    android:fontFamily="@font/spoqahansansneomedium"
+                    style="@style/semiBold_single_14"
                     android:text="장서영" />
 
             </LinearLayout>

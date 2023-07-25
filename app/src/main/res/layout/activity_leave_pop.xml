@@ -14,46 +14,41 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="5dp"
         android:text="정말로 탈퇴하시겠습니까?"
+        style="@style/medium_multi_14"
         android:textColor="@color/white"
-        android:fontFamily="@font/spoqahansansneomedium"
-        android:textSize="12sp" />
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="탈퇴 후 되돌릴 수 없습니다."
-        android:textColor="@color/gray"
-        android:fontFamily="@font/spoqahansansneomedium"
-        android:textSize="12sp" />
+        android:textColor="@color/gray_400"
+        style="@style/medium_multi_14" />
 
     <Button
         android:id="@+id/leaveBtn"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="18.5dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="20dp"
         android:text="계정 탈퇴"
-        android:fontFamily="@font/spoqahansansneomedium"
-        android:textSize="12sp"
-        android:background="@drawable/round_btn"
+        android:textColor="@color/gray_700"
+        style="@style/semiBold_single_14"
+        android:background="@drawable/round_btn_gray"
         android:onClick="leave"/>
 
     <Button
         android:id="@+id/closeLeave"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="13.5dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="20dp"
         android:text="닫기"
-        android:fontFamily="@font/spoqahansansneomedium"
-        android:textSize="12sp"
-        android:background="@drawable/round_btn"
+        android:textColor="@color/gray_700"
+        style="@style/semiBold_single_14"
+        android:background="@drawable/round_btn_gray"
         android:onClick="closeLeave"/>
 
 </LinearLayout>

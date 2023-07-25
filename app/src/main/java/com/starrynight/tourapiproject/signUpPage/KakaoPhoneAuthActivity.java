@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,7 +60,7 @@ public class KakaoPhoneAuthActivity extends AppCompatActivity implements
     private EditText mobilePhoneNumber;
     private TextView phoneGuide; //전화번호 칸 바로 밑에 글칸
     private EditText authCode;
-    private Button startAuth;
+    private TextView startAuth;
     private Button resendAuth;
     private Button verify;
 
@@ -153,7 +154,7 @@ public class KakaoPhoneAuthActivity extends AppCompatActivity implements
         resendAuth.setOnClickListener(this);
         verify.setOnClickListener(this);
 
-        ImageView authBack = findViewById(R.id.kko_authBack);
+        LinearLayout authBack = findViewById(R.id.kko_authBack);
         authBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -32,7 +32,7 @@ public class ThanksToActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thanks_to);
 
-        ImageView thanksToBack = findViewById(R.id.thanksToBack);
+        LinearLayout thanksToBack = findViewById(R.id.thanksToBack);
         thanksToBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
