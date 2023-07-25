@@ -83,6 +83,7 @@ public class WeatherLocationSearchActivity extends AppCompatActivity {
             public void onResponse(Call<List<SearchLocationItem>> call, Response<List<SearchLocationItem>> response) {
                 if (response.isSuccessful()) {
                     searchItemArrayList.addAll(response.body());
+                    searchAdapter.filterList(searchItemArrayList);
                 } else {
                     Log.d(TAG, "날씨 location 리스트 업로드 실패");
                 }
