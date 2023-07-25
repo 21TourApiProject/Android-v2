@@ -33,11 +33,10 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    style="@style/semiBold_single_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="관측적합도란?"
-                    android:textFontWeight="600"
-                    android:textSize="16dp"
                     app:layout_constraintBottom_toBottomOf="@id/weather_help_back"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -65,16 +64,16 @@
 
                     <TextView
                         android:id="@+id/textView"
+                        style="@style/bold_single_20"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginStart="8dp"
-                        android:text="관측적합도 점수"
-                        android:textFontWeight="600"
-                        android:textSize="20dp" />
+                        android:text="관측적합도 점수" />
                 </LinearLayout>
 
                 <TextView
+                    style="@style/medium_multi_14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="22.52dp"
@@ -88,12 +87,14 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        style="@style/semiBold_single_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="최소 점수 85 이상인 날"
                         android:textColor="#84838D" />
 
                     <TextView
+                        style="@style/semiBold_single_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
@@ -108,15 +109,17 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        style="@style/semiBold_single_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="최대 점수 70 이상인 날"
                         android:textColor="#84838D" />
 
                     <TextView
+                        style="@style/semiBold_single_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="21dp"
+                        android:layout_marginStart="20dp"
                         android:text="“N시가 별 보기 가장 좋아요”"
                         android:textColor="#84838D" />
                 </LinearLayout>
@@ -128,15 +131,17 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        style="@style/semiBold_single_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="최대 점수 60~70인 날 "
+                        android:text="최대 점수 60~70인 날"
                         android:textColor="#84838D" />
 
                     <TextView
+                        style="@style/semiBold_single_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="23dp"
+                        android:layout_marginStart="22dp"
                         android:text="“N시가 별 보기 적당해요”"
                         android:textColor="#84838D" />
                 </LinearLayout>
@@ -148,15 +153,17 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        style="@style/semiBold_single_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="최대 점수 40~60인 날"
                         android:textColor="#84838D" />
 
                     <TextView
+                        style="@style/semiBold_single_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="21dp"
+                        android:layout_marginStart="20dp"
                         android:text="“오늘은 별을 보기 조금 아쉬워요”"
                         android:textColor="#84838D" />
                 </LinearLayout>
@@ -168,20 +175,23 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        style="@style/semiBold_single_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="최대 점수 0~4인 날"
+                        android:text="최대 점수 0~40인 날"
                         android:textColor="#84838D" />
 
                     <TextView
+                        style="@style/semiBold_single_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="38dp"
+                        android:layout_marginStart="28dp"
                         android:text="“오늘은 별을 보기 어려워요”"
                         android:textColor="#84838D" />
                 </LinearLayout>
 
                 <TextView
+                    style="@style/medium_multi_14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -189,13 +199,12 @@
                     android:textColor="#84838D" />
 
                 <TextView
+                    style="@style/semiBold_single_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
                     android:text="점수 산정 요소"
-                    android:textColor="#DADAE5"
-                    android:textFontWeight="600"
-                    android:textSize="16sp" />
+                    android:textColor="#DADAE5" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -220,6 +229,7 @@
                             app:srcCompat="@drawable/weather__detail_lightpollution" />
 
                         <TextView
+                            style="@style/semiBold_single_14"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -242,12 +252,12 @@
 
                     <TextView
                         android:id="@+id/help_1_text"
+                        style="@style/medium_multi_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="별빛은 아주 어둡기 때문에, 훨씬 밝은 불빛들이 가득한 도심 속에서는 별을 보기 힘들어요. 이처럼 불빛들로 인해 생기는 공해를 바로 ‘광공해’라고 한답니다.\n\n내 주변의 광공해가 0에 가까울수록 관측적합도 점수가 높아져요."
-                        android:textColor="#84838D"
-                        android:textSize="12sp" />
+                        android:textColor="#84838D" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -273,6 +283,7 @@
                             app:srcCompat="@drawable/weather__detail_temp" />
 
                         <TextView
+                            style="@style/semiBold_single_14"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -295,12 +306,12 @@
 
                     <TextView
                         android:id="@+id/help_2_text"
+                        style="@style/medium_multi_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="기온은 별을 보는 데에는 직접적인 영향을 주진 않아요. 하지만 밤 시간대는 우리 생각보다 쌀쌀할 수 있으니, 일교차에 유의하셔서 적절한 옷차림을 준비해 주세요."
-                        android:textColor="#84838D"
-                        android:textSize="12sp" />
+                        android:textColor="#84838D" />
 
                 </LinearLayout>
 
@@ -327,6 +338,7 @@
                             app:srcCompat="@drawable/weather__detail_rain" />
 
                         <TextView
+                            style="@style/semiBold_single_14"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -349,12 +361,12 @@
 
                     <TextView
                         android:id="@+id/help_3_text"
+                        style="@style/medium_multi_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="0.1mm 이상의 비가 내릴 확률이에요. 비가 오는 날에는, 아쉽지만 별 보기가 참 어려울 거에요. 그렇지만 비가 온 다음에는 오히려 대기가 깨끗해지기 때문에, 별 보기 가장 좋은 상태가 된답니다.\n\n강수확률이 0%에 가까울 수록 관측적합도 점수가 높아져요."
-                        android:textColor="#84838D"
-                        android:textSize="12sp" />
+                        android:textColor="#84838D" />
 
                 </LinearLayout>
 
@@ -381,6 +393,7 @@
                             app:srcCompat="@drawable/weather__detail_humidity" />
 
                         <TextView
+                            style="@style/semiBold_single_14"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -403,12 +416,12 @@
 
                     <TextView
                         android:id="@+id/help_4_text"
+                        style="@style/medium_multi_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="습도가 높으면 공기 중의 물 분자에 빛이 굴절되어 별빛이 다소 흐리게 보일 수 있다고 해요. 습도가 높은 여름보다, 건조한 겨울이 밤하늘 별 관측에 선호되는 계절인 이유가 바로 여기에 있답니다."
-                        android:textColor="#84838D"
-                        android:textSize="12sp" />
+                        android:textColor="#84838D" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -434,6 +447,7 @@
                             app:srcCompat="@drawable/weather__detail_cloud" />
 
                         <TextView
+                            style="@style/semiBold_single_14"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -456,12 +470,12 @@
 
                     <TextView
                         android:id="@+id/help_5_text"
+                        style="@style/medium_multi_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="구름 한 점 없는 밤하늘이 반짝이는 별들을 보기 가장 좋은 날이랍니다.\n\n구름량이 0%에 가까울수록 하늘이 깨끗해 관측적합도 점수가 높아져요."
-                        android:textColor="#84838D"
-                        android:textSize="12sp" />
+                        android:textColor="#84838D" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -487,6 +501,7 @@
                             app:srcCompat="@drawable/weather__detail_finedust" />
 
                         <TextView
+                            style="@style/semiBold_single_14"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -509,12 +524,12 @@
 
                     <TextView
                         android:id="@+id/help_6_text"
+                        style="@style/medium_multi_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="미세먼지가 높은 날 고도가 낮은 지역에서는 밤하늘조차 뿌옇게 보일 수 있어요. 무엇보다도 건강에 좋지 않으니, 장기간 노출되는 것을 피해주세요."
-                        android:textColor="#84838D"
-                        android:textSize="12sp" />
+                        android:textColor="#84838D" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -540,6 +555,7 @@
                             app:srcCompat="@drawable/weather__detail_wind" />
 
                         <TextView
+                            style="@style/semiBold_single_14"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -562,12 +578,12 @@
 
                     <TextView
                         android:id="@+id/help_7_text"
+                        style="@style/medium_multi_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="적당히 선선한 바람은 별을 관측하는 기분을 보다 상쾌하게 해 줄 거에요. 다만, 바람이 너무 센 날을 고르지 않도록 유의해 주세요."
-                        android:textColor="#84838D"
-                        android:textSize="12sp" />
+                        android:textColor="#84838D" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -594,6 +610,7 @@
                             app:srcCompat="@drawable/weather__detail_moonlight" />
 
                         <TextView
+                            style="@style/semiBold_single_14"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -616,12 +633,12 @@
 
                     <TextView
                         android:id="@+id/help_8_text"
+                        style="@style/medium_multi_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="월령은 간단히 말해 달이 차오른 정도를 알 수 있는 지표에요. 0은 초승달, 0.5는 보름달, 1은 그믐달을 의미합니다. 달이 너무 밝다면, 달빛에 가려 별들이 제대로 보이지 않을 거에요.\n\n월령이 0이나 1에 가까울수록 달빛이 적어 관측적합도 점수가 높아져요."
-                        android:textColor="#84838D"
-                        android:textSize="12sp" />
+                        android:textColor="#84838D" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

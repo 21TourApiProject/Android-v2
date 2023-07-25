@@ -190,7 +190,11 @@ public class PostActivity extends AppCompatActivity {
                     postContent.setText(post.getPostContent());
                     //String postRealTime = post.getTime();
                     //postRealTime = postRealTime.substring(0, postRealTime.length() - 3);
-                    postTime.setText(post.getTime());
+                    if(!post.getTime().equals("00:00")){
+                        postTime.setText(post.getTime());
+                    }else {
+                        postTime.setVisibility(View.GONE);
+                    }
                     postDate.setText(post.getYearDate());
                     if(post.getWriteDate()!=null && post.getWriteTime()!=null){
                         String tmpDate= post.getWriteDate();

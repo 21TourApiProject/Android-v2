@@ -44,12 +44,11 @@ public class WeatherActivity extends AppCompatActivity {
     SimpleDateFormat MM_dd_EE = new SimpleDateFormat("MM. dd(EE)");
     @SuppressLint("SimpleDateFormat")
     SimpleDateFormat yyyy_MM_dd = new SimpleDateFormat("yyyy-MM-dd");
-    @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat yyyy_MM_dd_hh_mm = new SimpleDateFormat("yyyy-MM-dd:HH:mm");
+
+    WeatherLoadingDialog dialog; // 로딩
 
     private ImageView lightPollutionLevel;
-    private TextView todayComment1;
-    private TextView todayComment2;
+    private TextView todayComment;
     private TextView bestObservationalFit;
     private TextView mainEffect;
 
@@ -81,7 +80,6 @@ public class WeatherActivity extends AppCompatActivity {
     String hour; // 현재 hour ex) 18
     String min; // 현재 min ex) 10
 
-
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,10 +94,10 @@ public class WeatherActivity extends AppCompatActivity {
         TextView currentPosition = findViewById(R.id.current_position); // 양천읍
         View observatory = findViewById(R.id.observatory);
         TextView observatoryName = findViewById(R.id.observatory_name); // 의정부과학도서관
+        ImageView observatory_arrow = findViewById(R.id.observatory_arrow); // 화살표
         lightPollutionLevel = findViewById(R.id.light_pollution_level);
 
-        todayComment1 = findViewById(R.id.today_comment_1);
-        todayComment2 = findViewById(R.id.today_comment_2);
+        todayComment = findViewById(R.id.today_comment);
         bestObservationalFit = findViewById(R.id.best_observation_fit);
         mainEffect = findViewById(R.id.main_effect);
 
@@ -125,6 +123,8 @@ public class WeatherActivity extends AppCompatActivity {
 
         View weatherMap = findViewById(R.id.weather_map);
 
+        dialog = new WeatherLoadingDialog(WeatherActivity.this);
+        dialog.show();
 
         // 현재 시간(hour) 조회
         long now = System.currentTimeMillis();
@@ -147,12 +147,15 @@ public class WeatherActivity extends AppCompatActivity {
             currentPosition.setText(locationDTO.getLocation());
         }
         if (Objects.nonNull(observationId)) {
+            if (Objects.nonNull(fromObserve) && fromObserve) {
+                observatory_arrow.setVisibility(View.GONE);
+            }
             observatory.setVisibility(View.VISIBLE);
             observatoryName.setText(locationDTO.getLocation());
             observatory.setOnClickListener(v -> {
                 Intent observationIntent = new Intent(getApplicationContext(), ObservationsiteActivity.class);
                 observationIntent.putExtra("observationId", observationId);
-                if (Objects.nonNull(fromObserve) && fromObserve) observationIntent.putExtra("fromWeather", true);
+                observationIntent.putExtra("fromWeather", true);
                 startActivity(observationIntent);
             });
         }
@@ -171,8 +174,7 @@ public class WeatherActivity extends AppCompatActivity {
                             WeatherInfo.DetailWeather detail = info.getDetailWeather();
 
                             setLightPollutionLevel(info.getLightPollutionLevel());
-                            todayComment1.setText(info.getTodayComment1());
-                            todayComment2.setText(info.getTodayComment2());
+                            todayComment.setText(info.getTodayComment1() + "\n" + info.getTodayComment2());
                             bestObservationalFit.setText(Const.Weather.BEST_OBSERVATIONAL_FIT + info.getBestObservationalFit() + Const.Weather.PERCENT);
                             if (info.getBestObservationalFit() < 60) {
                                 bestObservationalFit.setBackgroundResource(R.drawable.wt__bad_observational_fit);
@@ -205,16 +207,15 @@ public class WeatherActivity extends AppCompatActivity {
                         } else {
                             Log.e(TAG, "서버 api 호출 실패");
                         }
+                        dialog.dismiss();
                     }
 
                     @Override
                     public void onFailure(Call<WeatherInfo> call, Throwable t) {
                         Log.e("연결실패", t.getMessage());
+                        dialog.dismiss();
                     }
                 });
-
-//        best_observation_fit = findViewById(R.id.best_observation_fit);
-
 
         // 뒤로 가기
         weatherBack.setOnClickListener(v -> finish());
@@ -242,13 +243,5 @@ public class WeatherActivity extends AppCompatActivity {
         } else {
             lightPollutionLevel.setBackgroundResource(R.drawable.light_worst);
         }
-    }
-
-    // unix UTC 을 HH:mm 로 바꾸는 메서드
-    public String getHHmm(String unixTime) {
-        Date unixHourMin = new Date(Long.parseLong(unixTime) * 1000L);
-        SimpleDateFormat HHourMin = new SimpleDateFormat("HH:mm");
-        HHourMin.setTimeZone(java.util.TimeZone.getTimeZone("GMT+9"));
-        return HHourMin.format(unixHourMin);
     }
 }

@@ -27,13 +27,12 @@
                 android:src="@drawable/postwrite_xbtn" />
 
             <TextView
+                style="@style/semiBold_single_16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingEnd="24dp"
-                android:text="위치 검색"
-                android:textFontWeight="600"
-                android:textSize="16sp" />
+                android:text="위치 검색" />
 
         </LinearLayout>
 
@@ -70,13 +69,13 @@
 
                         <EditText
                             android:id="@+id/location_search"
+                            style="@style/medium_single_14"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@null"
                             android:hint="날씨가 궁금한 지역, 관측지명을 검색하세요"
                             android:inputType="text"
-                            android:textColorHint="#84838D"
-                            android:textSize="14sp" />
+                            android:textColorHint="#84838D" />
 
                     </LinearLayout>
 
@@ -85,8 +84,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
                     android:layout_marginTop="20dp"
+                    android:orientation="vertical"
                     android:paddingHorizontal="27dp">
 
                     <androidx.recyclerview.widget.RecyclerView

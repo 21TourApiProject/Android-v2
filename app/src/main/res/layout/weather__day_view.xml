@@ -3,27 +3,29 @@
     android:layout_width="52dp"
     android:layout_height="wrap_content"
     android:gravity="center"
+    android:layout_marginRight="12dp"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/day_day"
+        style="@style/medium_single_14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="월"
-        android:textColor="#84838D"
-        android:textSize="14sp" />
+        android:textColor="#84838D" />
 
     <TextView
         android:id="@+id/day_date"
+        style="@style/medium_single_10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="3.1"
-        android:textColor="#84838D"
-        android:textSize="10sp" />
+        android:textColor="#84838D" />
 
     <TextView
         android:id="@+id/day_observation_fit"
+        style="@style/medium_single_14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"

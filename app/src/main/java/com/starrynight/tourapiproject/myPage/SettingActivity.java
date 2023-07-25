@@ -38,7 +38,7 @@ public class SettingActivity extends AppCompatActivity {
         userId = (Long) intent.getSerializableExtra("userId"); //전 페이지에서 받아온 사용자 id
 
         //뒤로 가기
-        ImageView settingBack = findViewById(R.id.settingBack);
+        LinearLayout settingBack = findViewById(R.id.settingBack);
         settingBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

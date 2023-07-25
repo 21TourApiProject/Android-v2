@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,7 +89,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         newPwdCheckGuide = findViewById(R.id.newPwdCheckGuide);
 
         //뒤로 가기
-        ImageView passwordBack = findViewById(R.id.passwordBack);
+        LinearLayout passwordBack = findViewById(R.id.passwordBack);
         passwordBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

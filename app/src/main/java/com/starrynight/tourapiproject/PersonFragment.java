@@ -68,10 +68,8 @@ public class PersonFragment extends Fragment {
 
     Long userId;
     User2 user;
-    ArrayList<String> myHashTagResult;
     ImageView profileImage;
     TextView nickName;
-    RecyclerView myHashTag;
 
     LinearLayout myWishLayout;
     LinearLayout myPostLayout;
@@ -99,7 +97,6 @@ public class PersonFragment extends Fragment {
 
         nickName = v.findViewById(R.id.nickName);
         profileImage = v.findViewById(R.id.profileImage);
-        myHashTag = v.findViewById(R.id.myHashTag);
 
         myWishLayout = v.findViewById(R.id.myWishLayout);
         myPostLayout = v.findViewById(R.id.myPostLayout);
@@ -159,53 +156,6 @@ public class PersonFragment extends Fragment {
             @Override
             public void onFailure(Call<User2> call, Throwable t) {
                 Log.e("연결실패", t.getMessage());
-            }
-        });
-
-
-        //사용자 해시태그를 불러오기 위한 get api
-        myHashTagResult = new ArrayList<>();
-        LinearLayoutManager myHashTagLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        myHashTag.setLayoutManager(myHashTagLayoutManager);
-
-        Call<List<String>> call3 = RetrofitClient.getApiService().getMyHashTag(userId);
-        call3.enqueue(new Callback<List<String>>() {
-            @Override
-            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-                if (response.isSuccessful()) {
-                    myHashTagResult = (ArrayList<String>) response.body();
-                    ArrayList<String> three = new ArrayList<>();
-
-                    if (myHashTagResult.size() > 3) {
-                        for (int i = 0; i < 3; i++) {
-                            three.add(myHashTagResult.get(i));
-                        }
-                    } else {
-                        three = myHashTagResult;
-                    }
-
-                    MyHashTagAdapter hashTagAdapter = new MyHashTagAdapter(three);
-                    myHashTag.setAdapter(hashTagAdapter);
-                } else {
-                    Log.d(TAG, "사용자 해시태그 불러오기 실패");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<String>> call, Throwable t) {
-                Log.e("연결실패", t.getMessage());
-            }
-        });
-
-        //선호 해시태크 변경 페이지로 이동
-        LinearLayout changeMyHashTag = v.findViewById(R.id.changeMyHashTag);
-        changeMyHashTag.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SelectMyHashTagActivity.class);
-                intent.putExtra("userId", userId);
-                intent.putExtra("hashtag", myHashTagResult);
-                startActivityForResult(intent, HAVE_TO_REFRESH);
             }
         });
 

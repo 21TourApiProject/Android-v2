@@ -1,44 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context=".signUpPage.PhoneAuthActivity">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="49dp">
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="14dp">
 
-                <ImageView
+                <LinearLayout
                     android:id="@+id/authBack"
-                    style="@style/ImageButton.size49"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:paddingVertical="18dp"
-                    android:paddingStart="22dp"
-                    android:paddingEnd="21dp"
-                    android:src="@drawable/star__search_back"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:gravity="center"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        style="@style/ImageButton.size49"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/back_btn" />
+                </LinearLayout>
 
                 <TextView
+                    style="@style/semiBold_single_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/scdream"
                     android:text="본인 인증"
-                    android:textSize="17sp"
-                    app:layout_constraintBottom_toBottomOf="@id/authBack"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -48,17 +52,24 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="42dp"
-                android:layout_marginRight="42dp"
+                android:layout_marginHorizontal="20dp"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/textView22"
+                    style="@style/semiBold_single_14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="별자리 여행을 위해 본인 인증이 필요해요." />
+
+                <TextView
+                    style="@style/semiBold_single_14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="60dp"
-                    android:layout_weight="1"
-                    android:text="휴대폰 번호"
-                    android:textSize="12sp" />
+                    android:layout_marginTop="28dp"
+                    android:text="휴대폰 번호" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -70,26 +81,25 @@
                         android:id="@+id/mobilePhoneNumber"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="6"
                         android:background="@drawable/findemail_write2"
-                        android:hint="예시) 01077778888"
+                        android:hint="예시) 010-0000-0000"
+                        android:layout_weight="6"
                         android:inputType="phone"
-                        android:paddingLeft="10dp"
-                        android:textSize="14sp" />
+                        android:padding="12dp"
+                        style="@style/medium_single_14"
+                        />
 
-                    <Button
+                    <TextView
                         android:id="@+id/startAuth"
+                        style="@style/semiBold_single_12"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="end"
-                        android:layout_marginLeft="14dp"
-                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
                         android:background="@drawable/round_btn"
-                        android:backgroundTint="@color/point_dark"
+                        android:backgroundTint="@color/point_blue"
+                        android:padding="12dp"
                         android:text="인증 요청"
-                        android:fontFamily="@font/spoqahansansneoregular"
-                        android:textSize="12sp"
                         android:visibility="visible" />
 
                     <Button
@@ -101,8 +111,8 @@
                         android:layout_weight="1"
                         android:background="@drawable/round_btn"
                         android:backgroundTint="@color/point_dark"
-                        android:text="인증 재요청"
                         android:fontFamily="@font/spoqahansansneoregular"
+                        android:text="인증 재요청"
                         android:textSize="12sp"
                         android:visibility="gone" />
 
@@ -110,69 +120,71 @@
 
                 <TextView
                     android:id="@+id/phoneGuide"
+                    style="@style/semiBold_single_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:textColor="@color/point_purple"
-                    android:textSize="12sp" />
+                    android:textColor="@color/point_blue" />
 
                 <TextView
+                    style="@style/semiBold_single_14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:text="인증 번호"
-                    android:textSize="12sp" />
+                    android:text="인증 번호" />
 
                 <EditText
                     android:id="@+id/authCode"
+                    style="@style/medium_single_14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
+                    android:layout_marginTop="12dp"
                     android:background="@drawable/signup_box1"
-                    android:inputType="number"
                     android:hint="숫자 6자리"
-                    android:paddingLeft="10dp"
-                    android:textSize="14sp" />
+                    android:inputType="number"
+                    android:padding="12dp" />
 
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginTop="40dp"-->
-<!--                    android:orientation="horizontal">-->
+                <!--                <LinearLayout-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginTop="40dp"-->
+                <!--                    android:orientation="horizontal">-->
 
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_gravity="center"-->
-<!--                        android:text="휴대폰 번호 수집 동의 :"-->
-<!--                        android:textSize="12sp" />-->
+                <!--                    <TextView-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_gravity="center"-->
+                <!--                        android:text="휴대폰 번호 수집 동의 :"-->
+                <!--                        android:textSize="12sp" />-->
 
-<!--                    <Button-->
-<!--                        android:id="@+id/phoneAgree"-->
-<!--                        android:layout_width="18dp"-->
-<!--                        android:layout_height="18dp"-->
-<!--                        android:layout_gravity="center"-->
-<!--                        android:layout_marginLeft="53dp"-->
-<!--                        android:background="@drawable/signup_agree_non" />-->
-<!--                </LinearLayout>-->
+                <!--                    <Button-->
+                <!--                        android:id="@+id/phoneAgree"-->
+                <!--                        android:layout_width="18dp"-->
+                <!--                        android:layout_height="18dp"-->
+                <!--                        android:layout_gravity="center"-->
+                <!--                        android:layout_marginLeft="53dp"-->
+                <!--                        android:background="@drawable/signup_agree_non" />-->
+                <!--                </LinearLayout>-->
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/verify"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="100dp"
-                android:layout_marginBottom="35.34dp"
-                android:layout_marginStart="42dp"
-                android:layout_marginEnd="42dp"
-                android:background="@drawable/round_btn"
-                android:fontFamily="@font/spoqahansansneobold"
-                android:text="완료"
-                android:textSize="14sp" />
+
 
         </LinearLayout>
     </ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/verify"
+            style="@style/semiBold_single_16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/round_btn"
+            android:text="가입 완료" />
+    </LinearLayout>
+
+</LinearLayout>
