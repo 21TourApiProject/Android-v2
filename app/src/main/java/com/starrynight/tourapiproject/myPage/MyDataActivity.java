@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -58,7 +59,7 @@ public class MyDataActivity extends AppCompatActivity {
         profileImage2.setClipToOutline(true);
 
         //뒤로 가기
-        ImageView myDataBack = findViewById(R.id.myDataBack);
+        LinearLayout myDataBack = findViewById(R.id.myDataBack);
         myDataBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

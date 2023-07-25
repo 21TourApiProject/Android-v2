@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,7 +68,7 @@ public class FindPasswordActivity extends AppCompatActivity implements
     private EditText findPwdRealName;
     private EditText mobilePhoneNumber;
     private EditText authCode;
-    private Button startAuth;
+    private TextView startAuth;
     private Button resendAuth;
     private Button verify;
     private TextView showPassword;
@@ -113,7 +114,7 @@ public class FindPasswordActivity extends AppCompatActivity implements
 
 
         //뒤로 가기
-        ImageView findPasswordBack = findViewById(R.id.passwordBack);
+        LinearLayout findPasswordBack = findViewById(R.id.passwordBack);
         findPasswordBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

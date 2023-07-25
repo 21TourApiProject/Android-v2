@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,8 @@ import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.signUpPage.signUpRetrofit.RetrofitClient;
+
+import org.w3c.dom.Text;
 
 import java.util.concurrent.TimeUnit;
 
@@ -66,7 +69,7 @@ public class FindEmailActivity extends AppCompatActivity implements
     private EditText findEmailRealName;
     private EditText mobilePhoneNumber;
     private EditText authCode;
-    private Button startAuth;
+    private TextView startAuth;
     private Button resendAuth;
     private Button verify;
     private TextView showEmail;
@@ -111,7 +114,7 @@ public class FindEmailActivity extends AppCompatActivity implements
 
 
         //뒤로 가기
-        ImageView findEmailBack = findViewById(R.id.findEmailBack);
+        LinearLayout findEmailBack = findViewById(R.id.findEmailBack);
         findEmailBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

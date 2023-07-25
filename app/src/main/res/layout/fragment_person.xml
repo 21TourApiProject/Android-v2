@@ -23,20 +23,21 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/goPostWrite"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_marginEnd="17.41dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/mypage__plus" />
-
-                <Button
                     android:id="@+id/goSetting"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_marginEnd="15.28dp"
                     android:layout_gravity="center"
+                    android:layout_marginEnd="12dp"
                     android:background="@drawable/mypage__setting" />
+
+                <Button
+                    android:id="@+id/goPostWrite"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/mainpage_postwrite" />
+
             </LinearLayout>
 
             <ImageView
@@ -60,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="닉네임"
-                    android:textSize="17sp" />
+                    style="@style/semiBold_single_14" />
 
                 <ImageView
                     android:id="@+id/pencil"
@@ -69,32 +70,6 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="7.45dp"
                     app:srcCompat="@drawable/mydata_edit" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/changeMyHashTag"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/myHashTag"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center">
-
-                </androidx.recyclerview.widget.RecyclerView>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="-5dp"
-                    android:layout_marginTop="2dp"
-                    app:srcCompat="@drawable/mypage_morehashtag" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -110,20 +85,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="내 북마크"
-                    android:fontFamily="@font/spoqahansansneomedium"
-                    android:textSize="17sp" />
+                    style="@style/semiBold_single_16" />
 
-                <FrameLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:gravity="center|end">
 
-                    <Button
-                        android:layout_width="5dp"
-                        android:layout_height="10dp"
-                        android:layout_gravity="center_vertical|end"
-                        android:layout_marginEnd="15.28dp"
-                        android:background="@drawable/move_text" />
-                </FrameLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        app:srcCompat="@drawable/move_text" />
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -166,7 +140,7 @@
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@color/gray"
-                        android:textSize="12sp" />
+                        style="@style/medium_single_12" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -199,7 +173,7 @@
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@color/gray"
-                        android:textSize="12sp" />
+                        style="@style/medium_single_12" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -233,7 +207,7 @@
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@color/gray"
-                        android:textSize="12sp" />
+                        style="@style/medium_single_12" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -255,22 +229,20 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendard_variable"
-                    android:textFontWeight="600"
+                    style="@style/semiBold_single_16"
                     android:text="내 게시물"
-                    android:textSize="17sp" />
-
-                <FrameLayout
+                    />
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:gravity="center|end">
 
-                    <Button
-                        android:layout_width="5dp"
-                        android:layout_height="10dp"
-                        android:layout_gravity="center_vertical|end"
-                        android:layout_marginEnd="15.28dp"
-                        android:background="@drawable/move_text" />
-                </FrameLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        app:srcCompat="@drawable/move_text" />
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -314,7 +286,7 @@
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@color/gray"
-                        android:textSize="12sp" />
+                        style="@style/medium_single_12" />
 
                 </LinearLayout>
 
@@ -348,7 +320,7 @@
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@color/gray"
-                        android:textSize="12sp" />
+                        style="@style/medium_single_12" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -381,7 +353,7 @@
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@color/gray"
-                        android:textSize="12sp" />
+                        style="@style/medium_single_12" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -398,9 +370,7 @@
                     android:id="@+id/textView18"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendard_variable"
-                    android:textFontWeight="700"
-                    android:textSize="16sp"
+                    style="@style/semiBold_single_16"
                     android:text="내가 쓴 댓글" />
                 <LinearLayout
                     android:layout_width="match_parent"
