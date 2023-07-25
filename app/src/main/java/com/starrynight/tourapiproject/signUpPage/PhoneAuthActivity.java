@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,7 +73,7 @@ public class PhoneAuthActivity extends AppCompatActivity implements
     private EditText mobilePhoneNumber;
     private TextView phoneGuide; //전화번호 칸 바로 밑에 글칸
     private EditText authCode;
-    private Button startAuth;
+    private TextView startAuth;
     private Button resendAuth;
     private Button verify;
 
@@ -132,7 +133,7 @@ public class PhoneAuthActivity extends AppCompatActivity implements
 //        pass.setVisibility(View.GONE);
 
         //뒤로 가기
-        ImageView authBack = findViewById(R.id.authBack);
+        LinearLayout authBack = findViewById(R.id.authBack);
         authBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

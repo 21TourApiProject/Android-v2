@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -50,7 +51,7 @@ public class CustomerSCActivity extends AppCompatActivity {
             }
         });
 
-        ImageView csBack = findViewById(R.id.csBack);
+        LinearLayout csBack = findViewById(R.id.csBack);
         csBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

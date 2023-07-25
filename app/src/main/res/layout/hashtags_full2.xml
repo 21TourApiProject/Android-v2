@@ -5,8 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/hashtag_background"
     android:gravity="center"
-    android:paddingHorizontal="12dp"
-    android:paddingVertical="6dp"
+    android:paddingStart="8dp"
     android:layout_marginEnd="8dp">
 
 
@@ -14,7 +13,7 @@
         android:id="@+id/mainpost_pin"
         android:layout_width="19dp"
         android:layout_height="19dp"
-android:layout_marginEnd="4dp"
+        android:layout_marginEnd="4dp"
         app:srcCompat="@drawable/post_observationpin" />
 
     <TextView
@@ -26,6 +25,5 @@ android:layout_marginEnd="4dp"
         style="@style/medium_single_14"
         android:text="#해쉬태그"
         android:textColor="@color/gray_500"
-
         />
 </LinearLayout>
