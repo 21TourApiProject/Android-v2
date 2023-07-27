@@ -166,7 +166,6 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
         constList.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
         constAdapter = new StarViewAdapter();
         constList.setAdapter(constAdapter);
-        constList.addItemDecoration(new StarRecyclerViewWidth(20,0));
 
         // 오늘의 별자리 리스트 불러오는 api
         Call<List<StarItem>> todayConstCall = RetrofitClient.getApiService().getTodayConst();

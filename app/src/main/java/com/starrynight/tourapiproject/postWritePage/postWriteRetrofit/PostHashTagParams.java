@@ -17,8 +17,13 @@ public class PostHashTagParams implements Serializable {
 
     private String hashTagName;
 
+    private String areaName;
+
+    private Long areaId;
+
     public PostHashTagParams() {
     }
+
 
     public void setHashTagName(String hashTagName) {
         this.hashTagName = hashTagName;
@@ -28,7 +33,25 @@ public class PostHashTagParams implements Serializable {
         return hashTagName;
     }
 
-    public PostHashTagParams(String hashTagName) {
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
+
+    public Long getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(Long areaId) {
+        this.areaId = areaId;
+    }
+
+    public PostHashTagParams(String hashTagName, String areaName,Long areaId) {
         this.hashTagName = hashTagName;
+        this.areaName = areaName;
+        this.areaId=areaId;
     }
 }

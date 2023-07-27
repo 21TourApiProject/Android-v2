@@ -100,7 +100,8 @@
                 android:background="@drawable/wt__card_view_round"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingVertical="16dp">
+                android:paddingVertical="16dp"
+                android:paddingHorizontal="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -119,10 +120,10 @@
                         android:id="@+id/const_best_month_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="8dp"
+                        android:layout_marginEnd="8dp"
                         android:lineSpacingExtra="4dp"
                         style="@style/semiBold_single_20"
-                        android:text="4월 ~ 6월"
+                        android:text="4월~6월"
                         android:textAlignment="center"
                         />
 
@@ -180,6 +181,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/constStoryLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="26dp"
@@ -232,6 +234,7 @@
                         android:layout_marginTop="11dp"
                         android:layout_marginEnd="11dp"
                         android:src="@drawable/star__const_voice_btn"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 

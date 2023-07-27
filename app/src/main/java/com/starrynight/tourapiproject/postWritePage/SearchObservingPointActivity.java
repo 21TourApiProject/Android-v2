@@ -105,6 +105,7 @@ public class SearchObservingPointActivity extends AppCompatActivity {
                     for (int i = 0; i < observationList.size() - 1; i++) {
                         searchitemArrayList.add(new Search_item(observationList.get(i).getObservationName(), observationList.get(i).getAddress()));
                     }
+                    search_item_adapter.filterList(searchitemArrayList);
                 } else {
                     Log.d("observation", "관측지 리스트 업로드 실패");
                 }

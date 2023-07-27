@@ -20,6 +20,7 @@ import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 import com.starrynight.tourapiproject.R;
+import com.starrynight.tourapiproject.observationPage.RecyclerDecoration;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostHashTagAdapter;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostHashTagParams;
 import com.starrynight.tourapiproject.searchPage.filter.HashTagItem;
@@ -89,6 +90,9 @@ public class AddHashTagActivity extends AppCompatActivity {
                 if (postHashTagParams2.get(i).getHashTagName() != null) {
                     hashtag.add(postHashTagParams2.get(i).getHashTagName());
                 }
+                if(postHashTagParams2.get(i).getAreaName()!=null){
+                    hashtag.add(postHashTagParams2.get(i).getAreaName());
+                }
             }
         }
 
@@ -125,6 +129,7 @@ public class AddHashTagActivity extends AppCompatActivity {
         facilityRecyclerView=findViewById(R.id.facilityPostHashtag);
         feeRecyclerView=findViewById(R.id.feePostHashTag);
         areaRecyclerView = findViewById(R.id.localPostHashTag);
+        areaRecyclerView.addItemDecoration(new RecyclerDecoration(10));
 
         Call<List<HashTagItem>> areaCall = RetrofitClient.getApiService().getAreaFilter();
         areaCall.enqueue(new Callback<List<HashTagItem>>() {
@@ -228,7 +233,8 @@ public class AddHashTagActivity extends AppCompatActivity {
                 for(int i=0;i<localAdapter.getItemCount();i++){
                     if(localAdapter.getItem(i).getIsActive()==VIEWTYPE_ACTIVE){
                         PostHashTagParams postHashTagParam = new PostHashTagParams();
-                        postHashTagParam.setHashTagName(localAdapter.getItem(i).getName());
+                        postHashTagParam.setAreaName(localAdapter.getItem(i).getName());
+                        postHashTagParam.setAreaId(localAdapter.getItem(i).getId());
                         postHashTagParams.add(postHashTagParam);
                         finallist.add(localAdapter.getItem(i).getName());
                     }

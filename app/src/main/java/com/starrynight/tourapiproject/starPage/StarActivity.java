@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,6 +47,7 @@ import retrofit2.Response;
 public class StarActivity extends AppCompatActivity {
     private static final String TAG = "Star page";
     TextView constName,rightNow,hashTag;
+    LinearLayout constStoryLayout;
 
     // 별자리 상세정보 뷰
     TextView constMtdTv, constBestMonthTv, constStoryTv, constSummary;
@@ -79,6 +81,7 @@ public class StarActivity extends AppCompatActivity {
         constFeatureImg = findViewById(R.id.const_feature_img);
 
         constStoryTv = findViewById(R.id.const_story);
+        constStoryLayout = findViewById(R.id.constStoryLayout);
         constMtdTv = findViewById(R.id.const_mtd_tv);
         constBestMonthTv = findViewById(R.id.const_best_month_tv);
         constSummary = findViewById(R.id.constSummary);
@@ -87,12 +90,12 @@ public class StarActivity extends AppCompatActivity {
         story_play_btn = findViewById(R.id.story_play_btn);
         rightNow = findViewById(R.id.rightNow);
 
-        ttsClient = new TextToSpeechClient.Builder()
-                .setSpeechMode(TextToSpeechClient.NEWTONE_TALK_1)     // 음성합성방식
-                .setSpeechSpeed(1.0)            // 발음 속도(0.5~4.0)
-                .setSpeechVoice(TextToSpeechClient.VOICE_WOMAN_READ_CALM)  //TTS 음색 모드 설정(여성 차분한 낭독체)
-                .setListener(ttsListener)
-                .build();
+//        ttsClient = new TextToSpeechClient.Builder()
+//                .setSpeechMode(TextToSpeechClient.NEWTONE_TALK_1)     // 음성합성방식
+//                .setSpeechSpeed(1.0)            // 발음 속도(0.5~4.0)
+//                .setSpeechVoice(TextToSpeechClient.VOICE_WOMAN_READ_CALM)  //TTS 음색 모드 설정(여성 차분한 낭독체)
+//                .setListener(ttsListener)
+//                .build();
 
         recyclerView = findViewById(R.id.feature_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
@@ -109,6 +112,9 @@ public class StarActivity extends AppCompatActivity {
                     Glide.with(StarActivity.this).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/b_" + constData.getConstEng() + ".png").fitCenter().into(constImage);
                     constName.setText(constData.getConstName());
                     constStoryTv.setText(constData.getConstStory());
+                    if(constData.getConstStory().isEmpty()){
+                        constStoryLayout.setVisibility(View.GONE);
+                    }
                     constMtdTv.setText(constData.getConstMtd());
                     constBestMonthTv.setText(constData.getConstBestMonth());
                     //매일 볼수 있는 별자리일 경우 배너 추가
@@ -170,7 +176,7 @@ public class StarActivity extends AppCompatActivity {
                     });
                     constSummary.setText(constData.getSummary());
 
-                    ttsClient.setSpeechText(constData.getConstStory());   //뉴톤톡 하고자 하는 문자열을 미리 세팅.
+//                    ttsClient.setSpeechText(constData.getConstStory());   //뉴톤톡 하고자 하는 문자열을 미리 세팅.
                 } else {
                 }
             }
@@ -231,22 +237,22 @@ public class StarActivity extends AppCompatActivity {
         });
     }
 
-    private TextToSpeechListener ttsListener = new TextToSpeechListener() {
-        @Override
-        public void onFinished() {
-            int intSentSize = ttsClient.getSentDataSize();      //세션 중에 전송한 데이터 사이즈
-            int intRecvSize = ttsClient.getReceivedDataSize();  //세션 중에 전송받은 데이터 사이즈
-
-            final String strInacctiveText = "handleFinished() SentSize : " + intSentSize + "  RecvSize : " + intRecvSize;
-
-            Log.i(TAG, strInacctiveText);
-        }
-
-        @Override
-        public void onError(int code, String message) {
-            Log.e(TAG, "카카오음성오류: " + message);
-        }
-    };
+//    private TextToSpeechListener ttsListener = new TextToSpeechListener() {
+//        @Override
+//        public void onFinished() {
+//            int intSentSize = ttsClient.getSentDataSize();      //세션 중에 전송한 데이터 사이즈
+//            int intRecvSize = ttsClient.getReceivedDataSize();  //세션 중에 전송받은 데이터 사이즈
+//
+//            final String strInacctiveText = "handleFinished() SentSize : " + intSentSize + "  RecvSize : " + intRecvSize;
+//
+//            Log.i(TAG, strInacctiveText);
+//        }
+//
+//        @Override
+//        public void onError(int code, String message) {
+//            Log.e(TAG, "카카오음성오류: " + message);
+//        }
+//    };
 
     public void onDestroy() {
         super.onDestroy();
@@ -255,7 +261,7 @@ public class StarActivity extends AppCompatActivity {
 
     public void onPause() {
         super.onPause();
-        if (ttsClient.isPlaying())
-            ttsClient.stop();
+//        if (ttsClient.isPlaying())
+//            ttsClient.stop();
     }
 }

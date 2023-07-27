@@ -31,7 +31,10 @@ import com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.myPage.myPageRetrofit.User2;
 import com.starrynight.tourapiproject.myPage.myPost.MyPost3;
 import com.starrynight.tourapiproject.myPage.myWish.MyWish;
+import com.starrynight.tourapiproject.myPage.myWish.post.MyComment;
 import com.starrynight.tourapiproject.myPage.myWish.post.MyCommentAdapter;
+import com.starrynight.tourapiproject.myPage.myWish.post.OnMyCommentItemClickListener;
+import com.starrynight.tourapiproject.postPage.PostActivity;
 import com.starrynight.tourapiproject.postWritePage.PostWriteActivity;
 import com.starrynight.tourapiproject.signUpPage.SelectMyHashTagActivity;
 
@@ -73,19 +76,15 @@ public class PersonFragment extends Fragment {
 
     LinearLayout myWishLayout;
     LinearLayout myPostLayout;
+    LinearLayout myCommentLayout;
 
-    ImageView myWishImage1;
-    TextView myWishTitle1;
-    ImageView myWishImage2;
-    TextView myWishTitle2;
-    ImageView myWishImage3;
-    TextView myWishTitle3;
-    ImageView myPostImage1;
-    TextView myPostTitle1;
-    ImageView myPostImage2;
-    TextView myPostTitle2;
-    ImageView myPostImage3;
-    TextView myPostTitle3;
+    ImageView myWishImage1, myWishImage2,myWishImage3;
+    TextView myWishTitle1,myWishTitle2,myWishTitle3;
+    ImageView myPostImage1,myPostImage2,myPostImage3;
+    TextView myPostTitle1,myPostTitle2,myPostTitle3;
+    ImageView myCommentImage1, myCommentImage2, myCommentImage3;
+    TextView myCommentTitle1,myCommentTitle2,myCommentTitle3;
+
 
     List<MyWish> myWishes = new ArrayList<>();
     List<MyPost3> myPost3s = new ArrayList<>();
@@ -113,6 +112,12 @@ public class PersonFragment extends Fragment {
         myPostTitle2 = v.findViewById(R.id.myPostTitle2);
         myPostImage3 = v.findViewById(R.id.myPostImage3);
         myPostTitle3 = v.findViewById(R.id.myPostTitle3);
+        myCommentImage1 = v.findViewById(R.id.myCommentImage1);
+        myCommentImage2 = v.findViewById(R.id.myCommentImage2);
+        myCommentImage3 = v.findViewById(R.id.myCommentImage3);
+        myCommentTitle1 = v.findViewById(R.id.myCommentTitle1);
+        myCommentTitle2 = v.findViewById(R.id.myCommentTitle2);
+        myCommentTitle3 = v.findViewById(R.id.myCommentTitle3);
 
         profileImage.setBackground(new ShapeDrawable(new OvalShape()));
         profileImage.setClipToOutline(true);
@@ -267,6 +272,51 @@ public class PersonFragment extends Fragment {
             @Override
             public void onFailure(Call<List<MyPost3>> call, Throwable t) {
                 Log.e("연결실패", t.getMessage());
+            }
+        });
+
+        //내 댓글 가져오는 api
+        Call<List<MyComment>> commentCall = RetrofitClient.getApiService().getMyComments(userId);
+        commentCall.enqueue(new Callback<List<MyComment>>() {
+            @Override
+            public void onResponse(Call<List<MyComment>> call, Response<List<MyComment>> response) {
+                if(response.isSuccessful()){
+                    List<MyComment> myComments = response.body();
+                    int size = myComments.size();
+                    int i = 0;
+                    if (size == 0)
+                        myCommentLayout.setVisibility(View.GONE);
+                    else {
+                        if (myComments.get(i).getThumbnail() != null) {
+                            Glide.with(getContext()).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + myComments.get(i).getThumbnail()).into(myCommentImage1);
+                        } else
+                            myCommentImage1.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.default_image));
+                        myCommentTitle1.setText(myComments.get(i).getComment());
+                        i++;
+                        if (size > 1) {
+                            if (myComments.get(i).getThumbnail() != null) {
+                                Glide.with(getContext()).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + myComments.get(i).getThumbnail()).into(myCommentImage2);
+                            } else
+                                myCommentImage2.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.default_image));
+                            myCommentTitle2.setText(myComments.get(i).getComment());
+                            i++;
+                            if (size > 2) {
+                                if (myComments.get(i).getThumbnail() != null) {
+                                    Glide.with(getContext()).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + myComments.get(i).getThumbnail()).into(myCommentImage3);
+                                } else
+                                    myCommentImage3.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.default_image));
+                                myCommentTitle3.setText(myComments.get(i).getComment());
+                            }
+                        }
+                    }
+                }else{
+                    Log.d("myComment", "내가 쓴 댓글 가져오기 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<MyComment>> call, Throwable t) {
+                Log.e("myComment", "내가 쓴 댓글 가져오기 인터넷 연결 실패");
             }
         });
 

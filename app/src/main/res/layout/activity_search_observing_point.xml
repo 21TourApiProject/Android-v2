@@ -96,7 +96,6 @@
                     android:id="@+id/addPositionLinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="20dp"
                     android:orientation="vertical"
                     android:paddingHorizontal="26dp">
 
@@ -144,7 +143,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:paddingHorizontal="26dp">
+                    android:layout_marginTop="20dp"
+                    android:paddingHorizontal="27dp">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/searchObservationRecyclerView"
@@ -157,7 +157,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:orientation="vertical"
-                    android:paddingHorizontal="26dp"
+                    android:paddingHorizontal="27dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 

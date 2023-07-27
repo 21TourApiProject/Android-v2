@@ -22,15 +22,15 @@
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="14dp"
+                    android:layout_marginHorizontal="16dp">
 
                     <ImageView
                         android:id="@+id/select_time_back"
                         style="@style/ImageButton.size49"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="14dp"
-                        android:layout_marginStart="16dp"
                         android:src="@drawable/postwrite_xbtn" />
 
                     <TextView
@@ -46,10 +46,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|end"
-                        android:layout_marginEnd="10dp"
                         style="@style/medium_single_14"
-                        android:padding="10dp"
-                        android:text="저장"
+                        android:text="확인"
                         />
                 </FrameLayout>
 

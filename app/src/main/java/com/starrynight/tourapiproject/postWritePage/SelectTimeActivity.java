@@ -63,7 +63,7 @@ public class SelectTimeActivity extends AppCompatActivity {
                 if (dayOfMonth < 10) {
                     day = "0" + Integer.toString(dayOfMonth);
                 }
-                datePicker.setText(year + "." + month + "." + day);
+                datePicker.setText(year + ". " + month + ". " + day);
                 String realDate = year+"-"+month+"-"+day;
                 yearDate = realDate;
 
@@ -88,7 +88,10 @@ public class SelectTimeActivity extends AppCompatActivity {
                 if(hourOfDay<12){
                     day=true;
                     timePicker.setText("오전 "+hour + ":" + min);
-                }else{day=false;
+                }else{
+                    day=false;
+                    int minus=Integer.valueOf(hour).intValue()-12;
+                    hour=Integer.toString(minus);
                     timePicker.setText("오후 " +hour + ":" + min);}
             }
         };
