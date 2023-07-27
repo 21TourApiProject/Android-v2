@@ -104,18 +104,23 @@ public class SearchResultActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                Log.d(TAG, "작동?");
                 keyword = query;
                 pagenum = 0;
                 observationResult.clear();
                 postResult.clear();
                 loadingDialog.show();
+                mapFragment.initMapView();
                 getObservation(0);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                return true;
+                if(newText.equals("")){
+                    this.onQueryTextSubmit("");
+                }
+                return false;
             }
         });
 

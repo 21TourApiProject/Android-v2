@@ -181,8 +181,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             if (Objects.nonNull(info.getBestTime())) {
                                 recommendTime.setText(info.getBestTime());
                             } else {
-                                mainLocation.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.main__location_back_red));
-                                star.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.main__weather_star_gray));
+                                mainLocation.setBackground(ContextCompat.getDrawable(mainLocation.getContext(),R.drawable.main__location_back_red));
+                                star.setImageDrawable(ContextCompat.getDrawable(star.getContext(), R.drawable.main__weather_star_gray));
                                 recommendTime.setText(info.getMainEffect());
                             }
                             areaId = info.getAreaId();
