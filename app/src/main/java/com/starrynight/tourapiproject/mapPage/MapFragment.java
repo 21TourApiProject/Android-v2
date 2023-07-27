@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,6 +32,7 @@ import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
 import com.starrynight.tourapiproject.observationPage.RecyclerHashTagAdapter;
 import com.starrynight.tourapiproject.observationPage.RecyclerHashTagItem;
+import com.starrynight.tourapiproject.searchPage.SearchResultActivity;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchParams1;
 
 import net.daum.mf.map.api.CalloutBalloonAdapter;
@@ -64,6 +66,8 @@ import retrofit2.Response;
 
 public class MapFragment extends Fragment {
 
+    int page = 0;
+    int curridx=0;
     private static final String TAG = "map page";
 
     private Long userId;
@@ -112,6 +116,8 @@ public class MapFragment extends Fragment {
     ImageView detail_saved_img;
 
     LinearLayout detail_page_btn;
+
+    Button moreInfoBtn;
 
     List<SearchParams1> obResult = new ArrayList<>(); //관측지 필터 결과
 
@@ -345,6 +351,8 @@ public class MapFragment extends Fragment {
         detail_saved_img = view.findViewById(R.id.map_item_save_img);
         detail_saved_txt = view.findViewById(R.id.map_item_save_text);
 
+        moreInfoBtn = view.findViewById(R.id.map_more_info);
+
         //지도 띄우기
         mapView = new MapView(getActivity());
         mapViewContainer = (ViewGroup) view.findViewById(R.id.map_view);
@@ -360,12 +368,15 @@ public class MapFragment extends Fragment {
         observePOIItems.clear();
         tourPOIItems.clear();
 
-        //지도 초기화
-        initMapView();
+//        //지도 초기화
+//        initMapView();
 
-        createAllPins();
+//        createAllPins();
+        for (SearchParams1 params1 : obResult) {
+            createPin(params1);
+        }
 
-        //내위치로 정렬
+            //내위치로 정렬
         setMyLocation();
         myLocation_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -383,42 +394,47 @@ public class MapFragment extends Fragment {
             }
         });
 
+        moreInfoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int curridx = obResult.size();
+                ((SearchResultActivity)getActivity()).getObservation(++page);
+
+            }
+        });
+
         return view;
     }
 
-    private void createAllPins(){
-        for (SearchParams1 params1 : obResult) {
-            BalloonObject balloonObject = setupMaker(params1, 1);
-            observationBalloonObjects.add(balloonObject);
+    private void createPin(SearchParams1 params1) {
+        BalloonObject balloonObject = setupMaker(params1, 1);
+        observationBalloonObjects.add(balloonObject);
 
-            Call<Boolean> call0 = com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient.getApiService().isThereMyWish(userId, balloonObject.getId(), 0);
-            call0.enqueue(new Callback<Boolean>() {
-                @Override
-                public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                    if (response.isSuccessful()) {
-                        if (response.body()) {
-                            Log.e(TAG, "찜해놓음");
-                            balloonObject.setWished(true);
-                            createObserveMarker(mapView, balloonObject, true);
-                        } else {
-                            balloonObject.setWished(false);
-                            createObserveMarker(mapView, balloonObject, false);
-                        }
+        Call<Boolean> call0 = com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient.getApiService().isThereMyWish(userId, balloonObject.getId(), 0);
+        call0.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.isSuccessful()) {
+                    if (response.body()) {
+                        balloonObject.setWished(true);
+                        createObserveMarker(mapView, balloonObject, true);
                     } else {
-                        Log.d(TAG, "내 찜 조회하기 실패");
                         balloonObject.setWished(false);
                         createObserveMarker(mapView, balloonObject, false);
                     }
+                } else {
+                    Log.d(TAG, "내 찜 조회하기 실패");
+                    balloonObject.setWished(false);
+                    createObserveMarker(mapView, balloonObject, false);
                 }
+            }
 
-                @Override
-                public void onFailure(Call<Boolean> call, Throwable t) {
-                    Log.e("연결실패", t.getMessage());
-                }
-            });
-        }
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.e("연결실패", t.getMessage());
+            }
+        });
     }
-
 
     private void setMyLocation() {
         lm = (LocationManager) getActivity().getSystemService(getContext().LOCATION_SERVICE);
@@ -518,16 +534,16 @@ public class MapFragment extends Fragment {
         hashTagsrecyclerView.setAdapter(recyclerHashTagAdapter);
     }
 
-    private void initMapView() {
-        for (MapPOIItem p : observePOIItems)
-            mapView.removePOIItem(p);
+    public void initMapView() {
+//        Log.d(TAG, "지도 초기화 시작"+observePOIItems.size());
+        curridx = 0;
+        page = 0;
+//        for (MapPOIItem p : observePOIItems) {
+//            mapView.removePOIItem(p);
+//        }
+        mapView.removeAllPOIItems();
         observePOIItems.clear();
 
-        for (MapPOIItem p : tourPOIItems)
-            mapView.removePOIItem(p);
-        tourPOIItems.clear();
-
-        tourBalloonObjects.clear();
         observationBalloonObjects.clear();
     }
 
@@ -579,8 +595,21 @@ public class MapFragment extends Fragment {
     }
 
     public void setData(List<SearchParams1> observationResult) {
+        if (moreInfoBtn != null) {
+            if (observationResult.isEmpty()) {
+                moreInfoBtn.setVisibility(View.GONE);
+            } else {
+                moreInfoBtn.setVisibility(View.VISIBLE);
+            }
+        }
+
         this.obResult = observationResult;
-        createAllPins();
+        Log.d(TAG + "setData", "idx is " + curridx + " size is " + obResult.size());
+        for (int i = curridx; i < obResult.size(); i++) {
+            SearchParams1 params1 = obResult.get(i);
+            createPin(params1);
+        }
+        curridx = obResult.size();
     }
 
 }

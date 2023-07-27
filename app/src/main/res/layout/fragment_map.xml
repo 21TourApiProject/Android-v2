@@ -16,6 +16,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
+        <Button
+            android:id="@+id/map_more_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/hashtag_background"
+            android:text="결과 더보기" />
+
 
         <ImageButton
             android:id="@+id/map_myLocation_btn"
