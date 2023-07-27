@@ -99,6 +99,7 @@ public class PersonFragment extends Fragment {
 
         myWishLayout = v.findViewById(R.id.myWishLayout);
         myPostLayout = v.findViewById(R.id.myPostLayout);
+        myCommentLayout = v.findViewById(R.id.myCommentLayout);
 
         myWishImage1 = v.findViewById(R.id.myWishImage1);
         myWishTitle1 = v.findViewById(R.id.myWishTitle1);
