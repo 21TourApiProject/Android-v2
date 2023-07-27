@@ -19,29 +19,26 @@
             android:orientation="vertical">
 
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:orientation="horizontal">
-
-                <FrameLayout
-                    android:id="@+id/back_btn_layout"
-                    android:layout_width="45dp"
-                    android:layout_height="match_parent">
-
-                    <Button
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/mypost_back"
-                        android:clickable="false" />
-                </FrameLayout>
+                android:paddingVertical="14dp"
+                android:paddingHorizontal="16dp"
+                android:layout_height="49dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center">
+                    android:id="@+id/back_btn_layout"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:gravity="center"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    >
+                    <ImageView
+                        style="@style/ImageButton.size49"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/back_btn" />
+                </LinearLayout>
 
                     <TextView
                         android:id="@+id/post_detail"
@@ -50,28 +47,30 @@
                         android:layout_gravity="center"
                         style="@style/semiBold_single_16"
                         android:text="관측 후기"
-                        android:textAlignment="center" />
-
-                </LinearLayout>
+                        android:textAlignment="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 <LinearLayout
                     android:id="@+id/delete_layout"
-                    android:layout_width="50dp"
-                    android:layout_height="49dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <Button
+                    <ImageView
                         android:id="@+id/delete_btn"
-                        android:layout_width="4dp"
-                        android:layout_height="13dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@drawable/post__option"
                         android:clickable="false"
                         android:visibility="visible" />
                 </LinearLayout>
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -81,7 +80,8 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -89,7 +89,6 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_gravity="center"
-                        android:layout_marginStart="17.86dp"
                         android:scaleType="centerCrop"
                         app:srcCompat="@drawable/post__profile_no_image" />
 
@@ -119,7 +118,6 @@
                             android:id="@+id/writeTime"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
                             android:textColor="@color/gray_500"
                             style="@style/medium_single_12"
                             />
@@ -144,9 +142,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="12dp"
                     style="@style/medium_multi_18"
-                    android:text="게시물 제목\n" />
+                    android:text="게시물 제목" />
 
 
             </LinearLayout>
@@ -155,9 +152,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingHorizontal="16dp"
-                android:layout_marginVertical="15dp">
-
+                android:padding="16dp"
+                >
                 <TextView
                     android:id="@+id/postContent"
                     android:layout_width="match_parent"
@@ -202,20 +198,25 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginVertical="16dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/hashtag_background"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="8dp"
+                    >
 
                     <ImageView
                         android:id="@+id/imageView5"
                         android:layout_width="19dp"
                         android:layout_height="19dp"
+                        android:layout_gravity="center_vertical"
                         app:srcCompat="@drawable/post_observationpin"
                         android:layout_marginEnd="4dp"/>
 
@@ -229,8 +230,9 @@
 
                     <ImageView
                         android:id="@+id/postObservationbtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="19dp"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
                         app:srcCompat="@drawable/post__observation_move" />
                 </LinearLayout>
 
@@ -241,7 +243,7 @@
                     android:background="@drawable/hashtag_background"
                     android:textColor="@color/point_blue"
                     android:layout_marginStart="8dp"
-                    style="@style/medium_single_14"
+                    style="@style/medium_multi_14"
                     android:text="2023.2.10" />
 
                 <TextView
@@ -251,7 +253,7 @@
                     android:textColor="@color/point_blue"
                     android:background="@drawable/hashtag_background"
                     android:layout_marginStart="8dp"
-                    style="@style/medium_single_14"
+                    style="@style/medium_multi_14"
                     android:text="오전 1:00" />
             </LinearLayout>
 
@@ -261,18 +263,18 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="16dp"
                 tools:itemCount="4" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginVertical="16dp"
+                android:layout_marginHorizontal="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="16dp"
                     android:orientation="horizontal">
 
                     <Button
@@ -280,7 +282,6 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center"
-                        android:layout_marginStart="14dp"
                         android:layout_marginEnd="4dp"
                         android:background="@drawable/post__love" />
 
@@ -289,7 +290,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginEnd="14dp"
+                        android:layout_marginEnd="12dp"
                         android:text="0" />
 
                     <Button
@@ -323,8 +324,6 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_gravity="right|center_vertical"
-                            android:layout_marginStart="17.86dp"
-                            android:layout_marginEnd="16dp"
                             android:background="@drawable/main__bookmark"
                             app:layout_constraintTop_toBottomOf="@+id/postThumbnail" />
                     </LinearLayout>
@@ -343,15 +342,20 @@
                     android:id="@+id/commentRecyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" />
+                    android:orientation="vertical"
+                    android:layout_marginBottom="250dp"
+                    android:visibility="gone"/>
             </LinearLayout>
-
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/observation__gray_line"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
                 android:orientation="vertical"
-                android:paddingHorizontal="24dp">
+                android:layout_marginHorizontal="16dp">
+
 
                 <TextView
                     android:layout_width="match_parent"
@@ -387,6 +391,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
             android:background="@drawable/postwrite__search_bar"
+            android:layout_marginBottom="12dp"
             android:orientation="horizontal">
 
             <EditText

@@ -10,7 +10,7 @@
     <TextView
         android:id="@+id/itemName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="18.5sp"
         android:includeFontPadding="false"
         android:gravity="bottom"
         android:height="18sp"
@@ -23,7 +23,7 @@
     <TextView
         android:id="@+id/address"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="14.5sp"
         android:text="주소"
         android:textColor="@color/gray_500"
         android:includeFontPadding="false"

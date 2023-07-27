@@ -275,7 +275,8 @@ public class PostWriteActivity extends AppCompatActivity {
         //시간 추가 버튼 클릭 이벤트
         dateText = findViewById(R.id.dateText);
         timeText = findViewById(R.id.timeText);
-        dateText.setOnClickListener(new View.OnClickListener() {
+        ConstraintLayout timeLayout = findViewById(R.id.layout_time);
+        timeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PostWriteActivity.this, SelectTimeActivity.class);
@@ -485,14 +486,17 @@ public class PostWriteActivity extends AppCompatActivity {
                 yearDate = (String)data.getSerializableExtra("date");
                 time = (String)data.getSerializableExtra("time");
                 dayOrNight = (boolean)data.getSerializableExtra("day");
-                dateText.setText(yearDate);
+                dateText.setText(yearDate.replace("-","."));
                 dateText.setTextColor(getColor(R.color.point_blue));
                 if(time.equals("00:00")){
                     timeText.setVisibility(View.GONE);
                 }else{
                     if(dayOrNight){
                         timeText.setText("오전 "+time);
-                    }else{timeText.setText("오후 "+time);}
+                    }else{
+                        String opt= time.substring(0,2);
+                        int minus= Integer.valueOf(opt).intValue()-12;
+                        timeText.setText("오후 "+Integer.toString(minus)+time.substring(2));}
                     timeText.setTextColor(getColor(R.color.point_blue));
                     timeText.setVisibility(View.VISIBLE);
                 }

@@ -58,8 +58,8 @@ public class StarCompassActivity extends AppCompatActivity implements SensorEven
     @Override
     public void onResume() {
         super.onResume();
-        mSensorManger.registerListener(this, mAcclerometer, SensorManager.SENSOR_DELAY_NORMAL);
-        mSensorManger.registerListener(this, mMagnetometer, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManger.registerListener(this, mAcclerometer, SensorManager.SENSOR_DELAY_GAME);
+        mSensorManger.registerListener(this, mMagnetometer, SensorManager.SENSOR_DELAY_GAME);
     }
 
     @Override

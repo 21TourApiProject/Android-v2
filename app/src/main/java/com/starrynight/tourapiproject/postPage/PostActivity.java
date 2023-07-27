@@ -1,6 +1,7 @@
 package com.starrynight.tourapiproject.postPage;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -11,6 +12,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,6 +39,7 @@ import com.starrynight.tourapiproject.MainActivity;
 import com.starrynight.tourapiproject.MainFragment;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.mapPage.Activities;
+import com.starrynight.tourapiproject.myPage.CustomerSCActivity;
 import com.starrynight.tourapiproject.myPage.myPageRetrofit.User;
 import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
 import com.starrynight.tourapiproject.observationPage.observationPageRetrofit.Observation;
@@ -188,14 +191,17 @@ public class PostActivity extends AppCompatActivity {
                     post = response.body();
                     postTitle.setText(post.getPostTitle());
                     postContent.setText(post.getPostContent());
-                    //String postRealTime = post.getTime();
-                    //postRealTime = postRealTime.substring(0, postRealTime.length() - 3);
-                    if(!post.getTime().equals("00:00")){
-                        postTime.setText(post.getTime());
+                    if(!post.getTime().equals("00:00")){// 게시물 관측 시간 가져오기
+                        int firstTime= Integer.valueOf(post.getTime().substring(0,2)).intValue(); // 오전 오후 구분
+                        if(firstTime>12){
+                            postTime.setText("오후 "+Integer.toString(firstTime-12)+post.getTime().substring(2));
+                        }else{
+                         postTime.setText("오전 "+post.getTime());
+                        }
                     }else {
                         postTime.setVisibility(View.GONE);
                     }
-                    postDate.setText(post.getYearDate());
+                    postDate.setText(post.getYearDate().replace("-",". "));
                     if(post.getWriteDate()!=null && post.getWriteTime()!=null){
                         String tmpDate= post.getWriteDate();
                         tmpDate=tmpDate.substring(5);
@@ -278,10 +284,6 @@ public class PostActivity extends AppCompatActivity {
                                                 if (post.getOptionHashTag10() != null) {
                                                     adapter2.addItem(new PostHashTagItem(post.getOptionHashTag10(), null, null, null));
                                                 }
-                                                //해시태그 개수에 따라 레이아웃 변경
-                                                for (int i = 0; i < adapter2.getItemCount(); i++) {
-                                                    allsize += adapter2.getItem(i).getHashTagname().length();
-                                                }
                                                 hashTagRecyclerView.setAdapter(adapter2);
                                                 hashTagRecyclerView.addItemDecoration(new RecyclerViewDecoration(20, 20));
                                                 //게시물 해시태그 클릭 시 관련 게시물,관측지 검색 페이지로 이동
@@ -351,10 +353,6 @@ public class PostActivity extends AppCompatActivity {
                                                 }
                                                 if (post.getOptionHashTag10() != null) {
                                                     adapter.addItem(new PostHashTagItem(post.getOptionHashTag10(), null, null, null));
-                                                }
-                                                //해시태그 갯수에 따라 레이아웃 변경
-                                                for (int i = 0; i < adapter.getItemCount(); i++) {
-                                                    allsize += adapter.getItem(i).getHashTagname().length();
                                                 }
                                                 // 해시태그 클릭시 페이지 이동
                                                 hashTagRecyclerView.setAdapter(adapter);
@@ -426,7 +424,7 @@ public class PostActivity extends AppCompatActivity {
                     });
 
                     //뒤로 버튼
-                    FrameLayout back = findViewById(R.id.back_btn_layout);
+                    LinearLayout back = findViewById(R.id.back_btn_layout);
                     back.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -436,11 +434,12 @@ public class PostActivity extends AppCompatActivity {
 
                     //삭제 버튼
                     LinearLayout deleteLayout = findViewById(R.id.delete_layout);
-                    if (post.getUserId() == userId) {
+                    if (post.getUserId().equals(userId)) {
                         deleteLayout.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                final PopupMenu popupMenu = new PopupMenu(getApplicationContext(),v);
+                                Context wrapper = new ContextThemeWrapper(getApplicationContext(), R.style.PopupMenu);//팝업 디자인 적용
+                                final PopupMenu popupMenu = new PopupMenu(wrapper,v);
                                 getMenuInflater().inflate(R.menu.my_option_menu,popupMenu.getMenu());
                                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                                     @Override
@@ -493,21 +492,24 @@ public class PostActivity extends AppCompatActivity {
                                 popupMenu.show();
                             }
                         });
-                    } else if (post.getUserId() != userId) {
+                    } else if (!post.getUserId().equals(userId)) {
                         deleteLayout.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                final PopupMenu popupMenu = new PopupMenu(getApplicationContext(),v);
+                                Context wrapper = new ContextThemeWrapper(getApplicationContext(), R.style.PopupMenu);//신고하기 디자인 적용
+                                final PopupMenu popupMenu = new PopupMenu(wrapper,v);
                                 getMenuInflater().inflate(R.menu.option_menu,popupMenu.getMenu());
                                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                                     @Override
                                     public boolean onMenuItemClick(MenuItem item) {
                                         if (item.getItemId()==R.id.action_report){
-                                            Toast.makeText(PostActivity.this, "신고하기 클릭", Toast.LENGTH_SHORT).show();
+                                            Intent reportIntent= new Intent(PostActivity.this, CustomerSCActivity.class);
+                                            startActivity(reportIntent);
                                         }
                                         return false;
                                     }
                                 });
+                                popupMenu.show();
                             }
                         });
                     }
@@ -587,6 +589,11 @@ public class PostActivity extends AppCompatActivity {
             public void onResponse(Call<List<PostComment>> call, Response<List<PostComment>> response) {
                 if(response.isSuccessful()){
                     List<PostComment> result = response.body();
+                    if (!result.isEmpty()){
+                        commentRecyclerView.setVisibility(View.VISIBLE);
+                    }else{
+                        commentRecyclerView.setVisibility(View.GONE);
+                    }
                     for(int i=0;i<result.size();i++){
                         commentAdapter.addItem(result.get(i));
                         postCommentCount.setText(String.valueOf(result.size()));

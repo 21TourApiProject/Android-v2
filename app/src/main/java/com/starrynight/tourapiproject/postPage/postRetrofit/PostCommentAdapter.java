@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -141,7 +144,7 @@ public class PostCommentAdapter extends RecyclerView.Adapter<PostCommentAdapter.
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder ad = new AlertDialog.Builder(v.getContext(), R.style.MyDialogTheme);
-                ad.setMessage("정말로 댓글을 삭제하시겠습니까?");
+                ad.setMessage("댓글을 삭제할까요?");
                 ad.setTitle("알림");
                 ad.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
@@ -212,6 +215,7 @@ public class PostCommentAdapter extends RecyclerView.Adapter<PostCommentAdapter.
         TextView user;
         TextView love;
         TextView loveCount;
+        ImageView profileImage;
         LinearLayout option;
 
 
@@ -224,6 +228,9 @@ public class PostCommentAdapter extends RecyclerView.Adapter<PostCommentAdapter.
             //love = itemView.findViewById(R.id.comment_love);
             //loveCount = itemView.findViewById(R.id.comment_love_count);
             option = itemView.findViewById(R.id.comment_option);
+            profileImage =itemView.findViewById(R.id.comment_profileImage);
+            profileImage.setBackground(new ShapeDrawable(new OvalShape()));
+            profileImage.setClipToOutline(true);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -250,6 +257,17 @@ public class PostCommentAdapter extends RecyclerView.Adapter<PostCommentAdapter.
                         Log.d("user", "게시물 유저정보 업로드");
                         User user1 = response.body();
                         user.setText(user1.getNickName());
+
+                        if (user1.getProfileImage() != null) {
+                            if (user1.getProfileImage().startsWith("http://") || user1.getProfileImage().startsWith("https://")) {
+                                Glide.with(itemView.getContext()).load(user1.getProfileImage()).into(profileImage);
+                            } else {
+                                String fileName = user1.getProfileImage();
+                                fileName = fileName.substring(1, fileName.length() - 1);
+                                Glide.with(itemView.getContext()).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/profileImage/" + fileName).into(profileImage);
+                            }
+                        }
+
                     }
                 }
 

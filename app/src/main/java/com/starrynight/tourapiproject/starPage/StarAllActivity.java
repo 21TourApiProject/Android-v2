@@ -107,7 +107,7 @@ public class StarAllActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.all_const_recycler);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.addItemDecoration(new StarRecyclerViewWidth(0,35));
+        recyclerView.addItemDecoration(new StarRecyclerViewWidth(3,30));
         constAdapter = new StarViewAdpater2();
         recyclerView.setAdapter(constAdapter);
 

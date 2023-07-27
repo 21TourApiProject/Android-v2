@@ -100,7 +100,7 @@ public class StarSearchActivity extends AppCompatActivity {
         constRecycler = findViewById(R.id.star_search_list);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
         constRecycler.setLayoutManager(gridLayoutManager);
-        constRecycler.addItemDecoration(new StarRecyclerViewWidth(0,35));
+        constRecycler.addItemDecoration(new StarRecyclerViewWidth(3,30));
         constAdapter = new StarViewAdpater2();
         constRecycler.setAdapter(constAdapter);
 
