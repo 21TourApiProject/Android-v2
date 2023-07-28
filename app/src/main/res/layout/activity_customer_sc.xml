@@ -42,7 +42,7 @@
                     style="@style/semiBold_single_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="문의하기"
+                    android:text="고객센터"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

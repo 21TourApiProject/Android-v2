@@ -313,15 +313,15 @@
                 android:id="@+id/thanksTo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingVertical="14dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingVertical="14dp">
 
                 <TextView
+                    style="@style/semiBold_single_14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="28dp"
-                    android:text="기여한 사람"
-                    style="@style/semiBold_single_14" />
+                    android:text="기여한 사람" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
