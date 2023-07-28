@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="center"
+            android:layout_marginBottom="220dp"
             android:src="@drawable/star__fall" />
 
         <ImageView
