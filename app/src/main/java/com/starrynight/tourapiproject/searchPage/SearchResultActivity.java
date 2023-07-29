@@ -36,7 +36,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
     WeatherLoadingDialog loadingDialog; // 로딩
 
-    String keyword = null;
+    String keyword = "";
     BottomFilterFragment filterFragment;
 
     List<HashTagItem> hashTagItems = new ArrayList<>();
@@ -214,6 +214,9 @@ public class SearchResultActivity extends AppCompatActivity {
         setFilter();
 
         Filter filter = new Filter(areaCodeList, hashTagIdList);
+        if (keyword == null) {
+            keyword = "";
+        }
         SearchKey searchKey = new SearchKey(filter, keyword);
         Call<List<SearchParams1>> call = RetrofitClient.getApiService().getPostWithFilter(searchKey);
         call.enqueue(new Callback<List<SearchParams1>>() {

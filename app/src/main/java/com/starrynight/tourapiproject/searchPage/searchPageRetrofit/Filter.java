@@ -10,4 +10,12 @@ public class Filter {
         this.areaCodeList = areaCodeList;
         this.hashTagIdList = hashTagIdList;
     }
+
+    public List<Long> getAreaCodeList() {
+        return areaCodeList;
+    }
+
+    public List<Long> getHashTagIdList() {
+        return hashTagIdList;
+    }
 }

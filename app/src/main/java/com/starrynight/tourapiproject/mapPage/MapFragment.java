@@ -544,7 +544,9 @@ public class MapFragment extends Fragment {
 //        for (MapPOIItem p : observePOIItems) {
 //            mapView.removePOIItem(p);
 //        }
-        mapView.removeAllPOIItems();
+        if (mapView != null) {
+            mapView.removeAllPOIItems();
+        }
         observePOIItems.clear();
 
         observationBalloonObjects.clear();

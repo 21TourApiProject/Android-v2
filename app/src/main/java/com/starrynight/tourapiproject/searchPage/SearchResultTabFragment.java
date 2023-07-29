@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +76,6 @@ public class SearchResultTabFragment extends Fragment {
             public void onConfigureTab(@NonNull @NotNull TabLayout.Tab tab, int position) {
                 tab.setText(tabElement.get(position));
             }
-
         }).attach();
     }
 

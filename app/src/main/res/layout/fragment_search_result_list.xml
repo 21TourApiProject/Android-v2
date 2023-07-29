@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     tools:context=".searchPage.SearchResultListFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/point_blue">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/srf_recycler"
