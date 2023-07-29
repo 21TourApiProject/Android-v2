@@ -20,6 +20,7 @@
             android:id="@+id/map_more_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/map_detail_layout"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="16dp"
             android:background="@drawable/hashtag_background"

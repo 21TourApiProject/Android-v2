@@ -1,12 +1,16 @@
 package com.starrynight.tourapiproject.searchPage;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +19,7 @@ import android.widget.TextView;
 
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
+import com.starrynight.tourapiproject.postPage.PostActivity;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchParams1;
 
 import java.util.ArrayList;
@@ -65,14 +70,24 @@ public class SearchResultListFragment extends Fragment {
             @Override
             public void onItemClick(SearchItemRecyclerAdapter.MyViewHolder holder, View view, int position) {
                 SearchParams1 item = adapter.getItem(position);
-                Intent intent = new Intent(getContext(), ObservationsiteActivity.class);
-                intent.putExtra("observationId", item.getItemId());
-                startActivity(intent);
+                if (item.getContentType()==null) {
+                    Intent intent = new Intent(getContext(), PostActivity.class);
+                    intent.putExtra("postId", item.getItemId());
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(getContext(), ObservationsiteActivity.class);
+                    intent.putExtra("observationId", item.getItemId());
+                    startActivity(intent);
+                }
+
             }
         });
         if (list.isEmpty()) {
             noResultLayout.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
+        } else {
+            noResultLayout.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
         }
         return v;
     }
@@ -81,12 +96,13 @@ public class SearchResultListFragment extends Fragment {
         this.list  = list;
         this.keyword = keyword;
         if (noResultLayout != null) {
-//            noResultText.setText("'"+keyword+"'에 대한\n 검색 결과가 없어요");
             if (list.isEmpty()) {
                 noResultText.setText("'"+keyword+"'에 대한\n 검색 결과가 없어요");
                 noResultLayout.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
             } else {
+                if (list.size() > 0) {
+                }
                 noResultLayout.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
             }

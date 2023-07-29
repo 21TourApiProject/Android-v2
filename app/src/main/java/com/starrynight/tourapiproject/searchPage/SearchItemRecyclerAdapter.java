@@ -54,8 +54,13 @@ public class SearchItemRecyclerAdapter extends RecyclerView.Adapter<SearchItemRe
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         SearchParams1 item = list.get(position);
-        if (item.getThumbnail() != null)
-            Glide.with(context).load(item.getThumbnail()).into(holder.imageView);
+        if (item.getContentType() == null) {
+            Glide.with(context).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + item.getThumbnail()).into(holder.imageView);
+        }else{
+            if (item.getThumbnail() != null)
+                Glide.with(context).load(item.getThumbnail()).into(holder.imageView);
+        }
+
         holder.name.setText(item.getTitle());
         holder.savedNum.setText(item.getSaved().toString());
     }

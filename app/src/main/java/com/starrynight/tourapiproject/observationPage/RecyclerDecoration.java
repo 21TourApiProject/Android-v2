@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 /**
 * @className : RecyclerDecoration.java
-* @description : 해쉬태그 세로 길이 지정용
+* @description : 해쉬태그 오른쪽 마진 지정용
 * @modification : gyul chyoung (2022-08-30) 주석추가
 * @author : 2022-08-30
 * @date : gyul chyoung
