@@ -51,7 +51,7 @@ public class RecyclerMapHashTagAdapter extends RecyclerView.Adapter<RecyclerMapH
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.hashtags_full, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.map__hashtags_full, parent, false);
         return new ViewHolder(view);
     }
 

@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
+import com.starrynight.tourapiproject.observationPage.RecyclerDecoration;
 import com.starrynight.tourapiproject.observationPage.RecyclerHashTagAdapter;
 import com.starrynight.tourapiproject.observationPage.RecyclerHashTagItem;
 import com.starrynight.tourapiproject.searchPage.SearchResultActivity;
@@ -528,9 +529,11 @@ public class MapFragment extends Fragment {
 
     private void initHashtagRecycler() {
         //해쉬태그 리사이클러 초기화
+        RecyclerDecoration hashtagDecoration = new RecyclerDecoration(4);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
         hashTagsrecyclerView.setLayoutManager(linearLayoutManager);
         recyclerHashTagAdapter = new RecyclerMapHashTagAdapter();
+        hashTagsrecyclerView.addItemDecoration(hashtagDecoration);
         hashTagsrecyclerView.setAdapter(recyclerHashTagAdapter);
     }
 
