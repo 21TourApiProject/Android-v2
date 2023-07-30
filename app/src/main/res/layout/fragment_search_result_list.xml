@@ -5,14 +5,8 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     tools:context=".searchPage.SearchResultListFragment"
-    android:orientation="vertical"
-    android:background="@color/point_blue">
+    android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/srf_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"/>
     <LinearLayout
         android:id="@+id/srf_no_result"
         android:layout_width="match_parent"
@@ -30,5 +24,11 @@
             android:layout_gravity="center_horizontal"
             style="@style/medium_multi_16" />
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/srf_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>
