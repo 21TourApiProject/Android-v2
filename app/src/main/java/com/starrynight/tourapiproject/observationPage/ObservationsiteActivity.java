@@ -811,6 +811,20 @@ public class ObservationsiteActivity extends AppCompatActivity {
 
             }
         });
+        TextView nature_map_btn = findViewById(R.id.obs_nature_location_btn);
+        nature_map_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    startActivity(intent);
+                } catch (Exception e) {
+                    String url2 = "market://details?id=net.daum.android.map";
+                    Intent intent2 = new Intent(Intent.ACTION_VIEW, Uri.parse(url2));
+                    startActivity(intent2);
+                }
+
+            }
+        });
     }
 
     private void setReserve(boolean is_nature){

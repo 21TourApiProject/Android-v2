@@ -144,10 +144,8 @@ public class SearchResultActivity extends AppCompatActivity {
         mapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                observationResult = observationResult.subList(0,10);
                 pagenum = 0;
-                tabFragment.setData(observationResult,postResult,keyword);
-                mapFragment.setData(observationResult);
+                getObservation(pagenum);
                 mapBtn.setVisibility(View.GONE);
                 listBtn.setVisibility(View.VISIBLE);
                 fragmentManager.beginTransaction().replace(R.id.sr_fragment,mapFragment).commit();

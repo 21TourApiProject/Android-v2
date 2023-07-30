@@ -308,6 +308,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="4dp"
+                                    android:layout_gravity="center_vertical"
                                     android:src="@drawable/observation__review"/>
 
                             </LinearLayout>
@@ -429,7 +430,7 @@
 
                         <TextView
                             android:id="@+id/obs_guide_txt"
-                            style="@style/medium_multi_16"
+                            style="@style/medium_multi_14"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/obs_parking_txt"
@@ -500,13 +501,26 @@
                         android:layout_height="wrap_content"
                         style="@style/Textview_observation_details_title"
                         android:text="주소" />
-                    <TextView
-                        android:id="@+id/obs_nature_address_txt"
-                        style="@style/Textview_observation_details"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="75dp"
-                        android:text="ㅇㅇ군 ㅇㅇ시 ㅇㅇ동" />
+
+                <TextView
+                    android:id="@+id/obs_nature_address_txt"
+                    style="@style/Textview_observation_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="75dp"
+                    android:text="ㅇㅇ군 ㅇㅇ시 ㅇㅇ동" />
+                <TextView
+                    android:id="@+id/obs_nature_location_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/observation__map_background"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="4dp"
+                    android:text="카카오맵"
+                    android:textColor="@color/gray_500" />
 
 
                     <TextView
@@ -533,7 +547,7 @@
 
                 <TextView
                     android:id="@+id/obs_nature_guide_txt"
-                    style="@style/medium_multi_16"
+                    style="@style/medium_multi_14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/obs_nature_parking_txt"
@@ -675,6 +689,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="4dp"
+                                    android:layout_gravity="center_vertical"
                                     android:src="@drawable/observation__review_on"/>
 
                             </LinearLayout>

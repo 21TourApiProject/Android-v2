@@ -161,58 +161,7 @@ public class MapFragment extends Fragment {
 
         @Override
         public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
-            //상세정보 레이아웃 등장 설정
-            BalloonObject bobject = (BalloonObject) mapPOIItem.getUserObject();
-            detailsName_txt.setText(bobject.getName());
-            detail_saved_txt.setText(bobject.getSaved().toString());
-            details.setVisibility(View.VISIBLE);
-
-            if (bobject.isWished()) {
-                detail_saved_img.setImageResource(R.drawable.search__item_save_active);
-            }
-
-            initHashtagRecycler();
-            observeHashTags = bobject.getHashtags();
-            if (observeHashTags != null) {
-                int i = 0;
-                for (String p : observeHashTags) {
-                    if (i == 3)
-                        break;
-                    RecyclerHashTagItem item = new RecyclerHashTagItem();
-                    item.setHashtagName(p);
-
-                    recyclerHashTagAdapter.addItem(item);
-                    i++;
-                }
-                recyclerHashTagAdapter.notifyDataSetChanged();
-            } else {
-                Log.e(TAG, "해쉬태그 비었음");
-            }
-
-            if (bobject.getImage() != null) {
-                Glide.with(getContext())
-                        .load(bobject.getImage())
-                        .into(main_img);
-            } else {
-                main_img.setImageResource(R.drawable.default_image);
-                Log.e(TAG, "이미지 비었음");
-            }
-
-
-            detail_page_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //상세정보 클릭시 관측지나 관광지로 이동
-                    if (!from_detail) {
-                        if (bobject.getTag() == 1) {
-                            Intent intent = new Intent(getActivity(), ObservationsiteActivity.class);
-                            intent.putExtra("observationId", bobject.getId());
-                            startActivity(intent);
-                        }
-                    }
-                }
-            });
-
+            showDetails(mapPOIItem);
         }
 
         @Override
@@ -222,7 +171,7 @@ public class MapFragment extends Fragment {
 
         @Override
         public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
-
+            showDetails(mapPOIItem);
         }
 
         @Override
@@ -615,6 +564,60 @@ public class MapFragment extends Fragment {
             createPin(params1);
         }
         curridx = obResult.size();
+    }
+
+    private void showDetails(MapPOIItem mapPOIItem) {
+        //상세정보 레이아웃 등장 설정
+        BalloonObject bobject = (BalloonObject) mapPOIItem.getUserObject();
+        detailsName_txt.setText(bobject.getName());
+        detail_saved_txt.setText(bobject.getSaved().toString());
+        details.setVisibility(View.VISIBLE);
+
+        if (bobject.isWished()) {
+            detail_saved_img.setImageResource(R.drawable.search__item_save_active);
+        }
+
+        initHashtagRecycler();
+        observeHashTags = bobject.getHashtags();
+        if (observeHashTags != null) {
+            int i = 0;
+            for (String p : observeHashTags) {
+                if (i == 3)
+                    break;
+                RecyclerHashTagItem item = new RecyclerHashTagItem();
+                item.setHashtagName(p);
+
+                recyclerHashTagAdapter.addItem(item);
+                i++;
+            }
+            recyclerHashTagAdapter.notifyDataSetChanged();
+        } else {
+            Log.e(TAG, "해쉬태그 비었음");
+        }
+
+        if (bobject.getImage() != null) {
+            Glide.with(getContext())
+                    .load(bobject.getImage())
+                    .into(main_img);
+        } else {
+            main_img.setImageResource(R.drawable.default_image);
+            Log.e(TAG, "이미지 비었음");
+        }
+
+
+        detail_page_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //상세정보 클릭시 관측지나 관광지로 이동
+                if (!from_detail) {
+                    if (bobject.getTag() == 1) {
+                        Intent intent = new Intent(getActivity(), ObservationsiteActivity.class);
+                        intent.putExtra("observationId", bobject.getId());
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
     }
 
 }
