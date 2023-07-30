@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ResultViewPagerAdapter extends FragmentStateAdapter {
 
-    private ArrayList<SearchResultListFragment> items;
+    private ArrayList<SearchResultListFragment> items= new ArrayList<>();;
 
     public ResultViewPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle , List<SearchParams1> observationList, List<SearchParams1> postList) {
         super(fragmentManager, lifecycle);

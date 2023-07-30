@@ -83,6 +83,7 @@ public class SearchResultListFragment extends Fragment {
             }
         });
         if (list.isEmpty()) {
+            noResultText.setText("'"+keyword+"'에 대한\n 검색 결과가 없어요");
             noResultLayout.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
         } else {
