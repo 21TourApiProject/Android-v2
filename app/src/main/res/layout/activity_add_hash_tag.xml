@@ -7,52 +7,63 @@
     android:background="@color/bg_black"
     tools:context=".postWritePage.AddHashTagActivity">
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/addHashTagTopView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="49dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/addHashTagScrollView">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/addHashTag_back"
+                style="@style/ImageButton.size49"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="14dp"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/postwrite_xbtn" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                style="@style/semiBold_single_16"
+                android:text="관측 태그" />
+
+            <TextView
+                android:id="@+id/finish_add_hashTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginEnd="10dp"
+                android:padding="10dp"
+                style="@style/medium_single_14"
+                android:text="저장"
+                />
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/addHashTagScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addHashTagTopView"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="49dp">
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:id="@+id/addHashTag_back"
-                        style="@style/ImageButton.size49"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="14dp"
-                        android:layout_marginStart="16dp"
-                        android:src="@drawable/postwrite_xbtn" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        style="@style/semiBold_single_16"
-                        android:text="관측 태그" />
-
-                    <TextView
-                        android:id="@+id/finish_add_hashTag"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical|end"
-                        android:layout_marginEnd="10dp"
-                        android:padding="10dp"
-                        style="@style/medium_single_14"
-                        android:text="저장"
-                        />
-                </FrameLayout>
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
