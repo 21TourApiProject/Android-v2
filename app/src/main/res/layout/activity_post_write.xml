@@ -157,7 +157,7 @@
                         android:background="@null"
                         android:ems="0"
                         android:gravity="top"
-                        android:hint="내용을 입력해주세요."
+                        android:hint="밤하늘 관측 후기를 입력해주세요. \n당신은 어떤 밤하늘을 보고 오셨나요?"
                         android:inputType="textLongMessage|textMultiLine"
                         android:lineSpacingExtra="7dp"
                         android:lines="12"
@@ -165,7 +165,7 @@
                         android:scrollbarStyle="insideInset"
                         android:scrollbars="vertical"
                         android:scrollHorizontally="false"
-                        style="@style/medium_single_16"/>
+                        style="@style/medium_multi_16"/>
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

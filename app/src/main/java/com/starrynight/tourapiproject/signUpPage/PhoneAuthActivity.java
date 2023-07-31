@@ -73,8 +73,8 @@ public class PhoneAuthActivity extends AppCompatActivity implements
     private EditText mobilePhoneNumber;
     private TextView phoneGuide; //전화번호 칸 바로 밑에 글칸
     private EditText authCode;
-    private TextView startAuth;
-    private Button resendAuth;
+    private TextView startAuth,authText;
+    private TextView resendAuth;
     private Button verify;
 
     String testPhoneNum = "+16505553333";
@@ -122,6 +122,7 @@ public class PhoneAuthActivity extends AppCompatActivity implements
         phoneGuide = findViewById(R.id.phoneGuide);
         authCode = findViewById(R.id.authCode); //인증코드
         startAuth = findViewById(R.id.startAuth); //처음 문자요청
+        authText =findViewById(R.id.authText);//인증번호 전송 했습니다. 텍스트
         resendAuth = findViewById(R.id.resendAuth); //재 문자요청
         verify = findViewById(R.id.verify); //인증요청
 
@@ -391,6 +392,7 @@ public class PhoneAuthActivity extends AppCompatActivity implements
                     Toast.makeText(getApplicationContext(), "해당 번호로 인증 문자가 발송되었습니다.", Toast.LENGTH_SHORT).show();
                     startPhoneNumberVerification(changePhoneNumber(mobilePhoneNumber.getText().toString()));
                     startAuth.setVisibility(View.GONE);
+                    authText.setVisibility(View.VISIBLE);
                     resendAuth.setVisibility(View.VISIBLE);
                     break;
                 }

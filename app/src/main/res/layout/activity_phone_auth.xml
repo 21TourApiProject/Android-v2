@@ -102,21 +102,31 @@
                         android:text="인증 요청"
                         android:visibility="visible" />
 
-                    <Button
+                    <TextView
                         android:id="@+id/resendAuth"
+                        style="@style/semiBold_single_12"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="end"
-                        android:layout_marginLeft="14dp"
-                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
                         android:background="@drawable/round_btn"
-                        android:backgroundTint="@color/point_dark"
-                        android:fontFamily="@font/spoqahansansneoregular"
-                        android:text="인증 재요청"
-                        android:textSize="12sp"
+                        android:backgroundTint="@color/point_blue"
+                        android:padding="12dp"
+                        android:text="다시 요청"
                         android:visibility="gone" />
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/authText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    style="@style/medium_single_12"
+                    android:textColor="@color/point_blue"
+                    android:text="인증번호를 전송 했습니다."
+                    android:visibility="gone"
+                    />
 
                 <TextView
                     android:id="@+id/phoneGuide"

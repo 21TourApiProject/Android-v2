@@ -76,6 +76,7 @@ public class GeneralSingUpActivity extends AppCompatActivity {
     private Button locationService;
     private Button marketing;
     private Button allAgree;
+    private FrameLayout ageLimitFrame, serviceFrame,personalFrame,locationServiceFrame,marketingFrame,allAgreeFrame;
     Boolean isAge;
     Boolean isService;
     Boolean isPersonal;
@@ -199,7 +200,8 @@ public class GeneralSingUpActivity extends AppCompatActivity {
 
         //만 14세 이상
         ageLimit = findViewById(R.id.ageLimit);
-        ageLimit.setOnClickListener(new View.OnClickListener() {
+        ageLimitFrame =findViewById(R.id.ageLimitFrame);
+        ageLimitFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isAllAgree) {
@@ -219,7 +221,8 @@ public class GeneralSingUpActivity extends AppCompatActivity {
 
         //서비스 동의
         service = findViewById(R.id.service);
-        service.setOnClickListener(new View.OnClickListener() {
+        serviceFrame =findViewById(R.id.serviceFrame);
+        serviceFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isAllAgree) {
@@ -247,7 +250,8 @@ public class GeneralSingUpActivity extends AppCompatActivity {
 
         //개인정보 동의
         personal = findViewById(R.id.personal);
-        personal.setOnClickListener(new View.OnClickListener() {
+        personalFrame =findViewById(R.id.personalFrame);
+        personalFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isAllAgree) {
@@ -275,7 +279,8 @@ public class GeneralSingUpActivity extends AppCompatActivity {
 
         //위치정보 동의
         locationService = findViewById(R.id.locationService);
-        locationService.setOnClickListener(new View.OnClickListener() {
+        locationServiceFrame =findViewById(R.id.locationServiceFrame);
+        locationServiceFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isAllAgree) {
@@ -303,7 +308,8 @@ public class GeneralSingUpActivity extends AppCompatActivity {
 
         //마케팅 정보 수신 동의
         marketing = findViewById(R.id.marketing);
-        marketing.setOnClickListener(new View.OnClickListener() {
+        marketingFrame =findViewById(R.id.marketingFrame);
+        marketingFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isAllAgree) {
@@ -323,7 +329,8 @@ public class GeneralSingUpActivity extends AppCompatActivity {
 
         //전체 동의
         allAgree = findViewById(R.id.allAgree);
-        allAgree.setOnClickListener(new View.OnClickListener() {
+        allAgreeFrame =findViewById(R.id.allAgreeFrame);
+        allAgreeFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isAllAgree) {

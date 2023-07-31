@@ -11,7 +11,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -101,6 +103,7 @@ public class PostActivity extends AppCompatActivity {
     RecyclerView commentRecyclerView;
     List<String> postHashTags;
     List<PostHashTag> postHashTagList;
+    LinearLayout relatePostLayout;
     String[] filename2 = new String[10];
     String[] relatefilename = new String[4];
     ArrayList<Integer> area = new ArrayList<Integer>(Collections.nCopies(17, 0));
@@ -193,10 +196,15 @@ public class PostActivity extends AppCompatActivity {
                     postContent.setText(post.getPostContent());
                     if(!post.getTime().equals("00:00")){// 게시물 관측 시간 가져오기
                         int firstTime= Integer.valueOf(post.getTime().substring(0,2)).intValue(); // 오전 오후 구분
-                        if(firstTime>12){
-                            postTime.setText("오후 "+Integer.toString(firstTime-12)+post.getTime().substring(2));
-                        }else{
+                        if(firstTime==0){
+                            postTime.setText("오전 "+Integer.toString(firstTime+12)+post.getTime().substring(2));
+                        }else if(firstTime>0&&firstTime<12){
                          postTime.setText("오전 "+post.getTime());
+                        }
+                        else if(firstTime==12){
+                            postTime.setText("오후 "+post.getTime());
+                        }else{
+                            postTime.setText("오후 "+Integer.toString(firstTime-12)+post.getTime().substring(2));
                         }
                     }else {
                         postTime.setVisibility(View.GONE);
@@ -221,6 +229,7 @@ public class PostActivity extends AppCompatActivity {
                                     postObservationbtn.setVisibility(View.VISIBLE);
                                 }else{
                                     postObservation.setText(post.getOptionObservation());
+                                    postObservation.setPadding(0,0,15,0);
                                     postObservationbtn.setVisibility(View.GONE);
                                 }
 
@@ -446,7 +455,7 @@ public class PostActivity extends AppCompatActivity {
                                     public boolean onMenuItemClick(MenuItem item) {
                                         if (item.getItemId()==R.id.action_delete) { // 삭제하기 버튼을 클릭 시
                                             AlertDialog.Builder ad = new AlertDialog.Builder(PostActivity.this, R.style.MyDialogTheme);
-                                            ad.setMessage("정말로 게시물을 삭제하시겠습니까?");
+                                            ad.setMessage("게시물을 삭제할까요?");
                                             ad.setTitle("알림");
                                             ad.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                                 @Override
@@ -515,7 +524,7 @@ public class PostActivity extends AppCompatActivity {
                     }
 
 
-
+                    relatePostLayout = findViewById(R.id.relatePostLayout);
                     //관련 게시물
                     Call<List<PostImage>> call5 = RetrofitClient.getApiService().getRelatePostImageList(post.getObservationId());
                     //관련 게시물 이미지
@@ -526,9 +535,13 @@ public class PostActivity extends AppCompatActivity {
                                 Log.d("relatePostImage", "관련 게시물 이미지 업로드");
                                 List<PostImage> relateImageList = response.body();
                                 RecyclerView recyclerView = findViewById(R.id.relatePost);
+                                Log.d("relatePostImage", "관련 게시물 이미지 업로드"+relateImageList.size());
                                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
                                 recyclerView.setLayoutManager(linearLayoutManager);
                                 Post_point_item_Adapter adapter = new Post_point_item_Adapter();
+                                if(relateImageList.size()==1){
+                                    relatePostLayout.setVisibility(View.GONE);
+                                }
                                 for (int i = 0; i < relateImageList.size(); i++) {
                                     if (i > 3) {
                                         break;
@@ -596,8 +609,24 @@ public class PostActivity extends AppCompatActivity {
                     }
                     for(int i=0;i<result.size();i++){
                         commentAdapter.addItem(result.get(i));
-                        postCommentCount.setText(String.valueOf(result.size()));
                     }
+                    if(result.size()>1&&result.size()<5){ //댓글이 4개까지만 늘어나고 5개부터는 고정됨
+                        int padding_in_dp = 108*result.size();
+                        final float scale = getResources().getDisplayMetrics().density;
+                        int padding_in_px = (int) (padding_in_dp * scale + 0.5f);
+                        LinearLayout.LayoutParams params=(LinearLayout.LayoutParams)commentRecyclerView.getLayoutParams();
+                        params.height=padding_in_px;
+                        commentRecyclerView.setLayoutParams(params);
+                    }
+                    else if(result.size()>4){
+                        int padding_in_dp = 512;
+                        final float scale = getResources().getDisplayMetrics().density;
+                        int padding_in_px = (int) (padding_in_dp * scale + 0.5f);
+                        LinearLayout.LayoutParams params=(LinearLayout.LayoutParams)commentRecyclerView.getLayoutParams();
+                        params.height=padding_in_px;
+                        commentRecyclerView.setLayoutParams(params);
+                    }
+                    postCommentCount.setText(String.valueOf(result.size()));
                     commentRecyclerView.setAdapter(commentAdapter);
                 }
                 else{

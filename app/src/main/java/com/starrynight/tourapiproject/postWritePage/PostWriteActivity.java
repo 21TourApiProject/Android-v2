@@ -491,12 +491,22 @@ public class PostWriteActivity extends AppCompatActivity {
                 if(time.equals("00:00")){
                     timeText.setVisibility(View.GONE);
                 }else{
+                    int firstTime= Integer.valueOf(time.substring(0,2)).intValue(); // 오전 오후 구분
                     if(dayOrNight){
-                        timeText.setText("오전 "+time);
+                        if(firstTime==0){
+                            timeText.setText("오전 "+ Integer.toString(firstTime + 12)+time.substring(2));
+                        }else{
+                            timeText.setText("오전 "+time);
+                        }
                     }else{
                         String opt= time.substring(0,2);
-                        int minus= Integer.valueOf(opt).intValue()-12;
-                        timeText.setText("오후 "+Integer.toString(minus)+time.substring(2));}
+                        if(firstTime==12){
+                            timeText.setText("오후 "+time);
+                        }else{
+                            int minus= Integer.valueOf(opt).intValue()-12;
+                            timeText.setText("오후 "+Integer.toString(minus)+time.substring(2));
+                            }
+                        }
                     timeText.setTextColor(getColor(R.color.point_blue));
                     timeText.setVisibility(View.VISIBLE);
                 }

@@ -85,10 +85,19 @@ public class SelectTimeActivity extends AppCompatActivity {
                 }
                 String realtime = hour + ":" + min;
                 time = realtime;
-                if(hourOfDay<12){
+                timeCheckbox.setChecked(false);
+                if (hourOfDay==0){
+                    day=true;
+                    int plus=Integer.valueOf(hour).intValue()+12;
+                    timePicker.setText("오전 "+plus + ":" + min);
+                }
+                else if(hourOfDay>0&&hourOfDay<12){
                     day=true;
                     timePicker.setText("오전 "+hour + ":" + min);
-                }else{
+                }else if (hourOfDay==12){
+                    day=false;
+                    timePicker.setText("오후 " +hour + ":" + min);
+                } else{
                     day=false;
                     int minus=Integer.valueOf(hour).intValue()-12;
                     hour=Integer.toString(minus);

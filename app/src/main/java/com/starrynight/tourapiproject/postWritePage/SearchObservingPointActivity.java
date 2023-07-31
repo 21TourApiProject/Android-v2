@@ -55,7 +55,7 @@ public class SearchObservingPointActivity extends AppCompatActivity {
     RecyclerView searchObservationRecyclerview;
     RecyclerView addRecyclerView;
     RecyclerView nearRecyclerView;
-    LinearLayout addLinearLayout, nearLinearLayout,searchLinearLayout;
+    LinearLayout addLinearLayout, nearLinearLayout,searchLinearLayout, noResultLinearLayout,optionRegistLinearLayout;
     TextView optionText;
     EditText editText;
 
@@ -69,6 +69,8 @@ public class SearchObservingPointActivity extends AppCompatActivity {
         addLinearLayout=findViewById(R.id.addPositionLinearLayout);
         nearLinearLayout=findViewById(R.id.nearPositionLinearLayout);
         searchLinearLayout=findViewById(R.id.searchLinearLayout);
+        noResultLinearLayout =findViewById(R.id.noResultLayout);
+        optionRegistLinearLayout =findViewById(R.id.optionRegist);
         searchObservationRecyclerview = findViewById(R.id.searchObservationRecyclerView);
         searchObservationRecyclerview.addItemDecoration(new DividerItemDecoration(getApplicationContext(), 1));
         findObservePoint = findViewById(R.id.findObservePoint);
@@ -150,7 +152,7 @@ public class SearchObservingPointActivity extends AppCompatActivity {
         });
 
         //임의 관측지 클릭 시
-        optionText.setOnClickListener(new View.OnClickListener() {
+        optionRegistLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 observePoint = ((EditText) (findViewById(R.id.findObservePoint))).getText().toString();
@@ -205,12 +207,14 @@ public class SearchObservingPointActivity extends AppCompatActivity {
         for (int i = 0; i < searchitemArrayList.size(); i++) {
             if (searchitemArrayList.get(i).getItemName().toLowerCase().contains(searchText.toLowerCase())) {
                 filteredList.add(searchitemArrayList.get(i));
-                optionText.setVisibility(View.GONE);
+                noResultLinearLayout.setVisibility(View.GONE);
             }
         }
         if (filteredList.size() == 0) {
             {
-                optionText.setVisibility(View.VISIBLE);
+                noResultLinearLayout.setVisibility(View.VISIBLE);
+                String option =((EditText) (findViewById(R.id.findObservePoint))).getText().toString();
+                optionText.setText("'"+option+"'에 대한\n검색 결과가 없어요");
             }
         }
         search_item_adapter.filterList(filteredList);

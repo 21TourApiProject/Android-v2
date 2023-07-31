@@ -148,23 +148,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:layout_marginRight="42dp"
                     android:orientation="horizontal">
 
                     <TextView
-                        style="@style/medium_single_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        style="@style/semiBold_single_12"
+                        android:textColor="@color/gray_400"
                         android:text="만 14세 이상입니다 (필수) :" />
 
-                    <Button
-                        android:id="@+id/kko_ageLimit"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="53dp"
-                        android:background="@drawable/signup_agree_non" />
+                    <FrameLayout
+                        android:id="@+id/kko_ageLimitFrame"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/kko_ageLimit"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_gravity="center|end"
+                            android:clickable="false"
+                            android:background="@drawable/signup_agree_non" />
+                    </FrameLayout>
+
+
                 </LinearLayout>
 
 
