@@ -7,48 +7,53 @@
     app:layout_constraintStart_toEndOf="parent"
     tools:context=".weatherPage.WeatherActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingTop="14dp"
+        android:paddingRight="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/weather_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/wt__back" />
+
+        <TextView
+            style="@style/semiBold_single_16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="관측적합도"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/weather_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/wt__help" />
+
+    </RelativeLayout>
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="52dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:orientation="horizontal"
-                android:paddingLeft="16dp"
-                android:paddingTop="14dp"
-                android:paddingRight="16dp">
-
-                <ImageView
-                    android:id="@+id/weather_back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/wt__back" />
-
-                <TextView
-                    style="@style/semiBold_single_16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="관측적합도"
-                    android:textSize="16sp" />
-
-                <ImageView
-                    android:id="@+id/weather_help"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/wt__help" />
-
-            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -65,8 +70,8 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        style="@style/medium_single_16"
                         android:id="@+id/today_date"
+                        style="@style/medium_single_16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -74,8 +79,8 @@
                         android:textSize="16dp" />
 
                     <TextView
-                        style="@style/medium_single_16"
                         android:id="@+id/current_position"
+                        style="@style/medium_single_16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
@@ -91,8 +96,8 @@
                         android:visibility="gone">
 
                         <TextView
-                            style="@style/medium_single_16"
                             android:id="@+id/observatory_name"
+                            style="@style/medium_single_16"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="#84838D" />
@@ -114,11 +119,11 @@
                     android:layout_marginTop="8dp" />
 
                 <TextView
-                    style="@style/bold_multi_24"
                     android:id="@+id/today_comment"
+                    style="@style/bold_multi_24"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="28dp"/>
+                    android:layout_marginTop="28dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -127,8 +132,8 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        style="@style/medium_single_14"
                         android:id="@+id/best_observation_fit"
+                        style="@style/medium_single_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
@@ -136,8 +141,8 @@
                         android:textColor="#DADAE5" />
 
                     <TextView
-                        style="@style/medium_single_14"
                         android:id="@+id/main_effect"
+                        style="@style/medium_single_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/wt__best_observational_fit"
@@ -164,7 +169,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:layout_weight="1"
-                        android:text="시간별 관측적합도"/>
+                        android:text="시간별 관측적합도" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -228,8 +233,8 @@
                     android:text="상세 날씨" />
 
                 <TextView
-                    style="@style/medium_single_14"
                     android:id="@+id/detail_hour"
+                    style="@style/medium_single_14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -285,8 +290,8 @@
                         </LinearLayout>
 
                         <TextView
-                            style="@style/medium_single_14"
                             android:id="@+id/detail_weather"
+                            style="@style/medium_single_14"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
@@ -322,8 +327,8 @@
                         </LinearLayout>
 
                         <TextView
-                            style="@style/medium_single_14"
                             android:id="@+id/detail_cloud"
+                            style="@style/medium_single_14"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="20dp"
@@ -365,15 +370,15 @@
                             android:paddingTop="20dp">
 
                             <TextView
-                                style="@style/medium_single_14"
                                 android:id="@+id/detail_temp_highest"
+                                style="@style/medium_single_14"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#84838D" />
 
                             <TextView
-                                style="@style/medium_single_14"
                                 android:id="@+id/detail_temp_lowest"
+                                style="@style/medium_single_14"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
@@ -411,8 +416,8 @@
                         </LinearLayout>
 
                         <TextView
-                            style="@style/medium_single_14"
                             android:id="@+id/detail_wind_speed"
+                            style="@style/medium_single_14"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="20dp"
@@ -464,8 +469,8 @@
                                     android:text="일출" />
 
                                 <TextView
-                                    style="@style/medium_single_14"
                                     android:id="@+id/detail_sunrise"
+                                    style="@style/medium_single_14"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
@@ -486,8 +491,8 @@
                                     android:text="일몰" />
 
                                 <TextView
-                                    style="@style/medium_single_14"
                                     android:id="@+id/detail_sunset"
+                                    style="@style/medium_single_14"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
@@ -534,8 +539,8 @@
                         </LinearLayout>
 
                         <TextView
-                            style="@style/medium_single_14"
                             android:id="@+id/detail_moon_age"
+                            style="@style/medium_single_14"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="20dp"
@@ -571,8 +576,8 @@
                         </LinearLayout>
 
                         <TextView
-                            style="@style/medium_single_14"
                             android:id="@+id/detail_rainfall_probability"
+                            style="@style/medium_single_14"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
@@ -609,8 +614,8 @@
                         </LinearLayout>
 
                         <TextView
-                            style="@style/medium_single_14"
                             android:id="@+id/detail_humidity"
+                            style="@style/medium_single_14"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="20dp"
@@ -647,8 +652,8 @@
                         </LinearLayout>
 
                         <TextView
-                            style="@style/medium_single_14"
                             android:id="@+id/detail_fine_dust"
+                            style="@style/medium_single_14"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="20dp"
@@ -702,8 +707,8 @@
                                     android:text="월출" />
 
                                 <TextView
-                                    style="@style/medium_single_14"
                                     android:id="@+id/detail_moonrise"
+                                    style="@style/medium_single_14"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
@@ -723,8 +728,8 @@
                                     android:text="월몰" />
 
                                 <TextView
-                                    style="@style/medium_single_14"
                                     android:id="@+id/detail_moonset"
+                                    style="@style/medium_single_14"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
