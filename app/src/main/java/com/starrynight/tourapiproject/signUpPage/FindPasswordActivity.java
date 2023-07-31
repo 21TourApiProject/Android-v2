@@ -32,6 +32,8 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.signUpPage.signUpRetrofit.RetrofitClient;
 
+import org.w3c.dom.Text;
+
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
@@ -68,8 +70,8 @@ public class FindPasswordActivity extends AppCompatActivity implements
     private EditText findPwdRealName;
     private EditText mobilePhoneNumber;
     private EditText authCode;
-    private TextView startAuth;
-    private Button resendAuth;
+    private TextView startAuth,authText;
+    private TextView resendAuth;
     private Button verify;
     private TextView showPassword;
 
@@ -105,6 +107,7 @@ public class FindPasswordActivity extends AppCompatActivity implements
         authCode = findViewById(R.id.authCode3); //인증코드
         startAuth = findViewById(R.id.startAuth3); //처음 문자요청
         resendAuth = findViewById(R.id.resendAuth3); //재 문자요청
+        authText =findViewById(R.id.authText3);//인증번호 전송 했습니다. 텍스트
         verify = findViewById(R.id.verify3); //인증요청
         showPassword = findViewById(R.id.showPassword);
 
@@ -295,6 +298,7 @@ public class FindPasswordActivity extends AppCompatActivity implements
                 Toast.makeText(getApplicationContext(), "해당 번호로 인증 문자가 발송되었습니다.", Toast.LENGTH_LONG).show();
                 startPhoneNumberVerification(changePhoneNumber(mobilePhoneNumber.getText().toString()));
                 startAuth.setVisibility(View.GONE);
+                authText.setVisibility(View.VISIBLE);
                 resendAuth.setVisibility(View.VISIBLE);
                 break;
 

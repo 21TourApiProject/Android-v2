@@ -162,7 +162,7 @@
 
                     <EditText
                         android:id="@+id/realName"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="52dp"
@@ -224,7 +224,7 @@
 
                     <TextView
                         android:id="@+id/birthDay"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="31dp"
                         android:background="@drawable/signup_box2"
@@ -266,6 +266,7 @@
                         android:textColor="@color/gray_400"/>
 
                     <FrameLayout
+                        android:id="@+id/ageLimitFrame"
                         android:layout_width="match_parent"
                         android:layout_height="18dp">
 
@@ -274,7 +275,7 @@
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:layout_gravity="center|end"
-                            android:layout_marginRight="20dp"
+                            android:clickable="false"
                             android:background="@drawable/signup_agree_non" />
                     </FrameLayout>
 
@@ -312,6 +313,7 @@
                         android:textColor="@color/gray_400" />
 
                     <FrameLayout
+                        android:id="@+id/serviceFrame"
                         android:layout_width="match_parent"
                         android:layout_height="18dp">
 
@@ -320,7 +322,7 @@
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:layout_gravity="center|end"
-                            android:layout_marginRight="20dp"
+                            android:clickable="false"
                             android:background="@drawable/signup_agree_non" />
                     </FrameLayout>
 
@@ -358,6 +360,7 @@
                         android:textColor="@color/gray_400" />
 
                     <FrameLayout
+                        android:id="@+id/personalFrame"
                         android:layout_width="match_parent"
                         android:layout_height="18dp">
 
@@ -366,7 +369,7 @@
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:layout_gravity="center|end"
-                            android:layout_marginRight="20dp"
+                            android:clickable="false"
                             android:background="@drawable/signup_agree_non" />
                     </FrameLayout>
 
@@ -404,6 +407,7 @@
                         android:textColor="@color/gray_400" />
 
                     <FrameLayout
+                        android:id="@+id/locationServiceFrame"
                         android:layout_width="match_parent"
                         android:layout_height="18dp">
 
@@ -412,7 +416,7 @@
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:layout_gravity="center|end"
-                            android:layout_marginRight="20dp"
+                            android:clickable="false"
                             android:background="@drawable/signup_agree_non" />
                     </FrameLayout>
                 </LinearLayout>
@@ -432,6 +436,7 @@
                         android:textColor="@color/gray_400" />
 
                     <FrameLayout
+                        android:id="@+id/marketingFrame"
                         android:layout_width="match_parent"
                         android:layout_height="18dp">
 
@@ -440,7 +445,7 @@
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:layout_gravity="center|end"
-                            android:layout_marginRight="20dp"
+                            android:clickable="false"
                             android:background="@drawable/signup_agree_non" />
                     </FrameLayout>
 
@@ -461,6 +466,7 @@
                          />
 
                     <FrameLayout
+                        android:id="@+id/allAgreeFrame"
                         android:layout_width="match_parent"
                         android:layout_height="20dp">
 
@@ -469,7 +475,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_gravity="center|end"
-                            android:layout_marginRight="20dp"
+                            android:clickable="false"
                             android:background="@drawable/signup_agree_non" />
                     </FrameLayout>
                 </LinearLayout>

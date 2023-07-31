@@ -1,6 +1,8 @@
 package com.starrynight.tourapiproject.postPage.postRetrofit;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.starrynight.tourapiproject.R;
+import com.starrynight.tourapiproject.postPage.PostActivity;
 
 import java.util.ArrayList;
 
@@ -29,11 +32,13 @@ import java.util.ArrayList;
 public class MainPostSliderAdapter extends RecyclerView.Adapter<MainPostSliderAdapter.MyViewHolder> {
     private Context context;
     private ArrayList<String> sliderImage;
+    private Long postId;
     MainPostImageSliderItemClickListener listener;
 
-    public MainPostSliderAdapter(Context context, ArrayList<String> sliderImage) {
+    public MainPostSliderAdapter(Context context, ArrayList<String> sliderImage,Long postId) {
         this.context = context;
         this.sliderImage = sliderImage;
+        this.postId=postId;
     }
 
     @NonNull
@@ -48,6 +53,14 @@ public class MainPostSliderAdapter extends RecyclerView.Adapter<MainPostSliderAd
     @Override
     public void onBindViewHolder(@NonNull MainPostSliderAdapter.MyViewHolder holder, int position) {
         holder.bindSliderImage(sliderImage.get(position));
+        holder.mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), PostActivity.class);
+                intent.putExtra("postId", postId);
+                ((Activity) context).startActivity(intent);
+            }
+        });
     }
 
     @Override

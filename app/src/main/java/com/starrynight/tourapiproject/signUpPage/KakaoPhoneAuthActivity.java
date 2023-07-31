@@ -63,6 +63,7 @@ public class KakaoPhoneAuthActivity extends AppCompatActivity implements
     private TextView startAuth;
     private Button resendAuth;
     private Button verify;
+    FrameLayout ageLimitFrame;
 
     private Button ageLimit;
     Boolean isAge;
@@ -148,6 +149,7 @@ public class KakaoPhoneAuthActivity extends AppCompatActivity implements
         startAuth = findViewById(R.id.kko_startAuth); //처음 문자요청
         resendAuth = findViewById(R.id.kko_resendAuth); //재 문자요청
         verify = findViewById(R.id.kko_verify); //인증요청
+        ageLimitFrame= findViewById(R.id.kko_ageLimitFrame);//버튼 영역 확장
 
         isAge = false;
         startAuth.setOnClickListener(this);
@@ -197,7 +199,7 @@ public class KakaoPhoneAuthActivity extends AppCompatActivity implements
         };
 
         ageLimit = findViewById(R.id.kko_ageLimit);
-        ageLimit.setOnClickListener(new View.OnClickListener() {
+        ageLimitFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isAge) {

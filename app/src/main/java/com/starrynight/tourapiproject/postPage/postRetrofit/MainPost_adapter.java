@@ -10,16 +10,20 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -151,7 +155,7 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
                                 //버튼 디자인 바뀌게 구현하기
                                 isWish[position] = true;
                                 v.setSelected(!v.isSelected());
-                                Toast.makeText(viewHolder.bookmark.getContext(), "나의 여행버킷리스트에 저장되었습니다.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(viewHolder.bookmark.getContext(), "나의 북마크에 저장되었습니다.", Toast.LENGTH_SHORT).show();
                                 viewHolder.bookmark.setEnabled(false);
                                 Handler handle = new Handler();
                                 handle.postDelayed(new Runnable() {
@@ -178,7 +182,7 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
                             if (response.isSuccessful()) {
                                 isWish[position] = false;
                                 v.setSelected(!v.isSelected());
-                                Toast.makeText(viewHolder.bookmark.getContext(), "나의 여행버킷리스트에서 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(viewHolder.bookmark.getContext(), "나의 북마크에서 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                             } else {
                                 Log.d("deleteMyWish", "게시물 찜 삭제 실패");
                             }
@@ -288,6 +292,7 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
         LinearLayout indicator;
         ImageView bookmark;
         LinearLayout titleLinear;
+        ConstraintLayout mainPost;
 
         public ViewHolder(View itemView, final OnMainPostClickListener listener) {
             super(itemView);
@@ -299,6 +304,7 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
             bookmark = itemView.findViewById(R.id.mainplus_btn);
             bookmark.setColorFilter(Color.parseColor("#84838D"));
             titleLinear = itemView.findViewById(R.id.linear_title);
+            mainPost= itemView.findViewById(R.id.mainPost);
 //            profileimage.setBackground(new ShapeDrawable(new OvalShape()));
 //            profileimage.setClipToOutline(true);
             itemView.setClickable(true);
@@ -307,7 +313,7 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
         public void setItem(MainPost item) {
 
             title.setText(item.getMainTitle());
-            titleLinear.setOnClickListener(new View.OnClickListener() {
+            mainPost.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), PostActivity.class);
@@ -318,7 +324,7 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
 //            nickname.setText(item.getMainNickName());
             mainslider.setOffscreenPageLimit(3);
 
-            MainPostSliderAdapter mainPostSliderAdapter = new MainPostSliderAdapter(mainslider.getContext(), item.getImages());
+            MainPostSliderAdapter mainPostSliderAdapter = new MainPostSliderAdapter(mainslider.getContext(), item.getImages(),item.getPostId());
             mainslider.setAdapter(mainPostSliderAdapter);
 
             mainslider.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
