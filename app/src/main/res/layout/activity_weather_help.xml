@@ -6,43 +6,42 @@
     android:layout_height="match_parent"
     tools:context=".weatherPage.WeatherHelpActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingTop="14dp"
+        android:paddingRight="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/weather_help_back"
+            style="@style/ImageButton.size49"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/wt__back" />
+
+        <TextView
+            style="@style/semiBold_single_16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="관측적합도란?"
+            app:layout_constraintBottom_toBottomOf="@id/weather_help_back" />
+
+    </RelativeLayout>
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="52dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_gravity="center_vertical"
-                android:paddingLeft="16dp"
-                android:paddingTop="14dp"
-                android:paddingRight="16dp">
-
-                <ImageView
-                    android:id="@+id/weather_help_back"
-                    style="@style/ImageButton.size49"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/wt__back"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    style="@style/semiBold_single_16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="관측적합도란?"
-                    app:layout_constraintBottom_toBottomOf="@id/weather_help_back"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -252,7 +251,7 @@
 
                     <TextView
                         android:id="@+id/help_1_text"
-                        style="@style/medium_multi_12"
+                        style="@style/medium_multi_14"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -306,7 +305,7 @@
 
                     <TextView
                         android:id="@+id/help_2_text"
-                        style="@style/medium_multi_12"
+                        style="@style/medium_multi_14"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -361,7 +360,7 @@
 
                     <TextView
                         android:id="@+id/help_3_text"
-                        style="@style/medium_multi_12"
+                        style="@style/medium_multi_14"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -416,7 +415,7 @@
 
                     <TextView
                         android:id="@+id/help_4_text"
-                        style="@style/medium_multi_12"
+                        style="@style/medium_multi_14"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -470,7 +469,7 @@
 
                     <TextView
                         android:id="@+id/help_5_text"
-                        style="@style/medium_multi_12"
+                        style="@style/medium_multi_14"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -524,7 +523,7 @@
 
                     <TextView
                         android:id="@+id/help_6_text"
-                        style="@style/medium_multi_12"
+                        style="@style/medium_multi_14"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -578,7 +577,7 @@
 
                     <TextView
                         android:id="@+id/help_7_text"
-                        style="@style/medium_multi_12"
+                        style="@style/medium_multi_14"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -633,7 +632,7 @@
 
                     <TextView
                         android:id="@+id/help_8_text"
-                        style="@style/medium_multi_12"
+                        style="@style/medium_multi_14"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
