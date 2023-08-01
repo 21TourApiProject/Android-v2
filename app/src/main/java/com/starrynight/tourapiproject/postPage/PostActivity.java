@@ -302,7 +302,6 @@ public class PostActivity extends AppCompatActivity {
                                                     public void onItemClick(PostHashTagItemAdapter.ViewHolder holder, View view, int position) {
                                                         Intent intent1 = new Intent(PostActivity.this, SearchResultActivity.class);
                                                         PostHashTagItem item = adapter2.getItem(position);
-                                                        if (position!=0) {
                                                             if (item.getHashTagId() != null) {//지정된 해시태그를 클릭했을 경우
                                                                 keyword = "";
                                                                 intent1.putExtra("keyword", keyword);
@@ -315,7 +314,6 @@ public class PostActivity extends AppCompatActivity {
                                                                 intent1.putExtra("FromWhere", Activities.POST);
                                                                 startActivity(intent1);
                                                             }
-                                                        }
                                                     }
                                                 });
                                             } else {
