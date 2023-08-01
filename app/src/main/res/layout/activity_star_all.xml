@@ -130,7 +130,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 style="@style/semiBold_single_18"
-                                android:text="월달에 볼 수 있는 별자리"
+                                android:text="월에 볼 수 있는 별자리"
                                 />
                         </LinearLayout>
 

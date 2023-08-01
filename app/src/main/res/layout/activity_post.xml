@@ -329,8 +329,8 @@
 
                         <Button
                             android:id="@+id/like"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
                             android:layout_gravity="right|center_vertical"
                             android:background="@drawable/main__bookmark"
                             app:layout_constraintTop_toBottomOf="@+id/postThumbnail" />
