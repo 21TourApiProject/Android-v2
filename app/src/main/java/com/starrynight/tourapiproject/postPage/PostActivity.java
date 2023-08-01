@@ -59,6 +59,7 @@ import com.starrynight.tourapiproject.postPage.postRetrofit.PostHashTag;
 import com.starrynight.tourapiproject.postPage.postRetrofit.PostImage;
 import com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostParams;
+import com.starrynight.tourapiproject.searchPage.SearchResultActivity;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -299,25 +300,18 @@ public class PostActivity extends AppCompatActivity {
                                                 adapter2.setOnItemClicklistener(new OnPostHashTagClickListener() {
                                                     @Override
                                                     public void onItemClick(PostHashTagItemAdapter.ViewHolder holder, View view, int position) {
-                                                        Intent intent1 = new Intent(PostActivity.this, MainActivity.class);
+                                                        Intent intent1 = new Intent(PostActivity.this, SearchResultActivity.class);
                                                         PostHashTagItem item = adapter2.getItem(position);
                                                         if (position!=0) {
                                                             if (item.getHashTagId() != null) {//지정된 해시태그를 클릭했을 경우
-                                                                ArrayList<Integer> hashTag = new ArrayList<Integer>(Collections.nCopies(22, 0));
-                                                                keyword = null;
+                                                                keyword = "";
                                                                 intent1.putExtra("keyword", keyword);
-                                                                int x = item.getHashTagId().intValue();
-                                                                hashTag.set(x - 1, 1);
-                                                                intent1.putExtra("area", area);
-                                                                intent1.putExtra("hashTag", hashTag);
+                                                                intent1.putExtra("hashTagName", item.getHashTagname());
                                                                 intent1.putExtra("FromWhere", Activities.POST);
                                                                 startActivity(intent1);
                                                             } else {//임의의 해시태그를 클릭 했을 경우
-                                                                ArrayList<Integer> hashTag = new ArrayList<Integer>(Collections.nCopies(22, 0));
                                                                 keyword = item.getHashTagname();
                                                                 intent1.putExtra("keyword", keyword);
-                                                                intent1.putExtra("area", area);
-                                                                intent1.putExtra("hashTag", hashTag);
                                                                 intent1.putExtra("FromWhere", Activities.POST);
                                                                 startActivity(intent1);
                                                             }
@@ -369,17 +363,13 @@ public class PostActivity extends AppCompatActivity {
                                                 adapter.setOnItemClicklistener(new OnPostHashTagClickListener() {
                                                     @Override
                                                     public void onItemClick(PostHashTagItemAdapter.ViewHolder holder, View view, int position) {
-                                                        Intent intent1 = new Intent(PostActivity.this, MainActivity.class);
+                                                        Intent intent1 = new Intent(PostActivity.this, SearchResultActivity.class);
                                                         PostHashTagItem item = adapter.getItem(position);
                                                         if (item.getHashTagId() != null) {
-                                                            ArrayList<Integer> hashTag = new ArrayList<Integer>(Collections.nCopies(22, 0));
-                                                            keyword = null;
+                                                            keyword = "";
                                                             intent1.putExtra("keyword", keyword);
-                                                            int x = item.getHashTagId().intValue();
-                                                            hashTag.set(x - 1, 1);
-                                                            intent1.putExtra("area", area);
-                                                            intent1.putExtra("hashTag", hashTag);
-                                                            intent.putExtra("FromWhere", Activities.POST);
+                                                            intent1.putExtra("hashTagName", item.getHashTagname());
+                                                            intent1.putExtra("FromWhere", Activities.POST);
                                                             startActivity(intent1);
                                                         }
                                                     }

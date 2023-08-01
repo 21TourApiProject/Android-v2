@@ -72,22 +72,6 @@ public class BottomFilterFragment extends BottomSheetDialogFragment {
     ImageView facilityDot;
     ImageView feeDot;
 
-    LinearLayout locationParent;
-    LinearLayout peopleParent;
-    LinearLayout themeParent;
-    LinearLayout facilityParent;
-    LinearLayout feeParent;
-    TextView locationParentText;
-    TextView peopleParentText;
-    TextView themeParentText;
-    TextView facilityParentText;
-    TextView feeParentText;
-    ImageView locationParentImg;
-    ImageView peopleParentImg;
-    ImageView themeParentImg;
-    ImageView facilityParentImg;
-    ImageView feeParentImg;
-
     FilterType firstTab = FilterType.AREA;
 
     ImageView closeBtn;
@@ -136,22 +120,6 @@ public class BottomFilterFragment extends BottomSheetDialogFragment {
         refreshBtn = view.findViewById(R.id.filter_refresh);
         resultBtn = view.findViewById(R.id.filter_result_btn);
 
-        locationParent = getActivity().findViewById(R.id.sr_location_btn);
-        peopleParent = getActivity().findViewById(R.id.sr_people_btn);
-        themeParent = getActivity().findViewById(R.id.sr_theme_btn);
-        facilityParent = getActivity().findViewById(R.id.sr_facility_btn);
-        feeParent = getActivity().findViewById(R.id.sr_fee_btn);
-        locationParentText = getActivity().findViewById(R.id.sr_location_btn_text);
-        peopleParentText = getActivity().findViewById(R.id.sr_people_btn_text);
-        themeParentText = getActivity().findViewById(R.id.sr_theme_btn_text);
-        facilityParentText = getActivity().findViewById(R.id.sr_facility_btn_text);
-        feeParentText = getActivity().findViewById(R.id.sr_fee_btn_text);
-        locationParentImg = getActivity().findViewById(R.id.sr_location_btn_img);
-        peopleParentImg = getActivity().findViewById(R.id.sr_people_btn_img);
-        themeParentImg = getActivity().findViewById(R.id.sr_theme_btn_img);
-        facilityParentImg = getActivity().findViewById(R.id.sr_facility_btn_img);
-        feeParentImg = getActivity().findViewById(R.id.sr_fee_btn_img);
-
         FilterOnClickItem filterOnClickItem = new FilterOnClickItem() {
             @Override
             public void onClick() {
@@ -177,7 +145,7 @@ public class BottomFilterFragment extends BottomSheetDialogFragment {
         resultBtn.setOnClickListener(view12 -> {
             ((SearchResultActivity)getActivity()).clearResult();
             ((SearchResultActivity)getActivity()).getObservation(0);
-            setParentFilterActive();
+            ((SearchResultActivity)getActivity()).setParentFilterActive();
             dismiss();
         });
 
@@ -318,65 +286,6 @@ public class BottomFilterFragment extends BottomSheetDialogFragment {
         for (HashTagItem item : feeList) {
             if (item.isActive == 1) {
                 feeDot.setVisibility(View.VISIBLE);
-                break;
-            }
-        }
-    }
-
-    private void setParentFilterActive() {
-        locationParent.setBackgroundResource(R.drawable.search__category_bg);
-        peopleParent.setBackgroundResource(R.drawable.search__category_bg);
-        themeParent.setBackgroundResource(R.drawable.search__category_bg);
-        facilityParent.setBackgroundResource(R.drawable.search__category_bg);
-        feeParent.setBackgroundResource(R.drawable.search__category_bg);
-        locationParentText.setTextColor(getActivity().getColor(R.color.white));
-        peopleParentText.setTextColor(getActivity().getColor(R.color.white));
-        themeParentText.setTextColor(getActivity().getColor(R.color.white));
-        facilityParentText.setTextColor(getActivity().getColor(R.color.white));
-        feeParentText.setTextColor(getActivity().getColor(R.color.white));
-        locationParentImg.setImageResource(R.drawable.search__filter_down);
-        peopleParentImg.setImageResource(R.drawable.search__filter_down);
-        themeParentImg.setImageResource(R.drawable.search__filter_down);
-        facilityParentImg.setImageResource(R.drawable.search__filter_down);
-        feeParentImg.setImageResource(R.drawable.search__filter_down);
-
-        for (HashTagItem item : areaList) {
-            if (item.isActive == 1) {
-                locationParent.setBackgroundResource(R.drawable.search__category_active_bg);
-                locationParentText.setTextColor(getActivity().getColor(R.color.point_blue));
-                locationParentImg.setImageResource(R.drawable.search__filter_down_active);
-                break;
-            }
-        }
-        for (HashTagItem item : peopleList) {
-            if (item.isActive == 1) {
-                peopleParent.setBackgroundResource(R.drawable.search__category_active_bg);
-                peopleParentText.setTextColor(getActivity().getColor(R.color.point_blue));
-                peopleParentImg.setImageResource(R.drawable.search__filter_down_active);
-                break;
-            }
-        }
-        for (HashTagItem item : themeList) {
-            if (item.isActive == 1) {
-                themeParent.setBackgroundResource(R.drawable.search__category_active_bg);
-                themeParentText.setTextColor(getActivity().getColor(R.color.point_blue));
-                themeParentImg.setImageResource(R.drawable.search__filter_down_active);
-                break;
-            }
-        }
-        for (HashTagItem item : facilityList) {
-            if (item.isActive == 1) {
-                facilityParent.setBackgroundResource(R.drawable.search__category_active_bg);
-                facilityParentText.setTextColor(getActivity().getColor(R.color.point_blue));
-                facilityParentImg.setImageResource(R.drawable.search__filter_down_active);
-                break;
-            }
-        }
-        for (HashTagItem item : feeList) {
-            if (item.isActive == 1) {
-                feeParent.setBackgroundResource(R.drawable.search__category_active_bg);
-                feeParentText.setTextColor(getActivity().getColor(R.color.point_blue));
-                feeParentImg.setImageResource(R.drawable.search__filter_down_active);
                 break;
             }
         }
