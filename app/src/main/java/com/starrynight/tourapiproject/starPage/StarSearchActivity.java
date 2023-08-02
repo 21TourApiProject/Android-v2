@@ -34,8 +34,10 @@ import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdapter;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdpater2;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.RetrofitClient;
+import com.starrynight.tourapiproject.weatherPage.WeatherLoadingDialog;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -57,11 +59,11 @@ import retrofit2.Response;
 public class StarSearchActivity extends AppCompatActivity {
 
     androidx.appcompat.widget.SearchView constSearch;
-    ListView searchList;
     LinearLayout backBtn,searchWordLayout;
     ImageView deleteBtn;
 
     List<Long> hashTagIdList;
+    List<Long> list = new ArrayList<>(Arrays.asList(1L,2L,3L,4L,5L,6L,7L,8L,9L,10L));
     SearchLoadingDialog dialog;
 
     List<String> nameList = new ArrayList<>();
@@ -89,7 +91,6 @@ public class StarSearchActivity extends AppCompatActivity {
 
         //별자리 검색
         constSearch = findViewById(R.id.edit_search);
-        searchList = findViewById(R.id.const_list_view);
         searchWordLayout = findViewById(R.id.search_word_layout);
         deleteBtn = findViewById(R.id.cancel_btn);
 
@@ -107,11 +108,20 @@ public class StarSearchActivity extends AppCompatActivity {
         //이전 페이지 해시태그 및 검색어 받아오기
         Intent intent = getIntent();
         int Type = (int) intent.getSerializableExtra("type");
+        if(Type==1){
+            hashTagName =(String)intent.getSerializableExtra("starName");
+            resultText.setText("'"+hashTagName+"'검색결과");
+            constSearch.setQuery(hashTagName,false);
+            Filter filter = new Filter(null, list );
+            SearchKey searchKey = new SearchKey(filter, hashTagName);
+            starSearchEveryThing(searchKey);
+        }
         if(Type ==2){
             hashTagIdList = new ArrayList<>();
             starHashTag = (long)intent.getSerializableExtra("starHashTag");
             hashTagName = (String)intent.getSerializableExtra("starHashTagName");
             resultText.setText(" ' "+hashTagName+" ' 검색결과");
+            constSearch.setQuery(hashTagName,false);
             hashTagIdList.add((long)starHashTag);
             Filter filter = new Filter(null, hashTagIdList);
             SearchKey searchKey = new SearchKey(filter, null);
@@ -120,7 +130,7 @@ public class StarSearchActivity extends AppCompatActivity {
         if(Type == 3){
             hashTagName = (String)intent.getSerializableExtra("starHashTagName");
             resultText.setText(" ' "+hashTagName+" ' 검색결과");
-
+            constSearch.setQuery(hashTagName,false);
             // 오늘 볼 수 있는 별자리 리스트 api
             Call<List<StarItem>> todayConstCall = RetrofitClient.getApiService().getTodayConst();
             todayConstCall.enqueue(new Callback<List<StarItem>>() {
@@ -166,15 +176,12 @@ public class StarSearchActivity extends AppCompatActivity {
       });
 
         callAllConstName();
-        connectClickConst();
         changeConstSearchText();
         onclickBackBtn();
 
         constSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchList.setVisibility(View.VISIBLE);
-                searchWordLayout.setVisibility(View.GONE);
             }
         });
 
@@ -183,8 +190,6 @@ public class StarSearchActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     Log.d("hasFocus", "0");
-                    searchList.setVisibility(View.VISIBLE);
-                    searchWordLayout.setVisibility(View.GONE);
                 }
 
             }
@@ -194,14 +199,13 @@ public class StarSearchActivity extends AppCompatActivity {
     // 별자리 검색 기능
     private void starSearchEveryThing(SearchKey searchKey){
         constAdapter = new StarViewAdpater2();
-        LoadingAsyncTask task = new LoadingAsyncTask(getApplicationContext(), 1500);
-        task.execute();
         Call<List<StarItem>> call = RetrofitClient.getApiService().getConstDataWithFilter(searchKey);
         call.enqueue(new Callback<List<StarItem>>() {
             @Override
             public void onResponse(Call<List<StarItem>> call, Response<List<StarItem>> response) {
                 if (response.isSuccessful()){
                     Log.d("searchStar", "별자리 검색 성공");
+                    dialog.dismiss();
                     searchResult = response.body();
                     for(StarItem si : searchResult){
                         constAdapter.addItem(si);
@@ -256,36 +260,22 @@ public class StarSearchActivity extends AppCompatActivity {
         });
     }
 
-    //별자리 눌렀을 때 해당 별자리 페이지로 이동
-    public void connectClickConst() {
-        arrayAdapter = new ArrayAdapter<String>(this, R.layout.star__search_list_item, nameList);
-        searchList.setAdapter(arrayAdapter);
-        searchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                itemClickId = parent.getItemAtPosition(position).toString();
-                Intent intent = new Intent(StarSearchActivity.this, StarActivity.class);
-                intent.putExtra("constName", itemClickId);
-                Log.d("constName", itemClickId);
-                startActivity(intent);
-            }
-        });
-    }
-
     //별자리 텍스트 검색 변화
     public void changeConstSearchText() {
         constSearch.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 //검색 버튼 누를 때 호출
-                StarSearchActivity.this.arrayAdapter.getFilter().filter(query);
+                dialog.show();
+                resultText.setText("'"+query+"'검색결과");
+                Filter filter = new Filter(null, list);
+                SearchKey searchKey = new SearchKey(filter, query);
+                starSearchEveryThing(searchKey);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                // 검색 창에서 글자가 변경이 일어날 때마다 호출
-                StarSearchActivity.this.arrayAdapter.getFilter().filter(newText);
                 return false;
             }
         });
@@ -321,13 +311,8 @@ public class StarSearchActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (searchList.getVisibility() == View.VISIBLE) {
-            searchList.setVisibility(View.GONE);
-            searchWordLayout.setVisibility(View.VISIBLE);
             constSearch.clearFocus();
-        } else {
             finish();
-        }
     }
 
     private class LoadingAsyncTask extends AsyncTask<String, Long, Boolean> {

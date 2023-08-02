@@ -62,7 +62,7 @@ public class MainPostHashTagItemAdapter extends RecyclerView.Adapter<MainPostHas
     public void onBindViewHolder(@NonNull MainPostHashTagItemAdapter.ViewHolder viewHolder, int position){
         if (position != 0) {
             viewHolder.observationpin.setVisibility(View.GONE);
-            viewHolder.postHashTagName.setPadding(12,0,0,0);
+            viewHolder.postHashTagName.setPadding(4,0,15,0);
             PostHashTagItem item = items.get(position);
             viewHolder.setItem(item);
         } else {
@@ -71,6 +71,13 @@ public class MainPostHashTagItemAdapter extends RecyclerView.Adapter<MainPostHas
             viewHolder.postHashTagName.setText(item0.getHashTagname());
             viewHolder.postHashTagName.setTextColor(ContextCompat.getColor(viewHolder.itemView.getContext(),R.color.point_blue));
             viewHolder.observationpin.setVisibility(View.VISIBLE);
+            if(viewHolder.observationId==null){
+                viewHolder.observationBtn.setVisibility(View.GONE);
+                viewHolder.postHashTagName.setPadding(0,0,15,0);
+            }else{
+                viewHolder.observationBtn.setVisibility(View.VISIBLE);
+            }
+
             viewHolder.postHashTagName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -97,12 +104,13 @@ public class MainPostHashTagItemAdapter extends RecyclerView.Adapter<MainPostHas
     public static class ViewHolder extends RecyclerView.ViewHolder{
         TextView postHashTagName;
         Long observationId;
-        ImageView observationpin;
+        ImageView observationpin,observationBtn;
 
         public ViewHolder(View itemView, final OnPostWriteHashTagItemAdapter listener){
             super(itemView);
             postHashTagName =itemView.findViewById(R.id.hashtags_name);
             observationpin = itemView.findViewById(R.id.mainpost_pin);
+            observationBtn =itemView.findViewById(R.id.mainPostObservationBtn);
 
             itemView.setClickable(true);
             itemView.setOnClickListener(new View.OnClickListener() {

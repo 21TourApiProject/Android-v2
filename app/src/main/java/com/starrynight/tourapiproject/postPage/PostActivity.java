@@ -772,7 +772,7 @@ public class PostActivity extends AppCompatActivity {
                                 //버튼 디자인 바뀌게 구현하기
                                 isWish = true;
                                 v.setSelected(!v.isSelected());
-                                Toast.makeText(getApplicationContext(), "나의 여행버킷리스트에 저장되었습니다.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "나의 북마크에 저장되었습니다.", Toast.LENGTH_SHORT).show();
                                 ((MainActivity) MainActivity.mContext).replaceFragment(mainFragment);
                                 like_btn.setEnabled(false);
                                 Handler handle = new Handler();
@@ -800,7 +800,7 @@ public class PostActivity extends AppCompatActivity {
                             if (response.isSuccessful()) {
                                 isWish = false;
                                 v.setSelected(!v.isSelected());
-                                Toast.makeText(getApplicationContext(), "나의 여행버킷리스트에서 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "나의 북마크에서 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                                 ((MainActivity) MainActivity.mContext).replaceFragment(mainFragment);
                                 like_btn.setEnabled(false);
                                 Handler handle = new Handler();

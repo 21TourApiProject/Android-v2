@@ -186,26 +186,32 @@
                         android:text="성별"
                         style="@style/semiBold_single_14" />
 
-                    <Button
+                    <TextView
                         android:id="@+id/male"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="52dp"
-                        android:background="@drawable/signup_male_non" />
+                        android:text="남"
+                        style="@style/semiBold_single_14"
+                        android:background="@drawable/signup_sex_non" />
 
-                    <Button
+                    <TextView
                         android:id="@+id/female"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="여"
                         android:layout_marginLeft="15dp"
-                        android:background="@drawable/signup_female_non" />
+                        style="@style/semiBold_single_14"
+                        android:background="@drawable/signup_sex_non" />
 
-                    <Button
+                    <TextView
                         android:id="@+id/noSex"
-                        android:layout_width="63dp"
-                        android:layout_height="29dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
-                        android:background="@drawable/signup_nosex_non" />
+                        android:text="선택 안함"
+                        style="@style/semiBold_single_14"
+                        android:background="@drawable/signup_sex_non" />
 
                 </LinearLayout>
 

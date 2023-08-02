@@ -215,9 +215,6 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
                     if (item.getHashTags() != null) {
                         for (int i = 0; i < item.getHashTags().size(); i++) {
                             adapter.addItem(new PostHashTagItem(item.getHashTags().get(i), null, null, postHashTagIds.get(i).getHashTagId()));
-                            if (i == 2) {
-                                break;
-                            }
                         }
                         if (adapter.getItemCount() < 4) {
                             if (item.getOptionHashTag() != null)
@@ -244,7 +241,6 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
                             PostHashTagItem item1 = adapter.getItem(position);
                             if (position!=0) {
                                 if (item1.getHashTagId() != null) {
-                                    Log.d("MainPost adapter", "여기아님?");
                                     String keyword = "";
                                     String name = item1.getHashTagname();
                                     Log.d("MainPost adapter", name);

@@ -74,7 +74,7 @@ public class AlarmActivity extends AppCompatActivity {
             }
         });
 
-        if(!finalAlarmList.isEmpty()){
+        if(finalAlarmList.isEmpty()){
             nothingAlarm.setVisibility(View.VISIBLE);
         }else {
             nothingAlarm.setVisibility(View.GONE);
