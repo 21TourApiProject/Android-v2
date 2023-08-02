@@ -89,12 +89,6 @@
 
             </LinearLayout>
 
-            <ListView
-                android:id="@+id/const_list_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
-
             <LinearLayout
                 android:id="@+id/search_word_layout"
                 android:layout_width="match_parent"

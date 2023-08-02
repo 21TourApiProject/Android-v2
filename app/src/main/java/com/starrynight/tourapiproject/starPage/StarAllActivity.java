@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -54,7 +56,6 @@ public class StarAllActivity extends AppCompatActivity {
     StarFeatureAdapter starFeatureAdapter;
     TextView monthText,starNumber;
     LinearLayout moreStarLinearLayout;
-
     LinearLayout starFilterItem;
     RecyclerView constTodayList,starHashTagList;
 
@@ -64,13 +65,22 @@ public class StarAllActivity extends AppCompatActivity {
         setContentView(R.layout.activity_star_all);
 
         //검색바 설정
-        TextView searchView = findViewById(R.id.starSearch);
-        searchView.setOnClickListener(new View.OnClickListener() {
+        EditText searchView = findViewById(R.id.starSearch);
+        searchView.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),StarSearchActivity.class);
-                intent.putExtra("type",1);
-                startActivity(intent);
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    if (!searchView.getText().toString().equals("")) {
+                        String star = ((EditText) (findViewById(R.id.starSearch))).getText().toString();
+                        Intent intent = new Intent(getApplicationContext(),StarSearchActivity.class);
+                        intent.putExtra("starName", star);
+                        intent.putExtra("type",1);
+                        startActivity(intent);
+                    }
+                } else {
+                    return false;
+                }
+                return true;
             }
         });
 

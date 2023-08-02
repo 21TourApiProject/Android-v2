@@ -6,7 +6,8 @@
     android:background="@drawable/hashtag_background"
     android:gravity="center"
     android:paddingStart="8dp"
-    android:layout_marginEnd="8dp">
+    android:paddingEnd="4dp"
+    android:layout_marginEnd="2dp">
 
 
     <ImageView
@@ -26,4 +27,12 @@
         android:text="#해쉬태그"
         android:textColor="@color/gray_500"
         />
+
+    <ImageView
+        android:id="@+id/mainPostObservationBtn"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_gravity="center_vertical"
+        app:srcCompat="@drawable/post__observation_move"
+        android:visibility="gone"/>
 </LinearLayout>
