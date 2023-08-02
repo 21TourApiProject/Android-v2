@@ -169,7 +169,7 @@
                         android:background="@drawable/signup_box2"
                         android:inputType="textPersonName"
                         android:padding="12dp"
-                        android:hint="이름을 입력해주세요"
+                        android:hint="이름(실명)을 입력해주세요"
                         style="@style/medium_single_14" />
                 </LinearLayout>
 
