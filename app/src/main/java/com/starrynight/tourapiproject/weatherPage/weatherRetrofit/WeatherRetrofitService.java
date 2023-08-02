@@ -3,6 +3,7 @@ package com.starrynight.tourapiproject.weatherPage.weatherRetrofit;
 import com.starrynight.tourapiproject.weatherPage.SearchLocationItem;
 
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -23,6 +24,9 @@ public interface WeatherRetrofitService {
 
     @POST("weather/observationalFit/mainPage")
     Call<MainInfo> getMainInfo(@Body AreaTimeDTO areaTimeDTO);
+
+    @POST("weather/area/nearest")
+    Call<Map<String, String>> getNearestArea(@Body NearestDTO nearestDTO);
 
     @GET("weather/locations")
     Call<List<SearchLocationItem>> getWeatherLocations();
