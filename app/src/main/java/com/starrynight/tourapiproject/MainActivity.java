@@ -135,14 +135,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return false;
             }
-        });
-    }
 
-    public void changeFragment(Fragment f) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.main_view, f);
-        fragmentTransaction.commit();
+
+        });
     }
 
     //뒤로가기 버튼 클릭 시
@@ -156,8 +151,8 @@ public class MainActivity extends AppCompatActivity {
             bottomNavigationView.setSelectedItemId(R.id.navigation_main);
             if (mainFragment != null)
                 getSupportFragmentManager().beginTransaction().show(mainFragment).commit();
-            showBottom();
-        } else if (bottomNavigationView.getSelectedItemId() == R.id.navigation_main) {
+        } else
+            if (bottomNavigationView.getSelectedItemId() == R.id.navigation_main) {
             if (System.currentTimeMillis() > backKeyPressTime + 2000) {
                 backKeyPressTime = System.currentTimeMillis();
                 Toast.makeText(this, "한 번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
@@ -180,22 +175,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-//        if(!(fragment instanceof FilterFragment)) {
-//            if(System.currentTimeMillis() > backKeyPressTime+2000){
-//                backKeyPressTime = System.currentTimeMillis();
-//                Toast.makeText(this,"한 번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
-//                return;
-//            }
-//            if (System.currentTimeMillis() <= backKeyPressTime+2000){
-//                finish();
-//            }
-//        } else{
-//            if (getFragmentManager().getBackStackEntryCount() > 0 ){
-//                getFragmentManager().popBackStack();
-//            } else {
-//                super.onBackPressed();
-//            }
-//        }
     }
 
     @Override
@@ -222,69 +201,5 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void showOffBottom() {
-        bottom.setVisibility(View.GONE);
-    }
 
-    public void showBottom() {
-        bottom.setVisibility(View.VISIBLE);
-    }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.detach(mainFragment).attach(mainFragment).commit();
-//    }
-
-    public Fragment getMap() {
-        return map;
-    }
-
-    public void setMap(Fragment map) {
-        this.map = map;
-    }
-
-    public Fragment getSearchResult() {
-        return searchResult;
-    }
-
-    public void setSearchResult(Fragment searchResult) {
-        this.searchResult = searchResult;
-    }
-
-    public Fragment getFilter() {
-        return filter;
-    }
-
-    public void setFilter(Fragment filter) {
-        this.filter = filter;
-    }
-
-    /**
-     * TODO 남아있는 프래그먼트를 전부 없앰
-     *
-     * @param -
-     * @return
-     * @throws
-     */
-    private void removeFragments() {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        if (map != null) {
-            transaction.remove(map);
-            map = null;
-        }
-        if (searchResult != null) {
-            transaction.remove(searchResult);
-            searchResult = null;
-        }
-        if (filter != null) {
-            transaction.remove(filter);
-            filter = null;
-        }
-
-        transaction.commit();
-    }
 }
