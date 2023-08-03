@@ -193,6 +193,7 @@ public class SearchResultActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 pagenum = 0;
+                observationResult.clear();
                 getObservation(pagenum);
                 mapBtn.setVisibility(View.GONE);
                 listBtn.setVisibility(View.VISIBLE);
@@ -203,6 +204,9 @@ public class SearchResultActivity extends AppCompatActivity {
         listBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                pagenum = 0;
+                observationResult.clear();
+                getObservation(pagenum);
                 listBtn.setVisibility(View.GONE);
                 mapBtn.setVisibility(View.VISIBLE);
                 fragmentManager.beginTransaction().replace(R.id.sr_fragment, tabFragment).commit();
@@ -296,7 +300,6 @@ public class SearchResultActivity extends AppCompatActivity {
                     areaList = response.body();
 
                     for (HashTagItem item : areaList) {
-                        Log.d(TAG, "궁금" + fromHashTagName + " " + item.getName());
                         if (fromHashTagName != null && fromHashTagName.equals(item.getName())) {
                             item.setIsActive(HashTagItem.VIEWTYPE_ACTIVE);
                         }
@@ -312,9 +315,7 @@ public class SearchResultActivity extends AppCompatActivity {
                                 hashTagItems = response.body();
 
                                 for (HashTagItem item : hashTagItems) {
-                                    Log.d(TAG, "궁금" + fromHashTagName + " " + item.getName());
                                     if (fromHashTagName != null && fromHashTagName.equals(item.getName())) {
-                                        Log.d(TAG, "일치" + fromHashTagName);
                                         item.setIsActive(HashTagItem.VIEWTYPE_ACTIVE);
                                     }
 

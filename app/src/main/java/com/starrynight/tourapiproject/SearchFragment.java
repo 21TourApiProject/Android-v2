@@ -41,9 +41,6 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_search, container, false);
 
-        ((MainActivity) getActivity()).showBottom();
-
-        ((MainActivity) getActivity()).setFilter(null);
 
         LinearLayout searchButton = v.findViewById(R.id.sf_search_btn);
 
@@ -56,12 +53,7 @@ public class SearchFragment extends Fragment {
         });
 
 
-        if (getArguments() != null) {
-            int type = getArguments().getInt("type");
-            if (type == 0) {
-                ((MainActivity) getActivity()).showBottom();
-            }
-        }
+
 
         //요즘 핫한 밤하늘 명소
         LinearLayout hotLinear = v.findViewById(R.id.hotlinearlayout);
