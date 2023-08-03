@@ -65,7 +65,13 @@ public class LogoutPopActivity extends AppCompatActivity {
                     if (isKakao) {
                         UserApiClient.getInstance().logout(error->{
                             if(error!=null){
-                                Log.e("KakaoLogout","로그인 실패 : ",error);
+                                Log.e("KakaoLogout","로그아웃 실패 : ",error);
+                                File dir = getFilesDir();
+                                File file = new File(dir, "userId");
+                                boolean deleted = file.delete();
+                                Intent intent = new Intent(LogoutPopActivity.this, SignUpActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
                             }else{
                                 Log.i("KakaoLogout","로그아웃 완료");
                                 File dir = getFilesDir();
