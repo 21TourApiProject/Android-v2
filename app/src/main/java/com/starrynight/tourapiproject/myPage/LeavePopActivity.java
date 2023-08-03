@@ -69,6 +69,31 @@ public class LeavePopActivity extends AppCompatActivity {
                                 (error)->{
                                     if(error!=null){
                                         Log.e("Kakao leave", "연결 끊기 실패", error);
+
+                                        Call<Void> call3 = RetrofitClient.getApiService().deleteUser(userId);
+                                        call3.enqueue(new Callback<Void>() {
+                                            @Override
+                                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                                if (response.isSuccessful()) {
+                                                    File dir = getFilesDir();
+                                                    File file = new File(dir, "userId");
+                                                    boolean deleted = file.delete();
+                                                    Toast.makeText(getApplicationContext(), "회원탈퇴에 성공했습니다.", Toast.LENGTH_SHORT).show();
+                                                    Intent intent = new Intent(LeavePopActivity.this, SignUpActivity.class);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    startActivity(intent);
+                                                    finish();
+                                                } else {
+                                                    Log.e(TAG, "탈퇴하기 실패");
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<Void> call, Throwable t) {
+                                                Log.e("연결실패", t.getMessage());
+                                            }
+                                        });
+
                                         Toast.makeText(getApplicationContext(), "회원탈퇴에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT).show();
                                     }else {
                                         //"회원탈퇴에 성공했습니다."라는 Toast 메세지를 띄우고 로그인 창으로 이동함
