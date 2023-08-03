@@ -57,6 +57,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.postItemPage.PostWriteHashTagItem2;
 import com.starrynight.tourapiproject.postItemPage.PostWriteHashTagItemAdapter;
+import com.starrynight.tourapiproject.postPage.postRetrofit.PostHashTag;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostHashTagParams;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostImageParams;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostParams;
@@ -101,12 +102,14 @@ public class PostWriteActivity extends AppCompatActivity {
     final int PICK_IMAGE_MULTIPLE = 201;
     int numOfPicture = 0;
     SelectImageAdapter adapter;
-    RecyclerView recyclerView;
+    RecyclerView recyclerView,hashTagRecyclerView,areaRecyclerView;
     String postContent = "",yearDate = "", time = "",postTitle, observationName, optionobservationName;
     List<PostHashTagParams> postHashTagParams = new ArrayList<>();
+    List<PostHashTagParams> postAreaParams = new ArrayList<>();
     List<PostImageParams> postImageParams = new ArrayList<>();
     String postObservePointName = "";
     List<String> hashTagList = new ArrayList<>();
+    List<String> areaList = new ArrayList<>();
     Long userId;
     PostWriteLoadingDialog dialog;
     File file;
@@ -258,6 +261,8 @@ public class PostWriteActivity extends AppCompatActivity {
                 startActivityForResult(intent, 202);
             }
         });
+        areaRecyclerView = findViewById(R.id.postAreaRecyclerView);
+        areaRecyclerView.addItemDecoration(new RecyclerViewDecoration(20,20));
 
         //해시태그추가 버튼 클릭 이벤트
         LinearLayout hashTaglayout = findViewById(R.id.layout_hashtag);
@@ -271,6 +276,8 @@ public class PostWriteActivity extends AppCompatActivity {
                 startActivityForResult(intent, 203);
             }
         });
+        hashTagRecyclerView = findViewById(R.id.postHashTagrecyclerView);
+        hashTagRecyclerView.addItemDecoration(new RecyclerViewDecoration(20, 20));
 
         //시간 추가 버튼 클릭 이벤트
         dateText = findViewById(R.id.dateText);
@@ -346,7 +353,12 @@ public class PostWriteActivity extends AppCompatActivity {
                         postParams.setUserId(userId);
                         postParams.setPostTitle(postTitle);
                         postParams.setOptionObservation(optionobservationName);
-                        Call<Long> call = RetrofitClient.getApiService().postup(postObservePointName, postParams);
+                        Long areaId =0L;
+                        if(postAreaParams!=null){
+                            postHashTagParams.addAll(postAreaParams);
+                            areaId=postAreaParams.get(0).getAreaId();
+                        }
+                        Call<Long> call = RetrofitClient.getApiService().postup(postObservePointName, postParams,areaId);
                         call.enqueue(new Callback<Long>() {
                             @Override
                             public void onResponse(Call<Long> call, Response<Long> response) {
@@ -369,6 +381,7 @@ public class PostWriteActivity extends AppCompatActivity {
                                             Log.d("postImage", "이미지 업로드 인터넷 오류");
                                         }
                                     });
+
                                     Call<Void> call2 = RetrofitClient.getApiService().createPostHashTag(result, postHashTagParams);
                                     call2.enqueue(new Callback<Void>() {
                                         @Override
@@ -429,6 +442,8 @@ public class PostWriteActivity extends AppCompatActivity {
                 canRegist();
                 observationName = (String) data.getSerializableExtra("observationName");
                 optionobservationName = (String) data.getSerializableExtra("optionObservationName");
+                areaList = (List<String>) data.getSerializableExtra("areaList");
+                postAreaParams = (List<PostHashTagParams>) data.getSerializableExtra("postAreaParams");
                 if (observationName != null) {
                     ob_linear.setVisibility(View.VISIBLE);
                     postObservePointItem.setText(observationName);
@@ -437,8 +452,23 @@ public class PostWriteActivity extends AppCompatActivity {
                     hashTagPin.setVisibility(View.VISIBLE);
                 } else {
                     postObservePointItem.setText(optionobservationName);
+                    postObservePointItem.setTextColor(getColor(R.color.point_blue));
                     ob_linear.setVisibility(View.VISIBLE);
                     postObservePointName = "나만의 관측지";
+                    areaRecyclerView.setVisibility(View.VISIBLE);
+                    exampleHashTagText.setVisibility(View.GONE);
+                    LinearLayoutManager layoutManager =new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+                    areaRecyclerView.setLayoutManager(layoutManager);
+                    PostWriteHashTagItemAdapter adapter = new PostWriteHashTagItemAdapter();
+                    if (areaList.size() != 0) {
+                        for (int i = 0; i < areaList.size(); i++) {
+                            adapter.addItem(new PostWriteHashTagItem2(areaList.get(i)));
+                            if (i==1){
+                                break;
+                            }
+                        }
+                    }
+                    areaRecyclerView.setAdapter(adapter);
                 }
 
             } else {
@@ -452,11 +482,10 @@ public class PostWriteActivity extends AppCompatActivity {
                 canRegist();
                 postHashTagParams = (List<PostHashTagParams>) data.getSerializableExtra("postHashTagParams");
                 hashTagList = (List<String>) data.getSerializableExtra("hashTagList");
-                RecyclerView recyclerView = findViewById(R.id.postHashTagrecyclerView);
-                recyclerView.setVisibility(View.VISIBLE);
+                hashTagRecyclerView.setVisibility(View.VISIBLE);
                 exampleHashTagText.setVisibility(View.GONE);
                 StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
-                recyclerView.setLayoutManager(layoutManager);
+                hashTagRecyclerView.setLayoutManager(layoutManager);
                 PostWriteHashTagItemAdapter adapter = new PostWriteHashTagItemAdapter();
                 if (hashTagList.size() != 0) {
                     for (int i = 0; i < hashTagList.size(); i++) {
@@ -473,8 +502,8 @@ public class PostWriteActivity extends AppCompatActivity {
                 } else if (allsize > 61) {
                     layoutManager.setSpanCount(4);
                 }
-                recyclerView.setAdapter(adapter);
-                recyclerView.addItemDecoration(new RecyclerViewDecoration(15, 15));
+                hashTagRecyclerView.setAdapter(adapter);
+
             } else {
                 Log.d("postHashTag", "게시물 검색 해시태그 로드 실패");
             }

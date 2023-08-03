@@ -378,13 +378,27 @@
                                     android:text="태그를 추가해보세요"
                                     android:textColor="@color/gray_500" />
 
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
                                 <androidx.recyclerview.widget.RecyclerView
                                     android:id="@+id/postHashTagrecyclerView"
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:orientation="horizontal"
                                     android:visibility="gone"
                                     tools:itemCount="5" />
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/postAreaRecyclerView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:visibility="gone"
+                                    tools:itemCount="5" />
+                                </LinearLayout>
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>

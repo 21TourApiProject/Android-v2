@@ -79,7 +79,7 @@
 
                 <TextView
                     android:id="@+id/datePicker"
-                    android:layout_width="170dp"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/postwrite_time_non"
                     android:onClick="onClickDatePicker"
@@ -89,7 +89,7 @@
 
                 <TextView
                     android:id="@+id/timePicker"
-                    android:layout_width="170dp"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/postwrite_time_non"
                     android:onClick="onClickTimePicker"

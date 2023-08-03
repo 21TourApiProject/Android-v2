@@ -1,6 +1,7 @@
 package com.starrynight.tourapiproject.postWritePage;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,7 +27,9 @@ import com.starrynight.tourapiproject.postItemPage.OnSearchItemClickListener;
 import com.starrynight.tourapiproject.postItemPage.Search_item;
 import com.starrynight.tourapiproject.postItemPage.Search_item_adapter;
 import com.starrynight.tourapiproject.postItemPage.Search_item_adapter2;
+import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostHashTagParams;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -156,10 +160,9 @@ public class SearchObservingPointActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 observePoint = ((EditText) (findViewById(R.id.findObservePoint))).getText().toString();
-                Intent intent = new Intent();
+                Intent intent = new Intent(SearchObservingPointActivity.this,AddAreaActivity.class);
                 intent.putExtra("optionObservationName", observePoint);
-                setResult(2, intent);
-                finish();
+                startActivityForResult(intent,206);
             }
         });
 
@@ -188,10 +191,6 @@ public class SearchObservingPointActivity extends AppCompatActivity {
                 if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                     if (!editText.getText().toString().equals("")) {
                         observePoint = ((EditText) (findViewById(R.id.findObservePoint))).getText().toString();
-                        Intent intent = new Intent();
-                        intent.putExtra("optionObservationName", observePoint);
-                        setResult(2, intent);
-                        finish();
                     }
                 } else {
                     return false;
@@ -218,6 +217,26 @@ public class SearchObservingPointActivity extends AppCompatActivity {
             }
         }
         search_item_adapter.filterList(filteredList);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    protected void  onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode==206){
+            if(resultCode==6){
+                Log.d("postArea", "지역 해시태그 데이터 로드");
+                String optionObName = (String) data.getSerializableExtra("optionObservationName");
+                List<String> areaList = (List<String>) data.getSerializableExtra("areaList");
+                List<PostHashTagParams> postAreaParams = (List<PostHashTagParams>) data.getSerializableExtra("postAreaParams");
+                Intent intent =new Intent();
+                intent.putExtra("postAreaParams", (Serializable) postAreaParams);
+                intent.putExtra("areaList", (Serializable) areaList);
+                intent.putExtra("optionObservationName",(Serializable) optionObName);
+                setResult(2,intent);
+                finish();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 }
