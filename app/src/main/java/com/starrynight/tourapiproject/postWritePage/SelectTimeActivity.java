@@ -133,6 +133,9 @@ public class SelectTimeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
+                if(time.isEmpty()){
+                    time="00:00";
+                }
                 intent.putExtra("date",yearDate);
                 intent.putExtra("time",time);
                 intent.putExtra("day",day);

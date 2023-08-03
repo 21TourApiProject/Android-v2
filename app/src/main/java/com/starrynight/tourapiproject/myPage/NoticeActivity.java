@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -78,7 +79,7 @@ public class NoticeActivity extends AppCompatActivity {
             }
         });
 
-        ImageView noticeBack = findViewById(R.id.noticeBack);
+        LinearLayout noticeBack = findViewById(R.id.noticeBack);
         noticeBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
