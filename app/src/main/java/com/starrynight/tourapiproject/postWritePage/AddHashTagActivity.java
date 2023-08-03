@@ -56,7 +56,7 @@ public class AddHashTagActivity extends AppCompatActivity {
     List<PostHashTagParams> postHashTagParams = new ArrayList<>();
     List<PostHashTagParams> postHashTagParams2 = new ArrayList<>();
     List<HashTagItem> hashTaglist;
-    RecyclerView areaRecyclerView, themeRecyclerView,peopleRecyclerView,facilityRecyclerView, feeRecyclerView;
+    RecyclerView themeRecyclerView,peopleRecyclerView,facilityRecyclerView, feeRecyclerView;
     ArrayList<String> hashtag=new ArrayList<>();
 
     @Override
@@ -101,12 +101,12 @@ public class AddHashTagActivity extends AppCompatActivity {
         PostHashTagAdapter facilityAdapter =new PostHashTagAdapter();
         PostHashTagAdapter peopleAdapter =new PostHashTagAdapter();
         PostHashTagAdapter feeAdapter =new PostHashTagAdapter();
-        PostHashTagAdapter localAdapter =new PostHashTagAdapter();
+
         FlexboxLayoutManager flexboxLayoutManager;
         FlexboxLayoutManager flexboxLayoutManager1;
         FlexboxLayoutManager flexboxLayoutManager2;
         FlexboxLayoutManager flexboxLayoutManager3;
-        FlexboxLayoutManager flexboxLayoutManager4;
+
 
         flexboxLayoutManager = new FlexboxLayoutManager(this);
         flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
@@ -120,104 +120,68 @@ public class AddHashTagActivity extends AppCompatActivity {
         flexboxLayoutManager3 = new FlexboxLayoutManager(this);
         flexboxLayoutManager3.setFlexDirection(FlexDirection.ROW);
         flexboxLayoutManager3.setJustifyContent(JustifyContent.FLEX_START);
-        flexboxLayoutManager4 = new FlexboxLayoutManager(this);
-        flexboxLayoutManager4.setFlexDirection(FlexDirection.ROW);
-        flexboxLayoutManager4.setJustifyContent(JustifyContent.FLEX_START);
+
 
         themeRecyclerView= findViewById(R.id.themePostHashTag);
         peopleRecyclerView=findViewById(R.id.whoPostHashTag);
         facilityRecyclerView=findViewById(R.id.facilityPostHashtag);
         feeRecyclerView=findViewById(R.id.feePostHashTag);
-        areaRecyclerView = findViewById(R.id.localPostHashTag);
-        areaRecyclerView.addItemDecoration(new RecyclerDecoration(10));
 
-        Call<List<HashTagItem>> areaCall = RetrofitClient.getApiService().getAreaFilter();
-        areaCall.enqueue(new Callback<List<HashTagItem>>() {
+
+        //해시태그 리스트 불러오기
+        Call<List<HashTagItem>> hashTagCall = RetrofitClient.getApiService().getHashTag();
+        hashTagCall.enqueue(new Callback<List<HashTagItem>>() {
             @Override
             public void onResponse(Call<List<HashTagItem>> call, Response<List<HashTagItem>> response) {
                 if(response.isSuccessful()){
-                    List<HashTagItem> areaList = response.body();
+                    Log.d("postHashTag", "모든 해쉬태그 호출 성공");
+                    hashTaglist=response.body();
+                    //이전에 이미 클릭해놓은 해시태그가 있는 경우 확인
                     if(hashtag!=null){
                         for(String h : hashtag){
-                            for(HashTagItem item : areaList){
+                            for(HashTagItem item : hashTaglist){
                                 if(item.getName().equals(h)){
                                     item.setIsActive(1);
                                 }
                             }
                         }
                     }
-                    for(HashTagItem item: areaList){
-                        Log.d("postHashTag", "지역 해쉬태그 호출 성공");
-                        localAdapter.addItem(item);
-
+                    for(HashTagItem item: hashTaglist){
+                        switch (item.getCategory()){
+                            case "THEME":
+                                themeAdapter.addItem(item);
+                                break;
+                            case "PEOPLE":
+                                peopleAdapter.addItem(item);
+                                break;
+                            case "FACILITY":
+                                facilityAdapter.addItem(item);
+                                break;
+                            case "FEE":
+                                feeAdapter.addItem(item);
+                                break;
+                        }
                     }
-                    //해시태그 리스트 불러오기
-                    Call<List<HashTagItem>> hashTagCall = RetrofitClient.getApiService().getHashTag();
-                    hashTagCall.enqueue(new Callback<List<HashTagItem>>() {
-                        @Override
-                        public void onResponse(Call<List<HashTagItem>> call, Response<List<HashTagItem>> response) {
-                            if(response.isSuccessful()){
-                                Log.d("postHashTag", "모든 해쉬태그 호출 성공");
-                                hashTaglist=response.body();
-                                //이전에 이미 클릭해놓은 해시태그가 있는 경우 확인
-                                if(hashtag!=null){
-                                    for(String h : hashtag){
-                                        for(HashTagItem item : hashTaglist){
-                                            if(item.getName().equals(h)){
-                                                item.setIsActive(1);
-                                            }
-                                        }
-                                    }
-                                }
-                                for(HashTagItem item: hashTaglist){
-                                    switch (item.getCategory()){
-                                        case "THEME":
-                                            themeAdapter.addItem(item);
-                                            break;
-                                        case "PEOPLE":
-                                            peopleAdapter.addItem(item);
-                                            break;
-                                        case "FACILITY":
-                                            facilityAdapter.addItem(item);
-                                            break;
-                                        case "FEE":
-                                            feeAdapter.addItem(item);
-                                            break;
-                                    }
-                                }
 
-                                themeRecyclerView.setLayoutManager(flexboxLayoutManager);
-                                themeRecyclerView.setAdapter(themeAdapter);
-                                peopleRecyclerView.setLayoutManager(flexboxLayoutManager1);
-                                peopleRecyclerView.setAdapter(peopleAdapter);
-                                facilityRecyclerView.setLayoutManager(flexboxLayoutManager2);
-                                facilityRecyclerView.setAdapter(facilityAdapter);
-                                feeRecyclerView.setLayoutManager(flexboxLayoutManager3);
-                                feeRecyclerView.setAdapter(feeAdapter);
-                                areaRecyclerView.setLayoutManager(flexboxLayoutManager4);
-                                areaRecyclerView.setAdapter(localAdapter);
-                            }else{
-                                Log.e("postHashTag", "모든 해쉬태그 호출 실패");
-                            }
-                        }
+                    themeRecyclerView.setLayoutManager(flexboxLayoutManager);
+                    themeRecyclerView.setAdapter(themeAdapter);
+                    peopleRecyclerView.setLayoutManager(flexboxLayoutManager1);
+                    peopleRecyclerView.setAdapter(peopleAdapter);
+                    facilityRecyclerView.setLayoutManager(flexboxLayoutManager2);
+                    facilityRecyclerView.setAdapter(facilityAdapter);
+                    feeRecyclerView.setLayoutManager(flexboxLayoutManager3);
+                    feeRecyclerView.setAdapter(feeAdapter);
 
-                        @Override
-                        public void onFailure(Call<List<HashTagItem>> call, Throwable t) {
-                            Log.e("postHashTag", "모든 해쉬태그 호출 인터넷 실패");
-                        }
-                    });
                 }else{
-                    Log.e("postHashTag", "지역 해쉬태그 호출 실패");
+                    Log.e("postHashTag", "모든 해쉬태그 호출 실패");
                 }
             }
 
             @Override
             public void onFailure(Call<List<HashTagItem>> call, Throwable t) {
-                Log.e("postHashTag", "지역 해쉬태그 호출 인터넷 실패");
+                Log.e("postHashTag", "모든 해쉬태그 호출 인터넷 실패");
             }
         });
-
-
 
 
 
@@ -230,15 +194,6 @@ public class AddHashTagActivity extends AppCompatActivity {
         plusHashTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(int i=0;i<localAdapter.getItemCount();i++){
-                    if(localAdapter.getItem(i).getIsActive()==VIEWTYPE_ACTIVE){
-                        PostHashTagParams postHashTagParam = new PostHashTagParams();
-                        postHashTagParam.setAreaName(localAdapter.getItem(i).getName());
-                        postHashTagParam.setAreaId(localAdapter.getItem(i).getId());
-                        postHashTagParams.add(postHashTagParam);
-                        finallist.add(localAdapter.getItem(i).getName());
-                    }
-                }
                 for(int i=0;i<themeAdapter.getItemCount();i++){
                     if(themeAdapter.getItem(i).getIsActive()==VIEWTYPE_ACTIVE){
                         PostHashTagParams postHashTagParam = new PostHashTagParams();
