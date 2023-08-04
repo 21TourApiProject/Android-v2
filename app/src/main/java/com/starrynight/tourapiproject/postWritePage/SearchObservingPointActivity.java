@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -62,6 +63,8 @@ public class SearchObservingPointActivity extends AppCompatActivity {
     LinearLayout addLinearLayout, nearLinearLayout,searchLinearLayout, noResultLinearLayout,optionRegistLinearLayout;
     TextView optionText;
     EditText editText;
+    AddAreaFragment addAreaFragment;
+    FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,14 +158,17 @@ public class SearchObservingPointActivity extends AppCompatActivity {
             }
         });
 
+        fragmentManager = getSupportFragmentManager();
+
         //임의 관측지 클릭 시
         optionRegistLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 observePoint = ((EditText) (findViewById(R.id.findObservePoint))).getText().toString();
-                Intent intent = new Intent(SearchObservingPointActivity.this,AddAreaActivity.class);
-                intent.putExtra("optionObservationName", observePoint);
-                startActivityForResult(intent,206);
+                addAreaFragment =new AddAreaFragment();
+                addAreaFragment.setCancelable(true);
+                addAreaFragment.show(fragmentManager,addAreaFragment.getTag());
+
             }
         });
 
@@ -231,7 +237,7 @@ public class SearchObservingPointActivity extends AppCompatActivity {
                 Intent intent =new Intent();
                 intent.putExtra("postAreaParams", (Serializable) postAreaParams);
                 intent.putExtra("areaList", (Serializable) areaList);
-                intent.putExtra("optionObservationName",(Serializable) optionObName);
+                intent.putExtra("optionObservationName",(Serializable) observePoint);
                 setResult(2,intent);
                 finish();
             }

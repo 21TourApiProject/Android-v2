@@ -262,7 +262,6 @@ public class PostWriteActivity extends AppCompatActivity {
             }
         });
         areaRecyclerView = findViewById(R.id.postAreaRecyclerView);
-        areaRecyclerView.addItemDecoration(new RecyclerViewDecoration(20,20));
 
         //해시태그추가 버튼 클릭 이벤트
         LinearLayout hashTaglayout = findViewById(R.id.layout_hashtag);
@@ -354,9 +353,13 @@ public class PostWriteActivity extends AppCompatActivity {
                         postParams.setPostTitle(postTitle);
                         postParams.setOptionObservation(optionobservationName);
                         Long areaId =0L;
+                        List<PostHashTagParams> finalParams= new ArrayList<PostHashTagParams>();
                         if(postAreaParams!=null){
-                            postHashTagParams.addAll(postAreaParams);
+                            finalParams.addAll(postAreaParams);
+                            finalParams.addAll(postHashTagParams);
                             areaId=postAreaParams.get(0).getAreaId();
+                        }else{
+                            finalParams.addAll(postHashTagParams);
                         }
                         Call<Long> call = RetrofitClient.getApiService().postup(postObservePointName, postParams,areaId);
                         call.enqueue(new Callback<Long>() {
@@ -382,7 +385,7 @@ public class PostWriteActivity extends AppCompatActivity {
                                         }
                                     });
 
-                                    Call<Void> call2 = RetrofitClient.getApiService().createPostHashTag(result, postHashTagParams);
+                                    Call<Void> call2 = RetrofitClient.getApiService().createPostHashTag(result, finalParams);
                                     call2.enqueue(new Callback<Void>() {
                                         @Override
                                         public void onResponse(Call<Void> call, Response<Void> response) {
@@ -450,6 +453,10 @@ public class PostWriteActivity extends AppCompatActivity {
                     postObservePointName = observationName;
                     postObservePointItem.setTextColor(getColor(R.color.point_blue));
                     hashTagPin.setVisibility(View.VISIBLE);
+                    LinearLayoutManager layoutManager =new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+                    areaRecyclerView.setLayoutManager(layoutManager);
+                    PostWriteHashTagItemAdapter adapter = new PostWriteHashTagItemAdapter();
+                    areaRecyclerView.setAdapter(adapter);
                 } else {
                     postObservePointItem.setText(optionobservationName);
                     postObservePointItem.setTextColor(getColor(R.color.point_blue));
