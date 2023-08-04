@@ -26,10 +26,10 @@ import retrofit2.http.Path;
 public interface SignUpRetrofitService {
 
     @POST("user")
-    Call<Void> signUp(@Body UserParams params);
+    Call<String> signUp(@Body UserParams params);
 
     @POST("user/kakao")
-    Call<Void> kakaoSignUp(@Body KakaoUserParams params);
+    Call<String> kakaoSignUp(@Body KakaoUserParams params);
 
     @DELETE("user/email/{email}")
     Call<Void> cancelSignUp(@Path("email") String email);

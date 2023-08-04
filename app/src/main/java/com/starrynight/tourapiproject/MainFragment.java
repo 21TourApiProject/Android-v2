@@ -342,7 +342,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             e.printStackTrace();
             location = "현위치를 불러올 수 없습니다.";
         }
-        if (addressList.isEmpty()) {
+        if (addressList.size() == 0) {
             location = "현위치를 불러올 수 없습니다.";
         }
         Address address = addressList.get(0);
