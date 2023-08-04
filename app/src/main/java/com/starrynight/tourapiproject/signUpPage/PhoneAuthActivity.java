@@ -1,5 +1,6 @@
 package com.starrynight.tourapiproject.signUpPage;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -12,21 +13,15 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -37,6 +32,7 @@ import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.signUpPage.signUpRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.signUpPage.signUpRetrofit.UserParams;
 
+import java.io.FileOutputStream;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
@@ -44,18 +40,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
+ * @author : sein
+ * @version : 1.0
+ * <p>
+ * ====개정이력(Modification Information)====
+ * 수정일        수정자        수정내용
+ * -----------------------------------------
+ * 2022-09-07     sein        주석 생성
  * @className : PhoneAuthActivity.java
  * @description :  회원가입 시 전화번호를 인증하는 페이지입니다.
  * @modification : 2022-09-07(sein) 수정
- * @author : sein
  * @date : 2022-09-07
- * @version : 1.0
-
-    ====개정이력(Modification Information)====
-        수정일        수정자        수정내용
-    -----------------------------------------
-      2022-09-07     sein        주석 생성
-
  */
 public class PhoneAuthActivity extends AppCompatActivity implements
         View.OnClickListener {
@@ -73,7 +68,7 @@ public class PhoneAuthActivity extends AppCompatActivity implements
     private EditText mobilePhoneNumber;
     private TextView phoneGuide; //전화번호 칸 바로 밑에 글칸
     private EditText authCode;
-    private TextView startAuth,authText;
+    private TextView startAuth, authText;
     private TextView resendAuth;
     private Button verify;
 
@@ -122,7 +117,7 @@ public class PhoneAuthActivity extends AppCompatActivity implements
         phoneGuide = findViewById(R.id.phoneGuide);
         authCode = findViewById(R.id.authCode); //인증코드
         startAuth = findViewById(R.id.startAuth); //처음 문자요청
-        authText =findViewById(R.id.authText);//인증번호 전송 했습니다. 텍스트
+        authText = findViewById(R.id.authText);//인증번호 전송 했습니다. 텍스트
         resendAuth = findViewById(R.id.resendAuth); //재 문자요청
         verify = findViewById(R.id.verify); //인증요청
 
@@ -318,48 +313,51 @@ public class PhoneAuthActivity extends AppCompatActivity implements
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "인증 성공"); //인증 성공하면
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "인증 성공"); //인증 성공하면
 
-                            //회원가입을 위한 post api
-                            if (isPhoneAgree)
-                                userParams.setMobilePhoneNumber(mobilePhoneNumber.getText().toString());
-                            else
-                                userParams.setMobilePhoneNumber(null);
-                            Call<Void> call = RetrofitClient.getApiService().signUp(userParams);
-                            call.enqueue(new Callback<Void>() {
-                                @Override
-                                public void onResponse(Call<Void> call, Response<Void> response) {
-                                    if (response.isSuccessful()) {
-                                        Log.d(TAG, "회원가입 성공");
-                                        signOut();
+                        //회원가입을 위한 post api
+                        if (isPhoneAgree)
+                            userParams.setMobilePhoneNumber(mobilePhoneNumber.getText().toString());
+                        else
+                            userParams.setMobilePhoneNumber(null);
 
-                                        //선호 해시태그 선택 창으로 전환
-//                                        Intent intent = new Intent(PhoneAuthActivity.this, SelectMyHashTagActivity.class);
-//                                        intent.putExtra("email", userParams.getEmail());
-//                                        startActivityForResult(intent, SELECT_HASH_TAG);
+                        RetrofitClient.getApiService().signUp(userParams).enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                if (response.isSuccessful()) {
+                                    Log.d(TAG, "회원가입 성공");
+                                    signOut();
 
-                                        Intent intent = new Intent(PhoneAuthActivity.this, MainActivity.class);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP); //액티비티 스택제거
-                                        startActivity(intent);
-                                    } else {
-                                        Log.e(TAG, "회원가입 실패");
+                                    //앱 내부 저장소에 userId란 이름으로 사용자 id 저장
+                                    String fileName = "userId";
+                                    String userId = response.body();
+                                    try {
+                                        FileOutputStream fos = openFileOutput(fileName, Context.MODE_PRIVATE);
+                                        fos.write(userId.getBytes());
+                                        fos.close();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
-                                }
 
-                                @Override
-                                public void onFailure(Call<Void> call, Throwable t) {
-                                    Log.e("연결실패", t.getMessage());
+                                    Intent intent = new Intent(PhoneAuthActivity.this, MainActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP); //액티비티 스택제거
+                                    startActivity(intent);
+                                } else {
+                                    Log.e(TAG, "회원가입 실패");
                                 }
-                            });
-                        } else {
-                            Log.w(TAG, "인증 실패", task.getException());
-                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                Toast.makeText(getApplicationContext(), "올바르지 않은 인증번호입니다.", Toast.LENGTH_SHORT).show();
                             }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                Log.e("연결실패", t.getMessage());
+                            }
+                        });
+                    } else {
+                        Log.w(TAG, "인증 실패", task.getException());
+                        if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                            Toast.makeText(getApplicationContext(), "올바르지 않은 인증번호입니다.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -429,33 +427,4 @@ public class PhoneAuthActivity extends AppCompatActivity implements
                 }
         }
     }
-
-//    @Override //선호 해시태그 선택하다말고 뒤로 돌아오면
-//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if(requestCode == SELECT_HASH_TAG){
-//            //회원정보 삭제
-//            Call<Void> call = RetrofitClient.getApiService().cancelSignUp(userParams.getEmail());
-//            call.enqueue(new Callback<Void>() {
-//                @Override
-//                public void onResponse(Call<Void> call, Response<Void> response) {
-//                    if(response.isSuccessful()){
-//                        Log.d(TAG, "회원정보 삭제 성공");
-//                    } else{
-//                        Log.e(TAG, "회원정보 삭제 실패");
-//                    }
-//                }
-//                @Override
-//                public void onFailure(Call<Void> call, Throwable t) {
-//                    Log.e("연결실패", t.getMessage());
-//                }
-//            });
-//
-////            Intent intent = getIntent();
-////            finish();
-////            startActivity(intent);
-//
-//        }
-//    }
-
 }
