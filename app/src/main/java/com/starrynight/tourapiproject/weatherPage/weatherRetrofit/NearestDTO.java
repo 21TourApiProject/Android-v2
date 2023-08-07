@@ -1,14 +1,17 @@
 package com.starrynight.tourapiproject.weatherPage.weatherRetrofit;
 
 public class NearestDTO {
-    String sigungu;
+    String sgg;
     Double latitude;
     Double longitude;
 
-    public NearestDTO(String sigungu, Double latitude, Double longitude) {
-        this.sigungu = sigungu;
+    public NearestDTO(String sgg, Double latitude, Double longitude) {
+        this.sgg = sgg;
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
+    public void setSgg(String sgg) {
+        this.sgg = sgg;
+    }
 }
