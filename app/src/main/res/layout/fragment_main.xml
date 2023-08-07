@@ -133,7 +133,7 @@
                                 android:textSize="12sp" />
 
                             <TextView
-                                android:id="@+id/current_location"
+                                android:id="@+id/main__current_location"
                                 style="@style/medium_single_14"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

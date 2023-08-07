@@ -43,7 +43,6 @@ import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.WeatherRetrofi
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
@@ -104,16 +103,13 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     double latitude;
     double longitude;
     String location;
-    String EMD = "";
     Long areaId; // WEATHER_AREA id
     String hour; // 현재 hour ex) 18
     String min; // 현재 min ex) 10
     private TextView weatherComment;
-    private TextView currentLocation;
     private ImageView star;
     private TextView mainBestObservationFit;
     private TextView recommendTime;
-    private View weatherDetail;
 
     public MainFragment() {
         // Required empty public constructor
@@ -146,66 +142,106 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         View mainLocation = v.findViewById(R.id.main__location);
         weatherComment = v.findViewById(R.id.weather_comment);
-        currentLocation = v.findViewById(R.id.current_location);
+        TextView currentLocation = v.findViewById(R.id.main__current_location);
         star = v.findViewById(R.id.main__star);
         mainBestObservationFit = v.findViewById(R.id.main_best_observation_fit);
         recommendTime = v.findViewById(R.id.recommend_time);
-        weatherDetail = v.findViewById(R.id.weather_detail);
+        View weatherDetail = v.findViewById(R.id.weather_detail);
 
         checkLocationPermission();
 
         gpsTracker = new GpsTracker(getContext());
         latitude = gpsTracker.getLatitude();
         longitude = gpsTracker.getLongitude();
-        getLocation(latitude, longitude);
-//        Log.d(TAG, "현위치 = " + latitude + " " + longitude + " " + location);
-        if (location == null) currentLocation.setText("새로고침이 필요합니다.");
-        else if (location.equals("현위치를 불러올 수 없습니다.")) currentLocation.setText(location);
-        else {
-            currentLocation.setText(location);
 
-            long now = System.currentTimeMillis();
-            Date date = new Date(now);
-            hour = hh.format(date);
-            min = mm.format(date);
+        // 현 위치 불러오기
+        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+        List<Address> addressList = new ArrayList<>();
+        try {
+            addressList = geocoder.getFromLocation(latitude, longitude, 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-            AreaTimeDTO areaTimeDTO = new AreaTimeDTO(yyyy_MM_dd.format(date), Integer.valueOf(hour), latitude, longitude);
-            areaTimeDTO.setAddress(location);
+        if (!addressList.isEmpty()) {
+            Address address = addressList.get(0);
+            String SD = address.getAdminArea();
+            String SGG = address.getFeatureName();
+            System.out.println("SD = " + SD);
+            System.out.println("SGG = " + SGG);
+
+            NearestDTO nearestDTO = new NearestDTO(SGG, latitude, longitude);
+            if (SD.contains("세종")) nearestDTO.setSgg("세종");
+
             WeatherRetrofitClient.getApiService()
-                    .getMainInfo(areaTimeDTO)
-                    .enqueue(new Callback<MainInfo>() {
+                    .getNearestArea(nearestDTO)
+                    .enqueue(new Callback<Map<String, String>>() {
                         @Override
-                        public void onResponse(Call<MainInfo> call, Response<MainInfo> response) {
+                        public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
                             if (response.isSuccessful()) {
-                                MainInfo info = response.body();
-                                weatherComment.setText(info.getComment());
-                                mainBestObservationFit.setText(info.getBestObservationalFit());
-                                if (Objects.nonNull(info.getBestTime())) {
-                                    recommendTime.setText(info.getBestTime());
-                                } else {
-                                    mainLocation.setBackground(ContextCompat.getDrawable(mainLocation.getContext(), R.drawable.main__location_back_red));
-                                    star.setImageDrawable(ContextCompat.getDrawable(star.getContext(), R.drawable.main__weather_star_gray));
-                                    recommendTime.setText(info.getMainEffect());
-                                }
-                                areaId = info.getAreaId();
+                                Map<String, String> body = response.body();
+                                String emd = body.get("EMD");
+                                if (SD.contains("세종")) location = "세종특별자치시 " + emd;
+                                else location = SD + " " + SGG + " " + emd;
+
+                                currentLocation.setText(location);
+
+                                long now = System.currentTimeMillis();
+                                Date date = new Date(now);
+                                hour = hh.format(date);
+                                min = mm.format(date);
+
+                                AreaTimeDTO areaTimeDTO = new AreaTimeDTO(yyyy_MM_dd.format(date), Integer.valueOf(hour), latitude, longitude);
+                                areaTimeDTO.setAddress(location);
+                                WeatherRetrofitClient.getApiService()
+                                        .getMainInfo(areaTimeDTO)
+                                        .enqueue(new Callback<MainInfo>() {
+                                            @Override
+                                            public void onResponse(Call<MainInfo> call, Response<MainInfo> response) {
+                                                if (response.isSuccessful()) {
+                                                    MainInfo info = response.body();
+                                                    weatherComment.setText(info.getComment());
+                                                    mainBestObservationFit.setText(info.getBestObservationalFit());
+                                                    if (Objects.nonNull(info.getBestTime())) {
+                                                        recommendTime.setText(info.getBestTime());
+                                                    } else {
+                                                        mainLocation.setBackground(ContextCompat.getDrawable(mainLocation.getContext(), R.drawable.main__location_back_red));
+                                                        star.setImageDrawable(ContextCompat.getDrawable(star.getContext(), R.drawable.main__weather_star_gray));
+                                                        recommendTime.setText(info.getMainEffect());
+                                                    }
+                                                    areaId = info.getAreaId();
+                                                } else {
+                                                    Log.e(TAG, "날씨 오류");
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<MainInfo> call, Throwable t) {
+                                                Log.e(TAG, t.getMessage());
+                                            }
+                                        });
+
+                                weatherDetail.setOnClickListener(v1 -> {
+                                    Intent intent = new Intent(getActivity().getApplicationContext(), WeatherActivity.class);
+                                    LocationDTO locationDTO = new LocationDTO(latitude, longitude, areaId, null, emd);
+                                    intent.putExtra("locationDTO", locationDTO);
+                                    startActivityForResult(intent, 104);
+                                });
+
+
                             } else {
                                 Log.e(TAG, "날씨 오류");
                             }
                         }
 
                         @Override
-                        public void onFailure(Call<MainInfo> call, Throwable t) {
+                        public void onFailure(Call<Map<String, String>> call, Throwable t) {
                             Log.e(TAG, t.getMessage());
                         }
                     });
-
-            weatherDetail.setOnClickListener(v1 -> {
-                Intent intent = new Intent(getActivity().getApplicationContext(), WeatherActivity.class);
-                LocationDTO locationDTO = new LocationDTO(latitude, longitude, areaId, null, location.split(" ")[2]);
-                intent.putExtra("locationDTO", locationDTO);
-                startActivityForResult(intent, 104);
-            });
         }
+        if (location == null) currentLocation.setText("새로고침이 필요합니다.");
+        else if (location.equals("현위치를 불러올 수 없습니다.")) currentLocation.setText(location);
 
         String fileName = "userId"; // 유저 아이디 가져오기
         try {
@@ -213,8 +249,6 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             String line = new BufferedReader(new InputStreamReader(fis)).readLine();
             userId = Long.parseLong(line);
             fis.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -332,57 +366,4 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             requestPermissions(REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE);
         }
     }
-
-    public void getLocation(double latitude, double longitude) {
-        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-        List<Address> addressList = new ArrayList<>();
-        try {
-            addressList = geocoder.getFromLocation(latitude, longitude, 1);
-        } catch (Exception e) {
-            e.printStackTrace();
-            location = "현위치를 불러올 수 없습니다.";
-        }
-        if (addressList.size() == 0) {
-            location = "현위치를 불러올 수 없습니다.";
-        }
-        Address address = addressList.get(0);
-        String addressLine = address.getAddressLine(0);
-        if (addressLine.startsWith("대한민국")) {
-            addressLine = addressLine.substring(5);
-        }
-        System.out.println("addressLine = " + addressLine);
-        String[] s = addressLine.split(" ");
-
-        if (s.length >= 3 && s[2].charAt(s[2].length() - 1) == '읍' || s[2].charAt(s[2].length() - 1) == '면' || s[2].charAt(s[2].length() - 1) == '동') {
-            location = s[0] + " " + s[1] + " " + s[2];
-        } else {
-            NearestDTO nearestDTO = new NearestDTO(s[1], latitude, longitude);
-            WeatherRetrofitClient.getApiService()
-                    .getNearestArea(nearestDTO)
-                    .enqueue(new Callback<Map<String, String>>() {
-                        @Override
-                        public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
-                            if (response.isSuccessful()) {
-                                Map<String, String> body = response.body();
-                                String emd = body.get("EMD");
-                                System.out.println("response.body() = " + emd);
-                                location = s[0] + " " + s[1] + " " + emd;
-                            } else {
-                                Log.e(TAG, "날씨 오류");
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Map<String, String>> call, Throwable t) {
-                            Log.e(TAG, t.getMessage());
-                        }
-                    });
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
 }
