@@ -24,6 +24,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="관측지 이름"
+        android:maxLines="1"
+        android:ellipsize="end"
         style="@style/semiBold_single_16"
         android:layout_marginTop="8dp" />
 

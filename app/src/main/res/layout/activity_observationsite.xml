@@ -619,7 +619,7 @@
 
             <LinearLayout
                 android:id="@+id/obs_review_tab"
-                android:visibility="gone"
+                android:visibility="visible"
                 tools:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
