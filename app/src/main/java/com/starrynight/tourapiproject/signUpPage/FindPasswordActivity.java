@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,8 +30,6 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.signUpPage.signUpRetrofit.RetrofitClient;
 
-import org.w3c.dom.Text;
-
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
@@ -41,18 +37,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
+ * @author : sein
+ * @version : 1.0
+ * <p>
+ * ====개정이력(Modification Information)====
+ * 수정일        수정자        수정내용
+ * -----------------------------------------
+ * 2022-09-07     sein        주석 생성
  * @className : FindPasswordActivity.java
  * @description : 비밀번호 찾기 페이지 입니다.
  * @modification : 2022-09-07(sein) 수정
- * @author : sein
  * @date : 2022-09-07
- * @version : 1.0
-
-    ====개정이력(Modification Information)====
-        수정일        수정자        수정내용
-    -----------------------------------------
-      2022-09-07     sein        주석 생성
-
  */
 public class FindPasswordActivity extends AppCompatActivity implements
         View.OnClickListener {
@@ -70,7 +65,7 @@ public class FindPasswordActivity extends AppCompatActivity implements
     private EditText findPwdRealName;
     private EditText mobilePhoneNumber;
     private EditText authCode;
-    private TextView startAuth,authText;
+    private TextView startAuth, authText;
     private TextView resendAuth;
     private Button verify;
     private TextView showPassword;
@@ -107,7 +102,7 @@ public class FindPasswordActivity extends AppCompatActivity implements
         authCode = findViewById(R.id.authCode3); //인증코드
         startAuth = findViewById(R.id.startAuth3); //처음 문자요청
         resendAuth = findViewById(R.id.resendAuth3); //재 문자요청
-        authText =findViewById(R.id.authText3);//인증번호 전송 했습니다. 텍스트
+        authText = findViewById(R.id.authText3);//인증번호 전송 했습니다. 텍스트
         verify = findViewById(R.id.verify3); //인증요청
         showPassword = findViewById(R.id.showPassword);
 
@@ -231,8 +226,9 @@ public class FindPasswordActivity extends AppCompatActivity implements
                                         if (result) {
                                             Log.d(TAG, "비밀번호 찾기 성공");
                                             signOut();
-//                                            showPassword.setText("비밀번호: " + result);
+                                            showPassword.setText("");
                                             Toast.makeText(getApplicationContext(), "위 이메일로 임시 비밀번호를 전송했습니다.", Toast.LENGTH_LONG).show();
+                                            finish();
                                         } else {
                                             Toast.makeText(getApplicationContext(), "해당 정보와 일치하는 계정이 없습니다.", Toast.LENGTH_SHORT).show();
                                             showPassword.setText("");
