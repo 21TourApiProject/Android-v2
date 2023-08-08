@@ -166,7 +166,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         if (!addressList.isEmpty()) {
             Address address = addressList.get(0);
             String SD = address.getAdminArea();
-            String SGG = address.getFeatureName();
+            String SGG = address.getLocality() == null ? address.getSubLocality() : address.getLocality();
+
             System.out.println("SD = " + SD);
             System.out.println("SGG = " + SGG);
 
