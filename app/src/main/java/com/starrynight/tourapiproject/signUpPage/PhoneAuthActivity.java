@@ -56,7 +56,6 @@ public class PhoneAuthActivity extends AppCompatActivity implements
         View.OnClickListener {
     private static final String TAG = "PhoneAuth";
     private static final String KEY_VERIFY_IN_PROGRESS = "key_verify_in_progress";
-    private static final int SELECT_HASH_TAG = 0;
 
     private FirebaseAuth mAuth;
 
@@ -68,9 +67,7 @@ public class PhoneAuthActivity extends AppCompatActivity implements
     private EditText mobilePhoneNumber;
     private TextView phoneGuide; //전화번호 칸 바로 밑에 글칸
     private EditText authCode;
-    private TextView startAuth, authText;
-    private TextView resendAuth;
-    private Button verify;
+    private TextView sendAuth, resendAuth, authText;
 
     String testPhoneNum = "+16505553333";
 
@@ -116,12 +113,12 @@ public class PhoneAuthActivity extends AppCompatActivity implements
         mobilePhoneNumber = findViewById(R.id.mobilePhoneNumber); //전화번호
         phoneGuide = findViewById(R.id.phoneGuide);
         authCode = findViewById(R.id.authCode); //인증코드
-        startAuth = findViewById(R.id.startAuth); //처음 문자요청
+        sendAuth = findViewById(R.id.sendAuth); //처음 문자요청
         authText = findViewById(R.id.authText);//인증번호 전송 했습니다. 텍스트
         resendAuth = findViewById(R.id.resendAuth); //재 문자요청
-        verify = findViewById(R.id.verify); //인증요청
+        Button verify = findViewById(R.id.verify); //인증요청
 
-        startAuth.setOnClickListener(this);
+        sendAuth.setOnClickListener(this);
         resendAuth.setOnClickListener(this);
         verify.setOnClickListener(this);
 
@@ -375,7 +372,7 @@ public class PhoneAuthActivity extends AppCompatActivity implements
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.startAuth:
+            case R.id.sendAuth:
                 if (isPhoneEmpty) {
                     Toast.makeText(getApplicationContext(), "전화번호을 입력해주세요.", Toast.LENGTH_SHORT).show();
                     break;
@@ -387,11 +384,13 @@ public class PhoneAuthActivity extends AppCompatActivity implements
                     break;
                 } else {
                     isSend = true;
-                    Toast.makeText(getApplicationContext(), "해당 번호로 인증 문자가 발송되었습니다.", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "해당 번호로 인증 문자가 발송되었습니다.", Toast.LENGTH_SHORT).show();
                     startPhoneNumberVerification(changePhoneNumber(mobilePhoneNumber.getText().toString()));
-                    startAuth.setVisibility(View.GONE);
-                    authText.setVisibility(View.VISIBLE);
+                    sendAuth.setVisibility(View.GONE);
                     resendAuth.setVisibility(View.VISIBLE);
+                    phoneGuide.setVisibility(View.GONE);
+                    authText.setVisibility(View.VISIBLE);
+
                     break;
                 }
 
@@ -421,7 +420,7 @@ public class PhoneAuthActivity extends AppCompatActivity implements
                     Toast.makeText(getApplicationContext(), "이미 가입된 전화번호입니다.", Toast.LENGTH_SHORT).show();
                     break;
                 } else {
-                    Toast.makeText(getApplicationContext(), "해당 번호로 인증 문자가 재발송되었습니다.", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "해당 번호로 인증 문자가 재발송되었습니다.", Toast.LENGTH_SHORT).show();
                     resendVerificationCode(changePhoneNumber(mobilePhoneNumber.getText().toString()), mResendToken);
                     break;
                 }
