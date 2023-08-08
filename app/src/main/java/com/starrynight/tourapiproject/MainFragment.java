@@ -58,12 +58,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link MainFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-
-/**
  * @author : jinhyeok
  * @version : 1.0
  * ====개정이력(Modification Information)====
@@ -111,15 +105,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private TextView mainBestObservationFit;
     private TextView recommendTime;
 
-    public MainFragment() {
-        // Required empty public constructor
-    }
-
-    public static MainFragment newInstance() {
-        MainFragment fragment = new MainFragment();
-
-        return fragment;
-    }
+    public MainFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -128,7 +114,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View v = inflater.inflate(R.layout.fragment_main, container, false);
         swipeRefreshLayout = v.findViewById(R.id.swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(this);

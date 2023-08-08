@@ -79,18 +79,17 @@
 
                     <EditText
                         android:id="@+id/mobilePhoneNumber"
+                        style="@style/medium_single_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="6"
                         android:background="@drawable/findemail_write2"
                         android:hint="예시) 010-0000-0000"
-                        android:layout_weight="6"
                         android:inputType="phone"
-                        android:padding="12dp"
-                        style="@style/medium_single_14"
-                        />
+                        android:padding="12dp" />
 
                     <TextView
-                        android:id="@+id/startAuth"
+                        android:id="@+id/sendAuth"
                         style="@style/semiBold_single_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -119,14 +118,13 @@
 
                 <TextView
                     android:id="@+id/authText"
+                    style="@style/medium_single_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    style="@style/medium_single_12"
-                    android:textColor="@color/point_blue"
                     android:text="인증번호를 전송 했습니다."
-                    android:visibility="gone"
-                    />
+                    android:textColor="@color/point_blue"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/phoneGuide"
@@ -177,15 +175,13 @@
                 <!--                </LinearLayout>-->
 
             </LinearLayout>
-
-
-
         </LinearLayout>
     </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <Button
             android:id="@+id/verify"
             style="@style/semiBold_single_16"
