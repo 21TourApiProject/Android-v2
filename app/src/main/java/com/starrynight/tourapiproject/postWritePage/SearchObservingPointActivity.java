@@ -29,6 +29,8 @@ import com.starrynight.tourapiproject.postItemPage.Search_item;
 import com.starrynight.tourapiproject.postItemPage.Search_item_adapter;
 import com.starrynight.tourapiproject.postItemPage.Search_item_adapter2;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostHashTagParams;
+import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchLoadingDialog;
+import com.starrynight.tourapiproject.starPage.StarSearchActivity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -65,6 +67,7 @@ public class SearchObservingPointActivity extends AppCompatActivity {
     EditText editText;
     AddAreaFragment addAreaFragment;
     FragmentManager fragmentManager;
+    SearchLoadingDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +86,8 @@ public class SearchObservingPointActivity extends AppCompatActivity {
         findObservePoint = findViewById(R.id.findObservePoint);
         searchitemArrayList = new ArrayList<>();
         filteredList = new ArrayList<>();
+        dialog = new SearchLoadingDialog(SearchObservingPointActivity.this);
+        dialog.show();
 
         optionText = findViewById(R.id.optionText);
 
@@ -109,6 +114,7 @@ public class SearchObservingPointActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Observation>> call, Response<List<Observation>> response) {
                 if (response.isSuccessful()) {
+                    dialog.dismiss();
                     Log.d("observation", "관측지 리스트 업로드");
                     List<Observation> observationList = response.body();
                     for (int i = 0; i < observationList.size() - 1; i++) {
