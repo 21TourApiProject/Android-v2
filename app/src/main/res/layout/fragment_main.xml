@@ -107,6 +107,7 @@
                         style="@style/bold_multi_24"
                         android:layout_width="wrap_content"
                         android:layout_height="64dp"
+                        android:text="위치 정보를\n불러오는 중이에요..."
                         android:textColor="#FFFFFF" />
 
                     <LinearLayout
@@ -138,7 +139,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_marginStart="8dp" />
+                                android:layout_marginStart="8dp"
+                                android:text="-" />
 
                         </LinearLayout>
 
@@ -160,7 +162,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
-                                android:layout_weight="1" />
+                                android:layout_weight="1"
+                                android:text="관측 적합도 -" />
 
                         </LinearLayout>
 
@@ -170,6 +173,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
+                            android:text="추천 관측시간 -"
                             android:textColor="#84838D" />
 
 

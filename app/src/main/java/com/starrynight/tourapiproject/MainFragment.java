@@ -154,8 +154,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             String SD = address.getAdminArea();
             String SGG = address.getLocality() == null ? address.getSubLocality() : address.getLocality();
 
-            System.out.println("SD = " + SD);
-            System.out.println("SGG = " + SGG);
+//            System.out.println("SD = " + SD);
+//            System.out.println("SGG = " + SGG);
 
             NearestDTO nearestDTO = new NearestDTO(SGG, latitude, longitude);
             if (SD.contains("세종")) nearestDTO.setSgg("세종");
