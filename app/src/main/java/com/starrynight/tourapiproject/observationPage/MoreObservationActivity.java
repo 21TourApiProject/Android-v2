@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -45,7 +46,7 @@ public class MoreObservationActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Long observationId= (Long)intent.getSerializableExtra("observationId");
-        Button myPostBack = findViewById(R.id.morePost_back_btn);
+        LinearLayout myPostBack = findViewById(R.id.morePost_back_btn);
         myPostBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
