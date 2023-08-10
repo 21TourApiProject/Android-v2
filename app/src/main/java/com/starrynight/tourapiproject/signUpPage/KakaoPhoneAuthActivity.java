@@ -63,7 +63,7 @@ public class KakaoPhoneAuthActivity extends AppCompatActivity implements
     private TextView phoneGuide; //전화번호 칸 바로 밑에 글칸
     private EditText authCode;
     private TextView startAuth;
-    private Button resendAuth;
+    private TextView resendAuth;
     private Button verify;
     FrameLayout ageLimitFrame;
 
