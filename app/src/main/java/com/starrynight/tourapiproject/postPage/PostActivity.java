@@ -146,6 +146,7 @@ public class PostActivity extends AppCompatActivity {
                     }
                     for (int i = 0; i < filename2.length; i++) {
                         if (filename2[i] != null) {
+                            filename2[i] = filename2[i].replace("+","%2B");
                             FileName.add("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + filename2[i]);
                         }
                     }
@@ -540,6 +541,7 @@ public class PostActivity extends AppCompatActivity {
                                 }
                                 for (int i = 0; i < relatefilename.length; i++) {
                                     if (relatefilename[i] != null) {
+                                        relatefilename[i]= relatefilename[i].replace("+","%2B");
                                         adapter.addItem(new post_point_item("", "https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + relatefilename[i]));
                                     }
                                 }

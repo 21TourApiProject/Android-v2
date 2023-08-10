@@ -91,6 +91,7 @@ public class MainPostSliderAdapter extends RecyclerView.Adapter<MainPostSliderAd
         }
 
         public void bindSliderImage(String imageURL) {
+            imageURL=imageURL.replace("+","%2B");
             Glide.with(context)
                     .load(imageURL)
                     .into(mImageView);
