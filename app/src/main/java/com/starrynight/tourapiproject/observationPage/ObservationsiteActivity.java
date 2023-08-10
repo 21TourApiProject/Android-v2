@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
@@ -27,6 +28,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.mapPage.BalloonObject;
 import com.starrynight.tourapiproject.observationPage.course.CourseDividerDecorator;
@@ -44,8 +47,11 @@ import com.starrynight.tourapiproject.observationPage.observationPageRetrofit.Re
 import com.starrynight.tourapiproject.postPage.PostActivity;
 import com.starrynight.tourapiproject.postPage.postRetrofit.PostImage;
 import com.starrynight.tourapiproject.postWritePage.PostWriteActivity;
+import com.starrynight.tourapiproject.searchPage.ResultViewPagerAdapter;
 import com.starrynight.tourapiproject.weatherPage.LocationDTO;
 import com.starrynight.tourapiproject.weatherPage.WeatherActivity;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -53,6 +59,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -82,9 +89,7 @@ public class ObservationsiteActivity extends AppCompatActivity {
     private RecyclerHashTagAdapter recyclerHashTagAdapter;
     TextView outline;
     TextView link;
-    ImageView relateImage1;
-    ImageView relateImage2;
-    ImageView relateImage3;
+
     LinearLayout to_light_btn;
 
     Long count_tmp;
@@ -95,16 +100,12 @@ public class ObservationsiteActivity extends AppCompatActivity {
     private String[] obs_images;
     private List<String> imageSources;
 
-    private ViewPager2 course_slider;
-    private LinearLayout course_circle_indicator;
-    private LinearLayout course_txt_indicator;
-
-    private FrameLayout relateImageFrame;
-
-    private ObservationFeeAdapter observationFeeAdapter;
-    private List<ObserveFee> obs_fee_list;
     private boolean isFeeClosed =true;
-    private String[] relatefilename = new String[5];
+
+
+    ViewPager2 observeViewPager;
+    TabLayout tabLayout;
+    ObserveViewPagerAdapter observeViewPagerAdapter;
 
 
     private BalloonObject balloonObject = new BalloonObject();   //mapfragment bundle
@@ -115,10 +116,6 @@ public class ObservationsiteActivity extends AppCompatActivity {
 
         //관측지 게시글 이미지 설정
         setContentView(R.layout.activity_observationsite);
-        relateImage1 = findViewById(R.id.relateImage);
-        relateImage2 = findViewById(R.id.relateImage2);
-        relateImage3 = findViewById(R.id.relateImage3);
-        relateImageFrame = findViewById(R.id.relateImageFrame);
         to_light_btn = findViewById(R.id.obs_move_light);
 
         Intent intent = getIntent();
@@ -131,6 +128,10 @@ public class ObservationsiteActivity extends AppCompatActivity {
         }
         postId = (Long) intent.getSerializableExtra("postId");
 
+        observeViewPager = findViewById(R.id.observation_view_pager);
+        tabLayout = findViewById(R.id.obs_tab_layout);
+        observeViewPager.setSaveEnabled(false);
+
 
         Call<Observation> call1 = RetrofitClient.getApiService().getObservation(observationId);
         call1.enqueue(new Callback<Observation>() {
@@ -142,6 +143,7 @@ public class ObservationsiteActivity extends AppCompatActivity {
                     if (observation.getSaved() == null) {
                         observation.setSaved();
                     }
+                    setViewPager();
 
                     Call<List<ObserveImageInfo>> call3 = RetrofitClient.getApiService().getObserveImageInfo(observationId);
                     call3.enqueue(new Callback<List<ObserveImageInfo>>() {
@@ -208,22 +210,10 @@ public class ObservationsiteActivity extends AppCompatActivity {
                     });
 
                     if (observation.getNature()) {
-                        //자연관측지일 경우 레이아웃 구성
-                        RelativeLayout nature_layout = findViewById(R.id.obs_fornature_layout);
-                        nature_layout.setVisibility(View.VISIBLE);
-                        LinearLayout operating_layout = findViewById(R.id.obs_foroperating_layout);
-                        operating_layout.setVisibility(View.GONE);
 
                         //전화번호, 홈페이지 설정
                         setInquiry(true);
                         setReserve(true);
-
-                        TextView nature_parking = findViewById(R.id.obs_nature_parking_txt);
-                        nature_parking.setText(observation.getParking());
-                        TextView nature_address = findViewById(R.id.obs_nature_address_txt);
-                        nature_address.setText(observation.getAddress());
-                        TextView nature_guide = findViewById(R.id.obs_nature_guide_txt);
-                        nature_guide.setText(Html.fromHtml(observation.getGuide(), HtmlCompat.FROM_HTML_MODE_LEGACY));
 
                     } else {
                         //운영관측지일 경우 레이아웃 구성
@@ -231,25 +221,8 @@ public class ObservationsiteActivity extends AppCompatActivity {
                         //홈페이지, 전화 연결
                         setInquiry(false);
                         setReserve(false);
-
-                        TextView address = findViewById(R.id.obs_address_txt);
-                        address.setText(observation.getAddress());
-                        TextView operatinghour = findViewById(R.id.obs_operatinghour_txt);
-                        operatinghour.setText(Html.fromHtml(observation.getOperatingHour(), HtmlCompat.FROM_HTML_MODE_LEGACY));
-                        TextView closedday = findViewById(R.id.obs_closedday_txt);
-                        closedday.setText(observation.getClosedDay());
-
-                        //이용요금 어댑터 설정
-                        initFeeAdapter(observationId);
-
-                        TextView guide = findViewById(R.id.obs_guide_txt);
-                        guide.setText(Html.fromHtml(observation.getGuide(), HtmlCompat.FROM_HTML_MODE_LEGACY));
-                        TextView parking = findViewById(R.id.obs_parking_txt);
-                        parking.setText(observation.getParking());
-
                     }
                     // 후기, 정보 탭 설정
-                    setTab();
 
                     //해쉬태그 리사이클러 설정
                     initHashtagRecycler();
@@ -281,11 +254,6 @@ public class ObservationsiteActivity extends AppCompatActivity {
                         }
                     });
 
-                    //지도버튼 설정
-                    setKakaomap();
-
-                    //코스설정
-                    setCourse();
                     //찜버튼 설정
                     setSaveBtn();
 
@@ -300,10 +268,6 @@ public class ObservationsiteActivity extends AppCompatActivity {
             }
 
         });
-
-
-
-
 
         //앱 내부 저장소의 userId 데이터 읽기
         String fileName = "userId";
@@ -327,82 +291,7 @@ public class ObservationsiteActivity extends AppCompatActivity {
             }
         });
 
-        TextView postwrite_btn = findViewById(R.id.writePost_btn);
-        postwrite_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(getApplicationContext(), PostWriteActivity.class);
-                startActivity(intent1);
-            }
-        });
 
-        //게시물 이미지 가져오기
-        Call<List<PostImage>> call = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().getRelatePostImageList(observationId);
-        call.enqueue(new Callback<List<PostImage>>() {
-            @Override
-            public void onResponse(Call<List<PostImage>> call, Response<List<PostImage>> response) {
-                if (response.isSuccessful()) {
-                    Log.d("relatePostImage", "관련 게시물 이미지 업로드");
-                    List<PostImage> relateImageList = response.body();
-                    for (int i = 0; i < relateImageList.size(); i++) {
-                        relatefilename[i] = relateImageList.get(i).getImageName();
-                        if (relateImageList.size() > 4) {
-                            break;
-                        }
-                    }
-                    if (relatefilename[0] != null) {
-                        Glide.with(getApplicationContext())
-                                .load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + relatefilename[0])
-                                .into(relateImage1);
-                    }
-                    if (relatefilename[1] != null) {
-                        relateImage2.setVisibility(View.VISIBLE);
-                        Glide.with(getApplicationContext())
-                                .load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + relatefilename[1])
-                                .into(relateImage2);
-                    }
-                    if (relatefilename[2] != null) {
-                        relateImageFrame.setVisibility(View.VISIBLE);
-                        Glide.with(getApplicationContext())
-                                .load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + relatefilename[2])
-                                .into(relateImage3);
-                    }
-                    relateImage1.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (!relateImageList.isEmpty()) {
-                                Intent intent01 = new Intent(getApplicationContext(), PostActivity.class);
-                                intent01.putExtra("postId", relateImageList.get(0).getPostId());
-                                startActivity(intent01);
-                            }
-                        }
-                    });
-                    relateImage2.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent2 = new Intent(getApplicationContext(), PostActivity.class);
-                            intent2.putExtra("postId", relateImageList.get(1).getPostId());
-                            startActivity(intent2);
-                        }
-                    });
-                    relateImage3.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent2 = new Intent(getApplicationContext(), MoreObservationActivity.class);
-                            intent2.putExtra("observationId", observationId);
-                            startActivity(intent2);
-                        }
-                    });
-                } else {
-                    Log.d("relatePostImage", "관련 게시물 이미지 업로드 실패");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<PostImage>> call, Throwable t) {
-                Log.d("relatePostImage", "관련 게시물 이미지 업로드 인터넷 오류");
-            }
-        });
 
     }
 
@@ -500,74 +389,6 @@ public class ObservationsiteActivity extends AppCompatActivity {
         hashTagsrecyclerView.setAdapter(recyclerHashTagAdapter);
     }
 
-    private void initFeeAdapter(Long observationId) {
-        //이용요금 레이아웃 어댑터 연결
-        observationFeeAdapter = new ObservationFeeAdapter();
-        RecyclerView feeView = findViewById(R.id.obs_entrancefee_layout);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        feeView.setLayoutManager(linearLayoutManager);
-        ObservationFeeDecoration spaceDecoration = new ObservationFeeDecoration(8);
-        feeView.addItemDecoration(spaceDecoration);
-        feeView.setAdapter(observationFeeAdapter);
-
-        // 이용요금 더보기 버튼 설정
-        LinearLayout moreFeeBtn = findViewById(R.id.obs_fee_more_btn);
-        ImageView moreFeeImg = findViewById(R.id.obs_fee_more_img);
-        TextView moreFeeTxt = findViewById(R.id.obs_fee_more_txt);
-
-        moreFeeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (observationFeeAdapter.getItemCount() <= 3) {
-                    observationFeeAdapter.showMoreFee();
-                    moreFeeImg.setImageResource(R.drawable.observation__fee_close);
-                    moreFeeTxt.setText("접기");
-                }else{
-                    observationFeeAdapter.closeMoreFee();
-                    moreFeeImg.setImageResource(R.drawable.observation__fee_more);
-                    moreFeeTxt.setText("더보기");
-                }
-                observationFeeAdapter.notifyDataSetChanged();
-            }
-        });
-
-
-        Call<List<ObserveFee>> call4 = RetrofitClient.getApiService().getObserveFeeList(observationId);
-        call4.enqueue(new Callback<List<ObserveFee>>() {
-
-            @Override
-            public void onResponse(Call<List<ObserveFee>> call, Response<List<ObserveFee>> response) {
-                if (response.isSuccessful()) {
-                    Log.d(TAG, "관측지 이용요금 호출 성공");
-                    obs_fee_list = response.body();
-
-                    if (obs_fee_list.size()<=3) {
-                        moreFeeBtn.setVisibility(View.GONE);
-                    }
-
-                    for (ObserveFee p : obs_fee_list) {
-                        ObservationFeeItem item = new ObservationFeeItem();
-                        item.setEntranceFee(p.getEntranceFee());
-                        item.setFeeName(p.getFeeName());
-
-                        observationFeeAdapter.addItem(item);
-                    }
-
-                    observationFeeAdapter.notifyDataSetChanged();
-
-                } else {
-                    Log.e(TAG, "관측지 이용요금 호출 실패");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<ObserveFee>> call, Throwable t) {
-                Log.e(TAG, "연결실패" + t.getMessage());
-            }
-        });
-
-    }
-
     private void setOutlineButton() {
         TextView outline_btn = findViewById(R.id.obs_outline_btn);
         Layout l = outline.getLayout();
@@ -636,106 +457,6 @@ public class ObservationsiteActivity extends AppCompatActivity {
         }
     }
 
-    //코스관련 텍스트, relative view 설정
-    private void setCourse(){
-
-        ImageView course_img = findViewById(R.id.obs_course_image);
-
-        LinearLayout course = findViewById(R.id.obs_course);
-
-        try{
-            observation.getCourseOrder();
-        } catch (NullPointerException e){
-            course.setVisibility(View.INVISIBLE);
-            return;
-        }
-
-        Call<List<String>> call6 = RetrofitClient.getApiService().getCourseNameList(observation.getObservationId());
-        call6.enqueue(new Callback<List<String>>() {
-            @Override
-            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-                if (response.isSuccessful()) {
-                    //코스 인디케이터에 넣을 코스 이름 받아오기
-                    List<String> course_name_list = response.body();
-                    setCourseTxt(course_name_list);
-
-                    Call<List<CourseTouristPoint>> call5 = RetrofitClient.getApiService().getCourseTouristPointList(observation.getObservationId());
-                    call5.enqueue(new Callback<List<CourseTouristPoint>>() {
-                        @Override
-                        public void onResponse(Call<List<CourseTouristPoint>> call, Response<List<CourseTouristPoint>> response) {
-                            if (response.isSuccessful()) {
-                                //코스 viewpager에 적용할 관광지 정보 가져오기
-                                if (response != null) {
-                                    Log.d(TAG, "관측지 코스 관광지 호출 성공");
-                                    List<CourseTouristPoint> touristPointList = response.body();
-
-                                    setCourseRecycler(touristPointList);
-                                }
-
-                            } else {
-                                Log.e(TAG, "관측지 코스 호출 실패");
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<List<CourseTouristPoint>> call, Throwable t) {
-                            Log.e(TAG, "관측지 코스 연결실패");
-                        }
-                    });
-                } else {
-                    Log.e(TAG, "관측지 코스이름 호출 실패");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<String>> call, Throwable t) {
-                Log.e(TAG, "관측지 코스 이름 연결 실패");
-            }
-        });
-    }
-
-    //코스 리사이클러 설정
-    private void setCourseRecycler(List<CourseTouristPoint> courseTouristPoints){
-        ObservationCourseAdapter observationCourseAdapter = new ObservationCourseAdapter(ObservationsiteActivity.this);
-
-        CourseDividerDecorator dividerItemDecoration = new CourseDividerDecorator(mContext.getDrawable(R.drawable.observation__course_divider));
-        RecyclerView courseRecyclerView = findViewById(R.id.obs_course_recycler);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        courseRecyclerView.setLayoutManager(linearLayoutManager);
-        courseRecyclerView.addItemDecoration(dividerItemDecoration);
-        courseRecyclerView.setAdapter(observationCourseAdapter);
-
-
-        for (int i = 0; i < courseTouristPoints.size(); i++) {
-            CourseTouristPoint p = courseTouristPoints.get(i);
-            String name = Integer.toString(i+1);
-            name=name + ". "+ p.getTitle();
-
-            ObservationCourseItem item = new ObservationCourseItem();
-            item.setCategory(p.getCat3Name());
-            item.setAddress(p.getAddr());
-            item.setImage(p.getFirstImage());
-            item.setName(name);
-            item.setOverview(p.getOverview());
-
-            observationCourseAdapter.addItem(item);
-        }
-        observationCourseAdapter.notifyDataSetChanged();
-    }
-
-    //코스 텍스트 설정
-    private void setCourseTxt(List<String> courseNameList){
-        TextView course_text = findViewById(R.id.obs_course_text);
-
-        String course = "";
-        for (int i = 0; i < courseNameList.size(); i++) {
-            course += courseNameList.get(i);
-            if (i < courseNameList.size() - 1) {
-                course += " > ";
-            }
-        }
-        course_text.setText(course);
-    }
 
     //광공해 아이콘 설정
     private void setLightIcon(Double light){
@@ -793,40 +514,6 @@ public class ObservationsiteActivity extends AppCompatActivity {
         }
     }
 
-    //카카오맵 버튼 설정
-    private void setKakaomap(){
-        TextView map_btn = findViewById(R.id.obs_location_btn);
-        String url = "kakaomap://look?p=" + observation.getLatitude() + "," + observation.getLongitude();
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        map_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    startActivity(intent);
-                } catch (Exception e) {
-                    String url2 = "market://details?id=net.daum.android.map";
-                    Intent intent2 = new Intent(Intent.ACTION_VIEW, Uri.parse(url2));
-                    startActivity(intent2);
-                }
-
-            }
-        });
-        TextView nature_map_btn = findViewById(R.id.obs_nature_location_btn);
-        nature_map_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    startActivity(intent);
-                } catch (Exception e) {
-                    String url2 = "market://details?id=net.daum.android.map";
-                    Intent intent2 = new Intent(Intent.ACTION_VIEW, Uri.parse(url2));
-                    startActivity(intent2);
-                }
-
-            }
-        });
-    }
-
     private void setReserve(boolean is_nature){
         TextView reserve_btn = findViewById(R.id.obs_reserve);
         if(is_nature || observation.getReserve()==null){
@@ -852,28 +539,18 @@ public class ObservationsiteActivity extends AppCompatActivity {
         }
     }
 
-    private void setTab(){
-        LinearLayout information_tab = findViewById(R.id.obs_information_tab);
-        LinearLayout review_tab = findViewById(R.id.obs_review_tab);
-        LinearLayout review_tab_btn = findViewById(R.id.obs_review_btn);
+    private void setViewPager() {
+        observeViewPagerAdapter = new ObserveViewPagerAdapter(getSupportFragmentManager(),getLifecycle(),observation);
+        observeViewPager.setAdapter(observeViewPagerAdapter);
+        final List<String> tabElement = Arrays.asList("정보","후기");
 
-        review_tab_btn.setOnClickListener(new View.OnClickListener() {
+        //tabLyout와 viewPager 연결
+        new TabLayoutMediator(tabLayout, observeViewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
-            public void onClick(View view) {
-                review_tab.setVisibility(View.VISIBLE);
-                information_tab.setVisibility(View.GONE);
+            public void onConfigureTab(@NonNull @NotNull TabLayout.Tab tab, int position) {
+                tab.setText(tabElement.get(position));
             }
-        });
-
-        LinearLayout info_tab_btn = findViewById(R.id.obs_info_btn);
-
-        info_tab_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                review_tab.setVisibility(View.GONE);
-                information_tab.setVisibility(View.VISIBLE);
-            }
-        });
+        }).attach();
     }
 
 }
