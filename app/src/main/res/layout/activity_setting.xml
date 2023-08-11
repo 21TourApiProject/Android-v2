@@ -17,28 +17,30 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="49dp">
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="14dp">
 
-                <ImageView
+                <LinearLayout
                     android:id="@+id/settingBack"
-                    style="@style/ImageButton.size49"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:paddingVertical="18dp"
-                    android:paddingStart="22dp"
-                    android:paddingEnd="21dp"
-                    android:src="@drawable/star__search_back"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:gravity="center"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        style="@style/ImageButton.size49"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/back_btn" />
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/scdream"
                     android:text="환경설정"
-                    android:textSize="17sp"
-                    app:layout_constraintBottom_toBottomOf="@id/settingBack"
+                    style="@style/semiBold_single_16"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -49,31 +51,27 @@
                 android:id="@+id/myData"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="27dp"
-                android:layout_marginBottom="18dp"
                 android:orientation="horizontal"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
+                android:paddingVertical="20dp"
+                android:paddingHorizontal="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="29.48dp"
                     android:text="내 정보"
-                    android:fontFamily="@font/spoqahansansneomedium"
-                    android:textSize="17sp" />
+                    style="@style/semiBold_single_16" />
 
-                <FrameLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:gravity="center|end">
 
-                    <Button
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_gravity="center|end"
-                        android:layout_marginRight="33.23dp"
-                        android:background="@drawable/setting_more" />
-                </FrameLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        app:srcCompat="@drawable/move_text" />
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -85,41 +83,37 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="29.48dp"
-                android:layout_marginTop="28dp"
-                android:text="고객지원"
-                android:fontFamily="@font/spoqahansansneomedium"
-                android:textSize="17sp" />
+                android:layout_marginVertical="20dp"
+                android:layout_marginStart="16dp"
+                style="@style/semiBold_single_16"
+                android:text="고객지원" />
 
             <LinearLayout
                 android:id="@+id/notice"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="18dp"
                 android:orientation="horizontal"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
+                android:paddingVertical="14dp"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="45.48dp"
+                    android:layout_marginStart="28dp"
                     android:text="공지사항"
-                    android:fontFamily="@font/spoqahansansneoregular"
-                    android:textSize="14sp" />
+                    style="@style/semiBold_single_14" />
 
-                <FrameLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:gravity="center|end">
 
-                    <Button
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_gravity="center|end"
-                        android:layout_marginRight="33.23dp"
-                        android:background="@drawable/setting_more" />
-                </FrameLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        app:srcCompat="@drawable/move_text" />
+                </LinearLayout>
             </LinearLayout>
 
 <!--            <LinearLayout-->
@@ -156,210 +150,190 @@
                 android:id="@+id/customerSC"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="18dp"
+                android:paddingVertical="14dp"
                 android:orientation="horizontal"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="45.48dp"
+                    android:layout_marginStart="28dp"
                     android:text="고객센터"
-                    android:fontFamily="@font/spoqahansansneoregular"
-                    android:textSize="14sp" />
+                    style="@style/semiBold_single_14" />
 
-                <FrameLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:gravity="center|end">
 
-                    <Button
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_gravity="center|end"
-                        android:layout_marginRight="33.23dp"
-                        android:background="@drawable/setting_more" />
-                </FrameLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        app:srcCompat="@drawable/move_text" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/termsAndConditions"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="18dp"
-                android:orientation="horizontal"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
+                android:paddingVertical="14dp"
+                android:orientation="horizontal">
 
                 <TextView
+                    style="@style/semiBold_single_14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="45.48dp"
-                    android:text="이용약관"
-                    android:fontFamily="@font/spoqahansansneoregular"
-                    android:textSize="14sp" />
+                    android:layout_marginStart="28dp"
+                    android:text="이용약관" />
 
-                <FrameLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:gravity="center|end">
 
-                    <Button
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_gravity="center|end"
-                        android:layout_marginRight="33.23dp"
-                        android:background="@drawable/setting_more" />
-                </FrameLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        app:srcCompat="@drawable/move_text" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/personalData"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="18dp"
-                android:orientation="horizontal"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
+                android:paddingVertical="14dp"
+                android:orientation="horizontal">
 
                 <TextView
+                    style="@style/semiBold_single_14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="45.48dp"
-                    android:text="개인정보 처리방침"
-                    android:fontFamily="@font/spoqahansansneoregular"
-                    android:textSize="14sp" />
+                    android:layout_marginStart="28dp"
+                    android:text="개인정보 처리방침" />
 
-                <FrameLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:gravity="center|end">
 
-                    <Button
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_gravity="center|end"
-                        android:layout_marginRight="33.23dp"
-                        android:background="@drawable/setting_more" />
-                </FrameLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        app:srcCompat="@drawable/move_text" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/managementPolicy"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="18dp"
-                android:orientation="horizontal"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
+                android:paddingVertical="14dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="45.48dp"
+                    android:layout_marginStart="28dp"
                     android:text="운영정책"
-                    android:fontFamily="@font/spoqahansansneoregular"
-                    android:textSize="14sp" />
+                    style="@style/semiBold_single_14" />
 
-                <FrameLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:gravity="center|end">
 
-                    <Button
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_gravity="center|end"
-                        android:layout_marginRight="33.23dp"
-                        android:background="@drawable/setting_more" />
-                </FrameLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        app:srcCompat="@drawable/move_text" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/location"
+                android:id="@+id/current_location"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="18dp"
-                android:orientation="horizontal"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
+                android:paddingVertical="14dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="45.48dp"
+                    android:layout_marginStart="28dp"
                     android:text="위치기반서비스 이용약관"
-                    android:fontFamily="@font/spoqahansansneoregular"
-                    android:textSize="14sp" />
+                    style="@style/semiBold_single_14" />
 
-                <FrameLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:gravity="center|end">
 
-                    <Button
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_gravity="center|end"
-                        android:layout_marginRight="33.23dp"
-                        android:background="@drawable/setting_more" />
-                </FrameLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        app:srcCompat="@drawable/move_text" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/opensource"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="18dp"
-                android:orientation="horizontal"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
+                android:paddingVertical="14dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="45.48dp"
+                    android:layout_marginStart="28dp"
                     android:text="오픈소스 라이센스"
-                    android:fontFamily="@font/spoqahansansneoregular"
-                    android:textSize="14sp" />
+                    style="@style/semiBold_single_14" />
 
-                <FrameLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:gravity="center|end">
 
-                    <Button
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_gravity="center|end"
-                        android:layout_marginRight="33.23dp"
-                        android:background="@drawable/setting_more" />
-                </FrameLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        app:srcCompat="@drawable/move_text" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/thanksTo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="20dp"
                 android:orientation="horizontal"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
+                android:paddingVertical="14dp">
 
                 <TextView
+                    style="@style/semiBold_single_14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="45.48dp"
-                    android:text="기여한 사람"
-                    android:fontFamily="@font/spoqahansansneoregular"
-                    android:textSize="14sp" />
+                    android:layout_marginStart="28dp"
+                    android:text="기여한 사람" />
 
-                <FrameLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:gravity="center|end">
 
-                    <Button
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_gravity="center|end"
-                        android:layout_marginRight="33.23dp"
-                        android:background="@drawable/setting_more" />
-                </FrameLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        app:srcCompat="@drawable/move_text" />
+                </LinearLayout>
             </LinearLayout>
 
 
@@ -372,31 +346,27 @@
                 android:id="@+id/logout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="18dp"
-                android:layout_marginBottom="18dp"
+                android:paddingVertical="20dp"
+                android:paddingHorizontal="16dp"
                 android:orientation="horizontal"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="29.48dp"
                     android:text="로그아웃"
-                    android:fontFamily="@font/spoqahansansneomedium"
-                    android:textSize="17sp" />
+                    style="@style/semiBold_single_16" />
 
-                <FrameLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:gravity="center|end">
 
-                    <Button
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_gravity="center|end"
-                        android:layout_marginRight="33.23dp"
-                        android:background="@drawable/setting_more" />
-                </FrameLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/move_text" />
+                </LinearLayout>
             </LinearLayout>
 
             <ImageView
@@ -408,31 +378,27 @@
                 android:id="@+id/leave"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="18dp"
-                android:layout_marginBottom="18dp"
+                android:paddingVertical="20dp"
+                android:paddingHorizontal="16dp"
                 android:orientation="horizontal"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="29.48dp"
                     android:text="탈퇴하기"
-                    android:fontFamily="@font/spoqahansansneomedium"
-                    android:textSize="17sp" />
+                    style="@style/semiBold_single_16" />
 
-                <FrameLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:gravity="center|end">
 
-                    <Button
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_gravity="center|end"
-                        android:layout_marginRight="33.23dp"
-                        android:background="@drawable/setting_more" />
-                </FrameLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/move_text" />
+                </LinearLayout>
             </LinearLayout>
 
             <ImageView

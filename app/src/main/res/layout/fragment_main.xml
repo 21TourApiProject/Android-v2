@@ -7,23 +7,16 @@
     tools:context=".MainFragment">
 
     <RelativeLayout
+        android:id="@+id/relativeLayout2"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@drawable/custom_gradient"
+        android:background="@color/bg_black"
         android:orientation="horizontal"
-        android:paddingHorizontal="24dp"
+        android:paddingHorizontal="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <ImageButton
-            android:id="@+id/weather_button"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_centerVertical="true"
-            android:background="@drawable/mainpage__weather_btn"
-            android:src="@drawable/main__weather" />
 
         <ImageView
             android:id="@+id/starryNightTitle"
@@ -38,8 +31,6 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_centerVertical="true"
-            android:layout_marginRight="24dp"
-            android:layout_toLeftOf="@+id/postWrite"
             android:background="@drawable/main__alarm" />
 
         <Button
@@ -76,18 +67,162 @@
                 android:layout_gravity="center_horizontal"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/todayEvent"
+                <LinearLayout
+                    android:id="@+id/weather_location_search"
                     android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/main__search_back"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/main__search" />
+
+                    <TextView
+                        style="@style/medium_single_14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="날씨가 궁금한 지역, 관측지명을 검색하세요"
+                        android:textColor="#84838D" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/weather_comment"
+                        style="@style/bold_multi_24"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="위치 정보를\n불러오는 중이에요..."
+                        android:textColor="#FFFFFF" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/main__weather_back"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/main__location"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/main__location_back_blue"
+                                android:text="현 위치"
+                                android:textFontWeight="600"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/main__current_location"
+                                style="@style/medium_single_14"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="8dp"
+                                android:text="-" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/main__star"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/main__weather_star" />
+
+                            <TextView
+                                android:id="@+id/main_best_observation_fit"
+                                style="@style/semiBold_single_16"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:layout_weight="1"
+                                android:text="관측 적합도 -" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/recommend_time"
+                            style="@style/medium_single_14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="추천 관측시간 -"
+                            android:textColor="#84838D" />
+
+
+                        <LinearLayout
+                            android:id="@+id/weather_detail"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/main__weather_button_back"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="10dp">
+
+                            <TextView
+                                style="@style/semiBold_single_12"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="날씨 자세히"
+                                android:textColor="#2C2C34" />
+
+                            <ImageView
+                                android:id="@+id/imageView6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:src="@drawable/main__weather_arrow" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    style="@style/semiBold_single_16"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone" />
+                    android:layout_marginTop="20dp"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="20dp"
+                    android:text="최근 관측후기"
+                    android:textSize="16sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
-                    tools:itemCount="5" />
+                    tools:itemCount="5">
+
+                </androidx.recyclerview.widget.RecyclerView>
 
                 <ProgressBar
                     android:id="@+id/mainProgressBar"
@@ -95,9 +230,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone" />
+
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        android:src="@drawable/mainpage_postwrite_float"
+        app:backgroundTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/swipe_layout"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

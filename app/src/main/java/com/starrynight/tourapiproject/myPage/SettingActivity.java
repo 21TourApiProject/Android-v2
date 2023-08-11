@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -40,7 +38,7 @@ public class SettingActivity extends AppCompatActivity {
         userId = (Long) intent.getSerializableExtra("userId"); //전 페이지에서 받아온 사용자 id
 
         //뒤로 가기
-        ImageView settingBack = findViewById(R.id.settingBack);
+        LinearLayout settingBack = findViewById(R.id.settingBack);
         settingBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,7 +118,7 @@ public class SettingActivity extends AppCompatActivity {
         });
 
         //위치기반서비스 이용약관
-        LinearLayout location = findViewById(R.id.location);
+        LinearLayout location = findViewById(R.id.current_location);
         location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

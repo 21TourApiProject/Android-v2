@@ -1,6 +1,7 @@
 package com.starrynight.tourapiproject.postWritePage;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,9 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,7 +27,12 @@ import com.starrynight.tourapiproject.observationPage.observationPageRetrofit.Re
 import com.starrynight.tourapiproject.postItemPage.OnSearchItemClickListener;
 import com.starrynight.tourapiproject.postItemPage.Search_item;
 import com.starrynight.tourapiproject.postItemPage.Search_item_adapter;
+import com.starrynight.tourapiproject.postItemPage.Search_item_adapter2;
+import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostHashTagParams;
+import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchLoadingDialog;
+import com.starrynight.tourapiproject.starPage.StarSearchActivity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,38 +56,71 @@ public class SearchObservingPointActivity extends AppCompatActivity {
     EditText findObservePoint;
     String observePoint;
     ArrayList<Search_item> searchitemArrayList, filteredList;
-    Search_item_adapter search_item_adapter;
-    LinearLayoutManager layoutManager;
-    RecyclerView optionObservationRecyclerView;
+    Search_item_adapter search_item_adapter,near_item_adapter;
+    Search_item_adapter2 add_item_adapter;
+    LinearLayoutManager layoutManager,nearLayoutManager,addLayoutManager;
+    RecyclerView searchObservationRecyclerview;
+    RecyclerView addRecyclerView;
+    RecyclerView nearRecyclerView;
+    LinearLayout addLinearLayout, nearLinearLayout,searchLinearLayout, noResultLinearLayout,optionRegistLinearLayout;
     TextView optionText;
     EditText editText;
+    AddAreaFragment addAreaFragment;
+    FragmentManager fragmentManager;
+    SearchLoadingDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_observing_point);
 
-        optionObservationRecyclerView = findViewById(R.id.optionObservationRecyclerView);
-        optionObservationRecyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), 1));
+        addRecyclerView=findViewById(R.id.addRecyclerview);
+        nearRecyclerView=findViewById(R.id.nearRecyclerview);
+        addLinearLayout=findViewById(R.id.addPositionLinearLayout);
+        nearLinearLayout=findViewById(R.id.nearPositionLinearLayout);
+        searchLinearLayout=findViewById(R.id.searchLinearLayout);
+        noResultLinearLayout =findViewById(R.id.noResultLayout);
+        optionRegistLinearLayout =findViewById(R.id.optionRegist);
+        searchObservationRecyclerview = findViewById(R.id.searchObservationRecyclerView);
+        searchObservationRecyclerview.addItemDecoration(new DividerItemDecoration(getApplicationContext(), 1));
         findObservePoint = findViewById(R.id.findObservePoint);
         searchitemArrayList = new ArrayList<>();
         filteredList = new ArrayList<>();
+        dialog = new SearchLoadingDialog(SearchObservingPointActivity.this);
+        dialog.show();
+
+        optionText = findViewById(R.id.optionText);
+
+        //검색어 입력했을 때 나오는 관측지 리스트
         search_item_adapter = new Search_item_adapter(searchitemArrayList, this);
         layoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false);
-        optionObservationRecyclerView.setLayoutManager(layoutManager);
-        optionObservationRecyclerView.setAdapter(search_item_adapter);
-        optionText = findViewById(R.id.optionText);
+        searchObservationRecyclerview.setLayoutManager(layoutManager);
+        searchObservationRecyclerview.setAdapter(search_item_adapter);
+
+        //가까운 관측지 리스트
+        //near_item_adapter=new Search_item_adapter(searchitemArrayList,this);
+        //nearLayoutManager= new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,false);
+        //nearRecyclerView.setLayoutManager(nearLayoutManager);
+        //nearRecyclerView.setAdapter(near_item_adapter);
+
+        //추가한 위치
+        //add_item_adapter = new Search_item_adapter2(searchitemArrayList,this);
+        //addLayoutManager = new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,false);
+        //addRecyclerView.setLayoutManager(addLayoutManager);
+        //addRecyclerView.setAdapter(add_item_adapter);
 
         Call<List<Observation>> call = RetrofitClient.getApiService().getAllObservation();
         call.enqueue(new Callback<List<Observation>>() {
             @Override
             public void onResponse(Call<List<Observation>> call, Response<List<Observation>> response) {
                 if (response.isSuccessful()) {
+                    dialog.dismiss();
                     Log.d("observation", "관측지 리스트 업로드");
                     List<Observation> observationList = response.body();
                     for (int i = 0; i < observationList.size() - 1; i++) {
                         searchitemArrayList.add(new Search_item(observationList.get(i).getObservationName(), observationList.get(i).getAddress()));
                     }
+                    search_item_adapter.filterList(searchitemArrayList);
                 } else {
                     Log.d("observation", "관측지 리스트 업로드 실패");
                 }
@@ -121,26 +163,27 @@ public class SearchObservingPointActivity extends AppCompatActivity {
                 finish();
             }
         });
-        optionText.setOnClickListener(new View.OnClickListener() {
+
+        fragmentManager = getSupportFragmentManager();
+
+        //임의 관측지 클릭 시
+        optionRegistLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 observePoint = ((EditText) (findViewById(R.id.findObservePoint))).getText().toString();
-                Intent intent = new Intent();
-                intent.putExtra("optionObservationName", observePoint);
-                setResult(2, intent);
-                finish();
+                addAreaFragment =new AddAreaFragment();
+                addAreaFragment.setCancelable(true);
+                addAreaFragment.show(fragmentManager,addAreaFragment.getTag());
+
             }
         });
-        //관측지 선택 버튼
+
+        //관측지 돋보기 클릭 버튼
         Button addObservePoint = findViewById(R.id.addObservePoint);
         addObservePoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                observePoint = ((EditText) (findViewById(R.id.findObservePoint))).getText().toString();
-                Intent intent = new Intent();
-                intent.putExtra("optionObservationName", observePoint);
-                setResult(2, intent);
-                finish();
+                searchLinearLayout.setVisibility(View.VISIBLE);
             }
         });
         //뒤로가기 버튼
@@ -151,7 +194,8 @@ public class SearchObservingPointActivity extends AppCompatActivity {
                 finish();
             }
         });
-        //임의 관측지 입력 칸
+
+        //키보드 입력시 변화
         editText = findViewById(R.id.findObservePoint);
         editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -159,10 +203,6 @@ public class SearchObservingPointActivity extends AppCompatActivity {
                 if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                     if (!editText.getText().toString().equals("")) {
                         observePoint = ((EditText) (findViewById(R.id.findObservePoint))).getText().toString();
-                        Intent intent = new Intent();
-                        intent.putExtra("optionObservationName", observePoint);
-                        setResult(2, intent);
-                        finish();
                     }
                 } else {
                     return false;
@@ -175,19 +215,40 @@ public class SearchObservingPointActivity extends AppCompatActivity {
 
     public void searchFilter(String searchText) {
         filteredList.clear();
-        Button add_btn = findViewById(R.id.addObservePoint);
         for (int i = 0; i < searchitemArrayList.size(); i++) {
             if (searchitemArrayList.get(i).getItemName().toLowerCase().contains(searchText.toLowerCase())) {
                 filteredList.add(searchitemArrayList.get(i));
-                optionText.setVisibility(View.GONE);
+                noResultLinearLayout.setVisibility(View.GONE);
             }
         }
         if (filteredList.size() == 0) {
             {
-                optionText.setVisibility(View.VISIBLE);
+                noResultLinearLayout.setVisibility(View.VISIBLE);
+                String option =((EditText) (findViewById(R.id.findObservePoint))).getText().toString();
+                optionText.setText("'"+option+"'에 대한\n검색 결과가 없어요");
             }
         }
         search_item_adapter.filterList(filteredList);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    protected void  onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode==206){
+            if(resultCode==6){
+                Log.d("postArea", "지역 해시태그 데이터 로드");
+                String optionObName = (String) data.getSerializableExtra("optionObservationName");
+                List<String> areaList = (List<String>) data.getSerializableExtra("areaList");
+                List<PostHashTagParams> postAreaParams = (List<PostHashTagParams>) data.getSerializableExtra("postAreaParams");
+                Intent intent =new Intent();
+                intent.putExtra("postAreaParams", (Serializable) postAreaParams);
+                intent.putExtra("areaList", (Serializable) areaList);
+                intent.putExtra("optionObservationName",(Serializable) observePoint);
+                setResult(2,intent);
+                finish();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 }

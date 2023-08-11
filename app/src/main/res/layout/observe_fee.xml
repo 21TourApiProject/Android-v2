@@ -2,31 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingVertical="8dp"
+    android:paddingHorizontal="16dp"
+    android:weightSum="2"
+    android:background="@drawable/observation__fee_box">
 
-    <TextView
-        android:id="@+id/feename_txt"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Textview_observation_details"
-        android:text="요금이름이 몇글자"/>
+        android:layout_weight="1">
 
-    <ImageView
-        android:id="@+id/fee_line"
-        android:layout_width="wrap_content"
-        android:layout_height="1.5dp"
-        android:layout_marginTop="8dp"
-        android:layout_weight="1"
-        android:layerType="software"
-        android:src="@drawable/observation__string"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"/>
-
+        <TextView
+            android:id="@+id/feename_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:gravity="left"
+            android:maxWidth="180dp"
+            android:text="요금이름"
+            android:textColor="@color/gray_300"
+            style="@style/medium_single_14" />
+    </RelativeLayout>
     <TextView
-        android:id="@+id/entrancefee_txt"
-        android:layout_width="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Textview_observation_details"
-        android:text="10,000원"/>
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/entrancefee_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="10,000원"
+            android:gravity="left"
+            android:maxWidth="100dp"
+            android:textColor="@color/gray_300"
+            style="@style/medium_single_14" />
+    </RelativeLayout>
 
 </LinearLayout>

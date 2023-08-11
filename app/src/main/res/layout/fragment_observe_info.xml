@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".observationPage.ObserveInfoFragment">
+
+    <LinearLayout
+        android:id="@+id/obs_information_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/obs_foroperating_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="15dp"
+            android:paddingHorizontal="19dp">
+
+            <RelativeLayout
+                android:id="@+id/obs_content_layout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/Textview_observation_details_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/obs_location_btn"
+                    android:text="주소" />
+
+                <TextView
+                    android:id="@+id/obs_address_txt"
+                    style="@style/Textview_observation_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/obs_location_btn"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="75dp"
+                    android:layout_toLeftOf="@+id/obs_location_btn"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="ㅇㅇ군 ㅇㅇ시 ㅇㅇ동" />
+
+                <TextView
+                    android:id="@+id/obs_location_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/observation__map_background"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="4dp"
+                    android:text="카카오맵"
+                    android:textColor="@color/gray_500" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Textview_observation_details_title"
+                    android:layout_alignBaseline="@id/obs_operatinghour_txt"
+                    android:text="영업시간" />
+
+                <TextView
+                    android:id="@+id/obs_operatinghour_txt"
+                    style="@style/Textview_observation_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/obs_address_txt"
+                    android:layout_alignLeft="@id/obs_address_txt"
+                    android:text="00:00~00:00" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Textview_observation_details_title"
+                    android:layout_alignBaseline="@id/obs_closedday_txt"
+                    android:text="휴무일" />
+                <TextView
+                    android:id="@+id/obs_closedday_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="O요일"
+                    style="@style/Textview_observation_details"
+                    android:layout_below="@id/obs_operatinghour_txt"
+                    android:layout_alignLeft="@id/obs_address_txt"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Textview_observation_details_title"
+                    android:layout_alignBaseline="@id/obs_parking_txt"
+                    android:text="주차시설" />
+                <TextView
+                    android:id="@+id/obs_parking_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="주차정보있음"
+                    style="@style/Textview_observation_details"
+                    android:layout_below="@id/obs_closedday_txt"
+                    android:layout_alignLeft="@id/obs_address_txt"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Textview_observation_details_title"
+                    android:layout_alignBaseline="@id/obs_guide_txt"
+                    android:text="이용안내" />
+
+                <TextView
+                    android:id="@+id/obs_guide_txt"
+                    style="@style/medium_multi_14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/obs_parking_txt"
+                    android:layout_alignLeft="@id/obs_address_txt"
+                    android:layout_marginBottom="12dp"
+                    android:textColor="@color/gray_300"
+                    android:text="이용안내 글 전체" />
+
+
+                <TextView
+                    android:id="@+id/obs_fee_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Textview_observation_details_title"
+                    android:layout_below="@id/obs_guide_txt"
+                    android:text="입장료" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/obs_entrancefee_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/obs_fee_name"
+                    android:layout_marginTop="12dp"
+                    android:isScrollContainer="false"
+                    android:orientation="vertical" />
+
+                <LinearLayout
+                    android:id="@+id/obs_fee_more_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/obs_entrancefee_layout"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp"
+                    android:layout_centerHorizontal="true">
+
+                    <TextView
+                        android:id="@+id/obs_fee_more_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="더보기"
+                        android:textColor="@color/gray_500"
+                        style="@style/semiBold_single_14"
+                        android:layout_marginRight="4.5dp"/>
+                    <ImageView
+                        android:id="@+id/obs_fee_more_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/observation__fee_more"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/obs_fornature_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="19dp"
+            android:layout_marginTop="27dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Textview_observation_details_title"
+                android:text="주소" />
+
+            <TextView
+                android:id="@+id/obs_nature_address_txt"
+                style="@style/Textview_observation_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="75dp"
+                android:layout_toLeftOf="@+id/obs_nature_location_btn"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="ㅇㅇ군 ㅇㅇ시 ㅇㅇ동" />
+
+            <TextView
+                android:id="@+id/obs_nature_location_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="0dp"
+                android:background="@drawable/observation__map_background"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:text="카카오맵"
+                android:textColor="@color/gray_500" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Textview_observation_details_title"
+                android:layout_alignBaseline="@id/obs_nature_parking_txt"
+                android:text="주차시설" />
+            <TextView
+                android:id="@+id/obs_nature_parking_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="주차정보있음"
+                style="@style/Textview_observation_details"
+                android:layout_below="@id/obs_nature_address_txt"
+                android:layout_alignLeft="@id/obs_nature_address_txt"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Textview_observation_details_title"
+                android:layout_alignBaseline="@id/obs_nature_guide_txt"
+                android:text="여행팁" />
+
+            <TextView
+                android:id="@+id/obs_nature_guide_txt"
+                style="@style/medium_multi_14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/obs_nature_parking_txt"
+                android:layout_alignLeft="@id/obs_nature_address_txt"
+                android:layout_marginBottom="12dp"
+                android:textColor="@color/gray_300"
+                android:text="이용안내 글 전체" />
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/obs_course"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="61dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="추천코스"
+                    style="@style/semiBold_single_16" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="by 별밤에디터"
+                    android:textColor="@color/point_blue"
+                    style="@style/medium_single_14"
+                    android:layout_marginLeft="8dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/obs_course_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="19.5dp"
+                android:textColor="@color/gray_300"
+                android:layout_marginTop="14dp"
+                android:text="1번장소 > 2번장소 > 3번장소 > 4번장소"
+                style="@style/medium_multi_14"/>
+            <ImageView
+                android:id="@+id/obs_course_image"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:layout_gravity="center_horizontal"
+                android:adjustViewBounds="true"
+                android:src="@drawable/default_tp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/obs_course_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="19.5dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

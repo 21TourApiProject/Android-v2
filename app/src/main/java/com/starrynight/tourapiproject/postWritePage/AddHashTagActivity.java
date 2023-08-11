@@ -3,12 +3,11 @@ package com.starrynight.tourapiproject.postWritePage;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,18 +16,29 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 import com.starrynight.tourapiproject.R;
-import com.starrynight.tourapiproject.postItemPage.OnPostWriteHashTagItemAdapter;
-import com.starrynight.tourapiproject.postItemPage.PostWriteHashTagItem;
-import com.starrynight.tourapiproject.postItemPage.PostWriteHashTagItemAdapter;
+import com.starrynight.tourapiproject.observationPage.RecyclerDecoration;
+import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostHashTagAdapter;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostHashTagParams;
+import com.starrynight.tourapiproject.searchPage.filter.HashTagItem;
+import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.HashTag;
+import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.RetrofitClient;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.starrynight.tourapiproject.searchPage.filter.HashTagItem.VIEWTYPE_ACTIVE;
+
 /**
 * @className : AddHashTagActivity
 * @description : 게시물 작성 페이지의 해시태그 추가 페이지 입니다.
@@ -45,18 +55,9 @@ import java.util.List;
 public class AddHashTagActivity extends AppCompatActivity {
     List<PostHashTagParams> postHashTagParams = new ArrayList<>();
     List<PostHashTagParams> postHashTagParams2 = new ArrayList<>();
-    RecyclerView optionHashTagRecyclerView;
-    TextView findHashTag;
-    String optionHashTag;
-    EditText editText;
-    String[] optionHashTagList = new String[10];
-    String[] hashTaglist = new String[22];
-    String[] clicked = new String[22];
-    ArrayList<String> hashtag = new ArrayList<>();
-    HashMap<String, Integer> hashTagMap = new HashMap<String, Integer>();
-    String[] hashTagName = {"공기 좋은", "깔끔한", "감성적인", "이색적인", "인생샷", "전문적인", "캠핑", "차박", "뚜벅이", "드라이브",
-            "반려동물", "한적한", "근교", "도심 속", "연인", "가족", "친구", "혼자", "가성비", "소확행", "럭셔리한", "경치 좋은"};
-    Button[] buttons = new Button[22];
+    List<HashTagItem> hashTaglist;
+    RecyclerView themeRecyclerView,peopleRecyclerView,facilityRecyclerView, feeRecyclerView;
+    ArrayList<String> hashtag=new ArrayList<>();
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -79,186 +80,156 @@ public class AddHashTagActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_hash_tag);
-        findHashTag = findViewById(R.id.findHashTag);
 
 
         Intent intent = getIntent();
         postHashTagParams2 = (List<PostHashTagParams>) intent.getSerializableExtra("hashTagParams");
-        for (int i = 0; i < 22; i++) {
-            clicked[i] = "";
-        }
+
         if (postHashTagParams2 != null) {
             for (int i = 0; i < postHashTagParams2.size(); i++) {
                 if (postHashTagParams2.get(i).getHashTagName() != null) {
                     hashtag.add(postHashTagParams2.get(i).getHashTagName());
                 }
+                if(postHashTagParams2.get(i).getAreaName()!=null){
+                    hashtag.add(postHashTagParams2.get(i).getAreaName());
+                }
             }
         }
 
-        if (hashtag != null) {
-            int i = 0;
-            for (String name : hashTagName) {
-                hashTagMap.put(name, i);
-                i++;
+
+        PostHashTagAdapter themeAdapter =new PostHashTagAdapter();
+        PostHashTagAdapter facilityAdapter =new PostHashTagAdapter();
+        PostHashTagAdapter peopleAdapter =new PostHashTagAdapter();
+        PostHashTagAdapter feeAdapter =new PostHashTagAdapter();
+
+        FlexboxLayoutManager flexboxLayoutManager;
+        FlexboxLayoutManager flexboxLayoutManager1;
+        FlexboxLayoutManager flexboxLayoutManager2;
+        FlexboxLayoutManager flexboxLayoutManager3;
+
+
+        flexboxLayoutManager = new FlexboxLayoutManager(this);
+        flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
+        flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START);
+        flexboxLayoutManager1 = new FlexboxLayoutManager(this);
+        flexboxLayoutManager1.setFlexDirection(FlexDirection.ROW);
+        flexboxLayoutManager1.setJustifyContent(JustifyContent.FLEX_START);
+        flexboxLayoutManager2 = new FlexboxLayoutManager(this);
+        flexboxLayoutManager2.setFlexDirection(FlexDirection.ROW);
+        flexboxLayoutManager2.setJustifyContent(JustifyContent.FLEX_START);
+        flexboxLayoutManager3 = new FlexboxLayoutManager(this);
+        flexboxLayoutManager3.setFlexDirection(FlexDirection.ROW);
+        flexboxLayoutManager3.setJustifyContent(JustifyContent.FLEX_START);
+
+
+        themeRecyclerView= findViewById(R.id.themePostHashTag);
+        peopleRecyclerView=findViewById(R.id.whoPostHashTag);
+        facilityRecyclerView=findViewById(R.id.facilityPostHashtag);
+        feeRecyclerView=findViewById(R.id.feePostHashTag);
+
+
+        //해시태그 리스트 불러오기
+        Call<List<HashTagItem>> hashTagCall = RetrofitClient.getApiService().getHashTag();
+        hashTagCall.enqueue(new Callback<List<HashTagItem>>() {
+            @Override
+            public void onResponse(Call<List<HashTagItem>> call, Response<List<HashTagItem>> response) {
+                if(response.isSuccessful()){
+                    Log.d("postHashTag", "모든 해쉬태그 호출 성공");
+                    hashTaglist=response.body();
+                    //이전에 이미 클릭해놓은 해시태그가 있는 경우 확인
+                    if(hashtag!=null){
+                        for(String h : hashtag){
+                            for(HashTagItem item : hashTaglist){
+                                if(item.getName().equals(h)){
+                                    item.setIsActive(1);
+                                }
+                            }
+                        }
+                    }
+                    for(HashTagItem item: hashTaglist){
+                        switch (item.getCategory()){
+                            case "THEME":
+                                themeAdapter.addItem(item);
+                                break;
+                            case "PEOPLE":
+                                peopleAdapter.addItem(item);
+                                break;
+                            case "FACILITY":
+                                facilityAdapter.addItem(item);
+                                break;
+                            case "FEE":
+                                feeAdapter.addItem(item);
+                                break;
+                        }
+                    }
+
+                    themeRecyclerView.setLayoutManager(flexboxLayoutManager);
+                    themeRecyclerView.setAdapter(themeAdapter);
+                    peopleRecyclerView.setLayoutManager(flexboxLayoutManager1);
+                    peopleRecyclerView.setAdapter(peopleAdapter);
+                    facilityRecyclerView.setLayoutManager(flexboxLayoutManager2);
+                    facilityRecyclerView.setAdapter(facilityAdapter);
+                    feeRecyclerView.setLayoutManager(flexboxLayoutManager3);
+                    feeRecyclerView.setAdapter(feeAdapter);
+
+                }else{
+                    Log.e("postHashTag", "모든 해쉬태그 호출 실패");
+                }
             }
 
-            for (String h : hashtag) {
-                clicked[hashTagMap.get(h)] = h;
+            @Override
+            public void onFailure(Call<List<HashTagItem>> call, Throwable t) {
+                Log.e("postHashTag", "모든 해쉬태그 호출 인터넷 실패");
             }
-        }
-        Button ht1 = findViewById(R.id.ht1);
-        Button ht2 = findViewById(R.id.ht2);
-        Button ht3 = findViewById(R.id.ht3);
-        Button ht4 = findViewById(R.id.ht4);
-        Button ht5 = findViewById(R.id.ht5);
-        Button ht6 = findViewById(R.id.ht6);
-        Button ht7 = findViewById(R.id.ht7);
-        Button ht8 = findViewById(R.id.ht8);
-        Button ht9 = findViewById(R.id.ht9);
-        Button ht10 = findViewById(R.id.ht10);
-        Button ht11 = findViewById(R.id.ht11);
-        Button ht12 = findViewById(R.id.ht12);
-        Button ht13 = findViewById(R.id.ht13);
-        Button ht14 = findViewById(R.id.ht14);
-        Button ht15 = findViewById(R.id.ht15);
-        Button ht16 = findViewById(R.id.ht16);
-        Button ht17 = findViewById(R.id.ht17);
-        Button ht18 = findViewById(R.id.ht18);
-        Button ht19 = findViewById(R.id.ht19);
-        Button ht20 = findViewById(R.id.ht20);
-        Button ht21 = findViewById(R.id.ht21);
-        Button ht22 = findViewById(R.id.ht22);
-        buttons[0] = ht1;
-        buttons[1] = ht2;
-        buttons[2] = ht3;
-        buttons[3] = ht4;
-        buttons[4] = ht5;
-        buttons[5] = ht6;
-        buttons[6] = ht7;
-        buttons[7] = ht8;
-        buttons[8] = ht9;
-        buttons[9] = ht10;
-        buttons[10] = ht11;
-        buttons[11] = ht12;
-        buttons[12] = ht13;
-        buttons[13] = ht14;
-        buttons[14] = ht15;
-        buttons[15] = ht16;
-        buttons[16] = ht17;
-        buttons[17] = ht18;
-        buttons[18] = ht19;
-        buttons[19] = ht20;
-        buttons[20] = ht21;
-        buttons[21] = ht22;
+        });
 
-        for (int i = 0; i < 22; i++) {
-            if (!clicked[i].equals("")) {
-                buttons[i].setTag("isClicked");
-                buttons[i].setBackground(ContextCompat.getDrawable(this, R.drawable.selectmyhashtag_hashtag));
-                buttons[i].setTextColor(ContextCompat.getColor(this, R.color.bg_dark_indigo));
-            }
-        }
 
-        Arrays.fill(hashTaglist, "");
-        Arrays.fill(optionHashTagList, "");
+
+
+
         final List<String> finallist = new ArrayList<>(); //메인 해시태그 리스트
-        final List<String> optionFinalList = new ArrayList<>(); //임의 해시태그 리스트
-        optionHashTagRecyclerView = findViewById(R.id.optionHashTagRecyclerView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false);
-        optionHashTagRecyclerView.setLayoutManager(layoutManager);
-        PostWriteHashTagItemAdapter adapter = new PostWriteHashTagItemAdapter();
-        optionHashTagRecyclerView.addItemDecoration(new RecyclerViewDecoration(20));
-        optionHashTagRecyclerView.setAdapter(adapter);
+
+        //완료 버튼 클릭 이벤트
         TextView plusHashTag = findViewById(R.id.finish_add_hashTag);
         plusHashTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (int i = 0; i < 22; i++) {
-                    if (!clicked[i].isEmpty()) {
+                for(int i=0;i<themeAdapter.getItemCount();i++){
+                    if(themeAdapter.getItem(i).getIsActive()==VIEWTYPE_ACTIVE){
                         PostHashTagParams postHashTagParam = new PostHashTagParams();
-                        postHashTagParam.setHashTagName(clicked[i]);
+                        postHashTagParam.setHashTagName(themeAdapter.getItem(i).getName());
                         postHashTagParams.add(postHashTagParam);
+                        finallist.add(themeAdapter.getItem(i).getName());
                     }
                 }
-                for (int i = 0; i < hashTaglist.length; i++) {
-                    if (!clicked[i].isEmpty()) {
-                        if (hashTaglist[i] == "") {
-                            hashTaglist[i] = clicked[i];
-                        }
+                for(int i=0;i<facilityAdapter.getItemCount();i++){
+                    if(facilityAdapter.getItem(i).getIsActive()==VIEWTYPE_ACTIVE){
+                        PostHashTagParams postHashTagParam = new PostHashTagParams();
+                        postHashTagParam.setHashTagName(facilityAdapter.getItem(i).getName());
+                        postHashTagParams.add(postHashTagParam);
+                        finallist.add(facilityAdapter.getItem(i).getName());
                     }
                 }
-                Collections.addAll(finallist, hashTaglist);
-                for (int i = 21; i >= 0; i--) {
-                    if (finallist.get(i) == "") {
-                        finallist.remove(i);
+                for(int i=0;i<feeAdapter.getItemCount();i++){
+                    if(feeAdapter.getItem(i).getIsActive()==VIEWTYPE_ACTIVE){
+                        PostHashTagParams postHashTagParam = new PostHashTagParams();
+                        postHashTagParam.setHashTagName(feeAdapter.getItem(i).getName());
+                        postHashTagParams.add(postHashTagParam);
+                        finallist.add(feeAdapter.getItem(i).getName());
                     }
                 }
-                Collections.addAll(optionFinalList, optionHashTagList);
-                for (int i = 9; i >= 0; i--) {
-                    if (optionFinalList.get(i) == "") {
-                        optionFinalList.remove(i);
+                for(int i=0;i<peopleAdapter.getItemCount();i++){
+                    if(peopleAdapter.getItem(i).getIsActive()==VIEWTYPE_ACTIVE){
+                        PostHashTagParams postHashTagParam = new PostHashTagParams();
+                        postHashTagParam.setHashTagName(peopleAdapter.getItem(i).getName());
+                        postHashTagParams.add(postHashTagParam);
+                        finallist.add(peopleAdapter.getItem(i).getName());
                     }
                 }
                 intent.putExtra("postHashTagParams", (Serializable) postHashTagParams);
                 intent.putExtra("hashTagList", (Serializable) finallist);
-                intent.putExtra("optionHashTagList", (Serializable) optionFinalList);
                 setResult(3, intent);
                 finish();
-            }
-        });
-
-        // 임의 해시태그 작성하는 텍스트 칸
-        editText = findViewById(R.id.findHashTag);
-        editText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                    if (!editText.getText().toString().equals("")) {
-                        optionHashTag = editText.getText().toString();
-                        for (int i = 0; i < optionHashTagList.length; i++) {
-                            if (optionHashTagList[i] == "") {
-                                optionHashTagList[i] = optionHashTag;
-                                break;
-                            }
-                        }
-                        adapter.addItem(new PostWriteHashTagItem(optionHashTag));
-                        adapter.notifyDataSetChanged();
-                        editText.getText().clear();
-                    }
-                } else {
-                    return false;
-                }
-                return true;
-            }
-        });
-
-        //임의 해시태그 추가하는 버튼
-        Button add_hashTag = findViewById(R.id.addHashTag);
-        add_hashTag.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!editText.getText().toString().equals("")) {
-                    optionHashTag = editText.getText().toString();
-                    for (int i = 0; i < optionHashTagList.length; i++) {
-                        if (optionHashTagList[i] == "") {
-                            optionHashTagList[i] = optionHashTag;
-                            break;
-                        }
-                    }
-                    adapter.addItem(new PostWriteHashTagItem(optionHashTag));
-                    adapter.notifyDataSetChanged();
-                    editText.getText().clear();
-                }
-            }
-        });
-
-        //해시태그 삭제
-        adapter.setOnItemClicklistener(new OnPostWriteHashTagItemAdapter() {
-            @Override
-            public void onItemClick(PostWriteHashTagItemAdapter.ViewHolder holder, View view, int position) {
-                adapter.removeItem(position);
-                adapter.notifyDataSetChanged();
-                optionHashTagList[position] = "";
             }
         });
 
@@ -287,28 +258,6 @@ public class AddHashTagActivity extends AppCompatActivity {
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
             super.getItemOffsets(outRect, view, parent, state);
             outRect.right = divRight;
-        }
-    }
-
-    public void ClickEvent(View view) {
-        Button button = (Button) view;
-
-        if (button.getTag() == "isClicked") {
-            button.setTag("");
-            button.setBackground(ContextCompat.getDrawable(this, R.drawable.selectmyhashtag_hashtag_non));
-            button.setTextColor(ContextCompat.getColor(this, R.color.name_purple));
-
-            String viewId = view.getResources().getResourceEntryName(view.getId());
-            int id = Integer.parseInt(viewId.substring(2));
-            clicked[id - 1] = "";
-        } else {
-            button.setTag("isClicked");
-            button.setBackground(ContextCompat.getDrawable(this, R.drawable.selectmyhashtag_hashtag));
-            button.setTextColor(ContextCompat.getColor(this, R.color.bg_dark_indigo));
-
-            String viewId = view.getResources().getResourceEntryName(view.getId());
-            int id = Integer.parseInt(viewId.substring(2));
-            clicked[id - 1] = button.getText().toString();
         }
     }
 }

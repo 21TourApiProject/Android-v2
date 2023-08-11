@@ -51,15 +51,35 @@ public class Observation {
     @SerializedName("nature")
     boolean nature;
     @SerializedName("courseOrder")
-    int courseOrder;
+    Integer courseOrder;
     @SerializedName("areaCode")
     Long areaCode;
+    @SerializedName("saved")
+    Long saved;
+    @SerializedName("reserve")
+    String reserve;
     @SerializedName("observeHashTags")
     List<ObserveHashTag> observeHashTags;
     @SerializedName("observeImages")
     List<ObserveImage> observeImages;
     @SerializedName("observeFee")
     List<ObserveFee> observeFees;
+
+    public Long getSaved() {
+        return saved;
+    }
+
+
+    //TODO 없애야함
+    public void setSaved() {
+        saved = 0L;
+    }
+
+
+    public String getReserve() {
+        return reserve;
+    }
+
 
     public Long getAreaCode() {
         return areaCode;

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.starrynight.tourapiproject.R;
@@ -23,7 +24,7 @@ public class StarCompassActivity extends AppCompatActivity implements SensorEven
     TextView latitude;
     TextView direction;
     ImageView compass;
-    ImageView back_btn;
+    LinearLayout back_btn;
 
     //나침반 관련
     private SensorManager mSensorManger;
@@ -58,8 +59,8 @@ public class StarCompassActivity extends AppCompatActivity implements SensorEven
     @Override
     public void onResume() {
         super.onResume();
-        mSensorManger.registerListener(this, mAcclerometer, SensorManager.SENSOR_DELAY_NORMAL);
-        mSensorManger.registerListener(this, mMagnetometer, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManger.registerListener(this, mAcclerometer, SensorManager.SENSOR_DELAY_GAME);
+        mSensorManger.registerListener(this, mMagnetometer, SensorManager.SENSOR_DELAY_GAME);
     }
 
     @Override

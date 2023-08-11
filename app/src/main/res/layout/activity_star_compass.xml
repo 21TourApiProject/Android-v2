@@ -22,26 +22,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/scdream"
+                android:fontFamily="@font/pretendard_variable"
+                android:textFontWeight="600"
                 android:text="나침반"
                 android:textSize="16sp" />
 
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
+            <LinearLayout
+                android:id="@+id/compass_back_btn"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:gravity="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                >
                 <ImageView
-                    android:id="@+id/compass_back_btn"
                     style="@style/ImageButton.size49"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:paddingVertical="18dp"
-                    android:paddingStart="22dp"
-                    android:paddingEnd="21dp"
-                    android:src="@drawable/star__search_back"
-                    android:clickable="false" />
-            </FrameLayout>
+                    android:src="@drawable/back_btn" />
+            </LinearLayout>
         </FrameLayout>
 
     </LinearLayout>
@@ -63,6 +64,8 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_variable"
+                android:textFontWeight="600"
                 android:text="현재"
                 android:textSize="16sp"/>
 
@@ -77,6 +80,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/pretendard_variable"
+                    android:textFontWeight="600"
                     android:text="위도"
                     android:textSize="32sp" />
 
@@ -85,6 +90,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="방향"
+                    android:fontFamily="@font/pretendard_variable"
+                    android:textFontWeight="600"
                     android:textSize="32sp" />
             </LinearLayout>
 

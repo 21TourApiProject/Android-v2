@@ -3,22 +3,27 @@ package com.starrynight.tourapiproject.postPage.postRetrofit;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,11 +33,14 @@ import com.bumptech.glide.Glide;
 import com.starrynight.tourapiproject.MainActivity;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.mapPage.Activities;
+import com.starrynight.tourapiproject.postItemPage.MainPostHashTagItemAdapter;
 import com.starrynight.tourapiproject.postItemPage.OnPostHashTagClickListener;
+import com.starrynight.tourapiproject.postItemPage.OnPostWriteHashTagItemAdapter;
 import com.starrynight.tourapiproject.postItemPage.PostHashTagItem;
 import com.starrynight.tourapiproject.postItemPage.PostHashTagItemAdapter;
 import com.starrynight.tourapiproject.postPage.ImageSliderAdapter;
 import com.starrynight.tourapiproject.postPage.PostActivity;
+import com.starrynight.tourapiproject.searchPage.SearchResultActivity;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -148,7 +156,7 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
                                 //버튼 디자인 바뀌게 구현하기
                                 isWish[position] = true;
                                 v.setSelected(!v.isSelected());
-                                Toast.makeText(viewHolder.bookmark.getContext(), "나의 여행버킷리스트에 저장되었습니다.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(viewHolder.bookmark.getContext(), "나의 북마크에 저장되었습니다.", Toast.LENGTH_SHORT).show();
                                 viewHolder.bookmark.setEnabled(false);
                                 Handler handle = new Handler();
                                 handle.postDelayed(new Runnable() {
@@ -175,7 +183,7 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
                             if (response.isSuccessful()) {
                                 isWish[position] = false;
                                 v.setSelected(!v.isSelected());
-                                Toast.makeText(viewHolder.bookmark.getContext(), "나의 여행버킷리스트에서 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(viewHolder.bookmark.getContext(), "나의 북마크에서 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                             } else {
                                 Log.d("deleteMyWish", "게시물 찜 삭제 실패");
                             }
@@ -191,7 +199,7 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(viewHolder.hashTagRecyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false);
         viewHolder.hashTagRecyclerView.setLayoutManager(layoutManager);
-        PostHashTagItemAdapter adapter = new PostHashTagItemAdapter();
+        MainPostHashTagItemAdapter adapter = new MainPostHashTagItemAdapter();
         if (!item.getMainObservation().equals("나만의 관측지")) {
             adapter.addItem(new PostHashTagItem(item.getMainObservation(), null, item.getObservationId(), null));
         } else {
@@ -207,9 +215,6 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
                     if (item.getHashTags() != null) {
                         for (int i = 0; i < item.getHashTags().size(); i++) {
                             adapter.addItem(new PostHashTagItem(item.getHashTags().get(i), null, null, postHashTagIds.get(i).getHashTagId()));
-                            if (i == 2) {
-                                break;
-                            }
                         }
                         if (adapter.getItemCount() < 4) {
                             if (item.getOptionHashTag() != null)
@@ -229,28 +234,23 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
                     Bundle bundle = new Bundle();  // 아직 게시물 상세페이지에서는 에러나서 보류
                     bundle.putInt("type", 1);
                     final String[] keyword = new String[adapter.getItemCount()];
-                    adapter.setOnItemClicklistener(new OnPostHashTagClickListener() {
+                    adapter.setOnItemClicklistener(new OnPostWriteHashTagItemAdapter() {
                         @Override
-                        public void onItemClick(PostHashTagItemAdapter.ViewHolder holder, View view, int position) {
-                            Intent intent1 = new Intent(viewHolder.itemView.getContext(), MainActivity.class);
+                        public void onItemClick(MainPostHashTagItemAdapter.ViewHolder holder, View view, int position) {
+                            Intent intent1 = new Intent(viewHolder.itemView.getContext(), SearchResultActivity.class);
                             PostHashTagItem item1 = adapter.getItem(position);
                             if (position!=0) {
                                 if (item1.getHashTagId() != null) {
-                                    keyword[position] = null;
-                                    ArrayList<Integer> hashTag = new ArrayList<Integer>(Collections.nCopies(22, 0));
-                                    intent1.putExtra("keyword", keyword[position]);
-                                    int x = item1.getHashTagId().intValue();
-                                    hashTag.set(x - 1, 1);
-                                    intent1.putExtra("area", area);
-                                    intent1.putExtra("hashTag", hashTag);
+                                    String keyword = "";
+                                    String name = item1.getHashTagname();
+                                    Log.d("MainPost adapter", name);
+                                    intent1.putExtra("keyword", keyword);
+                                    intent1.putExtra("hashTagName", name);
                                     intent1.putExtra("FromWhere", Activities.POST);
                                     viewHolder.itemView.getContext().startActivity(intent1);
                                 } else {
-                                    ArrayList<Integer> hashTag = new ArrayList<Integer>(Collections.nCopies(22, 0));
-                                    keyword[position] = item1.getHashTagname();
-                                    intent1.putExtra("keyword", keyword[position]);
-                                    intent1.putExtra("area", area);
-                                    intent1.putExtra("hashTag", hashTag);
+                                    String keyword = item1.getHashTagname();
+                                    intent1.putExtra("keyword", keyword);
                                     intent1.putExtra("FromWhere", Activities.POST);
                                     viewHolder.itemView.getContext().startActivity(intent1);
                                 }
@@ -283,8 +283,9 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
         TextView title;
         ViewPager2 mainslider;
         LinearLayout indicator;
-        Button bookmark;
+        ImageView bookmark;
         LinearLayout titleLinear;
+        ConstraintLayout mainPost;
 
         public ViewHolder(View itemView, final OnMainPostClickListener listener) {
             super(itemView);
@@ -294,7 +295,9 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
             mainslider = itemView.findViewById(R.id.mainslider);
             indicator = itemView.findViewById(R.id.mainindicator);
             bookmark = itemView.findViewById(R.id.mainplus_btn);
+            bookmark.setColorFilter(Color.parseColor("#84838D"));
             titleLinear = itemView.findViewById(R.id.linear_title);
+            mainPost= itemView.findViewById(R.id.mainPost);
 //            profileimage.setBackground(new ShapeDrawable(new OvalShape()));
 //            profileimage.setClipToOutline(true);
             itemView.setClickable(true);
@@ -303,7 +306,7 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
         public void setItem(MainPost item) {
 
             title.setText(item.getMainTitle());
-            titleLinear.setOnClickListener(new View.OnClickListener() {
+            mainPost.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), PostActivity.class);
@@ -314,8 +317,8 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
 //            nickname.setText(item.getMainNickName());
             mainslider.setOffscreenPageLimit(3);
 
-            ImageSliderAdapter imageSliderAdapter = new ImageSliderAdapter(mainslider.getContext(), item.getImages());
-            mainslider.setAdapter(imageSliderAdapter);
+            MainPostSliderAdapter mainPostSliderAdapter = new MainPostSliderAdapter(mainslider.getContext(), item.getImages(),item.getPostId());
+            mainslider.setAdapter(mainPostSliderAdapter);
 
             mainslider.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
                 @Override

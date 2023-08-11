@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,9 +60,9 @@ public class GeneralSingUpActivity extends AppCompatActivity {
     private Boolean isNotPwd = true; //올바른 비밀번호 형식이 아닌지
     private String passwordCheck;
 
-    private Button male;
-    private Button female;
-    private Button noSex;
+    private TextView male;
+    private TextView female;
+    private TextView noSex;
     int sex2;
     Boolean noSex2;
 
@@ -75,6 +75,7 @@ public class GeneralSingUpActivity extends AppCompatActivity {
     private Button locationService;
     private Button marketing;
     private Button allAgree;
+    private FrameLayout ageLimitFrame, serviceFrame,personalFrame,locationServiceFrame,marketingFrame,allAgreeFrame;
     Boolean isAge;
     Boolean isService;
     Boolean isPersonal;
@@ -121,7 +122,7 @@ public class GeneralSingUpActivity extends AppCompatActivity {
         isMarketing = false;
         isAllAgree = false;
 
-        ImageView generalBack = findViewById(R.id.generalBack);
+        LinearLayout generalBack = findViewById(R.id.generalBack);
         generalBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,21 +138,26 @@ public class GeneralSingUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (noSex2) {
-                    noSex.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_nosex_non));
-                    male.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_male));
+                    noSex.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_sex_non));
+                    noSex.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                    male.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_sex));
+                    male.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.bg_black));
                     noSex2 = false;
                     sex2 = 1;
                 } else {
                     switch (sex2) {
                         case (0):
-                            male.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_male));
+                            male.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_sex));
+                            male.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.bg_black));
                             sex2 = 1;
                             break;
                         case (1):
                             break;
                         case (2):
-                            male.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_male));
-                            female.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_female_non));
+                            male.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_sex));
+                            male.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.bg_black));
+                            female.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_sex_non));
+                            female.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                             sex2 = 1;
                             break;
                     }
@@ -162,19 +168,24 @@ public class GeneralSingUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (noSex2) {
-                    noSex.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_nosex_non));
-                    female.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_female));
+                    noSex.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_sex_non));
+                    noSex.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                    female.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_sex));
+                    female.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.bg_black));
                     noSex2 = false;
                     sex2 = 2;
                 } else {
                     switch (sex2) {
                         case (0):
-                            female.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_female));
+                            female.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_sex));
+                            female.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.bg_black));
                             sex2 = 2;
                             break;
                         case (1):
-                            female.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_female));
-                            male.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_male_non));
+                            female.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_sex));
+                            female.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.bg_black));
+                            male.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_sex_non));
+                            male.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                             sex2 = 2;
                             break;
                         case (2):
@@ -187,9 +198,12 @@ public class GeneralSingUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!noSex2) {
-                    noSex.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_nosex));
-                    male.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_male_non));
-                    female.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_female_non));
+                    noSex.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_sex));
+                    noSex.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.bg_black));
+                    male.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_sex_non));
+                    male.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                    female.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.signup_sex_non));
+                    female.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                     sex2 = 0;
                     noSex2 = true;
                 }
@@ -198,7 +212,8 @@ public class GeneralSingUpActivity extends AppCompatActivity {
 
         //만 14세 이상
         ageLimit = findViewById(R.id.ageLimit);
-        ageLimit.setOnClickListener(new View.OnClickListener() {
+        ageLimitFrame =findViewById(R.id.ageLimitFrame);
+        ageLimitFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isAllAgree) {
@@ -218,7 +233,8 @@ public class GeneralSingUpActivity extends AppCompatActivity {
 
         //서비스 동의
         service = findViewById(R.id.service);
-        service.setOnClickListener(new View.OnClickListener() {
+        serviceFrame =findViewById(R.id.serviceFrame);
+        serviceFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isAllAgree) {
@@ -246,7 +262,8 @@ public class GeneralSingUpActivity extends AppCompatActivity {
 
         //개인정보 동의
         personal = findViewById(R.id.personal);
-        personal.setOnClickListener(new View.OnClickListener() {
+        personalFrame =findViewById(R.id.personalFrame);
+        personalFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isAllAgree) {
@@ -274,7 +291,8 @@ public class GeneralSingUpActivity extends AppCompatActivity {
 
         //위치정보 동의
         locationService = findViewById(R.id.locationService);
-        locationService.setOnClickListener(new View.OnClickListener() {
+        locationServiceFrame =findViewById(R.id.locationServiceFrame);
+        locationServiceFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isAllAgree) {
@@ -302,7 +320,8 @@ public class GeneralSingUpActivity extends AppCompatActivity {
 
         //마케팅 정보 수신 동의
         marketing = findViewById(R.id.marketing);
-        marketing.setOnClickListener(new View.OnClickListener() {
+        marketingFrame =findViewById(R.id.marketingFrame);
+        marketingFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isAllAgree) {
@@ -322,7 +341,8 @@ public class GeneralSingUpActivity extends AppCompatActivity {
 
         //전체 동의
         allAgree = findViewById(R.id.allAgree);
-        allAgree.setOnClickListener(new View.OnClickListener() {
+        allAgreeFrame =findViewById(R.id.allAgreeFrame);
+        allAgreeFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isAllAgree) {

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".signUpPage.SignUpActivity">
+    tools:context=".signUpPage.SignUpActivity"
+    android:id="@+id/activity_login">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -41,7 +42,7 @@
                 android:focusable="true"
                 android:hint="이메일"
                 android:inputType="textEmailAddress"
-                android:textSize="14sp" />
+                style="@style/medium_single_12" />
 
             <EditText
                 android:id="@+id/logInPwd"
@@ -52,7 +53,7 @@
                 android:focusable="true"
                 android:hint="비밀번호"
                 android:inputType="textPassword"
-                android:textSize="14sp" />
+                style="@style/medium_single_12" />
 
             <Button
                 android:id="@+id/logIn"
@@ -60,6 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="32dp"
+                style="@style/semiBold_single_14"
                 android:background="@drawable/signup_login" />
 
             <LinearLayout
@@ -77,7 +79,7 @@
                     android:layout_weight="1"
                     android:text="이메일 찾기"
                     android:textColor="@color/gray"
-                    android:textSize="12sp" />
+                    style="@style/semiBold_single_14" />
 
                 <TextView
                     android:id="@+id/findPwd"
@@ -87,7 +89,7 @@
                     android:layout_weight="1"
                     android:text="비밀번호 찾기"
                     android:textColor="@color/gray"
-                    android:textSize="12sp" />
+                    style="@style/semiBold_single_14" />
 
             </LinearLayout>
 
@@ -105,7 +107,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
                 android:text="또는"
-                android:textSize="15sp" />
+                style="@style/semiBold_single_12"/>
 
             <Button
                 android:id="@+id/generalSignUp"
@@ -114,6 +116,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="52dp"
+                style="@style/semiBold_single_14"
                 android:background="@drawable/signup_emailsignup" />
 
 <!--            <Button-->

@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -19,7 +18,7 @@
         android:required="true" />
 
     <application
-        android:name=".GlobalApplication"
+        android:name=".common.GlobalApplication"
         android:allowBackup="true"
         android:icon="@mipmap/main_icon2"
         android:label="@string/app_name"
@@ -30,10 +29,20 @@
         android:theme="@style/StarryNight"
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
-        <activity android:name=".starPage.StarCompassActivity"/>
+        <activity android:name=".myPage.MyCommentActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity android:name=".starPage.StarCompassActivity" />
+        <activity android:name=".weatherPage.WeatherLocationSearchActivity" />
+        <activity android:name=".postWritePage.SelectTimeActivity" />
         <activity android:name=".starPage.StarCameraActivity" />
+        <activity android:name=".weatherPage.WeatherActivity" />
+        <activity android:name=".weatherPage.WeatherHelpActivity" />
         <activity android:name=".starPage.StarHelpActivity" />
-        <activity android:name=".weatherPage.WtHelpActivity" />
         <activity android:name=".starPage.StarSearchActivity" />
         <activity android:name=".myPage.ThanksToActivity" />
         <activity android:name=".observationPage.MoreObservationActivity" />
@@ -41,6 +50,7 @@
         <activity android:name=".myPage.MyWishActivity" />
         <activity android:name=".alarmPage.AlarmActivity" />
         <activity android:name=".starPage.StarAllActivity" />
+        <activity android:name=".searchPage.SearchResultActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -83,18 +93,12 @@
         <activity
             android:name=".touristPointPage.OverviewPopActivity"
             android:theme="@style/Theme.AppCompat.Dialog" />
-        <activity android:name=".weatherPage.WeatherActivity" />
         <activity android:name=".myPage.ChangeProfileActivity" />
         <activity android:name=".touristPointPage.TouristPointActivity" />
         <activity android:name=".postPage.PostActivity" />
         <activity android:name=".postWritePage.PostWriteActivity" />
         <activity android:name=".postWritePage.SearchObservingPointActivity" />
         <activity android:name=".postWritePage.AddHashTagActivity" />
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing" />
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -105,7 +109,7 @@
                 <!-- Redirect URI: "kakao{NATIVE_APP_KEY}://oauth" -->
                 <data
                     android:host="oauth"
-                    android:scheme="{@string/kakao_app_key}" />
+                    android:scheme="kakao2201411c61cc7086fe639ce660ccb21e" />
             </intent-filter>
         </activity>
 

@@ -117,7 +117,9 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.ViewHolder
         public void setItem(MyPost item) {
             //게시물 썸네일 가져오기
             if (item.getThumbnail() != null) {
-                Glide.with(context).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + item.getThumbnail()).into(myWishPostImage);
+                String thumbnail;
+                thumbnail= item.getThumbnail().replace("+","%2B");
+                Glide.with(context).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + thumbnail).into(myWishPostImage);
                 myWishPostImage.setClipToOutline(true);
             }
             //게시물 작성자 프로필 이미지 가져오기

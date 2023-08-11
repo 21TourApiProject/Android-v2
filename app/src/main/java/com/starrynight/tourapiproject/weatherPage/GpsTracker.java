@@ -12,23 +12,15 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
-/**
- * @className : GpsTracker
- * @description : 사용자의 GPS위치 추적 Class
- * @modification : 2022-09-03 (hyeonz) 주석추가
- * @author : hyeonz
- * @date : 2022-09-03
- * @version : 1.0
-====개정이력(Modification Information)====
-수정일        수정자        수정내용
------------------------------------------
-hyeonz       2022-09-03   주석추가
- */
 public class GpsTracker extends Service implements LocationListener {
 
-    private final Context mContext;
+    private static final String TAG = "GpsTracker";
+
+    private final Context context;
     Location location;
     double latitude;
     double longitude;
@@ -37,16 +29,14 @@ public class GpsTracker extends Service implements LocationListener {
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
     protected LocationManager locationManager;
 
-
     public GpsTracker(Context context) {
-        this.mContext = context;
+        this.context = context;
         getLocation();
     }
 
-
     public Location getLocation() {
         try {
-            locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
+            locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
 
             boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
@@ -55,9 +45,9 @@ public class GpsTracker extends Service implements LocationListener {
 
             } else {
 
-                int hasFineLocationPermission = ContextCompat.checkSelfPermission(mContext,
+                int hasFineLocationPermission = ContextCompat.checkSelfPermission(context,
                         Manifest.permission.ACCESS_FINE_LOCATION);
-                int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(mContext,
+                int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(context,
                         Manifest.permission.ACCESS_COARSE_LOCATION);
 
 
@@ -98,7 +88,7 @@ public class GpsTracker extends Service implements LocationListener {
                 }
             }
         } catch (Exception e) {
-            Log.d("@@@", "" + e.toString());
+            Log.d(TAG, e.toString());
         }
 
         return location;
@@ -108,7 +98,6 @@ public class GpsTracker extends Service implements LocationListener {
         if (location != null) {
             latitude = location.getLatitude();
         }
-
         return latitude;
     }
 
@@ -116,37 +105,32 @@ public class GpsTracker extends Service implements LocationListener {
         if (location != null) {
             longitude = location.getLongitude();
         }
-
         return longitude;
     }
 
+    @Nullable
     @Override
-    public void onLocationChanged(Location location) {
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
     @Override
-    public void onProviderDisabled(String provider) {
-    }
+    public void onLocationChanged(@NonNull Location location) {
 
-    @Override
-    public void onProviderEnabled(String provider) {
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
+        LocationListener.super.onStatusChanged(provider, status, extras);
     }
 
     @Override
-    public IBinder onBind(Intent arg0) {
-        return null;
+    public void onProviderEnabled(@NonNull String provider) {
+        LocationListener.super.onProviderEnabled(provider);
     }
 
-
-    public void stopUsingGPS() {
-        if (locationManager != null) {
-            locationManager.removeUpdates(GpsTracker.this);
-        }
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+        LocationListener.super.onProviderDisabled(provider);
     }
-
-
 }

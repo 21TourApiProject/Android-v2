@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/hour_layout"
+    android:layout_width="61dp"
+    android:layout_height="52dp"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:paddingRight="12dp">
+
+    <TextView
+        android:id="@+id/hour_hour"
+        style="@style/medium_single_14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="#84838D" />
+
+    <TextView
+        android:id="@+id/hour_observation_fit"
+        style="@style/medium_single_14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        android:textColor="#DADAE5" />
+
+</LinearLayout>

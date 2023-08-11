@@ -1,5 +1,6 @@
 package com.starrynight.tourapiproject.signUpPage;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,10 +34,12 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.starrynight.tourapiproject.MainActivity;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.signUpPage.signUpRetrofit.KakaoUserParams;
 import com.starrynight.tourapiproject.signUpPage.signUpRetrofit.RetrofitClient;
 
+import java.io.FileOutputStream;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
@@ -58,9 +62,10 @@ public class KakaoPhoneAuthActivity extends AppCompatActivity implements
     private EditText mobilePhoneNumber;
     private TextView phoneGuide; //전화번호 칸 바로 밑에 글칸
     private EditText authCode;
-    private Button startAuth;
-    private Button resendAuth;
+    private TextView startAuth;
+    private TextView resendAuth;
     private Button verify;
+    FrameLayout ageLimitFrame;
 
     private Button ageLimit;
     Boolean isAge;
@@ -146,13 +151,14 @@ public class KakaoPhoneAuthActivity extends AppCompatActivity implements
         startAuth = findViewById(R.id.kko_startAuth); //처음 문자요청
         resendAuth = findViewById(R.id.kko_resendAuth); //재 문자요청
         verify = findViewById(R.id.kko_verify); //인증요청
+        ageLimitFrame= findViewById(R.id.kko_ageLimitFrame);//버튼 영역 확장
 
         isAge = false;
         startAuth.setOnClickListener(this);
         resendAuth.setOnClickListener(this);
         verify.setOnClickListener(this);
 
-        ImageView authBack = findViewById(R.id.kko_authBack);
+        LinearLayout authBack = findViewById(R.id.kko_authBack);
         authBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -195,7 +201,7 @@ public class KakaoPhoneAuthActivity extends AppCompatActivity implements
         };
 
         ageLimit = findViewById(R.id.kko_ageLimit);
-        ageLimit.setOnClickListener(new View.OnClickListener() {
+        ageLimitFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isAge) {
@@ -358,23 +364,33 @@ public class KakaoPhoneAuthActivity extends AppCompatActivity implements
                                 userParams.setMobilePhoneNumber(mobilePhoneNumber.getText().toString());
                             else
                                 userParams.setMobilePhoneNumber(null);
-                            Call<Void> call = RetrofitClient.getApiService().kakaoSignUp(userParams);
-                            call.enqueue(new Callback<Void>() {
+                            Call<String> call = RetrofitClient.getApiService().kakaoSignUp(userParams);
+                            call.enqueue(new Callback<String>() {
                                 @Override
-                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                public void onResponse(Call<String> call, Response<String> response) {
                                     if (response.isSuccessful()) {
                                         signOut();
 
-                                        //선호 해시태그 선택 창으로 전환
-                                        Intent intent = new Intent(KakaoPhoneAuthActivity.this, SelectMyHashTagActivity.class);
-                                        intent.putExtra("email", userParams.getEmail());
-                                        startActivityForResult(intent, SELECT_HASH_TAG);
+                                        //앱 내부 저장소에 userId란 이름으로 사용자 id 저장
+                                        String fileName = "userId";
+                                        String userId = response.body();
+                                        try {
+                                            FileOutputStream fos = openFileOutput(fileName, Context.MODE_PRIVATE);
+                                            fos.write(userId.getBytes());
+                                            fos.close();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        Intent intent = new Intent(KakaoPhoneAuthActivity.this, MainActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP); //액티비티 스택제거
+                                        startActivity(intent);
                                     } else {
                                     }
                                 }
 
                                 @Override
-                                public void onFailure(Call<Void> call, Throwable t) {
+                                public void onFailure(Call<String> call, Throwable t) {
                                     Log.e("연결실패", t.getMessage());
                                 }
                             });

@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingLeft="20dp"
+    android:paddingVertical="14dp"
     xmlns:tool="http://schemas.android.com/tools"
     android:layout_marginBottom="12dp">
 
@@ -13,8 +15,8 @@
 
         <ImageView
             android:id="@+id/myWishObTpImage"
-            android:layout_width="97dp"
-            android:layout_height="97dp"
+            android:layout_width="92dp"
+            android:layout_height="92dp"
             android:scaleType="centerCrop"
             android:src="@drawable/default_image" />
 
@@ -36,15 +38,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="12dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/myWishObTpTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/spoqahansansneobold"
-            android:textSize="12sp"
+            android:layout_marginRight="20dp"
+            style="@style/semiBold_single_14"
             android:ellipsize="end"
             android:maxLines="1"/>
 
@@ -53,6 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="4dp"
+            android:layout_marginRight="20dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -80,6 +83,7 @@
             android:id="@+id/myWishObTpOverviewSim"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
             android:textSize="11sp"
             android:ellipsize="end"
             android:maxLines="1"/>
@@ -88,7 +92,7 @@
             android:id="@+id/myWishObTpHashTag"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="2dp" />
 
     </LinearLayout>
 </LinearLayout>

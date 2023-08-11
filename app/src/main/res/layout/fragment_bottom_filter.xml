@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="328dp"
+    android:minHeight="328dp"
+    android:background="@drawable/bottom__background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="20dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="12dp"
+            android:layout_marginHorizontal="20dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/filter_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="지역"
+                    style="@style/semiBold_single_18"/>
+
+                <ImageView
+                    android:id="@+id/filter_location_dot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/search__filter_dot"
+                    android:visibility="gone" />
+
+
+                <TextView
+                    android:id="@+id/filter_people"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="동행"
+                    android:textColor="@color/gray_500"
+                    style="@style/semiBold_single_18" />
+
+                <ImageView
+                    android:id="@+id/filter_people_dot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/search__filter_dot"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/filter_theme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="테마"
+                    android:textColor="@color/gray_500"
+                    style="@style/semiBold_single_18"/>
+
+                <ImageView
+                    android:id="@+id/filter_theme_dot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/search__filter_dot"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/filter_facility"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="시설"
+                    android:textColor="@color/gray_500"
+                    style="@style/semiBold_single_18"/>
+
+                <ImageView
+                    android:id="@+id/filter_facility_dot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/search__filter_dot"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/filter_fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="요금"
+                    android:textColor="@color/gray_500"
+                    style="@style/semiBold_single_18"/>
+
+                <ImageView
+                    android:id="@+id/filter_fee_dot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/search__filter_dot"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/filter_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/search__filter_close" />
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/filter_tag_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="12dp"
+            android:orientation="horizontal"
+            tools:itemCount="5" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="20dp"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:id="@+id/filter_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/search__filter_refresh"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="초기화"
+                style="@style/semiBold_single_16"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/filter_result_btn"
+            android:gravity="center"
+            android:layout_width="243dp"
+            android:layout_height="52dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/search__filter_result_background"
+            android:layout_weight="1"
+            style="@style/semiBold_single_16"
+            android:text="NN개의 결과보기"/>
+
+    </LinearLayout>
+
+</LinearLayout>

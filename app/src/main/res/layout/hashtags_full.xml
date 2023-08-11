@@ -4,26 +4,20 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/hashtag_background"
-    android:gravity="center">
-
-    <ImageView
-        android:id="@+id/recycler_hashTag_pin"
-        android:layout_width="10dp"
-        android:layout_height="12dp"
-        android:layout_gravity="center"
-        android:layout_marginLeft="2dp"
-        android:background="@drawable/mainpage_observationpin"
-        android:visibility="gone" />
+    android:gravity="center"
+    android:paddingHorizontal="12dp"
+    android:paddingVertical="6dp"
+    >
 
     <TextView
         android:id="@+id/recycler_hashTagName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/spoqahansansneomedium"
-        android:gravity="center"
-        android:paddingHorizontal="4dp"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        style="@style/medium_single_14"
         android:text="#해쉬태그"
-        android:textColor="@color/white"
-        android:textSize="10sp" />
+        android:textColor="@color/gray_500"
+        />
 
 </LinearLayout>

@@ -2,14 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainobservation"
+    android:id="@+id/mainPost"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
+    android:layout_gravity="center|center_horizontal"
     android:layout_marginBottom="10dp">
 
     <FrameLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/postFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -20,7 +20,7 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/mainslider"
             android:layout_width="match_parent"
-            android:layout_height="350dp">
+            android:layout_height="360dp">
 
         </androidx.viewpager2.widget.ViewPager2>
 
@@ -40,19 +40,19 @@
         android:id="@+id/linear_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginVertical="13dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="12dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout2">
+        app:layout_constraintTop_toBottomOf="@id/postFrameLayout">
 
-        <Button
+        <ImageView
             android:id="@+id/mainplus_btn"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:layout_gravity="center"
             android:layout_marginEnd="12dp"
-            android:background="@drawable/main__bookmark"
-            android:layout_gravity="center" />
+            android:background="@drawable/main__bookmark" />
 
         <TextView
             android:id="@+id/mainpost_title"
@@ -60,16 +60,21 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:fontFamily="@font/spoqahansansneobold"
-            android:text="제목"
-            android:textSize="15sp" />
+            style="@style/semiBold_single_14"
+            android:text="제목" />
 
-        <Button
-            android:layout_width="14dp"
-            android:layout_height="15dp"
-            android:layout_gravity="center"
-            android:background="@drawable/setting_more"
-            android:clickable="false" />
+        <LinearLayout
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="7dp"
+                android:layout_height="12dp"
+                android:background="@drawable/move_text"
+                android:clickable="false" />
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -77,11 +82,11 @@
         android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="14dp"
-        android:background="@color/bg_dark_indigo"
+        android:background="@color/bg_black"
         android:orientation="vertical"
-        android:paddingHorizontal="24dp"
+        android:paddingStart="16dp"
         android:paddingBottom="16dp"
+        android:layout_marginTop="13dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linear_title">
 

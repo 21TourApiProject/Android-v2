@@ -10,8 +10,7 @@ import android.view.Window;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.kakao.usermgmt.UserManagement;
-import com.kakao.usermgmt.callback.LogoutResponseCallback;
+import com.kakao.sdk.user.UserApiClient;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.signUpPage.SignUpActivity;
@@ -63,11 +62,18 @@ public class LogoutPopActivity extends AppCompatActivity {
                 Log.d(TAG, "카카오 가입자인지 확인");
                 Boolean isKakao = response.body();
                 if (isKakao != null) {
-                    if (isKakao == null || isKakao) {
-                        UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
-                            @Override
-                            public void onCompleteLogout() {
-                                //로그아웃 성공 시 동작
+                    if (isKakao) {
+                        UserApiClient.getInstance().logout(error->{
+                            if(error!=null){
+                                Log.e("KakaoLogout","로그아웃 실패 : ",error);
+                                File dir = getFilesDir();
+                                File file = new File(dir, "userId");
+                                boolean deleted = file.delete();
+                                Intent intent = new Intent(LogoutPopActivity.this, SignUpActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }else{
+                                Log.i("KakaoLogout","로그아웃 완료");
                                 File dir = getFilesDir();
                                 File file = new File(dir, "userId");
                                 boolean deleted = file.delete();
@@ -75,6 +81,7 @@ public class LogoutPopActivity extends AppCompatActivity {
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                             }
+                            return null;
                         });
                     } else {
                         File dir = getFilesDir();

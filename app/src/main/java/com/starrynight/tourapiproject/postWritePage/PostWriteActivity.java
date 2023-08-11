@@ -2,8 +2,6 @@ package com.starrynight.tourapiproject.postWritePage;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,18 +20,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,14 +52,19 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.postItemPage.PostWriteHashTagItem2;
-import com.starrynight.tourapiproject.postItemPage.PostWriteHashTagItem2Adapter;
+import com.starrynight.tourapiproject.postItemPage.PostWriteHashTagItemAdapter;
+import com.starrynight.tourapiproject.postPage.postRetrofit.PostHashTag;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostHashTagParams;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostImageParams;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostParams;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostWriteLoadingDialog;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.RetrofitClient;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -75,7 +77,7 @@ import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -99,46 +101,34 @@ public class PostWriteActivity extends AppCompatActivity {
     final int PICK_IMAGE_SAMSUNG = 200;
     final int PICK_IMAGE_MULTIPLE = 201;
     int numOfPicture = 0;
-    private Button addPicture;
     SelectImageAdapter adapter;
-    RecyclerView recyclerView;
-    String postContent = "", yearDate = "", time = "", postTitle, observationName, optionobservationName;
+    RecyclerView recyclerView,hashTagRecyclerView,areaRecyclerView;
+    String postContent = "",yearDate = "", time = "",postTitle, observationName, optionobservationName;
     List<PostHashTagParams> postHashTagParams = new ArrayList<>();
+    List<PostHashTagParams> postAreaParams = new ArrayList<>();
     List<PostImageParams> postImageParams = new ArrayList<>();
     String postObservePointName = "";
     List<String> hashTagList = new ArrayList<>();
-    List<String> optionhashTagList = new ArrayList<>();
+    List<String> areaList = new ArrayList<>();
     Long userId;
     PostWriteLoadingDialog dialog;
     File file;
     LinearLayout ob_linear;
     ArrayList<File> files = new ArrayList<>();
-    LinearLayout examplelayout;
+    BottomNavigationView photoBNV;
     private TextView postObservePointItem;
     String[] WRITE_PERMISSION = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
     String[] READ_PERMISSION = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
     String[] INTERNET_PERMISSION = new String[]{Manifest.permission.INTERNET};
     EditText addContext;
+    TextView dateText,timeText;
+    ImageView hashTagPin;
+    boolean dayOrNight;
+    TextView exampleHashTagText,registBtn;
 
     int PERMISSIONS_REQUEST_CODE = 100;
 
-    Calendar c = Calendar.getInstance();
-    int mYear = c.get(Calendar.YEAR);
-    int mMonth = c.get(Calendar.MONTH);
-    int mDay = c.get(Calendar.DAY_OF_MONTH);
 
-    private TextView datePicker;
-    private DatePickerDialog.OnDateSetListener callbackMethod;
-    private TextView timePicker;
-    private TimePickerDialog.OnTimeSetListener callbackMethod2;
-
-    @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat formatHour = new SimpleDateFormat("HH");
-
-    @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat formatMin = new SimpleDateFormat("mm");
-    private String todaydate;
-    private String todaytime;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -147,9 +137,11 @@ public class PostWriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_post_write);
         postObservePointItem = (TextView) findViewById(R.id.postObservationItem);
         ob_linear = findViewById(R.id.postwrite_ob_linear);
-        examplelayout = findViewById(R.id.exampleLinear);
         dialog = new PostWriteLoadingDialog(PostWriteActivity.this);
         addContext = findViewById(R.id.postContentText);
+        exampleHashTagText = findViewById(R.id.exampleHashTagTextView);
+        hashTagPin=(ImageView) findViewById(R.id.postwrite_hashTagpin);
+        registBtn = findViewById(R.id.save);
 
 //      앱 내부저장소에서 userId 가져오기
         String fileName = "userId";
@@ -179,41 +171,41 @@ public class PostWriteActivity extends AppCompatActivity {
             }
         });
 
-        // + 버튼 클릭 이벤트
-        addPicture = findViewById(R.id.addPicture);
-        addPicture.setOnClickListener(new View.OnClickListener() {
+        // 사진 추가 버튼 클릭 이벤트
+        photoBNV= findViewById(R.id.bottom_nav_photo);
+        photoBNV.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                examplelayout.setVisibility(View.GONE);
-                recyclerView.setVisibility(View.VISIBLE);
-                if (numOfPicture > 10) {
-                    Toast.makeText(PostWriteActivity.this, "사진은 최대 10장까지 선택할수있습니다.", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                //권한 설정
-                int permission = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                int permission2 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
-                int permission3 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.INTERNET);//denied면 -1
+            public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.menu_photo:
+                        recyclerView.setVisibility(View.VISIBLE);
+                        if (numOfPicture > 10) {
+                            Toast.makeText(PostWriteActivity.this, "사진은 최대 10장까지 선택할수있습니다.", Toast.LENGTH_LONG).show();
+                        }
+                        //권한 설정
+                        int permission = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                        int permission2 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
+                        int permission3 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.INTERNET);//denied면 -1
 
-                Log.d("test", "onClick: location clicked");
-                if (permission == PackageManager.PERMISSION_GRANTED && permission2 == PackageManager.PERMISSION_GRANTED && permission3 == PackageManager.PERMISSION_GRANTED) {
-                    Log.d("MyTag", "읽기,쓰기,인터넷 권한이 있습니다.");
-                    Intent intent = new Intent("android.intent.action.MULTIPLE_PICK");
-                    intent.setType("image/*");
-                    PackageManager manager = getApplicationContext().getPackageManager();
-                    List<ResolveInfo> infos = manager.queryIntentActivities(intent, 0);
+                        Log.d("test", "onClick: location clicked");
+                        if (permission == PackageManager.PERMISSION_GRANTED && permission2 == PackageManager.PERMISSION_GRANTED && permission3 == PackageManager.PERMISSION_GRANTED) {
+                            Log.d("MyTag", "읽기,쓰기,인터넷 권한이 있습니다.");
+                            Intent intent = new Intent("android.intent.action.MULTIPLE_PICK");
+                            intent.setType("image/*");
+                            PackageManager manager = getApplicationContext().getPackageManager();
+                            List<ResolveInfo> infos = manager.queryIntentActivities(intent, 0);
 
 
-                    if (infos.size() > 0) { //테스트 하고 삼성,일반 차이없으면 삭제 예정
-                        Log.e("FAT=", "삼성폰");
-                        startActivityForResult(intent, PICK_IMAGE_SAMSUNG);
-                    } else {
-                        Log.e("FAT=", "일반폰");
-                        Intent pickerIntent = new Intent(Intent.ACTION_PICK);
-                        pickerIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                        pickerIntent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
-                        pickerIntent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(pickerIntent, PICK_IMAGE_MULTIPLE);
+                            if (infos.size() > 0) { //테스트 하고 삼성,일반 차이없으면 삭제 예정
+                                Log.e("FAT=", "삼성폰");
+                                startActivityForResult(intent, PICK_IMAGE_SAMSUNG);
+                            } else {
+                                Log.e("FAT=", "일반폰");
+                                Intent pickerIntent = new Intent(Intent.ACTION_PICK);
+                                pickerIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                                pickerIntent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+                                pickerIntent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                startActivityForResult(pickerIntent, PICK_IMAGE_MULTIPLE);
 
 //                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true); // 일반폰 - 반드시 있어야 다중선택 가능
 //                    intent.setAction(Intent.ACTION_PICK); // ACTION_GET_CONTENT 사용불가 - 엘지 G2 테스트
@@ -224,22 +216,23 @@ public class PostWriteActivity extends AppCompatActivity {
 //                    //intent.setType("image/*");
 //                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 //                    startActivityForResult(Intent.createChooser(intent, "사진 최대 9장 선택가능"), PICK_IMAGE_MULTIPLE);
-                    }
-                } else if (permission == PackageManager.PERMISSION_DENIED) {
-                    Log.d("test", "permission denied");
-                    Toast.makeText(getApplicationContext(), "쓰기권한이 없습니다.", Toast.LENGTH_SHORT).show();
-                    ActivityCompat.requestPermissions(PostWriteActivity.this, WRITE_PERMISSION, PERMISSIONS_REQUEST_CODE);
-                    ActivityCompat.requestPermissions(PostWriteActivity.this, READ_PERMISSION, PERMISSIONS_REQUEST_CODE);
-                    ActivityCompat.requestPermissions(PostWriteActivity.this, INTERNET_PERMISSION, PERMISSIONS_REQUEST_CODE);
+                            }
+                        } else if (permission == PackageManager.PERMISSION_DENIED) {
+                            Log.d("test", "permission denied");
+                            Toast.makeText(getApplicationContext(), "쓰기권한이 없습니다.", Toast.LENGTH_SHORT).show();
+                            ActivityCompat.requestPermissions(PostWriteActivity.this, WRITE_PERMISSION, PERMISSIONS_REQUEST_CODE);
+                            ActivityCompat.requestPermissions(PostWriteActivity.this, READ_PERMISSION, PERMISSIONS_REQUEST_CODE);
+                            ActivityCompat.requestPermissions(PostWriteActivity.this, INTERNET_PERMISSION, PERMISSIONS_REQUEST_CODE);
+                        }
                 }
+                return false;
             }
-
         });
 
         //선택한 사진 추가 어댑터
         recyclerView = findViewById(R.id.recyclerView);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
         adapter = new SelectImageAdapter();
@@ -252,55 +245,12 @@ public class PostWriteActivity extends AppCompatActivity {
                 adapter.removeItem(position);
                 adapter.notifyDataSetChanged();
                 numOfPicture--;
-                addPicture.setText(Integer.toString(numOfPicture) + "/10");
                 postImageParams.remove(position);
                 if (numOfPicture == 0) {
                     recyclerView.setVisibility(View.GONE);
-                    examplelayout.setVisibility(View.VISIBLE);
                 }
             }
         });
-
-        //날짜 클릭 이벤트
-        datePicker = (TextView) findViewById(R.id.datePicker);
-        callbackMethod = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                monthOfYear += 1;
-                String month = Integer.toString(monthOfYear);
-                String day = Integer.toString(dayOfMonth);
-
-                if (monthOfYear < 10) {
-                    month = "0" + Integer.toString(monthOfYear);
-                }
-
-                if (dayOfMonth < 10) {
-                    day = "0" + Integer.toString(dayOfMonth);
-                }
-                datePicker.setText(year + "-" + month + "-" + day);
-                yearDate = datePicker.getText().toString();
-
-            }
-        };
-
-        //시간 클릭 이벤트
-        timePicker = (TextView) findViewById(R.id.timePicker);
-        callbackMethod2 = new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String hour = Integer.toString(hourOfDay);
-                String min = Integer.toString(minute);
-                if (hourOfDay < 10) {
-                    hour = "0" + hourOfDay;
-                }
-                if (minute < 10) {
-                    min = "0" + minute;
-                }
-                String realtime = hour + ":" + min + ":" + "00";
-                timePicker.setText(hour + ":" + min);
-                time = realtime;
-            }
-        };
 
         //관측지점검색 버튼 클릭 이벤트
         ConstraintLayout observationlayout = findViewById(R.id.layout_observation);
@@ -311,9 +261,10 @@ public class PostWriteActivity extends AppCompatActivity {
                 startActivityForResult(intent, 202);
             }
         });
+        areaRecyclerView = findViewById(R.id.postAreaRecyclerView);
 
         //해시태그추가 버튼 클릭 이벤트
-        ConstraintLayout hashTaglayout = findViewById(R.id.layout_hashtag);
+        LinearLayout hashTaglayout = findViewById(R.id.layout_hashtag);
         hashTaglayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -324,9 +275,23 @@ public class PostWriteActivity extends AppCompatActivity {
                 startActivityForResult(intent, 203);
             }
         });
+        hashTagRecyclerView = findViewById(R.id.postHashTagrecyclerView);
+        hashTagRecyclerView.addItemDecoration(new RecyclerViewDecoration(20, 20));
+
+        //시간 추가 버튼 클릭 이벤트
+        dateText = findViewById(R.id.dateText);
+        timeText = findViewById(R.id.timeText);
+        ConstraintLayout timeLayout = findViewById(R.id.layout_time);
+        timeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PostWriteActivity.this, SelectTimeActivity.class);
+                startActivityForResult(intent, 204);
+            }
+        });
 
         //뒤로가기 버튼
-        ImageView back = findViewById(R.id.postWrite_back_btn);
+        TextView back = findViewById(R.id.postWrite_back_btn);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -362,11 +327,7 @@ public class PostWriteActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "관측 날짜을 입력해주세요.", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        if (time.isEmpty()) {
-                            Toast.makeText(getApplicationContext(), "관측 시간을 입력해주세요.", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        if (hashTagList.isEmpty() && optionhashTagList.isEmpty()) {
+                        if (hashTagList.isEmpty()) {
                             Toast.makeText(getApplicationContext(), "해시태그를 입력해주세요.", Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -374,89 +335,33 @@ public class PostWriteActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "관측지를 입력해주세요.", Toast.LENGTH_SHORT).show();
                             return;
                         }
+
+                        long now = System.currentTimeMillis();//게시물을 쓴 현재시간 가져오기
+                        Date date = new Date(now);
+                        SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+                        String writeDate= dateFormat1.format(date);
+                        SimpleDateFormat dateFormat2 = new SimpleDateFormat("HH:mm");
+                        String writeTime= dateFormat2.format(date);
+
                         PostParams postParams = new PostParams();
                         postParams.setPostContent(postContent);
                         postParams.setYearDate(yearDate);
                         postParams.setTime(time);
+                        postParams.setWriteDate(writeDate);
+                        postParams.setWriteTime(writeTime);
                         postParams.setUserId(userId);
                         postParams.setPostTitle(postTitle);
                         postParams.setOptionObservation(optionobservationName);
-                        if (optionhashTagList.size() == 1) {
-                            postParams.setOptionHashTag(optionhashTagList.get(0));
+                        Long areaId =0L;
+                        List<PostHashTagParams> finalParams= new ArrayList<PostHashTagParams>();
+                        if(postAreaParams!=null){
+                            finalParams.addAll(postAreaParams);
+                            finalParams.addAll(postHashTagParams);
+                            areaId=postAreaParams.get(0).getAreaId();
+                        }else{
+                            finalParams.addAll(postHashTagParams);
                         }
-                        if (optionhashTagList.size() == 2) {
-                            postParams.setOptionHashTag(optionhashTagList.get(0));
-                            postParams.setOptionHashTag2(optionhashTagList.get(1));
-                        }
-                        if (optionhashTagList.size() == 3) {
-                            postParams.setOptionHashTag(optionhashTagList.get(0));
-                            postParams.setOptionHashTag2(optionhashTagList.get(1));
-                            postParams.setOptionHashTag3(optionhashTagList.get(2));
-                        }
-                        if (optionhashTagList.size() == 4) {
-                            postParams.setOptionHashTag(optionhashTagList.get(0));
-                            postParams.setOptionHashTag2(optionhashTagList.get(1));
-                            postParams.setOptionHashTag3(optionhashTagList.get(2));
-                            postParams.setOptionHashTag4(optionhashTagList.get(3));
-                        }
-                        if (optionhashTagList.size() == 5) {
-                            postParams.setOptionHashTag(optionhashTagList.get(0));
-                            postParams.setOptionHashTag2(optionhashTagList.get(1));
-                            postParams.setOptionHashTag3(optionhashTagList.get(2));
-                            postParams.setOptionHashTag4(optionhashTagList.get(3));
-                            postParams.setOptionHashTag5(optionhashTagList.get(4));
-                        }
-                        if (optionhashTagList.size() == 6) {
-                            postParams.setOptionHashTag(optionhashTagList.get(0));
-                            postParams.setOptionHashTag2(optionhashTagList.get(1));
-                            postParams.setOptionHashTag3(optionhashTagList.get(2));
-                            postParams.setOptionHashTag4(optionhashTagList.get(3));
-                            postParams.setOptionHashTag5(optionhashTagList.get(4));
-                            postParams.setOptionHashTag6(optionhashTagList.get(5));
-                        }
-                        if (optionhashTagList.size() == 7) {
-                            postParams.setOptionHashTag(optionhashTagList.get(0));
-                            postParams.setOptionHashTag2(optionhashTagList.get(1));
-                            postParams.setOptionHashTag3(optionhashTagList.get(2));
-                            postParams.setOptionHashTag4(optionhashTagList.get(3));
-                            postParams.setOptionHashTag5(optionhashTagList.get(4));
-                            postParams.setOptionHashTag6(optionhashTagList.get(5));
-                            postParams.setOptionHashTag7(optionhashTagList.get(6));
-                        }
-                        if (optionhashTagList.size() == 8) {
-                            postParams.setOptionHashTag(optionhashTagList.get(0));
-                            postParams.setOptionHashTag2(optionhashTagList.get(1));
-                            postParams.setOptionHashTag3(optionhashTagList.get(2));
-                            postParams.setOptionHashTag4(optionhashTagList.get(3));
-                            postParams.setOptionHashTag5(optionhashTagList.get(4));
-                            postParams.setOptionHashTag6(optionhashTagList.get(5));
-                            postParams.setOptionHashTag7(optionhashTagList.get(6));
-                            postParams.setOptionHashTag8(optionhashTagList.get(7));
-                        }
-                        if (optionhashTagList.size() == 9) {
-                            postParams.setOptionHashTag(optionhashTagList.get(0));
-                            postParams.setOptionHashTag2(optionhashTagList.get(1));
-                            postParams.setOptionHashTag3(optionhashTagList.get(2));
-                            postParams.setOptionHashTag4(optionhashTagList.get(3));
-                            postParams.setOptionHashTag5(optionhashTagList.get(4));
-                            postParams.setOptionHashTag6(optionhashTagList.get(5));
-                            postParams.setOptionHashTag7(optionhashTagList.get(6));
-                            postParams.setOptionHashTag8(optionhashTagList.get(7));
-                            postParams.setOptionHashTag9(optionhashTagList.get(8));
-                        }
-                        if (optionhashTagList.size() == 10) {
-                            postParams.setOptionHashTag(optionhashTagList.get(0));
-                            postParams.setOptionHashTag2(optionhashTagList.get(1));
-                            postParams.setOptionHashTag3(optionhashTagList.get(2));
-                            postParams.setOptionHashTag4(optionhashTagList.get(3));
-                            postParams.setOptionHashTag5(optionhashTagList.get(4));
-                            postParams.setOptionHashTag6(optionhashTagList.get(5));
-                            postParams.setOptionHashTag7(optionhashTagList.get(6));
-                            postParams.setOptionHashTag8(optionhashTagList.get(7));
-                            postParams.setOptionHashTag9(optionhashTagList.get(8));
-                            postParams.setOptionHashTag10(optionhashTagList.get(9));
-                        }
-                        Call<Long> call = RetrofitClient.getApiService().postup(postObservePointName, postParams);
+                        Call<Long> call = RetrofitClient.getApiService().postup(postObservePointName, postParams,areaId);
                         call.enqueue(new Callback<Long>() {
                             @Override
                             public void onResponse(Call<Long> call, Response<Long> response) {
@@ -479,7 +384,8 @@ public class PostWriteActivity extends AppCompatActivity {
                                             Log.d("postImage", "이미지 업로드 인터넷 오류");
                                         }
                                     });
-                                    Call<Void> call2 = RetrofitClient.getApiService().createPostHashTag(result, postHashTagParams);
+
+                                    Call<Void> call2 = RetrofitClient.getApiService().createPostHashTag(result, finalParams);
                                     call2.enqueue(new Callback<Void>() {
                                         @Override
                                         public void onResponse(Call<Void> call, Response<Void> response) {
@@ -497,7 +403,6 @@ public class PostWriteActivity extends AppCompatActivity {
                                     });
                                 } else {
                                     Log.d("post", "게시물 작성 실패");
-                                    ;
                                 }
                             }
 
@@ -537,16 +442,40 @@ public class PostWriteActivity extends AppCompatActivity {
         if (requestCode == 202) {
             if (resultCode == 2) {
                 Log.d("postObservation", "검색 관측지 데이터 로드");
+                canRegist();
                 observationName = (String) data.getSerializableExtra("observationName");
                 optionobservationName = (String) data.getSerializableExtra("optionObservationName");
+                areaList = (List<String>) data.getSerializableExtra("areaList");
+                postAreaParams = (List<PostHashTagParams>) data.getSerializableExtra("postAreaParams");
                 if (observationName != null) {
                     ob_linear.setVisibility(View.VISIBLE);
                     postObservePointItem.setText(observationName);
                     postObservePointName = observationName;
+                    postObservePointItem.setTextColor(getColor(R.color.point_blue));
+                    hashTagPin.setVisibility(View.VISIBLE);
+                    LinearLayoutManager layoutManager =new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+                    areaRecyclerView.setLayoutManager(layoutManager);
+                    PostWriteHashTagItemAdapter adapter = new PostWriteHashTagItemAdapter();
+                    areaRecyclerView.setAdapter(adapter);
                 } else {
                     postObservePointItem.setText(optionobservationName);
+                    postObservePointItem.setTextColor(getColor(R.color.point_blue));
                     ob_linear.setVisibility(View.VISIBLE);
                     postObservePointName = "나만의 관측지";
+                    areaRecyclerView.setVisibility(View.VISIBLE);
+                    exampleHashTagText.setVisibility(View.GONE);
+                    LinearLayoutManager layoutManager =new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+                    areaRecyclerView.setLayoutManager(layoutManager);
+                    PostWriteHashTagItemAdapter adapter = new PostWriteHashTagItemAdapter();
+                    if (areaList.size() != 0) {
+                        for (int i = 0; i < areaList.size(); i++) {
+                            adapter.addItem(new PostWriteHashTagItem2(areaList.get(i)));
+                            if (i==1){
+                                break;
+                            }
+                        }
+                    }
+                    areaRecyclerView.setAdapter(adapter);
                 }
 
             } else {
@@ -557,27 +486,17 @@ public class PostWriteActivity extends AppCompatActivity {
             if (resultCode == 3) {
                 Log.d("postHashTag", "게시물 해시태그 넘어옴");
                 int allsize = 0;
+                canRegist();
                 postHashTagParams = (List<PostHashTagParams>) data.getSerializableExtra("postHashTagParams");
                 hashTagList = (List<String>) data.getSerializableExtra("hashTagList");
-                optionhashTagList = (List<String>) data.getSerializableExtra("optionHashTagList");
-                RecyclerView recyclerView = findViewById(R.id.postHashTagrecyclerView);
+                hashTagRecyclerView.setVisibility(View.VISIBLE);
+                exampleHashTagText.setVisibility(View.GONE);
                 StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
-                recyclerView.setLayoutManager(layoutManager);
-                PostWriteHashTagItem2Adapter adapter = new PostWriteHashTagItem2Adapter();
-                if (hashTagList.size() != 0 && optionhashTagList.size() != 0) {
+                hashTagRecyclerView.setLayoutManager(layoutManager);
+                PostWriteHashTagItemAdapter adapter = new PostWriteHashTagItemAdapter();
+                if (hashTagList.size() != 0) {
                     for (int i = 0; i < hashTagList.size(); i++) {
                         adapter.addItem(new PostWriteHashTagItem2(hashTagList.get(i)));
-                    }
-                    for (String s : optionhashTagList) {
-                        adapter.addItem(new PostWriteHashTagItem2(s));
-                    }
-                } else if (hashTagList.size() != 0) {
-                    for (int i = 0; i < hashTagList.size(); i++) {
-                        adapter.addItem(new PostWriteHashTagItem2(hashTagList.get(i)));
-                    }
-                } else {
-                    for (String s : optionhashTagList) {
-                        adapter.addItem(new PostWriteHashTagItem2(s));
                     }
                 }
                 for (int i = 0; i < adapter.getItemCount(); i++) {
@@ -590,10 +509,43 @@ public class PostWriteActivity extends AppCompatActivity {
                 } else if (allsize > 61) {
                     layoutManager.setSpanCount(4);
                 }
-                recyclerView.setAdapter(adapter);
-                recyclerView.addItemDecoration(new RecyclerViewDecoration(15, 15));
+                hashTagRecyclerView.setAdapter(adapter);
+
             } else {
                 Log.d("postHashTag", "게시물 검색 해시태그 로드 실패");
+            }
+        }
+        if(requestCode==204){
+            if(resultCode==4){
+                canRegist();
+                Log.d("postTime", "게시물 관측 시간 넘어옴");
+                yearDate = (String)data.getSerializableExtra("date");
+                time = (String)data.getSerializableExtra("time");
+                dayOrNight = (boolean)data.getSerializableExtra("day");
+                dateText.setText(yearDate.replace("-","."));
+                dateText.setTextColor(getColor(R.color.point_blue));
+                if(time.equals("00:00")){
+                    timeText.setVisibility(View.GONE);
+                }else{
+                    int firstTime= Integer.valueOf(time.substring(0,2)).intValue(); // 오전 오후 구분
+                    if(dayOrNight){
+                        if(firstTime==0){
+                            timeText.setText("오전 "+ Integer.toString(firstTime + 12)+time.substring(2));
+                        }else{
+                            timeText.setText("오전 "+time);
+                        }
+                    }else{
+                        String opt= time.substring(0,2);
+                        if(firstTime==12){
+                            timeText.setText("오후 "+time);
+                        }else{
+                            int minus= Integer.valueOf(opt).intValue()-12;
+                            timeText.setText("오후 "+Integer.toString(minus)+time.substring(2));
+                            }
+                        }
+                    timeText.setTextColor(getColor(R.color.point_blue));
+                    timeText.setVisibility(View.VISIBLE);
+                }
             }
         }
         if (resultCode != RESULT_OK || data == null) {
@@ -647,6 +599,14 @@ public class PostWriteActivity extends AppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    //등록가능한 경우 등록 버튼 글씨 활성화
+    public void canRegist(){
+        if (!postContent.isEmpty()&&numOfPicture != 0&&!postTitle.isEmpty()&&!yearDate.isEmpty()&&!hashTagList.isEmpty()&&!postObservePointName.isEmpty()) {
+            registBtn.setTextColor(getColor(R.color.white));
+        }
+
     }
 
     // 이미지 uri 경로 함수
@@ -714,7 +674,6 @@ public class PostWriteActivity extends AppCompatActivity {
 
     private void addImage(Bitmap img) {
         numOfPicture++;
-        addPicture.setText(Integer.toString(numOfPicture) + "/10");
 
         adapter.addItem(new SelectImage(img, numOfPicture));
         recyclerView.setAdapter(adapter);
@@ -736,7 +695,6 @@ public class PostWriteActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        addPicture.setText(Integer.toString(numOfPicture) + "/10");
     }
 
     public void uploadfiles(ArrayList<File> files) {
@@ -745,23 +703,7 @@ public class PostWriteActivity extends AppCompatActivity {
         }
     }
 
-    public void onClickDatePicker(View view) {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, callbackMethod, mYear, mMonth, mDay);
-        //datePickerDialog.getDatePicker().setCalendarViewShown(false);
-        //datePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        datePickerDialog.show();
 
-    }
-
-    public void onClickTimePicker(View view) {
-        todaydate = formatHour.format(c.getTime());
-        todaytime = formatMin.format(c.getTime());
-        int todayHour = Integer.parseInt(todaydate);
-        int todayTime = Integer.parseInt(todaytime);
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Dialog_NoActionBar, callbackMethod2, todayHour, todayTime, false);
-        timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        timePickerDialog.show();
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private Bitmap rotateImage(Uri uri, Bitmap bitmap) throws IOException {

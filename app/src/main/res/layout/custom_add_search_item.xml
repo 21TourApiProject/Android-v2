@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="124dp"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/postwrite_observation_item"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="22dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/search_point_background"
+        android:text="현 위치"
+        style="@style/semiBold_single_12" />
+
+    <TextView
+        android:id="@+id/itemName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:height="18sp"
+        style="@style/semiBold_single_18"
+        android:gravity="bottom"
+        android:includeFontPadding="false"
+        android:text="관광지"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:height="14sp"
+        android:gravity="bottom"
+        android:includeFontPadding="false"
+        android:text="주소"
+        android:textColor="@color/gray_500"
+        style="@style/medium_single_14"/>
+
+</LinearLayout>

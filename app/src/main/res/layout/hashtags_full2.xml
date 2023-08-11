@@ -4,23 +4,35 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/hashtag_background"
-    android:gravity="center">
+    android:gravity="center"
+    android:paddingStart="8dp"
+    android:paddingEnd="4dp"
+    android:layout_marginEnd="2dp">
+
+
+    <ImageView
+        android:id="@+id/mainpost_pin"
+        android:layout_width="19dp"
+        android:layout_height="19dp"
+        android:layout_marginEnd="4dp"
+        app:srcCompat="@drawable/post_observationpin" />
 
     <TextView
         android:id="@+id/hashtags_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/spoqahansansneomedium"
-        android:gravity="center"
-        android:paddingHorizontal="6dp"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        style="@style/medium_single_14"
         android:text="#해쉬태그"
-        android:textColor="@color/white"
-        android:textSize="10sp" />
+        android:textColor="@color/gray_500"
+        />
 
     <ImageView
-        android:id="@+id/hashtags_delete"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
-        android:visibility="visible"
-        app:srcCompat="@drawable/postwrite__imagedelete" />
+        android:id="@+id/mainPostObservationBtn"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_gravity="center_vertical"
+        app:srcCompat="@drawable/post__observation_move"
+        android:visibility="gone"/>
 </LinearLayout>

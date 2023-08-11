@@ -12,8 +12,8 @@ import retrofit2.http.Path;
 
 public interface PostHashTagRetrofitService {
 
-    @POST("post/{observePointName}")
-    Call<Long> postup(@Path("observePointName") String observePointName, @Body PostParams params);
+    @POST("post/{observePointName}/{areaId}")
+    Call<Long> postup(@Path("observePointName") String observePointName, @Body PostParams params,@Path("areaId") Long areaId);
 
     @POST("postImage/{postId}")
     Call<Void> createPostImage(@Path("postId") Long postId, @Body List<PostImageParams> postImageParams);

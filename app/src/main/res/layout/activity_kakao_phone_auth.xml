@@ -1,44 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context=".signUpPage.PhoneAuthActivity">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="49dp">
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="14dp">
 
-                <ImageView
+                <LinearLayout
                     android:id="@+id/kko_authBack"
-                    style="@style/ImageButton.size49"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:paddingVertical="18dp"
-                    android:paddingStart="22dp"
-                    android:paddingEnd="21dp"
-                    android:src="@drawable/star__search_back"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:gravity="center"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        style="@style/ImageButton.size49"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/back_btn" />
+                </LinearLayout>
+
 
                 <TextView
+                    style="@style/semiBold_single_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/scdream"
                     android:text="본인 인증"
-                    android:textSize="17sp"
-                    app:layout_constraintBottom_toBottomOf="@id/kko_authBack"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -49,17 +54,23 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="42dp"
-                android:layout_marginRight="42dp"
+                android:layout_marginHorizontal="20dp"
                 android:orientation="vertical">
 
                 <TextView
+                    style="@style/medium_single_14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:textColor="@color/gray_300"
+                    android:text="별자리 여행을 위해 본인 인증이 필요해요." />
+
+                <TextView
+                    style="@style/semiBold_single_14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="60dp"
-                    android:layout_weight="1"
-                    android:text="휴대폰 번호"
-                    android:textSize="12sp" />
+                    android:layout_marginTop="20dp"
+                    android:text="휴대폰 번호" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -69,76 +80,72 @@
 
                     <EditText
                         android:id="@+id/kko_mobilePhoneNumber"
+                        style="@style/medium_single_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
                         android:layout_weight="6"
                         android:background="@drawable/findemail_write2"
-                        android:hint="예시) 01077778888"
+                        android:hint="예시) 010-0000-0000"
                         android:inputType="phone"
-                        android:paddingLeft="10dp"
-                        android:textSize="14sp" />
+                        android:padding="12dp" />
 
-                    <Button
+                    <TextView
                         android:id="@+id/kko_startAuth"
+                        style="@style/semiBold_single_12"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="end"
-                        android:layout_marginLeft="14dp"
-                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
                         android:background="@drawable/round_btn"
-                        android:backgroundTint="@color/point_dark"
-                        android:fontFamily="@font/spoqahansansneoregular"
+                        android:backgroundTint="@color/point_blue"
+                        android:padding="12dp"
                         android:text="인증 요청"
-                        android:textSize="12sp"
                         android:visibility="visible" />
 
-                    <Button
+                    <TextView
                         android:id="@+id/kko_resendAuth"
+                        style="@style/semiBold_single_12"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="end"
-                        android:layout_marginLeft="14dp"
-                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
                         android:background="@drawable/round_btn"
-                        android:backgroundTint="@color/point_dark"
-                        android:fontFamily="@font/spoqahansansneoregular"
-                        android:text="인증 재요청"
-                        android:textSize="12sp"
+                        android:backgroundTint="@color/point_blue"
+                        android:padding="12dp"
+                        android:text="다시 요청"
                         android:visibility="gone" />
 
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/kko_phoneGuide"
+                    style="@style/semiBold_single_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:textColor="@color/point_purple"
-                    android:textSize="12sp" />
+                    android:textColor="@color/point_blue" />
 
                 <TextView
+                    style="@style/semiBold_single_14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:text="인증 번호"
-                    android:textSize="12sp" />
+                    android:text="인증 번호" />
 
                 <EditText
                     android:id="@+id/kko_authCode"
+                    style="@style/medium_single_14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
+                    android:layout_marginTop="12dp"
                     android:background="@drawable/signup_box1"
                     android:hint="숫자 6자리"
                     android:inputType="number"
-                    android:paddingLeft="10dp"
-                    android:textSize="14sp" />
+                    android:padding="12dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="42dp"
                     android:layout_marginTop="24dp"
                     android:orientation="horizontal">
 
@@ -146,35 +153,46 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="만 14세 이상입니다 (필수) :"
-                        android:textSize="12sp" />
+                        style="@style/semiBold_single_12"
+                        android:textColor="@color/gray_400"
+                        android:text="만 14세 이상입니다 (필수) :" />
 
-                    <Button
-                        android:id="@+id/kko_ageLimit"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="53dp"
-                        android:background="@drawable/signup_agree_non" />
+                    <FrameLayout
+                        android:id="@+id/kko_ageLimitFrame"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/kko_ageLimit"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_gravity="center|end"
+                            android:clickable="false"
+                            android:background="@drawable/signup_agree_non" />
+                    </FrameLayout>
+
+
                 </LinearLayout>
-
 
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/kko_verify"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="42dp"
-                android:layout_marginEnd="42dp"
-                android:layout_marginTop="100dp"
-                android:text="완료"
-                android:fontFamily="@font/spoqahansansneobold"
-                android:background="@drawable/round_btn" />
+
 
         </LinearLayout>
     </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/kko_verify"
+            style="@style/semiBold_single_16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/round_btn"
+            android:text="가입 완료" />
+    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,8 @@ import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.signUpPage.signUpRetrofit.RetrofitClient;
+
+import org.w3c.dom.Text;
 
 import java.util.concurrent.TimeUnit;
 
@@ -66,8 +69,8 @@ public class FindEmailActivity extends AppCompatActivity implements
     private EditText findEmailRealName;
     private EditText mobilePhoneNumber;
     private EditText authCode;
-    private Button startAuth;
-    private Button resendAuth;
+    private TextView startAuth,authText;
+    private TextView resendAuth;
     private Button verify;
     private TextView showEmail;
 
@@ -101,6 +104,7 @@ public class FindEmailActivity extends AppCompatActivity implements
         mobilePhoneNumber = findViewById(R.id.findEmailMobilePhoneNumber); //전화번호
         authCode = findViewById(R.id.authCode2); //인증코드
         startAuth = findViewById(R.id.startAuth2); //처음 문자요청
+        authText =findViewById(R.id.authText2);//인증번호 전송 했습니다. 텍스트
         resendAuth = findViewById(R.id.resendAuth2); //재 문자요청
         verify = findViewById(R.id.verify2); //인증요청
         showEmail = findViewById(R.id.showEmail);
@@ -111,7 +115,7 @@ public class FindEmailActivity extends AppCompatActivity implements
 
 
         //뒤로 가기
-        ImageView findEmailBack = findViewById(R.id.findEmailBack);
+        LinearLayout findEmailBack = findViewById(R.id.findEmailBack);
         findEmailBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -290,6 +294,7 @@ public class FindEmailActivity extends AppCompatActivity implements
                 Toast.makeText(getApplicationContext(), "해당 번호로 문자가 발송되었습니다. 2분 안에 인증번호를 입력해주세요.", Toast.LENGTH_LONG).show();
                 startPhoneNumberVerification(changePhoneNumber(mobilePhoneNumber.getText().toString()));
                 startAuth.setVisibility(View.GONE);
+                authText.setVisibility(View.VISIBLE);
                 resendAuth.setVisibility(View.VISIBLE);
                 break;
 
