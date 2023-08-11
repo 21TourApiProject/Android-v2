@@ -32,7 +32,7 @@
         <activity android:name=".myPage.MyCommentActivity" />
         <activity
             android:name=".MainActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
@@ -51,7 +51,8 @@
         <activity android:name=".alarmPage.AlarmActivity" />
         <activity android:name=".starPage.StarAllActivity" />
         <activity android:name=".searchPage.SearchResultActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -99,7 +100,8 @@
         <activity android:name=".postWritePage.PostWriteActivity" />
         <activity android:name=".postWritePage.SearchObservingPointActivity" />
         <activity android:name=".postWritePage.AddHashTagActivity" />
-        <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
+        <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
