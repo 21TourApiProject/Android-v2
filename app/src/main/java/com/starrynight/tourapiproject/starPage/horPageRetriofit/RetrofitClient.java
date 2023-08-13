@@ -20,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 hyeonz       2022-09-15   주석추가
  */
 public class RetrofitClient {
-    private static final String BASE_URL = TaskServer.v1Server;
+    private static final String BASE_URL = TaskServer.serverURL;
 
 
     public static HorPageRetrofitService getApiService() {
