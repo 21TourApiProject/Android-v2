@@ -74,7 +74,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     SwipeRefreshLayout swipeRefreshLayout;
     NestedScrollView nestedScrollView;
     List<Long> myhashTagIdList;
-    int count = 20, end, limit;
+    int count = 5, end, limit;
     List<MainPost> mainPostList;
     List<MainPost> result;
     Boolean noMorePost;
