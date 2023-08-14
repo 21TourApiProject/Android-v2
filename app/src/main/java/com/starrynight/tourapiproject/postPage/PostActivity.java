@@ -261,7 +261,7 @@ public class PostActivity extends AppCompatActivity {
                                                 hashTagRecyclerView.setLayoutManager(staggeredGridLayoutManager);
                                                 PostHashTagItemAdapter adapter2 = new PostHashTagItemAdapter();
                                                 for (int i = 0; i < postHashTagList.size(); i++) {
-                                                    if (postHashTagList.get(i).getHashTagId() != null) {
+                                                    if (postHashTagList.get(i) != null) {
                                                         adapter2.addItem(new PostHashTagItem(postHashTagList.get(i).getHashTagName(), null, null, postHashTagList.get(i).getHashTagId()));
                                                     }
                                                 }
@@ -323,12 +323,9 @@ public class PostActivity extends AppCompatActivity {
                                                 StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
                                                 hashTagRecyclerView.setLayoutManager(staggeredGridLayoutManager);
                                                 PostHashTagItemAdapter adapter = new PostHashTagItemAdapter();
-                                                if (!observation.getObservationName().equals("나만의 관측지")) {
-                                                    adapter.addItem(new PostHashTagItem(observation.getObservationName(), null, observation.getObservationId(), null));
-                                                } else {
-                                                    adapter.addItem(new PostHashTagItem(post.getOptionObservation(), null, null, null));
+                                                if (post.getOptionHashTag() != null) {
+                                                    adapter.addItem(new PostHashTagItem(post.getOptionHashTag(), null, null, null));
                                                 }
-                                                adapter.addItem(new PostHashTagItem(post.getOptionHashTag(), null, null, null));
                                                 if (post.getOptionHashTag2() != null) {
                                                     adapter.addItem(new PostHashTagItem(post.getOptionHashTag2(), null, null, null));
                                                 }
