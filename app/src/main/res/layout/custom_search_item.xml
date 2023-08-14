@@ -9,27 +9,19 @@
 
     <TextView
         android:id="@+id/itemName"
-        android:layout_width="match_parent"
-        android:layout_height="18.5sp"
-        android:includeFontPadding="false"
-        android:gravity="bottom"
-        android:height="18sp"
-        android:text="관광지"
-        android:textColor="@color/white"
+        style="@style/semiBold_multi_18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        style="@style/semiBold_single_18"
+        android:textColor="@color/white"
          />
 
     <TextView
         android:id="@+id/address"
-        android:layout_width="match_parent"
-        android:layout_height="14.5sp"
-        android:text="주소"
-        android:textColor="@color/gray_500"
-        android:includeFontPadding="false"
-        android:gravity="bottom"
-        android:height="14sp"
         style="@style/medium_single_14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/gray_500"
         />
 
 </LinearLayout>
