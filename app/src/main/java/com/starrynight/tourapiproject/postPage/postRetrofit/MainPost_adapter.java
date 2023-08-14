@@ -216,11 +216,7 @@ public class MainPost_adapter extends RecyclerView.Adapter<MainPost_adapter.View
                         for (int i = 0; i < item.getHashTags().size(); i++) {
                             adapter.addItem(new PostHashTagItem(item.getHashTags().get(i), null, null, postHashTagIds.get(i).getHashTagId()));
                         }
-                        if (adapter.getItemCount() < 4) {
-                            if (item.getOptionHashTag() != null)
-                                adapter.addItem(new PostHashTagItem(item.getOptionHashTag(), null, null, null));
-                        }
-                    } else {
+                    } else if(item.getOptionHashTag() !=null){
                         adapter.addItem(new PostHashTagItem(item.getOptionHashTag(), null, null, null));
                         if (item.getOptionHashTag2() != null) {
                             adapter.addItem(new PostHashTagItem(item.getOptionHashTag2(), null, null, null));
