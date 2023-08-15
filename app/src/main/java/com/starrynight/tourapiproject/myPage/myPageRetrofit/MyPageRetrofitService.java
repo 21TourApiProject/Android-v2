@@ -1,6 +1,7 @@
 package com.starrynight.tourapiproject.myPage.myPageRetrofit;
 
 import com.starrynight.tourapiproject.alarmPage.Alarm;
+import com.starrynight.tourapiproject.alarmPage.subBanner.SubBanner;
 import com.starrynight.tourapiproject.myPage.myPost.MyPost3;
 import com.starrynight.tourapiproject.myPage.myWish.MyWish;
 import com.starrynight.tourapiproject.myPage.myWish.obtp.MyWishObTp;
@@ -93,6 +94,9 @@ public interface MyPageRetrofitService {
 
     @GET("alarms/")
     Call<List<Alarm>> getAllAlarm();
+
+    @GET("lastSubBanner/")
+    Call<SubBanner> getLastSubBanner();
 
     @GET("user/{userId}/isKakao")
     Call<Boolean> checkIsKakao(@Path("userId") Long userId);
