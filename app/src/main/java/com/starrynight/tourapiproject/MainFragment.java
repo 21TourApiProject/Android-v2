@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,12 +27,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.starrynight.tourapiproject.alarmPage.AlarmActivity;
+import com.starrynight.tourapiproject.alarmPage.subBanner.SubBanner;
+import com.starrynight.tourapiproject.myPage.myPageRetrofit.MyPageRetrofitService;
 import com.starrynight.tourapiproject.postPage.postRetrofit.MainPost;
 import com.starrynight.tourapiproject.postPage.postRetrofit.MainPost_adapter;
 import com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.postWritePage.PostWriteActivity;
+import com.starrynight.tourapiproject.starPage.StarActivity;
 import com.starrynight.tourapiproject.weatherPage.GpsTracker;
 import com.starrynight.tourapiproject.weatherPage.LocationDTO;
 import com.starrynight.tourapiproject.weatherPage.WeatherActivity;
@@ -70,6 +75,7 @@ import retrofit2.Response;
  * @date : 2022-09-02
  */
 public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+
     Long userId;
     SwipeRefreshLayout swipeRefreshLayout;
     NestedScrollView nestedScrollView;
@@ -79,12 +85,14 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     List<MainPost> result;
     Boolean noMorePost;
     RecyclerView recyclerView;
+    ImageView subBanner;
     MainPost_adapter adapter;
     ProgressBar progressBar;
     LinearLayout weatherLocationSearch;
     FloatingActionButton postwritebtn;
 
     private static final String TAG = "Main Fragment";
+    private static final String TAG1 = "SubBannerApi";
     @SuppressLint("SimpleDateFormat")
     SimpleDateFormat hh = new SimpleDateFormat("HH");
     @SuppressLint("SimpleDateFormat")
@@ -282,6 +290,40 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                         progressBar.setVisibility(View.GONE);
                     }
                 }
+            }
+        });
+
+        //서브 배너 가져오기
+        subBanner = (ImageView)v.findViewById(R.id.subBanner);
+        Call<SubBanner> subBannerCall = com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient.getApiService().getLastSubBanner();
+        subBannerCall.enqueue(new Callback<SubBanner>() {
+            @Override
+            public void onResponse(Call<SubBanner> call, Response<SubBanner> response) {
+                if(response.isSuccessful()){
+                    SubBanner banner = response.body();
+                    if(banner.isShow()){ //isShow가 true면 배너가 보일 수 있도록 한다
+                        Glide.with(getActivity()).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/subBanner/" + banner.getBannerImage()).fitCenter().into(subBanner);
+                    }else {
+                        subBanner.setVisibility(View.GONE);
+                    }
+                    subBanner.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(banner.getLink()!=null){
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(banner.getLink()));
+                                startActivity(intent);
+                            }
+                        }
+                    });
+
+                }else {
+                    Log.e(TAG1, "서브 배너 오류");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SubBanner> call, Throwable t) {
+                Log.e(TAG1, t.getMessage());
             }
         });
 
