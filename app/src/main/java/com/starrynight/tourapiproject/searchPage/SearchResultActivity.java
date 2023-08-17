@@ -193,6 +193,7 @@ public class SearchResultActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 pagenum = 0;
+                mapFragment.initMapView();
                 observationResult.clear();
                 getObservation(pagenum);
                 mapBtn.setVisibility(View.GONE);

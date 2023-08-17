@@ -205,11 +205,28 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/subBanner_linear"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp">
+
+                    <ImageView
+                        android:id="@+id/subBanner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/default_image"
+                        android:scaleType="centerCrop"
+                        />
+                </LinearLayout>
+
                 <TextView
                     style="@style/semiBold_single_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="20dp"
                     android:text="최근 관측후기"
