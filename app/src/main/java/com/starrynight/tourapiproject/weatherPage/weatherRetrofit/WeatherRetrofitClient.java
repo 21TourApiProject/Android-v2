@@ -8,7 +8,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WeatherRetrofitClient {
-    private static final String BASE_URL = TaskServer.v1Server;
+    private static final String BASE_URL = TaskServer.serverURL;
 
 
     public static WeatherRetrofitService getApiService() {

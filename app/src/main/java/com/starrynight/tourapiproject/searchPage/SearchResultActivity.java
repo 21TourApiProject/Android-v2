@@ -276,6 +276,7 @@ public class SearchResultActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Log.d(TAG, "게시물 검색 성공");
                     loadingDialog.dismiss();
+                    postResult.clear();
                     postResult.addAll(response.body());
                     tabFragment.setData(observationResult, postResult, keyword);
                     mapFragment.setData(observationResult);

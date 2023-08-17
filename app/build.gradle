@@ -24,6 +24,8 @@ android {
 
         // 프로젝트 내에서 사용 가능한 변수
         buildConfigField "String", "SPRING_SERVER_V1", properties['spring_server_v1']
+        buildConfigField "String", "SPRING_SERVER_V2", properties['spring_server_v2']
+        buildConfigField "String", "SPRING_SERVER_DEV", properties['spring_server_dev']
         buildConfigField "String", "KAKAO_SDK_KEY", properties['kakao_sdk_key']
 
         manifestPlaceholders = [KAKAO_SDK_KEY: properties['kakao_sdk_key']]
