@@ -86,6 +86,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     Boolean noMorePost;
     RecyclerView recyclerView;
     ImageView subBanner;
+    LinearLayout subBannerLayout;
     MainPost_adapter adapter;
     ProgressBar progressBar;
     LinearLayout weatherLocationSearch;
@@ -295,6 +296,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         });
 
         //서브 배너 가져오기
+        subBannerLayout = v.findViewById(R.id.subBanner_linear);
         subBanner = (ImageView)v.findViewById(R.id.subBanner);
         Call<SubBanner> subBannerCall = com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient.getApiService().getLastSubBanner();
         subBannerCall.enqueue(new Callback<SubBanner>() {
@@ -303,9 +305,10 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 if(response.isSuccessful()){
                     SubBanner banner = response.body();
                     if(banner.isShow()){ //isShow가 true면 배너가 보일 수 있도록 한다
+                        subBannerLayout.setVisibility(View.VISIBLE);
                         Glide.with(getActivity()).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/subBanner/" + banner.getBannerImage()).fitCenter().into(subBanner);
                     }else {
-                        subBanner.setVisibility(View.GONE);
+                        subBannerLayout.setVisibility(View.GONE);
                     }
                     subBanner.setOnClickListener(new View.OnClickListener() {
                         @Override
