@@ -3,8 +3,6 @@ package com.starrynight.tourapiproject.alarmPage;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,10 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.starrynight.tourapiproject.R;
-import com.starrynight.tourapiproject.myPage.NoticeActivity;
 import com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient;
-import com.starrynight.tourapiproject.myPage.notice.Notice;
-import com.starrynight.tourapiproject.myPage.notice.NoticeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
