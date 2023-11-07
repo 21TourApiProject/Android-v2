@@ -1,7 +1,5 @@
 package com.starrynight.tourapiproject.starPage;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -15,9 +13,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.starrynight.tourapiproject.R;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Objects;
+import com.starrynight.tourapiproject.R;
 
 public class StarCompassActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -30,13 +28,14 @@ public class StarCompassActivity extends AppCompatActivity implements SensorEven
     private SensorManager mSensorManger;
     private Sensor mAcclerometer;
     private Sensor mMagnetometer;
-    private final float[] lastAcceleromter = new float[3];
-    private final float[] lastMagnetometer = new float[3];
+    private float[] lastAcceleromter = new float[3];
+    private float[] lastMagnetometer = new float[3];
     private boolean lastAccelerometerSet = false;
     private boolean lastMagnetometerSet = false;
     private final float[] mR = new float[9];
     private final float[] mOrientation = new float[3];
     private float currentDegree = 0f;
+    private static final float ALPHA = 0.5f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,13 +69,24 @@ public class StarCompassActivity extends AppCompatActivity implements SensorEven
         mSensorManger.unregisterListener(this, mMagnetometer);
     }
 
+    private float[] applyLowPassFilter(float[] input, float[] output) { //방위각 결과값을 부드럽게 출력하기위한 필터
+        if ( output == null ) return input;
+
+        for ( int i=0; i<input.length; i++ ) {
+            output[i] = output[i] + ALPHA * (input[i] - output[i]);
+        }
+        return output;
+    }
+
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor == mAcclerometer) {
-            System.arraycopy(event.values, 0, lastAcceleromter, 0, event.values.length);
+            lastAcceleromter = applyLowPassFilter(event.values.clone(),lastAcceleromter);
+            //System.arraycopy(event.values, 0, lastAcceleromter, 0, event.values.length);
             lastAccelerometerSet = true;
         } else if (event.sensor == mMagnetometer) {
-            System.arraycopy(event.values, 0, lastMagnetometer, 0, event.values.length);
+            lastMagnetometer = applyLowPassFilter(event.values.clone(),lastMagnetometer);
+            //System.arraycopy(event.values, 0, lastMagnetometer, 0, event.values.length);
             lastMagnetometerSet = true;
         }
         if (lastAccelerometerSet && lastMagnetometerSet) {
