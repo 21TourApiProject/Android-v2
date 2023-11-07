@@ -13,7 +13,7 @@
         <RelativeLayout
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="600dp">
+            android:layout_height="700dp">
 
             <com.starrynight.tourapiproject.starPage.CameraSurfaceView
                 android:id="@+id/surfaceView"
@@ -22,9 +22,32 @@
 
             <ImageView
                 android:id="@+id/guideLine"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/alarm__line" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/tonight__compass_needle" />
+
+            <LinearLayout
+                android:id="@+id/guideLine2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:orientation="vertical"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/profile_default_image"
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="북극성이 보여요!"
+                    android:textColor="@color/bg_black"/>
+
+
+            </LinearLayout>
+
 
         </RelativeLayout>
 
@@ -35,9 +58,21 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal|end"
         android:orientation="vertical"
-        android:layout_marginBottom="200dp"
-        app:layout_constraintBottom_toBottomOf="parent">
 
+        android:layout_marginBottom="150dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <TextView
+            android:id="@+id/azimuth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="방위각:"
+            android:textColor="@color/bg_black"/>
+        <TextView
+            android:id="@+id/roll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="고도:"
+            android:textColor="@color/bg_black"/>
         <Button
             android:id="@+id/onoffButton"
             android:layout_width="50dp"
