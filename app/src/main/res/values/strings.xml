@@ -9,6 +9,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="title_observation">Observation</string>
     <string name="title_star">Star</string>
+    <string name="title_review">Review</string>
     <string name="title_person">Person</string>
     <string name="title_photo">Photo</string>
     <string name="title_delete">Delete</string>

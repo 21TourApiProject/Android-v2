@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     SearchFragment searchFragment;
     TonightSkyFragment tonightSkyFragment;
     PersonFragment personFragment;
+    ReviewFragment reviewFragment;
     View bottom;
     BottomNavigationView bottomNavigationView;
     private long backKeyPressTime = 0;
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         searchFragment = new SearchFragment();
         tonightSkyFragment = new TonightSkyFragment();
         personFragment = new PersonFragment();
+        reviewFragment = new ReviewFragment();
 
         //권한 설정
         int permission = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -126,6 +128,14 @@ public class MainActivity extends AppCompatActivity {
                         }
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_view, tonightSkyFragment).commitAllowingStateLoss();
                         return true;
+
+                    case R.id.navigation_review:
+                        if (reviewFragment == null) {
+                            reviewFragment = new ReviewFragment();
+                        }
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_view, reviewFragment).commitAllowingStateLoss();
+                        return true;
+
                     case R.id.navigation_person:
                         if (personFragment == null) {
                             personFragment = new PersonFragment();
@@ -164,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
                 System.exit(0);
 //                finish();
             }
-        } else if (bottomNavigationView.getSelectedItemId() == R.id.navigation_person || bottomNavigationView.getSelectedItemId() == R.id.navigation_observation) {
+        } else if (bottomNavigationView.getSelectedItemId() == R.id.navigation_person || bottomNavigationView.getSelectedItemId() == R.id.navigation_observation|| bottomNavigationView.getSelectedItemId() == R.id.navigation_review) {
             bottomNavigationView.setSelectedItemId(R.id.navigation_main);
         } else {
             if (fragmentManager.getBackStackEntryCount() > 0) {
