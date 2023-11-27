@@ -31,12 +31,18 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.starrynight.tourapiproject.alarmPage.AlarmActivity;
 import com.starrynight.tourapiproject.alarmPage.subBanner.SubBanner;
-import com.starrynight.tourapiproject.myPage.myPageRetrofit.MyPageRetrofitService;
+import com.starrynight.tourapiproject.mainPage.BestFitObservationAdapter;
+import com.starrynight.tourapiproject.mainPage.OnBestFitObsItemClickListener;
+import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.ObservationSimpleParams;
+import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.RetrofitClient;
+import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
+import com.starrynight.tourapiproject.postItemPage.OnPostPointItemClickListener;
+import com.starrynight.tourapiproject.postItemPage.Post_point_item_Adapter;
+import com.starrynight.tourapiproject.postItemPage.post_point_item;
 import com.starrynight.tourapiproject.postPage.postRetrofit.MainPost;
 import com.starrynight.tourapiproject.postPage.postRetrofit.MainPost_adapter;
-import com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.postWritePage.PostWriteActivity;
-import com.starrynight.tourapiproject.starPage.StarActivity;
+import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchFirst;
 import com.starrynight.tourapiproject.weatherPage.GpsTracker;
 import com.starrynight.tourapiproject.weatherPage.LocationDTO;
 import com.starrynight.tourapiproject.weatherPage.WeatherActivity;
@@ -129,11 +135,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         swipeRefreshLayout.setOnRefreshListener(this);
         myhashTagIdList = new ArrayList<>();
         nestedScrollView = v.findViewById(R.id.scroll_layout);
-        recyclerView = v.findViewById(R.id.recyclerView);
         progressBar = v.findViewById(R.id.mainProgressBar);
         weatherLocationSearch = v.findViewById(R.id.weather_location_search);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
 
         View mainLocation = v.findViewById(R.id.main__location);
         weatherComment = v.findViewById(R.id.weather_comment);
@@ -250,51 +253,6 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             e.printStackTrace();
         }
 
-        Call<List<MainPost>> call2 = RetrofitClient.getApiService().getMainPosts();
-        call2.enqueue(new Callback<List<MainPost>>() {
-            @Override
-            public void onResponse(Call<List<MainPost>> call, Response<List<MainPost>> response) {
-                if (response.isSuccessful()) {
-                    Log.d("mainPostList", "메인 게시물 리스트 성공");
-                    result = response.body();
-                    end = count;
-                    noMorePost = false;
-                    limit = result.size();
-                    mainPostList = new ArrayList<>();
-                    if (limit < end) {
-                        noMorePost = true;
-                    }
-                    adapter = new MainPost_adapter(result.subList(0, Math.min(end, limit)), getContext());
-                    recyclerView.setAdapter(adapter);
-                } else {
-                    Log.e("mainPostList", "메인 게시물 리스트 실패");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<MainPost>> call, Throwable t) {
-                Log.e("mainPostList", "인터넷 오류");
-            }
-        });
-        // 밑으로 스크롤시 게시물 목록 업로딩
-        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
-                    if (!noMorePost) {
-                        progressBar.setVisibility(View.VISIBLE);
-                        end += count;
-                        if (limit < end) {
-                            noMorePost = true;
-                        }
-                        adapter = new MainPost_adapter(result.subList(0, Math.min(end, limit)), getContext());
-                        recyclerView.setAdapter(adapter);
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }
-            }
-        });
-
         //서브 배너 가져오기
         subBannerLayout = v.findViewById(R.id.subBanner_linear);
         subBanner = (ImageView)v.findViewById(R.id.subBanner);
@@ -341,16 +299,6 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
 
-        //플로팅 버튼으로 게시글 작성 페이지로 넘어가기
-        postwritebtn = (FloatingActionButton) v.findViewById(R.id.floatingActionButton);
-        postwritebtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), PostWriteActivity.class);
-                startActivityForResult(intent, 101);
-            }
-        });
-
         // 알림 페이지로 넘어가는 이벤트
 
         Button alarm = (Button) v.findViewById(R.id.main_alarm);
@@ -366,6 +314,38 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         weatherLocationSearch.setOnClickListener(v12 -> {
             Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
             startActivityForResult(intent, 105);
+        });
+
+        RecyclerView bestFitRecyclerView = v.findViewById(R.id.main_best_fit_recycler);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        bestFitRecyclerView.setLayoutManager(linearLayoutManager);
+        BestFitObservationAdapter adapter = new BestFitObservationAdapter();
+        bestFitRecyclerView.setAdapter(adapter);
+        Call<List<ObservationSimpleParams>> call = RetrofitClient.getApiService().getBestFitObservationList();
+        call.enqueue(new Callback<List<ObservationSimpleParams>>() {
+            @Override
+            public void onResponse(Call<List<ObservationSimpleParams>> call, Response<List<ObservationSimpleParams>> response) {
+                if (response.isSuccessful()) {
+                    List<ObservationSimpleParams> observationSimpleList = response.body();
+                    adapter.setItems(observationSimpleList);
+                    adapter.notifyDataSetChanged();
+                    adapter.setOnItemClicklistener(new OnBestFitObsItemClickListener() {
+                        @Override
+                        public void onItemClick(BestFitObservationAdapter.ViewHolder holder, View view, int position) {
+                            Intent intent = new Intent(getActivity(), ObservationsiteActivity.class);
+                            intent.putExtra("observationId", observationSimpleList.get(position).getItemId());
+                            startActivity(intent);
+                        }
+                    });
+                } else {
+                    Log.d("hot", "요즘 핫한 명소 업로드 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ObservationSimpleParams>> call, Throwable t) {
+                Log.d(TAG, "오늘 보기 좋은 관측지 로드 실패");
+            }
         });
 
         return v;

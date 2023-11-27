@@ -18,6 +18,10 @@
         android:title="@string/title_star" />
 
 
+    <item
+        android:id="@+id/navigation_review"
+        android:icon="@drawable/mainpage_bar_review"
+        android:title="@string/title_review" />
 
 
     <item

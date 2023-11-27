@@ -24,6 +24,12 @@
         tools:layout="@layout/fragment_tonight_sky" />
 
     <fragment
+        android:id="@+id/navigation_review"
+        android:name="com.starrynight.tourapiproject.ReviewFragment"
+        android:label="@string/title_review"
+        tools:layout="@layout/fragment_review" />
+
+    <fragment
         android:id="@+id/navigation_person"
         android:name="com.starrynight.tourapiproject.PersonFragment"
         android:label="@string/title_person"
