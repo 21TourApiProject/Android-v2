@@ -85,7 +85,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="8dp"
                     style="@style/semiBold_single_24"
-                    android:text="사자 자리" />
+                    android:text="" />
 
 
 
