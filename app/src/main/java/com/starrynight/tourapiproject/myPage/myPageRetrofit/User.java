@@ -16,6 +16,7 @@ import java.util.List;
         수정일        수정자        수정내용
     -----------------------------------------
       2022-09-07     sein        주석 생성
+      2023-11-27     jinhyeok    fcmToken 추가
 
  */
 public class User {
@@ -42,6 +43,8 @@ public class User {
     String signUpDt;
     @SerializedName("myHashTags")
     List<MyHashTag> myHashTags;
+    @SerializedName("fcmToken")
+    FcmToken fcmToken;
 
     public User() {
     }
@@ -86,5 +89,9 @@ public class User {
 
     public List<MyHashTag> getMyHashTags() {
         return myHashTags;
+    }
+
+    public FcmToken getFcmToken() {
+        return fcmToken;
     }
 }

@@ -79,15 +79,6 @@ public class MainPostSliderAdapter extends RecyclerView.Adapter<MainPostSliderAd
         public MyViewHolder(@NonNull View itemView, final MainPostImageSliderItemClickListener listener) {
             super(itemView);
             mImageView = itemView.findViewById(R.id.custom_main_image);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (listener != null) {
-                        listener.onItemClick(MainPostSliderAdapter.MyViewHolder.this, v, position);
-                    }
-                }
-            });
         }
 
         public void bindSliderImage(String imageURL) {

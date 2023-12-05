@@ -1,15 +1,21 @@
 package com.starrynight.tourapiproject.myPage;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
+import com.google.firebase.ktx.Firebase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.starrynight.tourapiproject.R;
 
 /**
@@ -64,6 +70,20 @@ public class SettingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(SettingActivity.this, NoticeActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        Switch switchButton = findViewById(R.id.switchButton);
+        SharedPreferences pref=getSharedPreferences("pref",MODE_PRIVATE);
+        SharedPreferences.Editor editor=pref.edit();
+        boolean isDenied = pref.getBoolean("isDenied",true);
+        switchButton.setChecked(isDenied);
+        Log.d("isDenied","수신여부: "+isDenied);
+        switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                editor.putBoolean("isDenied", isChecked);
+                editor.apply();
             }
         });
 

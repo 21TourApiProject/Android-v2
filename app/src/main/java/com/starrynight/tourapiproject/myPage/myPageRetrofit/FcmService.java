@@ -1,8 +1,11 @@
-package com.starrynight.tourapiproject.alarmPage;
+package com.starrynight.tourapiproject.myPage.myPageRetrofit;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.Log;
 
@@ -10,8 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.google.firebase.ktx.Firebase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.starrynight.tourapiproject.MainActivity;
 import com.starrynight.tourapiproject.R;
 
 /**
@@ -68,9 +74,17 @@ public class FcmService extends FirebaseMessagingService {
 
         builder.setContentTitle(title)
                 .setContentText(body)
-                .setSmallIcon(R.drawable.ic_launcher_background);
+                .setSmallIcon(R.mipmap.main_icon2_foreground);
+        PendingIntent intent = PendingIntent.getActivity(this,0, new Intent (getApplicationContext(), MainActivity.class),PendingIntent.FLAG_IMMUTABLE);
 
         Notification notification = builder.build();
-        notificationManager.notify(1, notification);
+        SharedPreferences pref=getSharedPreferences("pref",MODE_PRIVATE);
+        boolean isDenied = pref.getBoolean("isDenied",true);
+        Log.d("isDenied","수신여부: "+isDenied);
+        if(isDenied){
+            notificationManager.notify(1, notification);
+
+        }
+
     }
 }

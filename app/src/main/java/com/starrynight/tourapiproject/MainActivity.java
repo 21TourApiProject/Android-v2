@@ -3,7 +3,7 @@ package com.starrynight.tourapiproject;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -23,13 +23,22 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-import com.starrynight.tourapiproject.mapPage.Activities;
-import com.starrynight.tourapiproject.mapPage.MapFragment;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.starPage.TonightSkyFragment;
 
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * @author : jinhyeok
@@ -46,6 +55,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     public static Context mContext;
+    private static final String TAG = "FcmToken";
 
     MainFragment mainFragment;
     SearchFragment searchFragment;
@@ -59,11 +69,11 @@ public class MainActivity extends AppCompatActivity {
     String[] READ_PERMISSION = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
     String[] INTERNET_PERMISSION = new String[]{Manifest.permission.INTERNET};
     String[] PERMISSION = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.INTERNET,
-            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.POST_NOTIFICATIONS};
     int PERMISSIONS_REQUEST_CODE = 100;
+    Long userId;
 
     Fragment map, searchResult, filter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,9 +94,15 @@ public class MainActivity extends AppCompatActivity {
         int permission3 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.INTERNET);
         int permission4 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
         int permission5 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION);
+        int permission6 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS);
 
         Log.d("test", "onClick: location clicked");
-        if (permission == PackageManager.PERMISSION_GRANTED && permission2 == PackageManager.PERMISSION_GRANTED && permission3 == PackageManager.PERMISSION_GRANTED && permission4 == PackageManager.PERMISSION_GRANTED && permission5 == PackageManager.PERMISSION_GRANTED) {
+        if (permission == PackageManager.PERMISSION_GRANTED
+                && permission2 == PackageManager.PERMISSION_GRANTED
+                && permission3 == PackageManager.PERMISSION_GRANTED
+                && permission4 == PackageManager.PERMISSION_GRANTED
+                && permission5 == PackageManager.PERMISSION_GRANTED
+                &&permission6 == PackageManager.PERMISSION_GRANTED) {
             Log.d("MyTag", "읽기,쓰기,인터넷 권한이 있습니다.");
 
         } else {
@@ -97,6 +113,18 @@ public class MainActivity extends AppCompatActivity {
 //            ActivityCompat.requestPermissions(MainActivity.this, INTERNET_PERMISSION, PERMISSIONS_REQUEST_CODE);
             ActivityCompat.requestPermissions(MainActivity.this, PERMISSION, PERMISSIONS_REQUEST_CODE);
         }
+
+        String fileName = "userId"; // 유저 아이디 가져오기
+        try {
+            FileInputStream fis = openFileInput(fileName);
+            String line = new BufferedReader(new InputStreamReader(fis)).readLine();
+            userId = Long.parseLong(line);
+            fis.close();
+        } catch (
+                IOException e) {
+            e.printStackTrace();
+        }
+        getToken();
         //메인 페이지 초기화 상태
         getSupportFragmentManager().beginTransaction().replace(R.id.main_view, mainFragment).commitAllowingStateLoss();
 
@@ -210,6 +238,44 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.main_view, fragment).commitAllowingStateLoss();
     }
 
+    public void getToken(){
+        //토큰값을 받아옵니다.
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.e(TAG, "getToken 실행 안됨");
+                            return;
+                        }
+                        if(task.getResult()!=null){
+                            String token = task.getResult();
+                            SharedPreferences pref=getSharedPreferences("pref",MODE_PRIVATE);
+                            SharedPreferences.Editor editor=pref.edit();
+                            editor.putString("token",token);
+                            editor.commit();
+                            Call<Boolean> call = RetrofitClient.getApiService().updateFcmToken(userId,token);
+                            call.enqueue(new Callback<Boolean>() {
+                                @Override
+                                public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                                    if(response.isSuccessful()){
+                                        Boolean result = response.body();
+                                        if(result){
+                                            Log.d(TAG, "기존 토큰값과 동일합니다.");
+                                        }else {
+                                            Log.d(TAG, "유저 토큰값 업데이트 합니다.\n new token:"+token);
+                                        }
+                                    }
+                                }
 
+                                @Override
+                                public void onFailure(Call<Boolean> call, Throwable t) {
+                                    Log.e(TAG, "fcm 토큰 인터넷 오류");
+                                }
+                            });
+                        }
+                    }
+                });
+    }
 
 }

@@ -132,7 +132,7 @@ public class StarActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<List<StarHashTag>> call, Response<List<StarHashTag>> response) {
                             if (response.isSuccessful()){
-                                Log.d("starFeature","별자리 해시태그 이미지 가져오기 성공");
+                                Log.d(TAG,"별자리 해시태그 이미지 가져오기 성공");
                                 starHashTags=response.body();
                                 if (starHashTags!=null){
                                     for(StarHashTag sh : starHashTags){
@@ -159,25 +159,51 @@ public class StarActivity extends AppCompatActivity {
                                             intent.putExtra("starHashTag",item.getHashTagId());
                                             intent.putExtra("starHashTagName",item.getHashTagName());
                                             intent.putExtra("type",2);
-                                            Log.d("starHashTag","해시태그 전송"+item.getHashTagId());
+                                            Log.d(TAG,"해시태그 전송"+item.getHashTagId());
                                             startActivity(intent);
                                         }
                                     });
                                 }
                             }else{
-                                Log.e("starFeature","별자리 해시태그 이미지 가져오기 실패");
+                                Log.e(TAG,"별자리 해시태그 이미지 가져오기 실패");
                             }
                         }
 
                         @Override
                         public void onFailure(Call<List<StarHashTag>> call, Throwable t) {
-                            Log.e("starFeature","별자리 해시태그 인터넷 오류");
+                            Log.e(TAG,"별자리 해시태그 인터넷 오류");
                         }
                     });
                     constSummary.setText(constData.getSummary());
 
-//                    ttsClient.setSpeechText(constData.getConstStory());   //뉴톤톡 하고자 하는 문자열을 미리 세팅.
+                    rightNow.setVisibility(View.GONE);
+                    //지금 볼 수 있는 별자리인지 확인
+                    Call<List<ConstellationParams2>> toCall =RetrofitClient.getApiService().getTodayConstName();
+                    toCall.enqueue(new Callback<List<ConstellationParams2>>() {
+                        @Override
+                        public void onResponse(Call<List<ConstellationParams2>> call, Response<List<ConstellationParams2>> response) {
+                            if (response.isSuccessful()){
+                                List<ConstellationParams2> cp2s = response.body();
+                                for(ConstellationParams2 cp2 : cp2s){
+                                    String cp2Name = cp2.getConstName();
+                                    if(constName.getText().equals(cp2Name)){
+                                        Log.d(TAG,"오늘 볼 수 있는 별자리 가져오기 성공."+constName.getText());
+                                        rightNow.setVisibility(View.VISIBLE);
+                                    }
+                                }
+                            }
+                            else{Log.e(TAG,"오늘 볼 수 있는 별자리 가져오기 실패.");}
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<ConstellationParams2>> call, Throwable t) {
+                            Log.e(TAG,"오늘 볼 수 있는 별자리 인터넷 실패.");
+                        }
+                    });
+
+//                  ttsClient.setSpeechText(constData.getConstStory());   //뉴톤톡 하고자 하는 문자열을 미리 세팅.
                 } else {
+                    Log.e(TAG,"별자리 상세 정보 가져오기 실패");
                 }
             }
 
@@ -186,35 +212,6 @@ public class StarActivity extends AppCompatActivity {
                 Log.e("연결실패", t.getMessage());
             }
         });
-
-        rightNow.setVisibility(View.GONE);
-        //지금 볼 수 있는 별자리인지 확인
-        Call<List<ConstellationParams2>> toCall =RetrofitClient.getApiService().getTodayConstName();
-        toCall.enqueue(new Callback<List<ConstellationParams2>>() {
-            @Override
-            public void onResponse(Call<List<ConstellationParams2>> call, Response<List<ConstellationParams2>> response) {
-                if (response.isSuccessful()){
-                    List<ConstellationParams2> cp2s = response.body();
-                    for(ConstellationParams2 cp2 : cp2s){
-                        String cp2Name = cp2.getConstName();
-                        if(constName.getText().equals(cp2Name)){
-                            Log.d("starNow","오늘 볼 수 있는 별자리 가져오기 성공."+constName.getText());
-                            rightNow.setVisibility(View.VISIBLE);
-                        }
-                    }
-                }
-                else{Log.e("starNow","오늘 볼 수 있는 별자리 가져오기 실패.");}
-            }
-
-            @Override
-            public void onFailure(Call<List<ConstellationParams2>> call, Throwable t) {
-                Log.e("starNow","오늘 볼 수 있는 별자리 인터넷 실패.");
-            }
-        });
-
-
-
-
 
         story_play_btn.setOnClickListener(new View.OnClickListener() {
             @Override

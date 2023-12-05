@@ -3,6 +3,8 @@ package com.starrynight.tourapiproject.starPage;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -23,7 +25,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.starrynight.tourapiproject.R;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 /**
  * className :  StarCameraActivity
@@ -45,6 +52,7 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
     ImageView guideLine;
     TextView az,ro;
     LinearLayout test;
+    Context context = this;
 
     //가이드 라인 회전 관련 Sensor
     private SensorManager mSensorManger;
@@ -76,8 +84,7 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_star_camera);
-        Button onOffButton = findViewById(R.id.onoffButton);
-        guideLine = findViewById(R.id.guideLine);
+        FloatingActionButton onOffButton = findViewById(R.id.cameraButton);
         test = findViewById(R.id.guideLine2);
         cameraSurfaceView =findViewById(R.id.surfaceView);
         az = findViewById(R.id.azimuth);
@@ -95,21 +102,21 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
             ActivityCompat.requestPermissions(this, CAMERA_PERMISSION, PERMISSIONS_REQUEST_CODE);
         }
 
-        //가이드라인 onoff 버튼
+        long now = System.currentTimeMillis();//댓글을 쓴 현재시간 가져오기
+        Date date = new Date(now);
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat dateFormat1 = new SimpleDateFormat("'0'yyD");
+        String julianDate = dateFormat1.format(date);
+        Log.d("율리우스력","time: "+julianDate);
+
+        //기본 카메라 앱 실행 버튼
         onOffButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(guideLine.getVisibility()==View.VISIBLE){
-                    guideLine.setVisibility(View.INVISIBLE);
-                    onOffButton.setEnabled(false);
-                    Handler handle = new Handler();
-                    handle.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            onOffButton.setEnabled(true);
-                        }
-                    },1000);
-                }else{guideLine.setVisibility(View.VISIBLE);}
+
+                Intent intent = context.getPackageManager().getLaunchIntentForPackage("com.sec.android.app.camera");
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         });
 
@@ -153,11 +160,26 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
         }
         return output;
     }
+//    @Override
+//    public String getPackageName() {
+//        PackageManager pm = getPackageManager();
+//        try {
+//            String packageName = pm.getPackageInfo(getPackageName(),0).packageName;
+//            if("com.sec.android.app.camera".equals(packageName)){
+//                return packageName;
+//            }else if("com.lge.camera".equals(packageName)){
+//                return packageName;
+//            }
+//        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        return "";
+//    }
 
     @SuppressLint("SetTextI18n")
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if(event.sensor.getType() == Sensor.TYPE_GRAVITY) {
+        if(event.sensor.getType() == Sensor.TYPE_GRAVITY) { //고도 구하는 공식
             float x = event.values[0];
             float y = event.values[1];
             float z = event.values[2];
@@ -180,22 +202,9 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
             SensorManager.getRotationMatrix(mR, mL, mLastAcceleromter, mLastMagnetometer);
             SensorManager.remapCoordinateSystem(mR, axisX, axisZ, adjustedR);
             azimuthinDegress = (int) (Math.toDegrees(SensorManager.getOrientation(adjustedR, mOrientation)[0]) + 360) % 360;
-            RotateAnimation ra = new RotateAnimation(
-                    mCurrentDegree,
-                    -azimuthinDegress,
-                    Animation.RELATIVE_TO_SELF, 0.5f,
-                    Animation.RELATIVE_TO_SELF, 0.5f
-            );
-            ra.setDuration(250);
-            ra.setFillAfter(true);
-            guideLine.startAnimation(ra);
             mCurrentDegree = -azimuthinDegress;
 
             SensorManager.getOrientation(mR,mOrientation);
-            Log.e("LOG",
-                    "y-rotation: " + Float.toString(90-yrAngle)
-                            + "           [Z]:" + Float.toString(azimuthinDegress)
-            );
             float y = (90-yrAngle);
             az.setText("방위각: "+ azimuthinDegress);
             ro.setText("고도: "+ y);
@@ -210,21 +219,6 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
             }else{
                 test.setVisibility(View.GONE);
             }
-
-
-//            SensorManager.getOrientation(mR,mOrientation);
-//            float z =(float)Math.toDegrees(mOrientation[0]);
-//            float x =(float)Math.toDegrees(mOrientation[1]);
-//            float y =(float)Math.toDegrees(mOrientation[2]);
-//            roll = Math.atan2(x,z)*RAD2DGR;
-//            pitch = Math.atan2(y,z)*RAD2DGR;
-//            yaw = Math.atan2(y,x)*RAD2DGR;
-//            Log.e("LOG", "           [X]:" + String.format("%.4f", x)
-//                    + "           [Y]:" + String.format("%.4f", y)
-//                    + "           [Z]:" + String.format("%.4f", z)
-//                    + "           [roll]:" + String.format("%.4f", roll)
-//                    + "           [pitch]:" + String.format("%.4f", pitch)
-//                    + "           [yaw]:" + String.format("%.4f", yaw));
         }
     }
 
@@ -232,4 +226,5 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
 }

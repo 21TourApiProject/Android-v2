@@ -93,21 +93,21 @@
         <item name="android:textSize">18sp</item>
         <item name="fontStyle">normal</item>
         <item name="android:textFontWeight">700</item>
-        <item name="lineHeight">24.84sp</item>
+        <item name="lineHeight">27.36sp</item>
     </style>
     <style name="semiBold_multi_18" parent="Widget.AppCompat.TextView">
         <item name="android:fontFamily">@font/pretendard_variable</item>
         <item name="android:textSize">18sp</item>
         <item name="fontStyle">normal</item>
         <item name="android:textFontWeight">600</item>
-        <item name="lineHeight">24.84sp</item>
+        <item name="lineHeight">27.36sp</item>
     </style>
     <style name="medium_multi_18" parent="Widget.AppCompat.TextView">
         <item name="android:fontFamily">@font/pretendard_variable</item>
         <item name="android:textSize">18sp</item>
         <item name="fontStyle">normal</item>
         <item name="android:textFontWeight">500</item>
-        <item name="lineHeight">24.84sp</item>
+        <item name="lineHeight">27.36sp</item>
     </style>
     <style name="semiBold_single_16" parent="Widget.AppCompat.TextView">
         <item name="android:fontFamily">@font/pretendard_variable</item>
@@ -128,14 +128,14 @@
         <item name="android:textSize">16sp</item>
         <item name="fontStyle">normal</item>
         <item name="android:textFontWeight">600</item>
-        <item name="lineHeight">22.4sp</item>
+        <item name="lineHeight">25.6sp</item>
     </style>
     <style name="medium_multi_16" parent="Widget.AppCompat.TextView">
         <item name="android:fontFamily">@font/pretendard_variable</item>
         <item name="android:textSize">16sp</item>
         <item name="fontStyle">normal</item>
         <item name="android:textFontWeight">500</item>
-        <item name="lineHeight">22.4sp</item>
+        <item name="lineHeight">25.6sp</item>
     </style>
     <style name="semiBold_single_14" parent="Widget.AppCompat.TextView">
         <item name="android:fontFamily">@font/pretendard_variable</item>
