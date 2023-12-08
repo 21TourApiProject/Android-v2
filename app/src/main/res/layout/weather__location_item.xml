@@ -21,6 +21,11 @@
             android:text="별마로 천문대"
             android:textColor="@color/white" />
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
         <TextView
             android:id="@+id/observationalFit"
             android:layout_width="wrap_content"
@@ -31,7 +36,6 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:src="@drawable/main__weather_star" />
     </LinearLayout>
 

@@ -58,13 +58,14 @@ public class SearchLocationItemAdapter extends RecyclerView.Adapter<SearchLocati
 
         TextView title;
         TextView subtitle;
-        TextView observationValue;
+        TextView observationalFit;
 
         public ViewHolder(@NonNull View itemView, final OnSearchItemClickListener listener) {
             super(itemView);
 
             title = itemView.findViewById(R.id.title);
             subtitle = itemView.findViewById(R.id.subtitle);
+            observationalFit = itemView.findViewById(R.id.observationalFit);
             itemView.setClickable(true);
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
