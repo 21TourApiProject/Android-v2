@@ -28,21 +28,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.starrynight.tourapiproject.alarmPage.AlarmActivity;
 import com.starrynight.tourapiproject.alarmPage.subBanner.SubBanner;
 import com.starrynight.tourapiproject.mainPage.BestFitObservationAdapter;
 import com.starrynight.tourapiproject.mainPage.OnBestFitObsItemClickListener;
+import com.starrynight.tourapiproject.mainPage.interestArea.CustomInterestAreaView;
+import com.starrynight.tourapiproject.mainPage.interestArea.InterestArea;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.ObservationSimpleParams;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
-import com.starrynight.tourapiproject.postItemPage.OnPostPointItemClickListener;
-import com.starrynight.tourapiproject.postItemPage.Post_point_item_Adapter;
-import com.starrynight.tourapiproject.postItemPage.post_point_item;
-import com.starrynight.tourapiproject.postPage.postRetrofit.MainPost;
-import com.starrynight.tourapiproject.postPage.postRetrofit.MainPost_adapter;
 import com.starrynight.tourapiproject.postWritePage.PostWriteActivity;
-import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchFirst;
 import com.starrynight.tourapiproject.weatherPage.GpsTracker;
 import com.starrynight.tourapiproject.weatherPage.LocationDTO;
 import com.starrynight.tourapiproject.weatherPage.WeatherActivity;
@@ -86,17 +81,10 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     SwipeRefreshLayout swipeRefreshLayout;
     NestedScrollView nestedScrollView;
     List<Long> myhashTagIdList;
-    int count = 5, end, limit;
-    List<MainPost> mainPostList;
-    List<MainPost> result;
-    Boolean noMorePost;
-    RecyclerView recyclerView;
     ImageView subBanner;
     LinearLayout subBannerLayout;
-    MainPost_adapter adapter;
     ProgressBar progressBar;
     LinearLayout weatherLocationSearch;
-    FloatingActionButton postwritebtn;
 
     private static final String TAG = "Main Fragment";
     private static final String TAG1 = "SubBannerApi";
@@ -120,7 +108,13 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private TextView mainBestObservationFit;
     private TextView recommendTime;
 
-    public MainFragment() {}
+    // 관심지역
+    private TextView editInterestArea;
+    private ImageView addInterestArea;
+    private ImageView addInterestAreaInit;
+
+    public MainFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -166,7 +160,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             String SD = address.getAdminArea();
             String SGG = address.getLocality() == null ? address.getSubLocality() : address.getLocality();
 
-            if(SD == null || !SD.contains("세종") && SGG == null){
+            if (SD == null || !SD.contains("세종") && SGG == null) {
                 location = "현위치를 불러올 수 없습니다.";
                 currentLocation.setText(location);
             } else {
@@ -253,32 +247,106 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             e.printStackTrace();
         }
 
+        // 관심지역
+        CustomInterestAreaView interestArea0 = v.findViewById(R.id.interestArea0);
+        CustomInterestAreaView interestArea1 = v.findViewById(R.id.interestArea1);
+        CustomInterestAreaView interestArea2 = v.findViewById(R.id.interestArea2);
+        addInterestArea = v.findViewById(R.id.addInterestArea);
+        addInterestAreaInit = v.findViewById(R.id.addInterestAreaInit);
+
+        RetrofitClient.getApiService()
+                .getAllInterestArea(userId)
+                .enqueue(new Callback<List<InterestArea>>() {
+                    @Override
+                    public void onResponse(Call<List<InterestArea>> call, Response<List<InterestArea>> response) {
+                        if (response.isSuccessful()) {
+                            List<InterestArea> interestAreaList = response.body();
+                            System.out.println("interestAreaList.size() = " + interestAreaList.size());
+
+                            if (interestAreaList.size() == 0) { // 0
+                                addInterestAreaInit.setVisibility(View.VISIBLE);
+                            }
+                            if (interestAreaList.size() >= 1) { // 1, 2, 3
+                                editInterestArea.setVisibility(View.VISIBLE);
+                                addInterestArea.setVisibility(View.VISIBLE);
+                                interestArea0.setVisibility(View.VISIBLE);
+                                interestArea0.setInterestAreaName(interestAreaList.get(0).getRegionName());
+//                                interestArea0.setInterestAreaObservationalFit(interestAreaList.get(0).get());
+                            }
+                            if (interestAreaList.size() >= 2) { // 2, 3
+                                interestArea1.setVisibility(View.VISIBLE);
+                                interestArea1.setInterestAreaName(interestAreaList.get(1).getRegionName());
+                            }
+                            if (interestAreaList.size() == 3) { // 3
+                                addInterestArea.setVisibility(View.GONE);
+                                interestArea2.setVisibility(View.VISIBLE);
+                                interestArea2.setInterestAreaName(interestAreaList.get(2).getRegionName());
+                            }
+
+                        } else {
+                            Log.e(TAG, "서버 api 호출 실패");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<InterestArea>> call, Throwable t) {
+                        Log.e("연결실패", t.getMessage());
+                    }
+                });
+
+        addInterestArea = v.findViewById(R.id.addInterestArea);
+        addInterestAreaInit = v.findViewById(R.id.addInterestAreaInit);
+
+        addInterestArea.setOnClickListener(view -> {
+            // 관심 지역 추가 페이지로 이동
+            Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
+            intent.putExtra("fromInterestAreaAdd", true);
+            intent.putExtra("userId", userId);
+            startActivityForResult(intent, 105);
+        });
+
+        addInterestAreaInit.setOnClickListener(view -> {
+            // 관심 지역 추가 페이지로 이동
+            Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
+            intent.putExtra("fromInterestAreaAdd", true);
+            intent.putExtra("userId", userId);
+            startActivityForResult(intent, 105);
+        });
+
+        editInterestArea = v.findViewById(R.id.editInterestArea);
+        editInterestArea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editInterestArea.setText("편집취소");
+            }
+        });
+
         //서브 배너 가져오기
         subBannerLayout = v.findViewById(R.id.subBanner_linear);
-        subBanner = (ImageView)v.findViewById(R.id.subBanner);
+        subBanner = v.findViewById(R.id.subBanner);
         Call<SubBanner> subBannerCall = com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient.getApiService().getLastSubBanner();
         subBannerCall.enqueue(new Callback<SubBanner>() {
             @Override
             public void onResponse(Call<SubBanner> call, Response<SubBanner> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     SubBanner banner = response.body();
-                    if(banner.isShow()){ //isShow가 true면 배너가 보일 수 있도록 한다
+                    if (banner.isShow()) { //isShow가 true면 배너가 보일 수 있도록 한다
                         subBannerLayout.setVisibility(View.VISIBLE);
                         Glide.with(getActivity()).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/subBanner/" + banner.getBannerImage()).fitCenter().into(subBanner);
-                    }else {
+                    } else {
                         subBannerLayout.setVisibility(View.GONE);
                     }
                     subBanner.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            if(banner.getLink()!=null){
+                            if (banner.getLink() != null) {
                                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(banner.getLink()));
                                 startActivity(intent);
                             }
                         }
                     });
 
-                }else {
+                } else {
                     Log.e(TAG1, "서브 배너 오류");
                 }
             }
@@ -290,7 +358,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         });
 
         // 게시물 작성 페이지로 넘어가는 이벤트
-        Button postWrite = (Button) v.findViewById(R.id.postWrite);
+        Button postWrite = v.findViewById(R.id.postWrite);
         postWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -301,7 +369,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         // 알림 페이지로 넘어가는 이벤트
 
-        Button alarm = (Button) v.findViewById(R.id.main_alarm);
+        Button alarm = v.findViewById(R.id.main_alarm);
         alarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
