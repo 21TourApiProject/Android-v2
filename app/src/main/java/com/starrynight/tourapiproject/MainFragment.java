@@ -33,7 +33,7 @@ import com.starrynight.tourapiproject.alarmPage.subBanner.SubBanner;
 import com.starrynight.tourapiproject.mainPage.BestFitObservationAdapter;
 import com.starrynight.tourapiproject.mainPage.OnBestFitObsItemClickListener;
 import com.starrynight.tourapiproject.mainPage.interestArea.CustomInterestAreaView;
-import com.starrynight.tourapiproject.mainPage.interestArea.InterestArea;
+import com.starrynight.tourapiproject.mainPage.interestArea.InterestAreaDTO;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.ObservationSimpleParams;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
@@ -256,11 +256,11 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         RetrofitClient.getApiService()
                 .getAllInterestArea(userId)
-                .enqueue(new Callback<List<InterestArea>>() {
+                .enqueue(new Callback<List<InterestAreaDTO>>() {
                     @Override
-                    public void onResponse(Call<List<InterestArea>> call, Response<List<InterestArea>> response) {
+                    public void onResponse(Call<List<InterestAreaDTO>> call, Response<List<InterestAreaDTO>> response) {
                         if (response.isSuccessful()) {
-                            List<InterestArea> interestAreaList = response.body();
+                            List<InterestAreaDTO> interestAreaList = response.body();
                             System.out.println("interestAreaList.size() = " + interestAreaList.size());
 
                             if (interestAreaList.size() == 0) { // 0
@@ -271,16 +271,19 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                 addInterestArea.setVisibility(View.VISIBLE);
                                 interestArea0.setVisibility(View.VISIBLE);
                                 interestArea0.setInterestAreaName(interestAreaList.get(0).getRegionName());
-//                                interestArea0.setInterestAreaObservationalFit(interestAreaList.get(0).get());
+                                interestArea0.setInterestAreaObservationalFit(interestAreaList.get(0).getObservationalFit());
+
                             }
                             if (interestAreaList.size() >= 2) { // 2, 3
                                 interestArea1.setVisibility(View.VISIBLE);
                                 interestArea1.setInterestAreaName(interestAreaList.get(1).getRegionName());
+                                interestArea1.setInterestAreaObservationalFit(interestAreaList.get(1).getObservationalFit());
                             }
                             if (interestAreaList.size() == 3) { // 3
                                 addInterestArea.setVisibility(View.GONE);
                                 interestArea2.setVisibility(View.VISIBLE);
                                 interestArea2.setInterestAreaName(interestAreaList.get(2).getRegionName());
+                                interestArea2.setInterestAreaObservationalFit(interestAreaList.get(2).getObservationalFit());
                             }
 
                         } else {
@@ -289,7 +292,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     }
 
                     @Override
-                    public void onFailure(Call<List<InterestArea>> call, Throwable t) {
+                    public void onFailure(Call<List<InterestAreaDTO>> call, Throwable t) {
                         Log.e("연결실패", t.getMessage());
                     }
                 });

@@ -1,7 +1,7 @@
 package com.starrynight.tourapiproject.mainPage.mainPageRetrofit;
 
-import com.starrynight.tourapiproject.mainPage.interestArea.InterestArea;
 import com.starrynight.tourapiproject.mainPage.interestArea.InterestAreaDTO;
+import com.starrynight.tourapiproject.mainPage.interestArea.UpdateInterestAreaDTO;
 
 import java.util.List;
 
@@ -30,12 +30,12 @@ public interface MainPageRetrofitService {
     Call<List<ObservationSimpleParams>> getBestFitObservationList();
 
     @GET("interestArea/{userId}")
-    Call<List<InterestArea>> getAllInterestArea(@Path("userId") Long userId);
+    Call<List<InterestAreaDTO>> getAllInterestArea(@Path("userId") Long userId);
 
     @POST("interestArea")
-    Call<Void> addInterestArea(@Body InterestAreaDTO interestAreaDTO);
+    Call<Void> addInterestArea(@Body UpdateInterestAreaDTO updateInterestAreaDTO);
 
     @DELETE("interestArea")
-    Call<Void> deleteInterestArea(@Body InterestAreaDTO interestAreaDTO);
+    Call<Void> deleteInterestArea(@Body UpdateInterestAreaDTO updateInterestAreaDTO);
 
 }

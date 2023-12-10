@@ -3,6 +3,7 @@ package com.starrynight.tourapiproject.weatherPage;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,6 +38,7 @@ public class SearchLocationItemAdapter extends RecyclerView.Adapter<SearchLocati
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.title.setText(searchItemArrayList.get(position).getTitle());
         holder.subtitle.setText(searchItemArrayList.get(position).getSubtitle());
+        holder.observationalFit.setText(searchItemArrayList.get(position).getObservationalFit());
     }
 
     public void setOnItemClicklistener(OnSearchItemClickListener listener) {
@@ -59,6 +61,7 @@ public class SearchLocationItemAdapter extends RecyclerView.Adapter<SearchLocati
         TextView title;
         TextView subtitle;
         TextView observationalFit;
+        ImageView observationalStar;
 
         public ViewHolder(@NonNull View itemView, final OnSearchItemClickListener listener) {
             super(itemView);
@@ -66,6 +69,7 @@ public class SearchLocationItemAdapter extends RecyclerView.Adapter<SearchLocati
             title = itemView.findViewById(R.id.title);
             subtitle = itemView.findViewById(R.id.subtitle);
             observationalFit = itemView.findViewById(R.id.observationalFit);
+            observationalStar = itemView.findViewById(R.id.observationalStar);
             itemView.setClickable(true);
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();

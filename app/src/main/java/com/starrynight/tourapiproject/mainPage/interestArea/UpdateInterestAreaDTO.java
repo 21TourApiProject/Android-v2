@@ -1,21 +1,11 @@
 package com.starrynight.tourapiproject.mainPage.interestArea;
 
-public class InterestArea {
+public class UpdateInterestAreaDTO {
 
-    public Long interestAreaId;
     public Long userId;
     public Long regionId;
     public String regionName;
     public Integer regionType;
-    public Double observationalFit;
-
-    public Long getInterestAreaId() {
-        return interestAreaId;
-    }
-
-    public void setInterestAreaId(Long interestAreaId) {
-        this.interestAreaId = interestAreaId;
-    }
 
     public Long getUserId() {
         return userId;
@@ -47,13 +37,5 @@ public class InterestArea {
 
     public void setRegionType(Integer regionType) {
         this.regionType = regionType;
-    }
-
-    public Double getObservationalFit() {
-        return observationalFit;
-    }
-
-    public void setObservationalFit(Double observationalFit) {
-        this.observationalFit = observationalFit;
     }
 }
