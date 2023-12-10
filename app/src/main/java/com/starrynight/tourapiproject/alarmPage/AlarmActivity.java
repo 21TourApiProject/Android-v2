@@ -42,7 +42,10 @@ public class AlarmActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.alarm_recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        Call<List<Alarm>> call = RetrofitClient.getApiService().getAllAlarm();
+
+        Long userId=getIntent().getLongExtra("userId",0);
+
+        Call<List<Alarm>> call = RetrofitClient.getApiService().getAllAlarm(userId);
         call.enqueue(new Callback<List<Alarm>>() {
             @Override
             public void onResponse(Call<List<Alarm>> call, Response<List<Alarm>> response) {
@@ -55,9 +58,18 @@ public class AlarmActivity extends AppCompatActivity {
                             finalAlarmList.add(alarms.get(i));
                             Log.d("alarm", "알림 내용"+alarms.get(i).getAlarmContent());
                         }
+                        else{
+                            finalAlarmList.add(alarms.get(i));
+                            Log.d("alarm", "알림 내용"+alarms.get(i).getAlarmContent());
+                        }
                     }
                     AlarmAdapter adapter = new AlarmAdapter(getApplicationContext(),finalAlarmList);
                     recyclerView.setAdapter(adapter);
+                    if(finalAlarmList.isEmpty()){
+                        nothingAlarm.setVisibility(View.VISIBLE);
+                    }else {
+                        nothingAlarm.setVisibility(View.GONE);
+                    }
                 } else {
                     Log.d("alarm", "알림 업로드 실패");
                 }
@@ -68,12 +80,6 @@ public class AlarmActivity extends AppCompatActivity {
                 Log.d("alarm", "알림 인터넷 오류");
             }
         });
-
-        if(finalAlarmList.isEmpty()){
-            nothingAlarm.setVisibility(View.VISIBLE);
-        }else {
-            nothingAlarm.setVisibility(View.GONE);
-        }
 
         LinearLayout back_btn = findViewById(R.id.alarmBack);
         back_btn.setOnClickListener(new View.OnClickListener() {
