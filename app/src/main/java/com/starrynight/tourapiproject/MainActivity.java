@@ -3,7 +3,6 @@ package com.starrynight.tourapiproject;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -25,11 +24,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-import com.starrynight.tourapiproject.mapPage.Activities;
-import com.starrynight.tourapiproject.mapPage.MapFragment;
+import com.starrynight.tourapiproject.mainPage.MainFragment;
 import com.starrynight.tourapiproject.starPage.TonightSkyFragment;
-
-import java.util.ArrayList;
 
 /**
  * @author : jinhyeok

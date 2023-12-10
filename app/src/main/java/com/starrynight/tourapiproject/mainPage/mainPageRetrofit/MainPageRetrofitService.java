@@ -1,6 +1,7 @@
 package com.starrynight.tourapiproject.mainPage.mainPageRetrofit;
 
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.ObservationSimpleParams;
+import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
 
 import java.util.List;
 
@@ -23,5 +24,8 @@ public interface MainPageRetrofitService {
 
     @GET("observations/simple")
     Call<List<ObservationSimpleParams>> getBestFitObservationList();
+
+    @GET("constellation/todayConst")
+    Call<List<StarItem>> getTodayConst();
 
 }
