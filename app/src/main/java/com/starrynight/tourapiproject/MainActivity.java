@@ -3,6 +3,7 @@ package com.starrynight.tourapiproject;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
@@ -28,6 +29,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.starrynight.tourapiproject.alarmPage.AlarmActivity;
 import com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.starPage.TonightSkyFragment;
 
@@ -173,9 +175,16 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return false;
             }
-
-
         });
+
+        if(getIntent()!=null&&getIntent().getStringExtra("type")!=null){
+            if(getIntent().getStringExtra("type").equals("alarm")){
+                Intent intent = new Intent(getApplicationContext(), AlarmActivity.class);
+                intent.putExtra("userId",userId);
+                startActivity(intent);
+            }
+        }
+
     }
 
     //뒤로가기 버튼 클릭 시
