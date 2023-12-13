@@ -15,7 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.starrynight.tourapiproject.R;
-import com.starrynight.tourapiproject.mainPage.interestArea.UpdateInterestAreaDTO;
+import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaRetrofitClient;
+import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.UpdateInterestAreaDTO;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.WeatherRetrofitClient;
 
@@ -97,7 +98,7 @@ public class WeatherLocationSearchActivity extends AppCompatActivity {
                     updateInterestAreaDTO.setRegionId(item.areaId);
                 }
 
-                RetrofitClient.getApiService()
+                InterestAreaRetrofitClient.getApiService()
                         .addInterestArea(updateInterestAreaDTO)
                         .enqueue(new Callback<Void>() {
                             @Override

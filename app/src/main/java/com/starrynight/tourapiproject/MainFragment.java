@@ -33,7 +33,9 @@ import com.starrynight.tourapiproject.alarmPage.subBanner.SubBanner;
 import com.starrynight.tourapiproject.mainPage.BestFitObservationAdapter;
 import com.starrynight.tourapiproject.mainPage.OnBestFitObsItemClickListener;
 import com.starrynight.tourapiproject.mainPage.interestArea.CustomInterestAreaView;
-import com.starrynight.tourapiproject.mainPage.interestArea.InterestAreaDTO;
+import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaDTO;
+import com.starrynight.tourapiproject.mainPage.interestArea.InterestAreaWeatherActivity;
+import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaRetrofitClient;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.ObservationSimpleParams;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
@@ -112,6 +114,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private TextView editInterestArea;
     private ImageView addInterestArea;
     private ImageView addInterestAreaInit;
+    List<Long> interestRegionIdList = new ArrayList<>(); // 관심 지역 id 리스트
+    List<Integer> interestRegionTypeList = new ArrayList<>(); // 관심 지역 id 리스트
 
     public MainFragment() {
     }
@@ -254,14 +258,17 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         addInterestArea = v.findViewById(R.id.addInterestArea);
         addInterestAreaInit = v.findViewById(R.id.addInterestAreaInit);
 
-        RetrofitClient.getApiService()
+        InterestAreaRetrofitClient.getApiService()
                 .getAllInterestArea(userId)
                 .enqueue(new Callback<List<InterestAreaDTO>>() {
                     @Override
                     public void onResponse(Call<List<InterestAreaDTO>> call, Response<List<InterestAreaDTO>> response) {
                         if (response.isSuccessful()) {
                             List<InterestAreaDTO> interestAreaList = response.body();
-                            System.out.println("interestAreaList.size() = " + interestAreaList.size());
+                            interestAreaList.forEach(interestAreaDTO -> interestRegionIdList.add(interestAreaDTO.getRegionId()));
+                            interestAreaList.forEach(interestAreaDTO -> interestRegionTypeList.add(interestAreaDTO.getRegionType()));
+                            System.out.println("interestRegionIdList = " + interestRegionIdList);
+                            System.out.println("interestRegionTypeList = " + interestRegionTypeList);
 
                             if (interestAreaList.size() == 0) { // 0
                                 addInterestAreaInit.setVisibility(View.VISIBLE);
@@ -296,6 +303,37 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                         Log.e("연결실패", t.getMessage());
                     }
                 });
+
+        // 관심 지역 카드 클릭
+        interestArea0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), InterestAreaWeatherActivity.class);
+                intent.putExtra("regionId", interestRegionIdList.get(0));
+                intent.putExtra("regionType", interestRegionTypeList.get(0));
+                startActivityForResult(intent, 105);
+            }
+        });
+
+        interestArea1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), InterestAreaWeatherActivity.class);
+                intent.putExtra("regionId", interestRegionIdList.get(1));
+                intent.putExtra("regionType", interestRegionTypeList.get(1));
+                startActivityForResult(intent, 105);
+            }
+        });
+
+        interestArea2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), InterestAreaWeatherActivity.class);
+                intent.putExtra("regionId", interestRegionIdList.get(2));
+                intent.putExtra("regionType", interestRegionTypeList.get(2));
+                startActivityForResult(intent, 105);
+            }
+        });
 
         addInterestArea = v.findViewById(R.id.addInterestArea);
         addInterestAreaInit = v.findViewById(R.id.addInterestAreaInit);
