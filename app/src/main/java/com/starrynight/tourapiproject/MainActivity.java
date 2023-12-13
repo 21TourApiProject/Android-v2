@@ -56,8 +56,9 @@ import retrofit2.Response;
  */
 public class MainActivity extends AppCompatActivity {
 
-    public static Context mContext;
     private static final String TAG = "FcmToken";
+
+    public static Context mContext;
 
     MainFragment mainFragment;
     SearchFragment searchFragment;
