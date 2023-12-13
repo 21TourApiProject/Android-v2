@@ -1,7 +1,8 @@
-package com.starrynight.tourapiproject;
+package com.starrynight.tourapiproject.mainPage;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -13,11 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
@@ -28,21 +31,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.starrynight.tourapiproject.MainActivity;
+import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.alarmPage.AlarmActivity;
 import com.starrynight.tourapiproject.alarmPage.subBanner.SubBanner;
-import com.starrynight.tourapiproject.mainPage.BestFitObservationAdapter;
-import com.starrynight.tourapiproject.mainPage.OnBestFitObsItemClickListener;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.ObservationSimpleParams;
+import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.PostContentsParams;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
-import com.starrynight.tourapiproject.postItemPage.OnPostPointItemClickListener;
-import com.starrynight.tourapiproject.postItemPage.Post_point_item_Adapter;
-import com.starrynight.tourapiproject.postItemPage.post_point_item;
-import com.starrynight.tourapiproject.postPage.postRetrofit.MainPost;
-import com.starrynight.tourapiproject.postPage.postRetrofit.MainPost_adapter;
+import com.starrynight.tourapiproject.postPage.PostActivity;
 import com.starrynight.tourapiproject.postWritePage.PostWriteActivity;
-import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchFirst;
+import com.starrynight.tourapiproject.starPage.StarActivity;
+import com.starrynight.tourapiproject.starPage.StarSearchActivity;
+import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener;
+import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
+import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdapter;
 import com.starrynight.tourapiproject.weatherPage.GpsTracker;
 import com.starrynight.tourapiproject.weatherPage.LocationDTO;
 import com.starrynight.tourapiproject.weatherPage.WeatherActivity;
@@ -58,6 +61,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -86,19 +90,12 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     SwipeRefreshLayout swipeRefreshLayout;
     NestedScrollView nestedScrollView;
     List<Long> myhashTagIdList;
-    int count = 5, end, limit;
-    List<MainPost> mainPostList;
-    List<MainPost> result;
-    Boolean noMorePost;
-    RecyclerView recyclerView;
     ImageView subBanner;
     LinearLayout subBannerLayout;
-    MainPost_adapter adapter;
     ProgressBar progressBar;
     LinearLayout weatherLocationSearch;
-    FloatingActionButton postwritebtn;
 
-    private static final String TAG = "Main Fragment";
+    private static final String TAG = "MainFragment";
     private static final String TAG1 = "SubBannerApi";
     @SuppressLint("SimpleDateFormat")
     SimpleDateFormat hh = new SimpleDateFormat("HH");
@@ -119,6 +116,16 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private ImageView star;
     private TextView mainBestObservationFit;
     private TextView recommendTime;
+
+    private RecyclerView starRecycler;
+    private ImageButton move_star_btn;
+    private StarViewAdapter starViewAdapter;
+    private TextView startMonthText;
+    private LinearLayout moveReviewBtn;
+    private RecyclerView reviewRecycler;
+    private RecentReviewAdapter recentReviewAdapter;
+
+    private static final String MAIN_STAR_TEXT = "월에 잘 보여요";
 
     public MainFragment() {}
 
@@ -317,6 +324,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             startActivityForResult(intent, 105);
         });
 
+        // 오늘 보기좋은 관측지
         RecyclerView bestFitRecyclerView = v.findViewById(R.id.main_best_fit_recycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         bestFitRecyclerView.setLayoutManager(linearLayoutManager);
@@ -349,7 +357,25 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
 
-        return v;
+        // 오늘 볼 수 있는 별자리
+        starRecycler = v.findViewById(R.id.main_star_today_recycler);
+        move_star_btn = v.findViewById(R.id.main_move_star);
+        starViewAdapter = new StarViewAdapter();
+        startMonthText = v.findViewById(R.id.main_star_month_txt);
+        starRecycler.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
+        starRecycler.setAdapter(starViewAdapter);
+        setTodayStarLayout();
+
+        // 최근 관측 후기
+        reviewRecycler = v.findViewById(R.id.main_review_recycler);
+        moveReviewBtn = v.findViewById(R.id.main_move_review);
+        recentReviewAdapter = new RecentReviewAdapter();
+        reviewRecycler.setAdapter(recentReviewAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        reviewRecycler.setLayoutManager(layoutManager);
+        setCurrentReviewLayout();
+
+       return v;
     }
 
     @Override
@@ -379,5 +405,93 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE);
         }
+    }
+
+    private void setTodayStarLayout() {
+        Calendar now = Calendar.getInstance();
+        int month = now.get(Calendar.MONTH) +1;
+        startMonthText.setText(month+MAIN_STAR_TEXT);
+
+        // 오늘의 별자리 리스트 불러오는 api
+        Call<List<StarItem>> todayConstCall = RetrofitClient.getApiService().getTodayConst();
+        todayConstCall.enqueue(new Callback<List<StarItem>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<StarItem>> call, Response<List<StarItem>> response) {
+                if (response.isSuccessful()) {
+                    List<StarItem> result = response.body();
+                    for (StarItem si : result) {
+                        starViewAdapter.addItem(new StarItem(si.getConstId(), si.getConstName(), si.getConstEng()));
+                    }
+                    starRecycler.setAdapter(starViewAdapter);
+                } else {
+                    Log.d(TAG, "오늘의 별자리 불러오기 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<StarItem>> call, Throwable t) {
+                Log.e(TAG, "오늘의 별자리"+t.getMessage());
+            }
+        });
+
+        // item 클릭 시 해당 아이템 constId 넘겨주기
+        starViewAdapter.setOnItemClickListener(new OnStarItemClickListener() {
+            @Override
+            public void onItemClick(StarViewAdapter.ViewHolder holder, View view, int position) {
+                StarItem item = starViewAdapter.getItem(position);
+                Intent intent = new Intent(getActivity().getApplicationContext(), StarActivity.class);
+                intent.putExtra("constName", item.getConstName());
+                Log.d("itemConstName", item.getConstName());
+                startActivity(intent);
+            }
+        });
+
+        move_star_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), StarSearchActivity.class);
+                intent.putExtra("starHashTagName",month+"월");
+                intent.putExtra("type",3);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void setCurrentReviewLayout() {
+        Call<List<PostContentsParams>> call = RetrofitClient.getApiService().getLatestPostWithSize(3);
+        call.enqueue(new Callback<List<PostContentsParams>>() {
+            @Override
+            public void onResponse(Call<List<PostContentsParams>> call, Response<List<PostContentsParams>> response) {
+                if (response.isSuccessful()) {
+                    List<PostContentsParams> postContentsParamsList = response.body();
+                    recentReviewAdapter.setItems(postContentsParamsList);
+                    recentReviewAdapter.notifyDataSetChanged();
+                } else {
+                    Log.d(TAG, "최근 관측후기 로드 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PostContentsParams>> call, Throwable t) {
+                Log.d(TAG, "최근 관측후기 연결 실패");
+            }
+        });
+
+        recentReviewAdapter.setOnItemClicklistener(new RecentReviewItemClickListener() {
+            @Override
+            public void onItemClick(RecentReviewAdapter.ViewHolder holder, View view, int position) {
+                PostContentsParams item = recentReviewAdapter.getItem(position);
+                Intent intent = new Intent(getActivity(), PostActivity.class);
+                intent.putExtra("postId", item.getItemId());
+                startActivity(intent);
+            }
+        });
+
+        moveReviewBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) Objects.requireNonNull(getActivity())).movePost();
+            }
+        });
     }
 }
