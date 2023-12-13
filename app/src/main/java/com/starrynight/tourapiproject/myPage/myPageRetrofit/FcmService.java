@@ -13,8 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.google.firebase.ktx.Firebase;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.starrynight.tourapiproject.MainActivity;
@@ -69,13 +67,18 @@ public class FcmService extends FirebaseMessagingService {
             builder = new NotificationCompat.Builder(getApplicationContext());
         }
 
-        String title = remoteMessage.getNotification().getTitle();
-        String body = remoteMessage.getNotification().getBody();
+        String title = remoteMessage.getData().get("title");
+        String body = remoteMessage.getData().get("body");
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("type","alarm");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 10 , intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
         builder.setContentTitle(title)
                 .setContentText(body)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
                 .setSmallIcon(R.mipmap.main_icon2_foreground);
-        PendingIntent intent = PendingIntent.getActivity(this,0, new Intent (getApplicationContext(), MainActivity.class),PendingIntent.FLAG_IMMUTABLE);
 
         Notification notification = builder.build();
         SharedPreferences pref=getSharedPreferences("pref",MODE_PRIVATE);

@@ -12,8 +12,9 @@
         android:id="@+id/bottom_nav_view"
         android:layout_width="0dp"
         android:layout_height="@dimen/bottom_nav_size"
+        android:paddingHorizontal="10dp"
         android:background="@color/bg_black"
-        app:itemIconSize="80dp"
+        app:itemIconSize="68dp"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -31,6 +32,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"></FrameLayout>
+        app:layout_constraintVertical_bias="0.0"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

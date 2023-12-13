@@ -3,6 +3,7 @@ package com.starrynight.tourapiproject;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
@@ -27,7 +28,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.starrynight.tourapiproject.mainPage.MainFragment;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.starrynight.tourapiproject.alarmPage.AlarmActivity;
 import com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.starPage.TonightSkyFragment;
 
@@ -54,8 +57,9 @@ import retrofit2.Response;
  */
 public class MainActivity extends AppCompatActivity {
 
-    public static Context mContext;
     private static final String TAG = "FcmToken";
+
+    public static Context mContext;
 
     MainFragment mainFragment;
     SearchFragment searchFragment;
@@ -74,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
     Long userId;
 
     Fragment map, searchResult, filter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,9 +178,16 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return false;
             }
-
-
         });
+
+        if(getIntent()!=null&&getIntent().getStringExtra("type")!=null){
+            if(getIntent().getStringExtra("type").equals("alarm")){
+                Intent intent = new Intent(getApplicationContext(), AlarmActivity.class);
+                intent.putExtra("userId",userId);
+                startActivity(intent);
+            }
+        }
+
     }
 
     //뒤로가기 버튼 클릭 시
@@ -189,8 +201,7 @@ public class MainActivity extends AppCompatActivity {
             bottomNavigationView.setSelectedItemId(R.id.navigation_main);
             if (mainFragment != null)
                 getSupportFragmentManager().beginTransaction().show(mainFragment).commit();
-        } else
-            if (bottomNavigationView.getSelectedItemId() == R.id.navigation_main) {
+        } else if (bottomNavigationView.getSelectedItemId() == R.id.navigation_main) {
             if (System.currentTimeMillis() > backKeyPressTime + 2000) {
                 backKeyPressTime = System.currentTimeMillis();
                 Toast.makeText(this, "한 번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
@@ -276,6 +287,9 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+    public void movePost() {
+        bottomNavigationView.setSelectedItemId(R.id.navigation_review);
     }
 
 }

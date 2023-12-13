@@ -4,49 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainFragment">
+    tools:context=".mainPage.MainFragment">
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/bg_black"
-        android:orientation="horizontal"
-        android:paddingHorizontal="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/starryNightTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="22dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/main__logo" />
-
-        <Button
-            android:id="@+id/main_alarm"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_centerVertical="true"
-            android:background="@drawable/main__alarm" />
-
-        <Button
-            android:id="@+id/postWrite"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/mainpage_postwrite" />
-    </RelativeLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="48dp"
         android:layout_marginBottom="@dimen/bottom_nav_size"
         android:foregroundGravity="center"
         android:orientation="vertical"
@@ -65,6 +30,42 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@color/bg_black"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/starryNightTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="22dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/main__logo" />
+
+                    <Button
+                        android:id="@+id/main_alarm"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/main__alarm" />
+
+                    <Button
+                        android:id="@+id/postWrite"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/mainpage_postwrite" />
+                </RelativeLayout>
 
                 <LinearLayout
                     android:id="@+id/subBanner_linear"
@@ -343,6 +344,120 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/main_best_fit_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginBottom="24dp"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="16dp">
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingVertical="20dp">
+
+                            <TextView
+                                style="@style/semiBold_single_16"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="오늘 볼 수 있는 별자리" />
+
+                            <TextView
+                                style="@style/medium_single_14"
+                                android:id="@+id/main_star_month_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="9월에 잘 보여요"
+                                android:textColor="@color/gray_500" />
+                        </LinearLayout>
+
+                        <ImageButton
+                            android:id="@+id/main_move_star"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/right_arrow"
+                            android:background="@color/transparent"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"/>
+                    </RelativeLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/main_star_today_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginBottom="24dp"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="16dp">
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingVertical="20dp">
+
+                            <TextView
+                                style="@style/semiBold_single_16"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="최근 밤하늘 관측 후기" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/main_move_review"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="전체보기"
+                                android:textColor="@color/gray_500"
+                                style="@style/medium_single_12"/>
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/right_arrow_small"/>
+                        </LinearLayout>
+
+
+                    </RelativeLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/main_review_recycler"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginStart="16dp"
