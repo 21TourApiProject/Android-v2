@@ -1,6 +1,7 @@
 package com.starrynight.tourapiproject.myPage;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ import retrofit2.Response;
 public class LeavePopActivity extends AppCompatActivity {
 
     private static final String TAG = "Leave";
+    private static final String FCMTAG = "FcmToken";
     Long userId;
 
     @Override
@@ -79,6 +81,27 @@ public class LeavePopActivity extends AppCompatActivity {
                                                     File file = new File(dir, "userId");
                                                     boolean deleted = file.delete();
                                                     Toast.makeText(getApplicationContext(), "회원탈퇴에 성공했습니다.", Toast.LENGTH_SHORT).show();
+                                                    //fcm 토큰 삭제 관련 코드
+                                                    SharedPreferences pref=getSharedPreferences("pref",MODE_PRIVATE); //임시 메모리에 있는 데이터들 삭제
+                                                    SharedPreferences.Editor editor=pref.edit();
+                                                    editor.clear();
+                                                    editor.apply();
+                                                    Call<Void> deleteCall = RetrofitClient.getApiService().deleteFcmToken(userId); //fcm delete api 호출
+                                                    deleteCall.enqueue(new Callback<Void>() {
+                                                        @Override
+                                                        public void onResponse(Call<Void> call, Response<Void> response) {
+                                                            if(response.isSuccessful()){
+                                                                Log.d(FCMTAG,"유저 fcmToken 삭제 성공");
+                                                            }else{
+                                                                Log.d(FCMTAG,"유저 fcmToken 삭제 실패");
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(Call<Void> call, Throwable t) {
+                                                            Log.e(FCMTAG,"유저 fcmToken 삭제 인터넷 연결 오류");
+                                                        }
+                                                    });
                                                     Intent intent = new Intent(LeavePopActivity.this, SignUpActivity.class);
                                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                     startActivity(intent);
@@ -109,6 +132,27 @@ public class LeavePopActivity extends AppCompatActivity {
                                                     File file = new File(dir, "userId");
                                                     boolean deleted = file.delete();
                                                     Toast.makeText(getApplicationContext(), "회원탈퇴에 성공했습니다.", Toast.LENGTH_SHORT).show();
+                                                    //fcm 토큰 삭제 관련 코드
+                                                    SharedPreferences pref=getSharedPreferences("pref",MODE_PRIVATE); //임시 메모리에 있는 데이터들 삭제
+                                                    SharedPreferences.Editor editor=pref.edit();
+                                                    editor.clear();
+                                                    editor.apply();
+                                                    Call<Void> deleteCall2 = RetrofitClient.getApiService().deleteFcmToken(userId); //fcm delete api 호출
+                                                    deleteCall2.enqueue(new Callback<Void>() {
+                                                        @Override
+                                                        public void onResponse(Call<Void> call, Response<Void> response) {
+                                                            if(response.isSuccessful()){
+                                                                Log.d(FCMTAG,"유저 fcmToken 삭제 성공");
+                                                            }else{
+                                                                Log.d(FCMTAG,"유저 fcmToken 삭제 실패");
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(Call<Void> call, Throwable t) {
+                                                            Log.e(FCMTAG,"유저 fcmToken 삭제 인터넷 연결 오류");
+                                                        }
+                                                    });
                                                     Intent intent = new Intent(LeavePopActivity.this, SignUpActivity.class);
                                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                     startActivity(intent);

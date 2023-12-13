@@ -313,6 +313,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), AlarmActivity.class);
+                intent.putExtra("userId",userId);
                 startActivityForResult(intent, 104);
             }
         });

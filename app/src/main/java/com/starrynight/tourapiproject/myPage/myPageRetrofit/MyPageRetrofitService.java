@@ -92,8 +92,8 @@ public interface MyPageRetrofitService {
     @DELETE("user/{userId}")
     Call<Void> deleteUser(@Path("userId") Long userId);
 
-    @GET("alarms/")
-    Call<List<Alarm>> getAllAlarm();
+    @GET("alarms/{userId}")
+    Call<List<Alarm>> getAllAlarm(@Path("userId") Long userId);
 
     @GET("lastSubBanner/")
     Call<SubBanner> getLastSubBanner();
@@ -106,4 +106,13 @@ public interface MyPageRetrofitService {
 
     @GET("myCommentList/{userId}")
     Call<List<MyComment>> getMyComments(@Path("userId") Long userId);
+
+    @GET("fcmToken/{userId}/{fcmToken}")
+    Call<Boolean> updateFcmToken(@Path("userId") Long userId, @Path("fcmToken") String fcmToken);
+
+    @GET("fcmToken/all")
+    Call<String> getAllFcmToken();
+
+    @DELETE("fcmToken/{userId}")
+    Call<Void> deleteFcmToken(@Path("userId") Long userId);
 }

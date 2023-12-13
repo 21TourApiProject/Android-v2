@@ -1,8 +1,11 @@
-package com.starrynight.tourapiproject.alarmPage;
+package com.starrynight.tourapiproject.myPage.myPageRetrofit;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.Log;
 
@@ -12,6 +15,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.starrynight.tourapiproject.MainActivity;
 import com.starrynight.tourapiproject.R;
 
 /**
@@ -63,14 +67,27 @@ public class FcmService extends FirebaseMessagingService {
             builder = new NotificationCompat.Builder(getApplicationContext());
         }
 
-        String title = remoteMessage.getNotification().getTitle();
-        String body = remoteMessage.getNotification().getBody();
+        String title = remoteMessage.getData().get("title");
+        String body = remoteMessage.getData().get("body");
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("type","alarm");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 10 , intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
         builder.setContentTitle(title)
                 .setContentText(body)
-                .setSmallIcon(R.drawable.ic_launcher_background);
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setSmallIcon(R.mipmap.main_icon2_foreground);
 
         Notification notification = builder.build();
-        notificationManager.notify(1, notification);
+        SharedPreferences pref=getSharedPreferences("pref",MODE_PRIVATE);
+        boolean isDenied = pref.getBoolean("isDenied",true);
+        Log.d("isDenied","수신여부: "+isDenied);
+        if(isDenied){
+            notificationManager.notify(1, notification);
+
+        }
+
     }
 }
