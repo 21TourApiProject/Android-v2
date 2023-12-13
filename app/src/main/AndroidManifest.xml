@@ -50,6 +50,7 @@
         <activity android:name=".postWritePage.SelectTimeActivity" />
         <activity android:name=".starPage.StarCameraActivity" />
         <activity android:name=".weatherPage.WeatherActivity" />
+        <activity android:name=".mainPage.interestArea.InterestAreaWeatherActivity" />
         <activity android:name=".weatherPage.WeatherHelpActivity" />
         <activity android:name=".starPage.StarHelpActivity" />
         <activity android:name=".starPage.StarSearchActivity" />

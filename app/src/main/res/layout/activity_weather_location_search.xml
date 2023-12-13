@@ -27,6 +27,7 @@
                 android:src="@drawable/postwrite_xbtn" />
 
             <TextView
+                android:id="@+id/weatherLocationTitle"
                 style="@style/semiBold_single_16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -3,4 +3,10 @@
         <attr name="fullscreenBackgroundColor" format="color" />
         <attr name="fullscreenTextColor" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="CustomInterestAreaView">
+        <attr name="name" format="string"/>
+        <attr name="image" format="string"/>
+        <attr name="observationalFit" format="string"/>
+    </declare-styleable>
 </resources>

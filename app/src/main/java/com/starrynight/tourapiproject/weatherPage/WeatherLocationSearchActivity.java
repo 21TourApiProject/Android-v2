@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -14,6 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.starrynight.tourapiproject.R;
+import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaRetrofitClient;
+import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.UpdateInterestAreaDTO;
+import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.WeatherRetrofitClient;
 
 import java.util.ArrayList;
@@ -28,9 +32,13 @@ public class WeatherLocationSearchActivity extends AppCompatActivity {
 
     private static final String TAG = "WeatherLocationSearch";
 
+    Long userId;
+    Boolean fromInterestAreaAdd = false;
+
     private EditText locationSearch;
     private RecyclerView locationResult;
     private LinearLayoutManager layoutManager;
+    private TextView weatherLocationTitle;
 
     ArrayList<SearchLocationItem> searchItemArrayList, filteredList;
     SearchLocationItemAdapter searchAdapter;
@@ -39,6 +47,14 @@ public class WeatherLocationSearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather_location_search);
+
+        fromInterestAreaAdd = (Boolean) getIntent().getSerializableExtra("fromInterestAreaAdd");
+
+        if (Objects.nonNull(fromInterestAreaAdd) && fromInterestAreaAdd) {
+            userId = (Long) getIntent().getSerializableExtra("userId");
+            weatherLocationTitle = findViewById(R.id.weatherLocationTitle);
+            weatherLocationTitle.setText("관심지역 추가");
+        }
 
         ImageView weatherLocationSearchFinish = findViewById(R.id.weatherLocationSearch_finish);
         locationSearch = findViewById(R.id.location_search);
@@ -67,12 +83,49 @@ public class WeatherLocationSearchActivity extends AppCompatActivity {
         searchAdapter = new SearchLocationItemAdapter(searchItemArrayList, this);
         searchAdapter.setOnItemClicklistener((holder, view, position) -> {
             SearchLocationItem item = searchAdapter.getItem(position);
-            Intent intent = new Intent(getApplicationContext(), WeatherActivity.class);
-            LocationDTO locationDTO = new LocationDTO(item.getLatitude(), item.getLongitude(), null, null, item.getTitle());
-            if (Objects.nonNull(item.getAreaId())) locationDTO.setAreaId(item.areaId);
-            if (Objects.nonNull(item.getObservationId())) locationDTO.setObservationId(item.observationId);
-            intent.putExtra("locationDTO", locationDTO);
-            startActivity(intent);
+            if (fromInterestAreaAdd) {
+
+                UpdateInterestAreaDTO updateInterestAreaDTO = new UpdateInterestAreaDTO();
+                updateInterestAreaDTO.setUserId(userId);
+                updateInterestAreaDTO.setRegionName(item.getTitle());
+
+                if (Objects.nonNull(item.getObservationId())) {
+                    updateInterestAreaDTO.setRegionType(1);
+                    updateInterestAreaDTO.setRegionId(item.observationId);
+                }
+                if (Objects.nonNull(item.getAreaId())) {
+                    updateInterestAreaDTO.setRegionType(2);
+                    updateInterestAreaDTO.setRegionId(item.areaId);
+                }
+
+                InterestAreaRetrofitClient.getApiService()
+                        .addInterestArea(updateInterestAreaDTO)
+                        .enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (response.isSuccessful()) {
+
+                                } else {
+                                    Log.e(TAG, "서버 api 호출 실패");
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Log.e("연결실패", t.getMessage());
+                            }
+                        });
+
+                finish();
+            } else {
+                Intent intent = new Intent(getApplicationContext(), WeatherActivity.class);
+                LocationDTO locationDTO = new LocationDTO(item.getLatitude(), item.getLongitude(), null, null, item.getTitle());
+                if (Objects.nonNull(item.getAreaId())) locationDTO.setAreaId(item.areaId);
+                if (Objects.nonNull(item.getObservationId()))
+                    locationDTO.setObservationId(item.observationId);
+                intent.putExtra("locationDTO", locationDTO);
+                startActivity(intent);
+            }
         });
         layoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false);
         locationResult.setLayoutManager(layoutManager);
@@ -82,7 +135,7 @@ public class WeatherLocationSearchActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<SearchLocationItem>> call, Response<List<SearchLocationItem>> response) {
                 if (response.isSuccessful()) {
-                    searchItemArrayList.addAll(response.body());
+                    searchItemArrayList.addAll(response.body()); // TODO : 이미 선택한 관심 지역은 빼고 보여주기
                     searchAdapter.filterList(searchItemArrayList);
                 } else {
                     Log.d(TAG, "날씨 location 리스트 업로드 실패");

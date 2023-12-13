@@ -2,7 +2,6 @@ package com.starrynight.tourapiproject.mainPage;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -35,6 +34,10 @@ import com.starrynight.tourapiproject.MainActivity;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.alarmPage.AlarmActivity;
 import com.starrynight.tourapiproject.alarmPage.subBanner.SubBanner;
+import com.starrynight.tourapiproject.mainPage.interestArea.CustomInterestAreaView;
+import com.starrynight.tourapiproject.mainPage.interestArea.InterestAreaWeatherActivity;
+import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaDTO;
+import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaRetrofitClient;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.ObservationSimpleParams;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.PostContentsParams;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.RetrofitClient;
@@ -86,17 +89,11 @@ import retrofit2.Response;
  */
 public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    Long userId;
-    SwipeRefreshLayout swipeRefreshLayout;
-    NestedScrollView nestedScrollView;
-    List<Long> myhashTagIdList;
-    ImageView subBanner;
-    LinearLayout subBannerLayout;
-    ProgressBar progressBar;
-    LinearLayout weatherLocationSearch;
-
     private static final String TAG = "MainFragment";
     private static final String TAG1 = "SubBannerApi";
+    private static final int PERMISSIONS_REQUEST_CODE = 100;
+    private static final String MAIN_STAR_TEXT = "월에 잘 보여요";
+
     @SuppressLint("SimpleDateFormat")
     SimpleDateFormat hh = new SimpleDateFormat("HH");
     @SuppressLint("SimpleDateFormat")
@@ -104,14 +101,16 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @SuppressLint("SimpleDateFormat")
     SimpleDateFormat yyyy_MM_dd = new SimpleDateFormat("yyyy-MM-dd");
     String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-    private static final int PERMISSIONS_REQUEST_CODE = 100;
-    GpsTracker gpsTracker;
-    double latitude;
-    double longitude;
-    String location;
-    Long areaId; // WEATHER_AREA id
-    String hour; // 현재 hour ex) 18
-    String min; // 현재 min ex) 10
+
+    private Long userId;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private ImageView subBanner;
+    private LinearLayout subBannerLayout;
+    private double latitude;
+    private double longitude;
+    private String location;
+    private Long areaId; // WEATHER_AREA id
+    private String hour; // 현재 hour ex) 18
     private TextView weatherComment;
     private ImageView star;
     private TextView mainBestObservationFit;
@@ -122,12 +121,17 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private StarViewAdapter starViewAdapter;
     private TextView startMonthText;
     private LinearLayout moveReviewBtn;
-    private RecyclerView reviewRecycler;
     private RecentReviewAdapter recentReviewAdapter;
 
-    private static final String MAIN_STAR_TEXT = "월에 잘 보여요";
+    // 관심지역
+    private TextView editInterestArea;
+    private ImageView addInterestArea;
+    private ImageView addInterestAreaInit;
+    List<Long> interestRegionIdList = new ArrayList<>(); // 관심 지역 id 리스트
+    List<Integer> interestRegionTypeList = new ArrayList<>(); // 관심 지역 id 리스트
 
-    public MainFragment() {}
+    public MainFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -140,10 +144,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         View v = inflater.inflate(R.layout.fragment_main, container, false);
         swipeRefreshLayout = v.findViewById(R.id.swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
-        myhashTagIdList = new ArrayList<>();
-        nestedScrollView = v.findViewById(R.id.scroll_layout);
-        progressBar = v.findViewById(R.id.mainProgressBar);
-        weatherLocationSearch = v.findViewById(R.id.weather_location_search);
+        LinearLayout weatherLocationSearch = v.findViewById(R.id.weather_location_search);
 
         View mainLocation = v.findViewById(R.id.main__location);
         weatherComment = v.findViewById(R.id.weather_comment);
@@ -155,7 +156,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         checkLocationPermission();
 
-        gpsTracker = new GpsTracker(getContext());
+        GpsTracker gpsTracker = new GpsTracker(getContext());
         latitude = gpsTracker.getLatitude();
         longitude = gpsTracker.getLongitude();
 
@@ -173,7 +174,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             String SD = address.getAdminArea();
             String SGG = address.getLocality() == null ? address.getSubLocality() : address.getLocality();
 
-            if(SD == null || !SD.contains("세종") && SGG == null){
+            if (SD == null || !SD.contains("세종") && SGG == null) {
                 location = "현위치를 불러올 수 없습니다.";
                 currentLocation.setText(location);
             } else {
@@ -196,7 +197,6 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                     long now = System.currentTimeMillis();
                                     Date date = new Date(now);
                                     hour = hh.format(date);
-                                    min = mm.format(date);
 
                                     AreaTimeDTO areaTimeDTO = new AreaTimeDTO(yyyy_MM_dd.format(date), Integer.valueOf(hour), latitude, longitude);
                                     areaTimeDTO.setAddress(location);
@@ -260,32 +260,143 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             e.printStackTrace();
         }
 
+        // 관심지역
+        CustomInterestAreaView interestArea0 = v.findViewById(R.id.interestArea0);
+        CustomInterestAreaView interestArea1 = v.findViewById(R.id.interestArea1);
+        CustomInterestAreaView interestArea2 = v.findViewById(R.id.interestArea2);
+        addInterestArea = v.findViewById(R.id.addInterestArea);
+        addInterestAreaInit = v.findViewById(R.id.addInterestAreaInit);
+
+        InterestAreaRetrofitClient.getApiService()
+                .getAllInterestArea(userId)
+                .enqueue(new Callback<List<InterestAreaDTO>>() {
+                    @Override
+                    public void onResponse(Call<List<InterestAreaDTO>> call, Response<List<InterestAreaDTO>> response) {
+                        if (response.isSuccessful()) {
+                            List<InterestAreaDTO> interestAreaList = response.body();
+                            interestAreaList.forEach(interestAreaDTO -> interestRegionIdList.add(interestAreaDTO.getRegionId()));
+                            interestAreaList.forEach(interestAreaDTO -> interestRegionTypeList.add(interestAreaDTO.getRegionType()));
+                            System.out.println("interestRegionIdList = " + interestRegionIdList);
+                            System.out.println("interestRegionTypeList = " + interestRegionTypeList);
+
+                            if (interestAreaList.size() == 0) { // 0
+                                addInterestAreaInit.setVisibility(View.VISIBLE);
+                            }
+                            if (interestAreaList.size() >= 1) { // 1, 2, 3
+                                editInterestArea.setVisibility(View.VISIBLE);
+                                addInterestArea.setVisibility(View.VISIBLE);
+                                interestArea0.setVisibility(View.VISIBLE);
+                                interestArea0.setInterestAreaName(interestAreaList.get(0).getRegionName());
+                                interestArea0.setInterestAreaObservationalFit(interestAreaList.get(0).getObservationalFit());
+
+                            }
+                            if (interestAreaList.size() >= 2) { // 2, 3
+                                interestArea1.setVisibility(View.VISIBLE);
+                                interestArea1.setInterestAreaName(interestAreaList.get(1).getRegionName());
+                                interestArea1.setInterestAreaObservationalFit(interestAreaList.get(1).getObservationalFit());
+                            }
+                            if (interestAreaList.size() == 3) { // 3
+                                addInterestArea.setVisibility(View.GONE);
+                                interestArea2.setVisibility(View.VISIBLE);
+                                interestArea2.setInterestAreaName(interestAreaList.get(2).getRegionName());
+                                interestArea2.setInterestAreaObservationalFit(interestAreaList.get(2).getObservationalFit());
+                            }
+
+                        } else {
+                            Log.e(TAG, "서버 api 호출 실패");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<InterestAreaDTO>> call, Throwable t) {
+                        Log.e("연결실패", t.getMessage());
+                    }
+                });
+
+        // 관심 지역 카드 클릭
+        interestArea0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), InterestAreaWeatherActivity.class);
+                intent.putExtra("regionId", interestRegionIdList.get(0));
+                intent.putExtra("regionType", interestRegionTypeList.get(0));
+                startActivityForResult(intent, 105);
+            }
+        });
+
+        interestArea1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), InterestAreaWeatherActivity.class);
+                intent.putExtra("regionId", interestRegionIdList.get(1));
+                intent.putExtra("regionType", interestRegionTypeList.get(1));
+                startActivityForResult(intent, 105);
+            }
+        });
+
+        interestArea2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), InterestAreaWeatherActivity.class);
+                intent.putExtra("regionId", interestRegionIdList.get(2));
+                intent.putExtra("regionType", interestRegionTypeList.get(2));
+                startActivityForResult(intent, 105);
+            }
+        });
+
+        addInterestArea = v.findViewById(R.id.addInterestArea);
+        addInterestAreaInit = v.findViewById(R.id.addInterestAreaInit);
+
+        addInterestArea.setOnClickListener(view -> {
+            // 관심 지역 추가 페이지로 이동
+            Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
+            intent.putExtra("fromInterestAreaAdd", true);
+            intent.putExtra("userId", userId);
+            startActivityForResult(intent, 105);
+        });
+
+        addInterestAreaInit.setOnClickListener(view -> {
+            // 관심 지역 추가 페이지로 이동
+            Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
+            intent.putExtra("fromInterestAreaAdd", true);
+            intent.putExtra("userId", userId);
+            startActivityForResult(intent, 105);
+        });
+
+        editInterestArea = v.findViewById(R.id.editInterestArea);
+        editInterestArea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editInterestArea.setText("편집취소");
+            }
+        });
+
         //서브 배너 가져오기
         subBannerLayout = v.findViewById(R.id.subBanner_linear);
-        subBanner = (ImageView)v.findViewById(R.id.subBanner);
+        subBanner = v.findViewById(R.id.subBanner);
         Call<SubBanner> subBannerCall = com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient.getApiService().getLastSubBanner();
         subBannerCall.enqueue(new Callback<SubBanner>() {
             @Override
             public void onResponse(Call<SubBanner> call, Response<SubBanner> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     SubBanner banner = response.body();
-                    if(banner.isShow()){ //isShow가 true면 배너가 보일 수 있도록 한다
+                    if (banner.isShow()) { //isShow가 true면 배너가 보일 수 있도록 한다
                         subBannerLayout.setVisibility(View.VISIBLE);
                         Glide.with(getActivity()).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/subBanner/" + banner.getBannerImage()).fitCenter().into(subBanner);
-                    }else {
+                    } else {
                         subBannerLayout.setVisibility(View.GONE);
                     }
                     subBanner.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            if(banner.getLink()!=null){
+                            if (banner.getLink() != null) {
                                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(banner.getLink()));
                                 startActivity(intent);
                             }
                         }
                     });
 
-                }else {
+                } else {
                     Log.e(TAG1, "서브 배너 오류");
                 }
             }
@@ -297,7 +408,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         });
 
         // 게시물 작성 페이지로 넘어가는 이벤트
-        Button postWrite = (Button) v.findViewById(R.id.postWrite);
+        Button postWrite = v.findViewById(R.id.postWrite);
         postWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -308,12 +419,12 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         // 알림 페이지로 넘어가는 이벤트
 
-        Button alarm = (Button) v.findViewById(R.id.main_alarm);
+        Button alarm = v.findViewById(R.id.main_alarm);
         alarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), AlarmActivity.class);
-                intent.putExtra("userId",userId);
+                intent.putExtra("userId", userId);
                 startActivityForResult(intent, 104);
             }
         });
@@ -362,12 +473,12 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         move_star_btn = v.findViewById(R.id.main_move_star);
         starViewAdapter = new StarViewAdapter();
         startMonthText = v.findViewById(R.id.main_star_month_txt);
-        starRecycler.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
+        starRecycler.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         starRecycler.setAdapter(starViewAdapter);
         setTodayStarLayout();
 
         // 최근 관측 후기
-        reviewRecycler = v.findViewById(R.id.main_review_recycler);
+        RecyclerView reviewRecycler = v.findViewById(R.id.main_review_recycler);
         moveReviewBtn = v.findViewById(R.id.main_move_review);
         recentReviewAdapter = new RecentReviewAdapter();
         reviewRecycler.setAdapter(recentReviewAdapter);
@@ -375,7 +486,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         reviewRecycler.setLayoutManager(layoutManager);
         setCurrentReviewLayout();
 
-       return v;
+        return v;
     }
 
     @Override
@@ -409,8 +520,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private void setTodayStarLayout() {
         Calendar now = Calendar.getInstance();
-        int month = now.get(Calendar.MONTH) +1;
-        startMonthText.setText(month+MAIN_STAR_TEXT);
+        int month = now.get(Calendar.MONTH) + 1;
+        startMonthText.setText(month + MAIN_STAR_TEXT);
 
         // 오늘의 별자리 리스트 불러오는 api
         Call<List<StarItem>> todayConstCall = RetrofitClient.getApiService().getTodayConst();
@@ -430,7 +541,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
             @Override
             public void onFailure(Call<List<StarItem>> call, Throwable t) {
-                Log.e(TAG, "오늘의 별자리"+t.getMessage());
+                Log.e(TAG, "오늘의 별자리" + t.getMessage());
             }
         });
 
@@ -450,8 +561,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), StarSearchActivity.class);
-                intent.putExtra("starHashTagName",month+"월");
-                intent.putExtra("type",3);
+                intent.putExtra("starHashTagName", month + "월");
+                intent.putExtra("type", 3);
                 startActivity(intent);
             }
         });
