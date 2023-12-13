@@ -1,11 +1,13 @@
 package com.starrynight.tourapiproject.mainPage.mainPageRetrofit;
 
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.ObservationSimpleParams;
+import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
 
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 /**
 * @className : MainPageRetrofitService.java
@@ -23,5 +25,11 @@ public interface MainPageRetrofitService {
 
     @GET("observations/simple")
     Call<List<ObservationSimpleParams>> getBestFitObservationList();
+
+    @GET("constellation/todayConst")
+    Call<List<StarItem>> getTodayConst();
+
+    @GET("posts/{size}")
+    Call<List<PostContentsParams>> getLatestPostWithSize(@Path("size") int size);
 
 }

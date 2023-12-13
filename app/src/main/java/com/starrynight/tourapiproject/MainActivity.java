@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.starrynight.tourapiproject.mainPage.MainFragment;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.starrynight.tourapiproject.alarmPage.AlarmActivity;
 import com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient;
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     Long userId;
 
     Fragment map, searchResult, filter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -198,8 +200,7 @@ public class MainActivity extends AppCompatActivity {
             bottomNavigationView.setSelectedItemId(R.id.navigation_main);
             if (mainFragment != null)
                 getSupportFragmentManager().beginTransaction().show(mainFragment).commit();
-        } else
-            if (bottomNavigationView.getSelectedItemId() == R.id.navigation_main) {
+        } else if (bottomNavigationView.getSelectedItemId() == R.id.navigation_main) {
             if (System.currentTimeMillis() > backKeyPressTime + 2000) {
                 backKeyPressTime = System.currentTimeMillis();
                 Toast.makeText(this, "한 번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
@@ -285,6 +286,9 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+    public void movePost() {
+        bottomNavigationView.setSelectedItemId(R.id.navigation_review);
     }
 
 }
