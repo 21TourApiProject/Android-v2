@@ -2,7 +2,6 @@ package com.starrynight.tourapiproject.mainPage;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -35,11 +34,9 @@ import com.starrynight.tourapiproject.MainActivity;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.alarmPage.AlarmActivity;
 import com.starrynight.tourapiproject.alarmPage.subBanner.SubBanner;
-import com.starrynight.tourapiproject.mainPage.BestFitObservationAdapter;
-import com.starrynight.tourapiproject.mainPage.OnBestFitObsItemClickListener;
 import com.starrynight.tourapiproject.mainPage.interestArea.CustomInterestAreaView;
-import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaDTO;
 import com.starrynight.tourapiproject.mainPage.interestArea.InterestAreaWeatherActivity;
+import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaDTO;
 import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaRetrofitClient;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.ObservationSimpleParams;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.PostContentsParams;
@@ -92,17 +89,11 @@ import retrofit2.Response;
  */
 public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    Long userId;
-    SwipeRefreshLayout swipeRefreshLayout;
-    NestedScrollView nestedScrollView;
-    List<Long> myhashTagIdList;
-    ImageView subBanner;
-    LinearLayout subBannerLayout;
-    ProgressBar progressBar;
-    LinearLayout weatherLocationSearch;
-
     private static final String TAG = "MainFragment";
     private static final String TAG1 = "SubBannerApi";
+    private static final int PERMISSIONS_REQUEST_CODE = 100;
+    private static final String MAIN_STAR_TEXT = "월에 잘 보여요";
+
     @SuppressLint("SimpleDateFormat")
     SimpleDateFormat hh = new SimpleDateFormat("HH");
     @SuppressLint("SimpleDateFormat")
@@ -110,14 +101,16 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @SuppressLint("SimpleDateFormat")
     SimpleDateFormat yyyy_MM_dd = new SimpleDateFormat("yyyy-MM-dd");
     String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-    private static final int PERMISSIONS_REQUEST_CODE = 100;
-    GpsTracker gpsTracker;
-    double latitude;
-    double longitude;
-    String location;
-    Long areaId; // WEATHER_AREA id
-    String hour; // 현재 hour ex) 18
-    String min; // 현재 min ex) 10
+
+    private Long userId;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private ImageView subBanner;
+    private LinearLayout subBannerLayout;
+    private double latitude;
+    private double longitude;
+    private String location;
+    private Long areaId; // WEATHER_AREA id
+    private String hour; // 현재 hour ex) 18
     private TextView weatherComment;
     private ImageView star;
     private TextView mainBestObservationFit;
@@ -128,12 +121,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private StarViewAdapter starViewAdapter;
     private TextView startMonthText;
     private LinearLayout moveReviewBtn;
-    private RecyclerView reviewRecycler;
     private RecentReviewAdapter recentReviewAdapter;
 
-    private static final String MAIN_STAR_TEXT = "월에 잘 보여요";
-
-    public MainFragment() {}
     // 관심지역
     private TextView editInterestArea;
     private ImageView addInterestArea;
@@ -155,10 +144,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         View v = inflater.inflate(R.layout.fragment_main, container, false);
         swipeRefreshLayout = v.findViewById(R.id.swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
-        myhashTagIdList = new ArrayList<>();
-        nestedScrollView = v.findViewById(R.id.scroll_layout);
-        progressBar = v.findViewById(R.id.mainProgressBar);
-        weatherLocationSearch = v.findViewById(R.id.weather_location_search);
+        LinearLayout weatherLocationSearch = v.findViewById(R.id.weather_location_search);
 
         View mainLocation = v.findViewById(R.id.main__location);
         weatherComment = v.findViewById(R.id.weather_comment);
@@ -170,7 +156,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         checkLocationPermission();
 
-        gpsTracker = new GpsTracker(getContext());
+        GpsTracker gpsTracker = new GpsTracker(getContext());
         latitude = gpsTracker.getLatitude();
         longitude = gpsTracker.getLongitude();
 
@@ -211,7 +197,6 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                     long now = System.currentTimeMillis();
                                     Date date = new Date(now);
                                     hour = hh.format(date);
-                                    min = mm.format(date);
 
                                     AreaTimeDTO areaTimeDTO = new AreaTimeDTO(yyyy_MM_dd.format(date), Integer.valueOf(hour), latitude, longitude);
                                     areaTimeDTO.setAddress(location);
@@ -439,7 +424,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), AlarmActivity.class);
-                intent.putExtra("userId",userId);
+                intent.putExtra("userId", userId);
                 startActivityForResult(intent, 104);
             }
         });
@@ -488,12 +473,12 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         move_star_btn = v.findViewById(R.id.main_move_star);
         starViewAdapter = new StarViewAdapter();
         startMonthText = v.findViewById(R.id.main_star_month_txt);
-        starRecycler.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
+        starRecycler.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         starRecycler.setAdapter(starViewAdapter);
         setTodayStarLayout();
 
         // 최근 관측 후기
-        reviewRecycler = v.findViewById(R.id.main_review_recycler);
+        RecyclerView reviewRecycler = v.findViewById(R.id.main_review_recycler);
         moveReviewBtn = v.findViewById(R.id.main_move_review);
         recentReviewAdapter = new RecentReviewAdapter();
         reviewRecycler.setAdapter(recentReviewAdapter);
@@ -501,7 +486,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         reviewRecycler.setLayoutManager(layoutManager);
         setCurrentReviewLayout();
 
-       return v;
+        return v;
     }
 
     @Override
@@ -535,8 +520,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private void setTodayStarLayout() {
         Calendar now = Calendar.getInstance();
-        int month = now.get(Calendar.MONTH) +1;
-        startMonthText.setText(month+MAIN_STAR_TEXT);
+        int month = now.get(Calendar.MONTH) + 1;
+        startMonthText.setText(month + MAIN_STAR_TEXT);
 
         // 오늘의 별자리 리스트 불러오는 api
         Call<List<StarItem>> todayConstCall = RetrofitClient.getApiService().getTodayConst();
@@ -556,7 +541,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
             @Override
             public void onFailure(Call<List<StarItem>> call, Throwable t) {
-                Log.e(TAG, "오늘의 별자리"+t.getMessage());
+                Log.e(TAG, "오늘의 별자리" + t.getMessage());
             }
         });
 
@@ -576,8 +561,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), StarSearchActivity.class);
-                intent.putExtra("starHashTagName",month+"월");
-                intent.putExtra("type",3);
+                intent.putExtra("starHashTagName", month + "월");
+                intent.putExtra("type", 3);
                 startActivity(intent);
             }
         });
