@@ -8,6 +8,7 @@
         <entry key="..\:/Projects/tourapi project/Android-v2/app/src/main/res/drawable-xhdpi/observation__reserve_none.xml" value="0.267" />
         <entry key="..\:/Projects/tourapi project/Android-v2/app/src/main/res/drawable/hashtag_background.xml" value="0.312" />
         <entry key="..\:/Projects/tourapi project/Android-v2/app/src/main/res/drawable/hashtags_empty.xml" value="0.232" />
+        <entry key="..\:/Projects/tourapi project/Android-v2/app/src/main/res/drawable/location_btn.xml" value="0.227" />
         <entry key="..\:/Projects/tourapi project/Android-v2/app/src/main/res/drawable/main__bar_night.xml" value="0.227" />
         <entry key="..\:/Projects/tourapi project/Android-v2/app/src/main/res/drawable/main__bar_observation_non.xml" value="0.227" />
         <entry key="..\:/Projects/tourapi project/Android-v2/app/src/main/res/drawable/main__bar_profile.xml" value="0.216" />
@@ -101,6 +102,7 @@
         <entry key="..\:/Projects/tourapi project/Android-v2/app/src/main/res/layout/hashtags_full2.xml" value="0.36614583333333334" />
         <entry key="..\:/Projects/tourapi project/Android-v2/app/src/main/res/layout/hashtags_search.xml" value="0.36614583333333334" />
         <entry key="..\:/Projects/tourapi project/Android-v2/app/src/main/res/layout/item_best_fit_obs.xml" value="0.36614583333333334" />
+        <entry key="..\:/Projects/tourapi project/Android-v2/app/src/main/res/layout/item_main_review.xml" value="0.36614583333333334" />
         <entry key="..\:/Projects/tourapi project/Android-v2/app/src/main/res/layout/item_posthashtag.xml" value="0.24791666666666667" />
         <entry key="..\:/Projects/tourapi project/Android-v2/app/src/main/res/layout/layout_main.xml" value="0.36614583333333334" />
         <entry key="..\:/Projects/tourapi project/Android-v2/app/src/main/res/layout/layout_spot.xml" value="0.36614583333333334" />

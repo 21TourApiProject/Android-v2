@@ -157,8 +157,7 @@ public class MainActivity extends AppCompatActivity {
             bottomNavigationView.setSelectedItemId(R.id.navigation_main);
             if (mainFragment != null)
                 getSupportFragmentManager().beginTransaction().show(mainFragment).commit();
-        } else
-            if (bottomNavigationView.getSelectedItemId() == R.id.navigation_main) {
+        } else if (bottomNavigationView.getSelectedItemId() == R.id.navigation_main) {
             if (System.currentTimeMillis() > backKeyPressTime + 2000) {
                 backKeyPressTime = System.currentTimeMillis();
                 Toast.makeText(this, "한 번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
@@ -206,6 +205,8 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.main_view, fragment).commitAllowingStateLoss();
     }
 
-
+    public void movePost() {
+        bottomNavigationView.setSelectedItemId(R.id.navigation_review);
+    }
 
 }

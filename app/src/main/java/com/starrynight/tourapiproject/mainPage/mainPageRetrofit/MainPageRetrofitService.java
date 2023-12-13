@@ -7,6 +7,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 /**
 * @className : MainPageRetrofitService.java
@@ -27,5 +28,8 @@ public interface MainPageRetrofitService {
 
     @GET("constellation/todayConst")
     Call<List<StarItem>> getTodayConst();
+
+    @GET("posts/{size}")
+    Call<List<PostContentsParams>> getLatestPostWithSize(@Path("size") int size);
 
 }
