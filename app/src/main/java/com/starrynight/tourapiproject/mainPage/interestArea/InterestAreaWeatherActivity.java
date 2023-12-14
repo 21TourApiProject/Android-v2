@@ -16,10 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.starrynight.tourapiproject.MainActivity;
 import com.starrynight.tourapiproject.R;
+import com.starrynight.tourapiproject.mainPage.BestFitObservationAdapter;
+import com.starrynight.tourapiproject.mainPage.OnBestFitObsItemClickListener;
 import com.starrynight.tourapiproject.mainPage.RecentReviewAdapter;
 import com.starrynight.tourapiproject.mainPage.RecentReviewItemClickListener;
 import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaRetrofitClient;
 import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaWeatherDTO;
+import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.ObservationSimpleParams;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.PostContentsParams;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.observationPage.MoreObservationActivity;
@@ -64,6 +67,9 @@ public class InterestAreaWeatherActivity extends AppCompatActivity {
     private LinearLayout reviewLayout; //관측후기 레이아웃
     private LinearLayout moveObservationBtn; //관측지 이동 버튼
     private TextView noReviewText; //관측후기 없음 텍스트
+
+    private RecyclerView nearObsRecyclerView; //근처 관측지 recycler
+    private LinearLayout nearObsLayout; //근처 관측지 layout
 
     Long regionId;
     Integer regionType;
@@ -141,21 +147,26 @@ public class InterestAreaWeatherActivity extends AppCompatActivity {
         reviewLayout = findViewById(R.id.interest_area_review_layout);
         moveObservationBtn = findViewById(R.id.interest_area_move_observation);
         noReviewText = findViewById(R.id.interest_area_no_review);
+        nearObsRecyclerView = findViewById(R.id.interest_area_near_obs_recycler);
+        nearObsLayout = findViewById(R.id.interest_area_near_layout);
         recentReviewAdapter = new RecentReviewAdapter();
         reviewRecycler.setAdapter(recentReviewAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         reviewRecycler.setLayoutManager(layoutManager);
-        setReviewLayout();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        nearObsRecyclerView.setLayoutManager(linearLayoutManager);
+        if (regionType.equals(REGION_TYPE_LOCALE)) {
+            setNearObservationLayout();
+        } else {
+            setReviewLayout();
+        }
 
         // 뒤로 가기
         interest_area_back.setOnClickListener(v -> finish());
     }
 
     private void setReviewLayout() {
-        if (regionType.equals(REGION_TYPE_LOCALE)) {
-            reviewLayout.setVisibility(View.GONE);
-            moveObservationBtn.setVisibility(View.GONE);
-        }
+        nearObsLayout.setVisibility(View.GONE);
 
         Call<List<PostContentsParams>> call = InterestAreaRetrofitClient.getApiService().getObservationPostWithSize(regionId,3);
         call.enqueue(new Callback<List<PostContentsParams>>() {
@@ -206,6 +217,40 @@ public class InterestAreaWeatherActivity extends AppCompatActivity {
                 Intent intent2 = new Intent(InterestAreaWeatherActivity.this, ObservationsiteActivity.class);
                 intent2.putExtra("observationId", regionId);
                 startActivity(intent2);
+            }
+        });
+    }
+
+    private void setNearObservationLayout() {
+        reviewLayout.setVisibility(View.GONE);
+        moveObservationBtn.setVisibility(View.GONE);
+
+        BestFitObservationAdapter adapter = new BestFitObservationAdapter();
+        nearObsRecyclerView.setAdapter(adapter);
+        Call<List<ObservationSimpleParams>> call = InterestAreaRetrofitClient.getApiService().getNearObservationIds(regionId, 4);
+        call.enqueue(new Callback<List<ObservationSimpleParams>>() {
+            @Override
+            public void onResponse(Call<List<ObservationSimpleParams>> call, Response<List<ObservationSimpleParams>> response) {
+                if (response.isSuccessful()) {
+                    List<ObservationSimpleParams> observationSimpleList = response.body();
+                    adapter.setItems(observationSimpleList);
+                    adapter.notifyDataSetChanged();
+                    adapter.setOnItemClicklistener(new OnBestFitObsItemClickListener() {
+                        @Override
+                        public void onItemClick(BestFitObservationAdapter.ViewHolder holder, View view, int position) {
+                            Intent intent = new Intent(InterestAreaWeatherActivity.this, ObservationsiteActivity.class);
+                            intent.putExtra("observationId", observationSimpleList.get(position).getItemId());
+                            startActivity(intent);
+                        }
+                    });
+                } else {
+                    Log.d("hot", "가까운 관측지 로드 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ObservationSimpleParams>> call, Throwable t) {
+                Log.d(TAG, "가까운 관측지 연결 실패");
             }
         });
     }

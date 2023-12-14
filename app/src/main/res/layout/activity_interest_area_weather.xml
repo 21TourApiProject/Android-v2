@@ -226,6 +226,30 @@
                     android:layout_gravity="center"
                     android:paddingVertical="80dp"/>
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/interest_area_near_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:layout_marginBottom="20dp">
+
+                <TextView
+                    style="@style/semiBold_single_16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="가까운 관측지"
+                    android:layout_marginVertical="20dp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/interest_area_near_obs_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="24dp"
+                    android:visibility="visible" />
+
+            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>
