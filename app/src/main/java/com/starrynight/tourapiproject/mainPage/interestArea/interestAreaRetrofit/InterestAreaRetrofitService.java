@@ -1,5 +1,7 @@
 package com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit;
 
+import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.PostContentsParams;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -22,4 +24,7 @@ public interface InterestAreaRetrofitService {
 
     @DELETE("interestArea")
     Call<Void> deleteInterestArea(@Body UpdateInterestAreaDTO updateInterestAreaDTO);
+
+    @GET("post/observation/{observationId}/{size}")
+    Call<List<PostContentsParams>> getObservationPostWithSize(@Path("observationId") Long observationId,@Path("size") int size);
 }
