@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        >
+
+        <TextView
+            android:id="@+id/star_guide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="55dp"
+            android:textAlignment="center"
+            android:text="카메라가 하늘을 향하도록 올려 든 뒤,\n가이드 시작을 눌러주세요!"
+            style="@style/semiBold_single_16"
+            />
+
+        <ImageView
+            android:id="@+id/star_guide_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="7dp"
+            app:srcCompat="@drawable/starcamera__preview" />
+
+        <TextView
+            android:id="@+id/star_guide_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="별자리 가이드 시작"
+            android:background="@drawable/custom_purple_blue_gradient"
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="40dp"
+            style="@style/semiBold_single_18"
+            />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

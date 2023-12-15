@@ -71,7 +71,7 @@ public class StarActivity extends AppCompatActivity {
 
         TextToSpeechManager.getInstance().initializeLibrary(getApplicationContext());   //카카오 음성
 
-        // 넘겨준 constId 받기
+        // 넘겨준 constName 받기
         Intent intent = getIntent();
         intentConstName = (String) intent.getSerializableExtra("constName");
         Log.d("constName 받아오기", intentConstName);

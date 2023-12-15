@@ -17,11 +17,13 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
-    <uses-feature android:name="android.hardware.sensor.compass"
+    <uses-feature
+        android:name="android.hardware.sensor.compass"
         android:required="true" />
 
     <application
@@ -36,13 +38,14 @@
         android:theme="@style/StarryNight"
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
+        <activity android:name=".starPage.SelectStarActivity"></activity>
         <activity android:name=".myPage.MyCommentActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".starPage.StarCompassActivity" />
         <activity android:name=".weatherPage.WeatherLocationSearchActivity" />
@@ -59,11 +62,13 @@
         <activity android:name=".alarmPage.AlarmActivity" />
         <activity android:name=".starPage.StarAllActivity" />
         <activity android:name=".searchPage.SearchResultActivity" />
-        <activity android:name=".LoginActivity"
+        <activity
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="NOTIFICATION_CLICK"/>
+                <action android:name="NOTIFICATION_CLICK" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -108,7 +113,8 @@
         <activity android:name=".postWritePage.PostWriteActivity" />
         <activity android:name=".postWritePage.SearchObservingPointActivity" />
         <activity android:name=".postWritePage.AddHashTagActivity" />
-        <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+        <activity
+            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -126,14 +132,13 @@
         <service
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true" />
-
-        <service android:name="com.starrynight.tourapiproject.myPage.myPageRetrofit.FcmService"
+        <service
+            android:name=".myPage.myPageRetrofit.FcmService"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>

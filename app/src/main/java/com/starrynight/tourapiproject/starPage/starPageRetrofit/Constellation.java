@@ -48,6 +48,12 @@ public class Constellation {
     @SerializedName("constEng")
     private String constEng;
 
+    @SerializedName("azimuth")
+    private Float azimuth;
+
+    @SerializedName("altitude")
+    private Float altitude;
+
     public Constellation() {
     }
 
@@ -137,5 +143,21 @@ public class Constellation {
 
     public void setConstEng(String constEng) {
         this.constEng = constEng;
+    }
+
+    public Float getAzimuth() {
+        return azimuth;
+    }
+
+    public void setAzimuth(Float azimuth) {
+        this.azimuth = azimuth;
+    }
+
+    public Float getAltitude() {
+        return altitude;
+    }
+
+    public void setAltitude(Float altitude) {
+        this.altitude = altitude;
     }
 }
