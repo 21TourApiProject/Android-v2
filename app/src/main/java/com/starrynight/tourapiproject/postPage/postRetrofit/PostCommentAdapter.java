@@ -6,15 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.myPage.myPageRetrofit.User;
-import com.starrynight.tourapiproject.postPage.PostActivity;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

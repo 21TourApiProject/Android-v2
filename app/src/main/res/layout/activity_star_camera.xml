@@ -13,7 +13,7 @@
         <RelativeLayout
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="700dp">
+            android:layout_height="match_parent">
 
             <com.starrynight.tourapiproject.starPage.CameraSurfaceView
                 android:id="@+id/surfaceView"
@@ -21,42 +21,133 @@
                 android:layout_height="match_parent" />
 
             <LinearLayout
-                android:id="@+id/guideLine"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="28dp"
-                android:background="@color/gray_300"
-                android:orientation="vertical">
-            <TextView
-                android:id="@+id/starName"
+                android:id="@+id/constTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="황소자리 찾기"
-                style="@style/semiBold_single_16"/>
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="28dp"
+                android:background="@drawable/star_seatch_non"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/find_star"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/main__weather_star" />
+
+                <TextView
+                    android:id="@+id/starName"
+                    style="@style/semiBold_single_16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="황소자리 찾기" />
+
+
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/guideLine2"
-                android:layout_width="wrap_content"
+                android:id="@+id/guideLineFinal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:orientation="vertical"
-                >
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/profile_default_image"
-                    android:layout_gravity="center"/>
+                android:layout_below="@id/constTitle"
+                android:layout_marginTop="36dp"
+                android:gravity="center"
+                android:visibility="gone"
+                android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="북극성이 보여요!"
-                    android:textColor="@color/bg_black"/>
+                    android:layout_marginBottom="8dp"
+                    style="@style/semiBold_single_16"
+                    android:text="이쪽 하늘에 원하시는 별자리가 있어요" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="40dp"
+                    style="@style/semiBold_single_16"
+                    android:text="하늘에서 아래 모양을 찾아보세요!" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="13dp"
+                    style="@style/medium_single_14"
+                    android:textColor="#80ffffff"
+                    android:text="별자리 모양 가이드" />
+
+            <LinearLayout
+                android:id="@+id/guideLineImageLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/star__camera_tr_rounded"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/guideLineImage"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/profile_default_image" />
+
+            </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/guideLineConstName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    style="@style/medium_single_14"
+                    android:textColor="#80ffffff" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="화면 우측 하단에서 가이드를 끄고 켤 수 있어요"
+                    style="@style/medium_single_14"
+                    android:textColor="#4Dffffff" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/crt_guide_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@id/constTitle"
+                android:layout_marginTop="36dp"
+                android:visibility="gone"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/crt_guide_subText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    style="@style/semiBold_single_16"
+                    android:textColor="@color/gray_50"
+                    android:text="제자리에 서서" />
+
+                <TextView
+                    android:id="@+id/crt_guide_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="40dp"
+                    style="@style/semiBold_single_16"
+                    android:textColor="@color/gray_50"
+                    android:text="왼쪽 방향으로 30도 돌아주세요" />
+
+                <ImageView
+                    android:id="@+id/star_guide_arrow"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/profile_default_image" />
 
             </LinearLayout>
 
@@ -92,8 +183,10 @@
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
-        android:layout_height="141dp"
-        android:background="@color/black"
+        android:layout_height="wrap_content"
+        android:paddingVertical="20dp"
+        android:paddingHorizontal="28dp"
+        android:background="#80000000"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -101,24 +194,27 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/back_camera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="뒤로가기"
-            style="@style/semiBold_single_16"
-            android:layout_marginStart="31dp"
-            android:layout_gravity="center_vertical"
-            android:textColor="@color/white"/>
+            <ImageView
+                android:id="@+id/star_camera_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:src="@drawable/star__camera_back_btn" />
 
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <ImageView
             android:id="@+id/cameraButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
             android:layout_gravity="center"
             android:src="@drawable/star_camera" />
+
+            <ImageView
+                android:id="@+id/guideOnOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:src="@drawable/star__camera_guide_on_off" />
 
         </FrameLayout>
     </LinearLayout>

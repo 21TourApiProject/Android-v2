@@ -10,12 +10,10 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,13 +26,10 @@ import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.Filter;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchKey;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchLoadingDialog;
 import com.starrynight.tourapiproject.starPage.constNameRetrofit.ConstellationParams2;
-import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener;
 import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener2;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
-import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdapter;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdpater2;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.RetrofitClient;
-import com.starrynight.tourapiproject.weatherPage.WeatherLoadingDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,7 +68,6 @@ public class StarSearchActivity extends AppCompatActivity {
 
     String constName;
     Long starHashTag;
-    String keyword;
     String hashTagName;
     List<StarItem> searchResult;
     StarViewAdpater2 constAdapter;
