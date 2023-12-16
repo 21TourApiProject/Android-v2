@@ -18,8 +18,8 @@ public interface InterestAreaRetrofitService {
     Call<List<InterestAreaDTO>> getAllInterestArea(@Path("userId") Long userId);
 
     @POST("interestArea")
-    Call<Void> addInterestArea(@Body UpdateInterestAreaDTO updateInterestAreaDTO);
+    Call<Void> addInterestArea(@Body AddInterestAreaDTO addInterestAreaDTO);
 
-    @DELETE("interestArea")
-    Call<Void> deleteInterestArea(@Body UpdateInterestAreaDTO updateInterestAreaDTO);
+    @DELETE("interestArea/{userId}/{regionId}/{regionType}")
+    Call<Void> deleteInterestArea(@Path("userId") Long userId, @Path("regionId") Long regionId, @Path("regionType") Integer regionType);
 }

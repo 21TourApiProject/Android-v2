@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/tppop_area"
+    android:orientation="vertical"
+    tools:context=".mainPage.interestArea.InterestAreaPopActivity">
+
+    <TextView
+        style="@style/medium_multi_14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="5dp"
+        android:text="삭제하세여"
+        android:textColor="@color/white" />
+
+    <TextView
+        style="@style/medium_multi_14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text=""
+        android:textColor="@color/gray_400" />
+
+    <Button
+        android:id="@+id/interest_area_pop_close"
+        style="@style/semiBold_single_14"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/round_btn_gray"
+        android:onClick="closeInterestAreaPop"
+        android:text="닫기"
+        android:textColor="@color/gray_700" />
+
+</LinearLayout>

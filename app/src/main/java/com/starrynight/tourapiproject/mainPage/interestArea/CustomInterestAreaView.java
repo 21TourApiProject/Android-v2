@@ -5,13 +5,17 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
 import com.starrynight.tourapiproject.R;
+
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -20,6 +24,7 @@ public class CustomInterestAreaView extends LinearLayout {
     TextView interestAreaName;
     CircleImageView interestAreaImage;
     TextView interestAreaObservationalFit;
+    ImageView interestAreaDelete;
     Context context;
 
     public CustomInterestAreaView(Context context, @Nullable AttributeSet attrs) {
@@ -38,6 +43,16 @@ public class CustomInterestAreaView extends LinearLayout {
         String observationalFit = typedArray.getString(R.styleable.CustomInterestAreaView_observationalFit);
     }
 
+    private OnDeleteClickListener onDeleteClickListener;
+
+    public interface OnDeleteClickListener {
+        void onDeleteClick();
+    }
+
+    public void setInterestAreaDeleteClickListener(OnDeleteClickListener listener) {
+        this.onDeleteClickListener = listener;
+    }
+
     private void initView() {
         String infService = Context.LAYOUT_INFLATER_SERVICE;
         LayoutInflater li = (LayoutInflater) getContext().getSystemService(infService);
@@ -47,6 +62,16 @@ public class CustomInterestAreaView extends LinearLayout {
         interestAreaName = v.findViewById(R.id.interestAreaName);
         interestAreaImage = v.findViewById(R.id.interestAreaImage);
         interestAreaObservationalFit = v.findViewById(R.id.interestAreaObservationalFit);
+        interestAreaDelete = v.findViewById(R.id.interestAreaDelete);
+
+        interestAreaDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onDeleteClickListener != null) {
+                    onDeleteClickListener.onDeleteClick();
+                }
+            }
+        });
     }
 
     private void getAttrs(AttributeSet attrs) {
@@ -60,8 +85,10 @@ public class CustomInterestAreaView extends LinearLayout {
 //        requestLayout();
     }
 
-    public void setInterestAreaImage(String interestAreaImage) {
-//        this.interestAreaImage.setText(interestAreaImage);
+    public void setInterestAreaImage(String image) {
+        if(Objects.nonNull(image)){
+            Glide.with(getContext()).load(image).into(interestAreaImage);
+        }
     }
 
     public void setInterestAreaObservationalFit(String observationalFit) {
@@ -69,6 +96,12 @@ public class CustomInterestAreaView extends LinearLayout {
         if (Integer.parseInt(observationalFit) < 60) {
             interestAreaObservationalFit.setTextColor(ContextCompat.getColor(context, R.color.point_red));
         }
+    }
+
+    // 삭제 버튼 setVisibility
+    public void showInterestAreaDelete(boolean show) {
+        if(show) interestAreaDelete.setVisibility(View.VISIBLE);
+        else interestAreaDelete.setVisibility(View.GONE);
     }
 
 }

@@ -1,25 +1,15 @@
 package com.starrynight.tourapiproject;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -27,34 +17,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.starrynight.tourapiproject.alarmPage.AlarmActivity;
-import com.starrynight.tourapiproject.alarmPage.subBanner.SubBanner;
 import com.starrynight.tourapiproject.postPage.postRetrofit.MainPost;
 import com.starrynight.tourapiproject.postPage.postRetrofit.MainPost_adapter;
 import com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.postWritePage.PostWriteActivity;
-import com.starrynight.tourapiproject.weatherPage.GpsTracker;
-import com.starrynight.tourapiproject.weatherPage.LocationDTO;
-import com.starrynight.tourapiproject.weatherPage.WeatherActivity;
-import com.starrynight.tourapiproject.weatherPage.WeatherLocationSearchActivity;
-import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.AreaTimeDTO;
-import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.MainInfo;
-import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.NearestDTO;
-import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.WeatherRetrofitClient;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -90,7 +64,8 @@ public class ReviewFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
     private static final String TAG = "Main Fragment";
 
-    public ReviewFragment() {}
+    public ReviewFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
