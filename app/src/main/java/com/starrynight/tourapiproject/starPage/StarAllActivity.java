@@ -49,7 +49,6 @@ import retrofit2.Response;
  */
 public class StarAllActivity extends AppCompatActivity {
 
-    String[] hashtagList={"황도 12궁", "봄","여름","가을","겨울"};
     RecyclerView recyclerView;
     StarViewAdpater2 constAdapter;
     StarViewAdapter constTodayAdapter;
@@ -147,7 +146,7 @@ public class StarAllActivity extends AppCompatActivity {
         });
 
 
-        // item 클릭 시 해당 아이템 constId 넘겨주기
+        // item 클릭 시 해당 아이템 constName 넘겨주기
         constAdapter.setOnItemClickListener(new OnStarItemClickListener2() {
             @Override
             public void onItemClick(StarViewAdpater2.ViewHolder holder, View view, int position) {

@@ -73,7 +73,9 @@ public class MainActivity extends AppCompatActivity {
     String[] READ_PERMISSION = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
     String[] INTERNET_PERMISSION = new String[]{Manifest.permission.INTERNET};
     String[] PERMISSION = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.INTERNET,
-            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.POST_NOTIFICATIONS};
+            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
+//            Manifest.permission.POST_NOTIFICATIONS
+    };
     int PERMISSIONS_REQUEST_CODE = 100;
     Long userId;
 
@@ -99,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         int permission3 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.INTERNET);
         int permission4 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
         int permission5 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION);
-        int permission6 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS);
+//        int permission6 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS);
 
         Log.d("test", "onClick: location clicked");
         if (permission == PackageManager.PERMISSION_GRANTED
@@ -107,7 +109,8 @@ public class MainActivity extends AppCompatActivity {
                 && permission3 == PackageManager.PERMISSION_GRANTED
                 && permission4 == PackageManager.PERMISSION_GRANTED
                 && permission5 == PackageManager.PERMISSION_GRANTED
-                &&permission6 == PackageManager.PERMISSION_GRANTED) {
+//                &&permission6 == PackageManager.PERMISSION_GRANTED
+        ) {
             Log.d("MyTag", "읽기,쓰기,인터넷 권한이 있습니다.");
 
         } else {

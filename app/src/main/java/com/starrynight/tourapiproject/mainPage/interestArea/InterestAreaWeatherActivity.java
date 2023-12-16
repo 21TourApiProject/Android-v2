@@ -4,20 +4,33 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.starrynight.tourapiproject.MainActivity;
 import com.starrynight.tourapiproject.R;
+import com.starrynight.tourapiproject.mainPage.RecentReviewAdapter;
+import com.starrynight.tourapiproject.mainPage.RecentReviewItemClickListener;
 import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaRetrofitClient;
 import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaWeatherDTO;
+import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.PostContentsParams;
+import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.RetrofitClient;
+import com.starrynight.tourapiproject.observationPage.MoreObservationActivity;
+import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
+import com.starrynight.tourapiproject.postPage.PostActivity;
 import com.starrynight.tourapiproject.weatherPage.LocationDTO;
 import com.starrynight.tourapiproject.weatherPage.WeatherActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -27,6 +40,9 @@ import retrofit2.Response;
 public class InterestAreaWeatherActivity extends AppCompatActivity {
 
     private static final String TAG = "InterestAreaWeather";
+    private static final Integer REGION_TYPE_OBSERVATION = 1;
+    private static final Integer REGION_TYPE_LOCALE = 2;
+
 
     @SuppressLint("SimpleDateFormat")
     SimpleDateFormat MM_dd_EE = new SimpleDateFormat("MM. dd(EE)");
@@ -41,6 +57,13 @@ public class InterestAreaWeatherActivity extends AppCompatActivity {
     private TextView interest_area_best_observational_fit; // 최대 관측적합도
     private TextView interest_area_weather_report; // 날씨 요약 레포트
     private TextView interest_area_detail_weather; // 날씨 자세히 보기 버튼
+
+    private RecyclerView reviewRecycler;//관측후기 recycler
+    private RecentReviewAdapter recentReviewAdapter;    //관측후기 recycler Adapter
+    private TextView moveReviewBtn; //관측후기보러가기
+    private LinearLayout reviewLayout; //관측후기 레이아웃
+    private LinearLayout moveObservationBtn; //관측지 이동 버튼
+    private TextView noReviewText; //관측후기 없음 텍스트
 
     Long regionId;
     Integer regionType;
@@ -112,8 +135,86 @@ public class InterestAreaWeatherActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // 관측 후기
+        reviewRecycler = findViewById(R.id.interest_review_recycler);
+        moveReviewBtn = findViewById(R.id.interest_area_detail_review);
+        reviewLayout = findViewById(R.id.interest_area_review_layout);
+        moveObservationBtn = findViewById(R.id.interest_area_move_observation);
+        noReviewText = findViewById(R.id.interest_area_no_review);
+        recentReviewAdapter = new RecentReviewAdapter();
+        reviewRecycler.setAdapter(recentReviewAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        reviewRecycler.setLayoutManager(layoutManager);
+        setReviewLayout();
+
         // 뒤로 가기
         interest_area_back.setOnClickListener(v -> finish());
     }
+
+    private void setReviewLayout() {
+        if (regionType.equals(REGION_TYPE_LOCALE)) {
+            reviewLayout.setVisibility(View.GONE);
+            moveObservationBtn.setVisibility(View.GONE);
+        }
+
+        Call<List<PostContentsParams>> call = InterestAreaRetrofitClient.getApiService().getObservationPostWithSize(regionId,3);
+        call.enqueue(new Callback<List<PostContentsParams>>() {
+            @Override
+            public void onResponse(Call<List<PostContentsParams>> call, Response<List<PostContentsParams>> response) {
+                if (response.isSuccessful()) {
+                    List<PostContentsParams> postContentsParamsList = response.body();
+                    if (postContentsParamsList.isEmpty()) {
+                        setNoReview();
+                    } else {
+                        recentReviewAdapter.setItems(postContentsParamsList);
+                        recentReviewAdapter.notifyDataSetChanged();
+                    }
+
+                } else {
+                    Log.d(TAG, "최근 관측후기 로드 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PostContentsParams>> call, Throwable t) {
+                Log.d(TAG, "최근 관측후기 연결 실패");
+            }
+        });
+
+        recentReviewAdapter.setOnItemClicklistener(new RecentReviewItemClickListener() {
+            @Override
+            public void onItemClick(RecentReviewAdapter.ViewHolder holder, View view, int position) {
+                PostContentsParams item = recentReviewAdapter.getItem(position);
+                Intent intent = new Intent(InterestAreaWeatherActivity.this, PostActivity.class);
+                intent.putExtra("postId", item.getItemId());
+                startActivity(intent);
+            }
+        });
+
+        moveReviewBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent2 = new Intent(InterestAreaWeatherActivity.this, MoreObservationActivity.class);
+                intent2.putExtra("observationId", regionId);
+                startActivity(intent2);
+            }
+        });
+
+        moveObservationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent2 = new Intent(InterestAreaWeatherActivity.this, ObservationsiteActivity.class);
+                intent2.putExtra("observationId", regionId);
+                startActivity(intent2);
+            }
+        });
+    }
+
+    private void setNoReview() {
+        noReviewText.setVisibility(View.VISIBLE);
+        moveReviewBtn.setVisibility(View.GONE);
+        reviewRecycler.setVisibility(View.GONE);
+    }
+
 
 }

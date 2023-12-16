@@ -39,6 +39,7 @@
         android:theme="@style/StarryNight"
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
+        <activity android:name=".starPage.SelectStarActivity"></activity>
         <activity android:name=".myPage.MyCommentActivity" />
         <activity
             android:name=".MainActivity"
@@ -136,9 +137,8 @@
         <service
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true" />
-
         <service
-            android:name="com.starrynight.tourapiproject.myPage.myPageRetrofit.FcmService"
+            android:name=".myPage.myPageRetrofit.FcmService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

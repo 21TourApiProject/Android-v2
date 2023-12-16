@@ -144,7 +144,7 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
         starCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Objects.requireNonNull(getActivity()).getApplicationContext(),StarCameraActivity.class);
+                Intent intent = new Intent(Objects.requireNonNull(getActivity()).getApplicationContext(),SelectStarActivity.class);
                 startActivity(intent);
             }
         });

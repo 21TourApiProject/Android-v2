@@ -124,6 +124,24 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     boolean editMode = false; // 관심지역 편집 상태
     boolean needRefresh = false; // 관심지역 편집취소 클릭 시 새로고침 여부
 
+    //도움말
+    private LinearLayout help_1;
+    private ImageView help_1_button;
+    private TextView help_1_text;
+    private LinearLayout help_2;
+    private ImageView help_2_button;
+    private TextView help_2_text;
+    private LinearLayout help_3;
+    private ImageView help_3_button;
+    private TextView help_3_text;
+    private LinearLayout help_4;
+    private ImageView help_4_button;
+    private TextView help_4_text;
+    private LinearLayout help_5;
+    private ImageView help_5_button;
+    private TextView help_5_text;
+
+
     public MainFragment() {
     }
 
@@ -553,31 +571,38 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         // 오늘 볼 수 있는 별자리
         starRecycler = v.findViewById(R.id.main_star_today_recycler);
         move_star_btn = v.findViewById(R.id.main_move_star);
-        starViewAdapter = new
-
-                StarViewAdapter();
-
+        starViewAdapter = new StarViewAdapter();
         startMonthText = v.findViewById(R.id.main_star_month_txt);
-        starRecycler.setLayoutManager(new
-
-                LinearLayoutManager(getActivity().
-
-                getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+        starRecycler.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         starRecycler.setAdapter(starViewAdapter);
-
         setTodayStarLayout();
 
         // 최근 관측 후기
         RecyclerView reviewRecycler = v.findViewById(R.id.main_review_recycler);
         moveReviewBtn = v.findViewById(R.id.main_move_review);
-        recentReviewAdapter = new
-
-                RecentReviewAdapter();
+        recentReviewAdapter = new RecentReviewAdapter();
         reviewRecycler.setAdapter(recentReviewAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         reviewRecycler.setLayoutManager(layoutManager);
-
         setCurrentReviewLayout();
+
+        //도움말
+        help_1 = v.findViewById(R.id.main_help_1);
+        help_1_button = v.findViewById(R.id.main_help_1_button);
+        help_1_text = v.findViewById(R.id.main_help_1_text);
+        help_2 = v.findViewById(R.id.main_help_2);
+        help_2_button = v.findViewById(R.id.main_help_2_button);
+        help_2_text = v.findViewById(R.id.main_help_2_text);
+        help_3 = v.findViewById(R.id.main_help_3);
+        help_3_button = v.findViewById(R.id.main_help_3_button);
+        help_3_text = v.findViewById(R.id.main_help_3_text);
+        help_4 = v.findViewById(R.id.main_help_4);
+        help_4_button = v.findViewById(R.id.main_help_4_button);
+        help_4_text = v.findViewById(R.id.main_help_4_text);
+        help_5 = v.findViewById(R.id.main_help_5);
+        help_5_button = v.findViewById(R.id.main_help_5_button);
+        help_5_text = v.findViewById(R.id.main_help_5_text);
+        setHelp();
 
         return v;
     }
@@ -695,6 +720,55 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void onClick(View v) {
                 ((MainActivity) Objects.requireNonNull(getActivity())).movePost();
+            }
+        });
+    }
+
+    private void setHelp() {
+
+        help_1.setOnClickListener(view -> {
+            if (help_1_text.getVisibility() == View.VISIBLE) {
+                help_1_button.setRotation(180);
+                help_1_text.setVisibility(View.GONE);
+            } else {
+                help_1_button.setRotation(0);
+                help_1_text.setVisibility(View.VISIBLE);
+            }
+        });
+        help_2.setOnClickListener(view -> {
+            if (help_2_text.getVisibility() == View.VISIBLE) {
+                help_2_button.setRotation(180);
+                help_2_text.setVisibility(View.GONE);
+            } else {
+                help_2_button.setRotation(0);
+                help_2_text.setVisibility(View.VISIBLE);
+            }
+        });
+        help_3.setOnClickListener(view -> {
+            if (help_3_text.getVisibility() == View.VISIBLE) {
+                help_3_button.setRotation(180);
+                help_3_text.setVisibility(View.GONE);
+            } else {
+                help_3_button.setRotation(0);
+                help_3_text.setVisibility(View.VISIBLE);
+            }
+        });
+        help_4.setOnClickListener(view -> {
+            if (help_4_text.getVisibility() == View.VISIBLE) {
+                help_4_button.setRotation(180);
+                help_4_text.setVisibility(View.GONE);
+            } else {
+                help_4_button.setRotation(0);
+                help_4_text.setVisibility(View.VISIBLE);
+            }
+        });
+        help_5.setOnClickListener(view -> {
+            if (help_5_text.getVisibility() == View.VISIBLE) {
+                help_5_button.setRotation(180);
+                help_5_text.setVisibility(View.GONE);
+            } else {
+                help_5_button.setRotation(0);
+                help_5_text.setVisibility(View.VISIBLE);
             }
         });
     }
