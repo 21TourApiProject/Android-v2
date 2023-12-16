@@ -54,6 +54,9 @@
         <activity android:name=".starPage.StarCameraActivity" />
         <activity android:name=".weatherPage.WeatherActivity" />
         <activity android:name=".mainPage.interestArea.InterestAreaWeatherActivity" />
+        <activity
+            android:name=".mainPage.interestArea.InterestAreaPopActivity"
+            android:theme="@style/Theme.AppCompat.Dialog" />
         <activity android:name=".weatherPage.WeatherHelpActivity" />
         <activity android:name=".starPage.StarHelpActivity" />
         <activity android:name=".starPage.StarSearchActivity" />
@@ -141,6 +144,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
     </application>
 
 </manifest>

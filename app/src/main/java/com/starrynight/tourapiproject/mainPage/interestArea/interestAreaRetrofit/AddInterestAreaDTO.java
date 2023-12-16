@@ -1,11 +1,20 @@
 package com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit;
 
-public class UpdateInterestAreaDTO {
+public class AddInterestAreaDTO {
 
     public Long userId;
     public Long regionId;
     public String regionName;
     public Integer regionType;
+
+    public AddInterestAreaDTO() {
+    }
+
+    public AddInterestAreaDTO(Long userId, Long regionId, Integer regionType) {
+        this.userId = userId;
+        this.regionId = regionId;
+        this.regionType = regionType;
+    }
 
     public Long getUserId() {
         return userId;

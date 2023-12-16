@@ -5,6 +5,7 @@ public class InterestAreaDTO {
     public Long regionId;
     public String regionName;
     public Integer regionType;
+    public String regionImage;
     public String observationalFit;
 
     public Long getRegionId() {
@@ -29,6 +30,14 @@ public class InterestAreaDTO {
 
     public void setRegionType(Integer regionType) {
         this.regionType = regionType;
+    }
+
+    public String getRegionImage() {
+        return regionImage;
+    }
+
+    public void setRegionImage(String regionImage) {
+        this.regionImage = regionImage;
     }
 
     public String getObservationalFit() {

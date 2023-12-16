@@ -16,13 +16,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,6 +33,7 @@ import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.alarmPage.AlarmActivity;
 import com.starrynight.tourapiproject.alarmPage.subBanner.SubBanner;
 import com.starrynight.tourapiproject.mainPage.interestArea.CustomInterestAreaView;
+import com.starrynight.tourapiproject.mainPage.interestArea.InterestAreaPopActivity;
 import com.starrynight.tourapiproject.mainPage.interestArea.InterestAreaWeatherActivity;
 import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaDTO;
 import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaRetrofitClient;
@@ -50,12 +49,9 @@ import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListe
 import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdapter;
 import com.starrynight.tourapiproject.weatherPage.GpsTracker;
-import com.starrynight.tourapiproject.weatherPage.LocationDTO;
-import com.starrynight.tourapiproject.weatherPage.WeatherActivity;
 import com.starrynight.tourapiproject.weatherPage.WeatherLocationSearchActivity;
-import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.AreaTimeDTO;
 import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.MainInfo;
-import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.NearestDTO;
+import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.NearestAreaDTO;
 import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.WeatherRetrofitClient;
 
 import java.io.BufferedReader;
@@ -64,11 +60,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -95,7 +91,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private static final String MAIN_STAR_TEXT = "월에 잘 보여요";
 
     @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat hh = new SimpleDateFormat("HH");
+    SimpleDateFormat HH = new SimpleDateFormat("HH");
     @SuppressLint("SimpleDateFormat")
     SimpleDateFormat mm = new SimpleDateFormat("mm");
     @SuppressLint("SimpleDateFormat")
@@ -106,15 +102,11 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private SwipeRefreshLayout swipeRefreshLayout;
     private ImageView subBanner;
     private LinearLayout subBannerLayout;
-    private double latitude;
-    private double longitude;
-    private String location;
-    private Long areaId; // WEATHER_AREA id
-    private String hour; // 현재 hour ex) 18
-    private TextView weatherComment;
-    private ImageView star;
-    private TextView mainBestObservationFit;
-    private TextView recommendTime;
+    private TextView helloMassage; // 인사말
+    private TextView currentLocation; // 현 위치
+    private TextView locationError; // 위치 오류 문구
+    private TextView currentWeather; // 현 위치 날씨 정보
+    private Boolean findLocation; // 현위치 조회 성공 여부
 
     private RecyclerView starRecycler;
     private ImageButton move_star_btn;
@@ -123,12 +115,14 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private LinearLayout moveReviewBtn;
     private RecentReviewAdapter recentReviewAdapter;
 
-    // 관심지역
-    private TextView editInterestArea;
-    private ImageView addInterestArea;
-    private ImageView addInterestAreaInit;
-    List<Long> interestRegionIdList = new ArrayList<>(); // 관심 지역 id 리스트
-    List<Integer> interestRegionTypeList = new ArrayList<>(); // 관심 지역 id 리스트
+    private TextView interestAreaTitle; // 관심지역 탭 제목
+    private TextView editInterestArea; // 관심지역 편집 버튼
+    private ImageView addInterestArea; // 관심지역 추가 버튼 (1개 이상일 때)
+    private ImageView addInterestAreaInit; // 관심지역 추가 버튼 (0개일 때)
+    List<Long> interestRegionIdList; // 관심지역 id 리스트
+    List<Integer> interestRegionTypeList; // 관심지역 type 리스트
+    boolean editMode = false; // 관심지역 편집 상태
+    boolean needRefresh = false; // 관심지역 편집취소 클릭 시 새로고침 여부
 
     //도움말
     private LinearLayout help_1;
@@ -162,21 +156,53 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         View v = inflater.inflate(R.layout.fragment_main, container, false);
         swipeRefreshLayout = v.findViewById(R.id.swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
+
+        helloMassage = v.findViewById(R.id.hello_message);
+        currentLocation = v.findViewById(R.id.main__current_location);
+        locationError = v.findViewById(R.id.location_error);
+        currentWeather = v.findViewById(R.id.current_weather);
         LinearLayout weatherLocationSearch = v.findViewById(R.id.weather_location_search);
 
-        View mainLocation = v.findViewById(R.id.main__location);
-        weatherComment = v.findViewById(R.id.weather_comment);
-        TextView currentLocation = v.findViewById(R.id.main__current_location);
-        star = v.findViewById(R.id.main__star);
-        mainBestObservationFit = v.findViewById(R.id.main_best_observation_fit);
-        recommendTime = v.findViewById(R.id.recommend_time);
-        View weatherDetail = v.findViewById(R.id.weather_detail);
+        // 관심지역 편집 시 투명도 조절을 위한 타 레이아웃 변수
+        View hello_layout = v.findViewById(R.id.hello_layout);
+        View current_layout = v.findViewById(R.id.current_layout);
+        View search_layout = v.findViewById(R.id.search_layout);
+        View observation_layout = v.findViewById(R.id.observation_layout);
+        View star_layout = v.findViewById(R.id.star_layout);
+        View night_sky_layout = v.findViewById(R.id.night_sky_layout);
+        View[] viewListWithoutInterestArea = new View[]{hello_layout, current_layout, search_layout, observation_layout, star_layout, night_sky_layout};
+
+        // userId 가져오기
+        try {
+            FileInputStream fis = getActivity().openFileInput("userId");
+            String line = new BufferedReader(new InputStreamReader(fis)).readLine();
+            userId = Long.parseLong(line);
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // 환영 메세지
+//        RetrofitClient.getApiService().getNickName(userId).enqueue(new Callback<Map<String, String>>() {
+//            @Override
+//            public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
+//                if (response.isSuccessful()) {
+//                    helloMassage.setText("안녕하세요, " + response.body().get("nickName") + "님!\n별 보러 떠나볼까요?");
+//                } else {
+//                    Log.e(TAG, "닉네임 조회 오류");
+//                }
+//            }
+//            @Override
+//            public void onFailure(Call<Map<String, String>> call, Throwable t) {
+//                Log.e(TAG, t.getMessage());
+//            }
+//        });
 
         checkLocationPermission();
 
         GpsTracker gpsTracker = new GpsTracker(getContext());
-        latitude = gpsTracker.getLatitude();
-        longitude = gpsTracker.getLongitude();
+        double latitude = gpsTracker.getLatitude();
+        double longitude = gpsTracker.getLongitude();
 
         // 현 위치 불러오기
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
@@ -191,94 +217,49 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             Address address = addressList.get(0);
             String SD = address.getAdminArea();
             String SGG = address.getLocality() == null ? address.getSubLocality() : address.getLocality();
+            System.out.println("SD = " + SD); // 서울특별시
+            System.out.println("SGG = " + SGG); // 서대문구
 
             if (SD == null || !SD.contains("세종") && SGG == null) {
-                location = "현위치를 불러올 수 없습니다.";
-                currentLocation.setText(location);
+                findLocation = false;
+                locationError.setVisibility(View.VISIBLE);
             } else {
-                NearestDTO nearestDTO = new NearestDTO(SGG, latitude, longitude);
-                if (SD.contains("세종")) nearestDTO.setSgg("세종");
+                findLocation = true;
+                locationError.setVisibility(View.GONE);
+                Date date = new Date(System.currentTimeMillis());
+                NearestAreaDTO nearestAreaDTO = new NearestAreaDTO(SGG, latitude, longitude, yyyy_MM_dd.format(date), Integer.valueOf(HH.format(date)));
+                if (SD.contains("세종")) nearestAreaDTO.setSgg("세종");
 
                 WeatherRetrofitClient.getApiService()
-                        .getNearestArea(nearestDTO)
-                        .enqueue(new Callback<Map<String, String>>() {
+                        .getNearestAreaWeatherInfo(nearestAreaDTO)
+                        .enqueue(new Callback<MainInfo>() {
                             @Override
-                            public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
+                            public void onResponse(Call<MainInfo> call, Response<MainInfo> response) {
                                 if (response.isSuccessful()) {
-                                    Map<String, String> body = response.body();
-                                    String emd = body.get("EMD");
-                                    if (SD.contains("세종")) location = "세종특별자치시 " + emd;
-                                    else location = SD + " " + SGG + " " + emd;
-
-                                    currentLocation.setText(location);
-
-                                    long now = System.currentTimeMillis();
-                                    Date date = new Date(now);
-                                    hour = hh.format(date);
-
-                                    AreaTimeDTO areaTimeDTO = new AreaTimeDTO(yyyy_MM_dd.format(date), Integer.valueOf(hour), latitude, longitude);
-                                    areaTimeDTO.setAddress(location);
-                                    WeatherRetrofitClient.getApiService()
-                                            .getMainInfo(areaTimeDTO)
-                                            .enqueue(new Callback<MainInfo>() {
-                                                @Override
-                                                public void onResponse(Call<MainInfo> call, Response<MainInfo> response) {
-                                                    if (response.isSuccessful()) {
-                                                        MainInfo info = response.body();
-                                                        weatherComment.setText(info.getComment());
-                                                        mainBestObservationFit.setText(info.getBestObservationalFit());
-                                                        if (Objects.nonNull(info.getBestTime())) {
-                                                            recommendTime.setText(info.getBestTime());
-                                                        } else {
-                                                            mainLocation.setBackground(ContextCompat.getDrawable(mainLocation.getContext(), R.drawable.main__location_back_red));
-                                                            star.setImageDrawable(ContextCompat.getDrawable(star.getContext(), R.drawable.main__weather_star_gray));
-                                                            recommendTime.setText(info.getMainEffect());
-                                                        }
-                                                        areaId = info.getAreaId();
-                                                    } else {
-                                                        Log.e(TAG, "날씨 오류");
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onFailure(Call<MainInfo> call, Throwable t) {
-                                                    Log.e(TAG, t.getMessage());
-                                                }
-                                            });
-
-                                    weatherDetail.setOnClickListener(v1 -> {
-                                        Intent intent = new Intent(getActivity().getApplicationContext(), WeatherActivity.class);
-                                        LocationDTO locationDTO = new LocationDTO(latitude, longitude, areaId, null, emd);
-                                        intent.putExtra("locationDTO", locationDTO);
-                                        startActivityForResult(intent, 104);
-                                    });
-
-
+                                    MainInfo mainInfo = response.body();
+                                    currentLocation.setText(mainInfo.getLocation());
+                                    currentWeather.setText(mainInfo.getComment());
                                 } else {
-                                    Log.e(TAG, "날씨 오류");
+                                    Log.e(TAG, "getNearestAreaWeatherInfo 오류");
                                 }
                             }
 
                             @Override
-                            public void onFailure(Call<Map<String, String>> call, Throwable t) {
+                            public void onFailure(Call<MainInfo> call, Throwable t) {
                                 Log.e(TAG, t.getMessage());
                             }
                         });
             }
         }
-        if (location == null) currentLocation.setText("새로고침이 필요합니다.");
 
-        String fileName = "userId"; // 유저 아이디 가져오기
-        try {
-            FileInputStream fis = getActivity().openFileInput(fileName);
-            String line = new BufferedReader(new InputStreamReader(fis)).readLine();
-            userId = Long.parseLong(line);
-            fis.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        // 위치 허용 동의 후 최초 발생
+        if (findLocation == null) {
+            locationError.setText("새로고침이 필요합니다.");
+            locationError.setVisibility(View.VISIBLE);
         }
 
-        // 관심지역
+        // 관심지역 조회
+        interestAreaTitle = v.findViewById(R.id.interest_area_title);
         CustomInterestAreaView interestArea0 = v.findViewById(R.id.interestArea0);
         CustomInterestAreaView interestArea1 = v.findViewById(R.id.interestArea1);
         CustomInterestAreaView interestArea2 = v.findViewById(R.id.interestArea2);
@@ -292,34 +273,40 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     public void onResponse(Call<List<InterestAreaDTO>> call, Response<List<InterestAreaDTO>> response) {
                         if (response.isSuccessful()) {
                             List<InterestAreaDTO> interestAreaList = response.body();
+                            interestRegionIdList = new ArrayList<>();
+                            interestRegionTypeList = new ArrayList<>();
                             interestAreaList.forEach(interestAreaDTO -> interestRegionIdList.add(interestAreaDTO.getRegionId()));
                             interestAreaList.forEach(interestAreaDTO -> interestRegionTypeList.add(interestAreaDTO.getRegionType()));
+
                             System.out.println("interestRegionIdList = " + interestRegionIdList);
                             System.out.println("interestRegionTypeList = " + interestRegionTypeList);
 
                             if (interestAreaList.size() == 0) { // 0
+                                interestAreaTitle.setText("여행자님의 관심지역");
                                 addInterestAreaInit.setVisibility(View.VISIBLE);
+                                addInterestArea.setVisibility(View.GONE);
                             }
                             if (interestAreaList.size() >= 1) { // 1, 2, 3
-                                editInterestArea.setVisibility(View.VISIBLE);
                                 addInterestArea.setVisibility(View.VISIBLE);
+                                editInterestArea.setVisibility(View.VISIBLE);
                                 interestArea0.setVisibility(View.VISIBLE);
                                 interestArea0.setInterestAreaName(interestAreaList.get(0).getRegionName());
+                                interestArea0.setInterestAreaImage(interestAreaList.get(0).getRegionImage());
                                 interestArea0.setInterestAreaObservationalFit(interestAreaList.get(0).getObservationalFit());
 
                             }
                             if (interestAreaList.size() >= 2) { // 2, 3
                                 interestArea1.setVisibility(View.VISIBLE);
                                 interestArea1.setInterestAreaName(interestAreaList.get(1).getRegionName());
+                                interestArea1.setInterestAreaImage(interestAreaList.get(1).getRegionImage());
                                 interestArea1.setInterestAreaObservationalFit(interestAreaList.get(1).getObservationalFit());
                             }
                             if (interestAreaList.size() == 3) { // 3
-                                addInterestArea.setVisibility(View.GONE);
                                 interestArea2.setVisibility(View.VISIBLE);
                                 interestArea2.setInterestAreaName(interestAreaList.get(2).getRegionName());
+                                interestArea2.setInterestAreaImage(interestAreaList.get(2).getRegionImage());
                                 interestArea2.setInterestAreaObservationalFit(interestAreaList.get(2).getObservationalFit());
                             }
-
                         } else {
                             Log.e(TAG, "서버 api 호출 실패");
                         }
@@ -331,62 +318,154 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     }
                 });
 
-        // 관심 지역 카드 클릭
-        interestArea0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        // 관심지역 편집
+        editInterestArea = v.findViewById(R.id.editInterestArea);
+        editInterestArea.setOnClickListener((view) -> {
+            if (!editMode) { // 편집 모드 off -> on
+                editMode = true;
+                needRefresh = false;
+                editInterestArea.setText("편집취소");
+                Arrays.stream(viewListWithoutInterestArea).forEach(layout -> layout.setAlpha(0.3f)); // 투명도 조절
+
+                if (interestRegionIdList.size() >= 1) {
+                    interestArea0.showInterestAreaDelete(true);
+                    interestArea0.setInterestAreaDeleteClickListener(() -> {
+                        needRefresh = true;
+                        InterestAreaRetrofitClient.getApiService()
+                                .deleteInterestArea(userId, interestRegionIdList.get(0), interestRegionTypeList.get(0))
+                                .enqueue(new Callback<Void>() {
+                                    @Override
+                                    public void onResponse(Call<Void> call, Response<Void> response) {
+                                        System.out.println("삭제 성공");
+                                        interestArea0.setVisibility(View.GONE);
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Void> call, Throwable t) {
+                                        Log.e(TAG, "서버 api 호출 실패");
+                                    }
+                                });
+                    });
+                }
+                if (interestRegionIdList.size() >= 2) {
+                    interestArea1.showInterestAreaDelete(true);
+                    interestArea1.setInterestAreaDeleteClickListener(() -> {
+                        needRefresh = true;
+                        InterestAreaRetrofitClient.getApiService()
+                                .deleteInterestArea(userId, interestRegionIdList.get(1), interestRegionTypeList.get(1))
+                                .enqueue(new Callback<Void>() {
+                                    @Override
+                                    public void onResponse(Call<Void> call, Response<Void> response) {
+                                        System.out.println("삭제 성공");
+                                        interestArea1.setVisibility(View.GONE);
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Void> call, Throwable t) {
+                                        Log.e(TAG, "서버 api 호출 실패");
+                                    }
+                                });
+                    });
+                }
+                if (interestRegionIdList.size() == 3) {
+                    interestArea2.showInterestAreaDelete(true);
+                    interestArea2.setInterestAreaDeleteClickListener(() -> {
+                        needRefresh = true;
+                        InterestAreaRetrofitClient.getApiService()
+                                .deleteInterestArea(userId, interestRegionIdList.get(2), interestRegionTypeList.get(2))
+                                .enqueue(new Callback<Void>() {
+                                    @Override
+                                    public void onResponse(Call<Void> call, Response<Void> response) {
+                                        System.out.println("삭제 성공");
+                                        interestArea2.setVisibility(View.GONE);
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Void> call, Throwable t) {
+                                        Log.e(TAG, "서버 api 호출 실패");
+                                    }
+                                });
+                    });
+                }
+            } else { // 편집 모드 on -> off
+                editMode = false;
+                editInterestArea.setText("편집");
+                Arrays.stream(viewListWithoutInterestArea).forEach(layout -> layout.setAlpha(1.0f)); // 투명도 조절
+
+                if (interestRegionIdList.size() >= 1) { // 1, 2, 3
+                    interestArea0.showInterestAreaDelete(false);
+                }
+                if (interestRegionIdList.size() >= 2) { // 2, 3
+                    interestArea1.showInterestAreaDelete(false);
+                }
+                if (interestRegionIdList.size() == 3) { // 3
+                    interestArea2.showInterestAreaDelete(false);
+                }
+                if (needRefresh) refreshFragment();
+            }
+        });
+
+        // 관심지역 클릭
+        interestArea0.setOnClickListener((view) -> {
+            if (!editMode) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), InterestAreaWeatherActivity.class);
                 intent.putExtra("regionId", interestRegionIdList.get(0));
                 intent.putExtra("regionType", interestRegionTypeList.get(0));
+                System.out.println("이동");
+                System.out.println(interestRegionIdList.get(0));
+                System.out.println(interestRegionTypeList.get(0));
                 startActivityForResult(intent, 105);
+
             }
         });
-
-        interestArea1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        interestArea1.setOnClickListener((view) -> {
+            if (!editMode) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), InterestAreaWeatherActivity.class);
                 intent.putExtra("regionId", interestRegionIdList.get(1));
                 intent.putExtra("regionType", interestRegionTypeList.get(1));
+                System.out.println("이동");
+                System.out.println(interestRegionIdList.get(1));
+                System.out.println(interestRegionTypeList.get(1));
                 startActivityForResult(intent, 105);
             }
         });
-
-        interestArea2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        interestArea2.setOnClickListener((view) -> {
+            if (!editMode) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), InterestAreaWeatherActivity.class);
                 intent.putExtra("regionId", interestRegionIdList.get(2));
                 intent.putExtra("regionType", interestRegionTypeList.get(2));
+                System.out.println("이동");
+                System.out.println(interestRegionIdList.get(2));
+                System.out.println(interestRegionTypeList.get(2));
                 startActivityForResult(intent, 105);
+
             }
         });
 
+        // 관심지역 추가
         addInterestArea = v.findViewById(R.id.addInterestArea);
-        addInterestAreaInit = v.findViewById(R.id.addInterestAreaInit);
-
         addInterestArea.setOnClickListener(view -> {
-            // 관심 지역 추가 페이지로 이동
-            Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
-            intent.putExtra("fromInterestAreaAdd", true);
-            intent.putExtra("userId", userId);
-            startActivityForResult(intent, 105);
-        });
-
-        addInterestAreaInit.setOnClickListener(view -> {
-            // 관심 지역 추가 페이지로 이동
-            Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
-            intent.putExtra("fromInterestAreaAdd", true);
-            intent.putExtra("userId", userId);
-            startActivityForResult(intent, 105);
-        });
-
-        editInterestArea = v.findViewById(R.id.editInterestArea);
-        editInterestArea.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editInterestArea.setText("편집취소");
+            if (interestRegionIdList.size() >= 3) {
+                //삭제 유도 팝업
+                Intent intent = new Intent(getActivity().getApplicationContext(), InterestAreaPopActivity.class);
+                startActivityForResult(intent, 1);
+            } else {
+                // 관심지역 추가 페이지로 이동
+                if (!editMode) {
+                    Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
+                    intent.putExtra("fromInterestAreaAdd", true);
+                    intent.putExtra("userId", userId);
+                    startActivityForResult(intent, 105);
+                }
             }
+        });
+        addInterestAreaInit = v.findViewById(R.id.addInterestAreaInit);
+        addInterestAreaInit.setOnClickListener(view -> {
+            // 관심지역 추가 페이지로 이동
+            Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
+            intent.putExtra("fromInterestAreaAdd", true);
+            intent.putExtra("userId", userId);
+            startActivityForResult(intent, 105);
         });
 
         //서브 배너 가져오기
@@ -448,7 +527,9 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         });
 
         //위치 검색바 클릭 시 위치 검색 페이지로 이동하는 이벤트
-        weatherLocationSearch.setOnClickListener(v12 -> {
+        weatherLocationSearch.setOnClickListener(v12 ->
+
+        {
             Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
             startActivityForResult(intent, 105);
         });
@@ -462,7 +543,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         Call<List<ObservationSimpleParams>> call = RetrofitClient.getApiService().getBestFitObservationList();
         call.enqueue(new Callback<List<ObservationSimpleParams>>() {
             @Override
-            public void onResponse(Call<List<ObservationSimpleParams>> call, Response<List<ObservationSimpleParams>> response) {
+            public void onResponse
+                    (Call<List<ObservationSimpleParams>> call, Response<List<ObservationSimpleParams>> response) {
                 if (response.isSuccessful()) {
                     List<ObservationSimpleParams> observationSimpleList = response.body();
                     adapter.setItems(observationSimpleList);
@@ -689,5 +771,12 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 help_5_text.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    private void refreshFragment() {
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.detach(this);
+        fragmentTransaction.attach(this);
+        fragmentTransaction.commit();
     }
 }
