@@ -58,7 +58,6 @@
                         style="@style/semiBold_multi_18"
                         android:layout_width="232dp"
                         android:layout_height="wrap_content"
-                        android:text="화악터널 쌈지공원"
                         android:textColor="@color/gray_500" />
 
                     <TextView
@@ -67,7 +66,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="9. 17(토)"
                         android:textColor="@color/gray_200" />
                 </LinearLayout>
 
@@ -114,7 +112,6 @@
                         style="@style/medium_single_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="오늘"
                         android:textColor="@color/gray_500" />
 
                     <TextView
@@ -123,7 +120,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:text="23시"
                         android:textColor="@color/gray_200" />
 
                     <TextView
@@ -140,7 +136,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:text="NN%"
                         android:textColor="@color/point_blue" />
                 </LinearLayout>
 

@@ -16,13 +16,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -50,12 +48,9 @@ import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListe
 import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdapter;
 import com.starrynight.tourapiproject.weatherPage.GpsTracker;
-import com.starrynight.tourapiproject.weatherPage.LocationDTO;
-import com.starrynight.tourapiproject.weatherPage.WeatherActivity;
 import com.starrynight.tourapiproject.weatherPage.WeatherLocationSearchActivity;
-import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.AreaTimeDTO;
 import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.MainInfo;
-import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.NearestDTO;
+import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.NearestAreaDTO;
 import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.WeatherRetrofitClient;
 
 import java.io.BufferedReader;
@@ -68,7 +63,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -95,7 +89,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private static final String MAIN_STAR_TEXT = "월에 잘 보여요";
 
     @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat hh = new SimpleDateFormat("HH");
+    SimpleDateFormat HH = new SimpleDateFormat("HH");
     @SuppressLint("SimpleDateFormat")
     SimpleDateFormat mm = new SimpleDateFormat("mm");
     @SuppressLint("SimpleDateFormat")
@@ -106,6 +100,9 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private SwipeRefreshLayout swipeRefreshLayout;
     private ImageView subBanner;
     private LinearLayout subBannerLayout;
+    private TextView helloMassage;
+    private TextView currentLocation;
+    private TextView currentWeather;
     private double latitude;
     private double longitude;
     private String location;
@@ -127,8 +124,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private TextView editInterestArea;
     private ImageView addInterestArea;
     private ImageView addInterestAreaInit;
-    List<Long> interestRegionIdList = new ArrayList<>(); // 관심 지역 id 리스트
-    List<Integer> interestRegionTypeList = new ArrayList<>(); // 관심 지역 id 리스트
+    List<Long> interestRegionIdList; // 관심 지역 id 리스트
+    List<Integer> interestRegionTypeList; // 관심 지역 id 리스트
 
     public MainFragment() {
     }
@@ -144,15 +141,37 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         View v = inflater.inflate(R.layout.fragment_main, container, false);
         swipeRefreshLayout = v.findViewById(R.id.swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
+
+        helloMassage = v.findViewById(R.id.hello_message);
+        currentLocation = v.findViewById(R.id.main__current_location);
+        currentWeather = v.findViewById(R.id.current_weather);
         LinearLayout weatherLocationSearch = v.findViewById(R.id.weather_location_search);
 
-        View mainLocation = v.findViewById(R.id.main__location);
-        weatherComment = v.findViewById(R.id.weather_comment);
-        TextView currentLocation = v.findViewById(R.id.main__current_location);
-        star = v.findViewById(R.id.main__star);
-        mainBestObservationFit = v.findViewById(R.id.main_best_observation_fit);
-        recommendTime = v.findViewById(R.id.recommend_time);
-        View weatherDetail = v.findViewById(R.id.weather_detail);
+        // userId 가져오기
+        try {
+            FileInputStream fis = getActivity().openFileInput("userId");
+            String line = new BufferedReader(new InputStreamReader(fis)).readLine();
+            userId = Long.parseLong(line);
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // 환영 메세지
+//        RetrofitClient.getApiService().getNickName(userId).enqueue(new Callback<Map<String, String>>() {
+//            @Override
+//            public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
+//                if (response.isSuccessful()) {
+//                    helloMassage.setText("안녕하세요, " + response.body().get("nickName") + "님!\n별 보러 떠나볼까요?");
+//                } else {
+//                    Log.e(TAG, "닉네임 조회 오류");
+//                }
+//            }
+//            @Override
+//            public void onFailure(Call<Map<String, String>> call, Throwable t) {
+//                Log.e(TAG, t.getMessage());
+//            }
+//        });
 
         checkLocationPermission();
 
@@ -173,92 +192,40 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             Address address = addressList.get(0);
             String SD = address.getAdminArea();
             String SGG = address.getLocality() == null ? address.getSubLocality() : address.getLocality();
+            System.out.println("SD = " + SD); // 서울특별시
+            System.out.println("SGG = " + SGG); // 서대문구
 
             if (SD == null || !SD.contains("세종") && SGG == null) {
                 location = "현위치를 불러올 수 없습니다.";
                 currentLocation.setText(location);
             } else {
-                NearestDTO nearestDTO = new NearestDTO(SGG, latitude, longitude);
-                if (SD.contains("세종")) nearestDTO.setSgg("세종");
+                Date date = new Date(System.currentTimeMillis());
+                NearestAreaDTO nearestAreaDTO = new NearestAreaDTO(SGG, latitude, longitude, yyyy_MM_dd.format(date), Integer.valueOf(HH.format(date)));
+                if (SD.contains("세종")) nearestAreaDTO.setSgg("세종");
 
                 WeatherRetrofitClient.getApiService()
-                        .getNearestArea(nearestDTO)
-                        .enqueue(new Callback<Map<String, String>>() {
+                        .getNearestAreaWeatherInfo(nearestAreaDTO)
+                        .enqueue(new Callback<MainInfo>() {
                             @Override
-                            public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
+                            public void onResponse(Call<MainInfo> call, Response<MainInfo> response) {
                                 if (response.isSuccessful()) {
-                                    Map<String, String> body = response.body();
-                                    String emd = body.get("EMD");
-                                    if (SD.contains("세종")) location = "세종특별자치시 " + emd;
-                                    else location = SD + " " + SGG + " " + emd;
-
-                                    currentLocation.setText(location);
-
-                                    long now = System.currentTimeMillis();
-                                    Date date = new Date(now);
-                                    hour = hh.format(date);
-
-                                    AreaTimeDTO areaTimeDTO = new AreaTimeDTO(yyyy_MM_dd.format(date), Integer.valueOf(hour), latitude, longitude);
-                                    areaTimeDTO.setAddress(location);
-                                    WeatherRetrofitClient.getApiService()
-                                            .getMainInfo(areaTimeDTO)
-                                            .enqueue(new Callback<MainInfo>() {
-                                                @Override
-                                                public void onResponse(Call<MainInfo> call, Response<MainInfo> response) {
-                                                    if (response.isSuccessful()) {
-                                                        MainInfo info = response.body();
-                                                        weatherComment.setText(info.getComment());
-                                                        mainBestObservationFit.setText(info.getBestObservationalFit());
-                                                        if (Objects.nonNull(info.getBestTime())) {
-                                                            recommendTime.setText(info.getBestTime());
-                                                        } else {
-                                                            mainLocation.setBackground(ContextCompat.getDrawable(mainLocation.getContext(), R.drawable.main__location_back_red));
-                                                            star.setImageDrawable(ContextCompat.getDrawable(star.getContext(), R.drawable.main__weather_star_gray));
-                                                            recommendTime.setText(info.getMainEffect());
-                                                        }
-                                                        areaId = info.getAreaId();
-                                                    } else {
-                                                        Log.e(TAG, "날씨 오류");
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onFailure(Call<MainInfo> call, Throwable t) {
-                                                    Log.e(TAG, t.getMessage());
-                                                }
-                                            });
-
-                                    weatherDetail.setOnClickListener(v1 -> {
-                                        Intent intent = new Intent(getActivity().getApplicationContext(), WeatherActivity.class);
-                                        LocationDTO locationDTO = new LocationDTO(latitude, longitude, areaId, null, emd);
-                                        intent.putExtra("locationDTO", locationDTO);
-                                        startActivityForResult(intent, 104);
-                                    });
-
-
+                                    MainInfo mainInfo = response.body();
+                                    System.out.println("mainInfo = " + mainInfo);
+                                    currentLocation.setText(mainInfo.getLocation());
+                                    currentWeather.setText(mainInfo.getComment());
                                 } else {
-                                    Log.e(TAG, "날씨 오류");
+                                    Log.e(TAG, "getNearestAreaWeatherInfo 오류");
                                 }
                             }
 
                             @Override
-                            public void onFailure(Call<Map<String, String>> call, Throwable t) {
+                            public void onFailure(Call<MainInfo> call, Throwable t) {
                                 Log.e(TAG, t.getMessage());
                             }
                         });
             }
         }
         if (location == null) currentLocation.setText("새로고침이 필요합니다.");
-
-        String fileName = "userId"; // 유저 아이디 가져오기
-        try {
-            FileInputStream fis = getActivity().openFileInput(fileName);
-            String line = new BufferedReader(new InputStreamReader(fis)).readLine();
-            userId = Long.parseLong(line);
-            fis.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         // 관심지역
         CustomInterestAreaView interestArea0 = v.findViewById(R.id.interestArea0);
@@ -274,6 +241,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     public void onResponse(Call<List<InterestAreaDTO>> call, Response<List<InterestAreaDTO>> response) {
                         if (response.isSuccessful()) {
                             List<InterestAreaDTO> interestAreaList = response.body();
+                            interestRegionIdList = new ArrayList<>();
+                            interestRegionTypeList = new ArrayList<>();
                             interestAreaList.forEach(interestAreaDTO -> interestRegionIdList.add(interestAreaDTO.getRegionId()));
                             interestAreaList.forEach(interestAreaDTO -> interestRegionTypeList.add(interestAreaDTO.getRegionType()));
                             System.out.println("interestRegionIdList = " + interestRegionIdList);
@@ -320,6 +289,9 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 Intent intent = new Intent(getActivity().getApplicationContext(), InterestAreaWeatherActivity.class);
                 intent.putExtra("regionId", interestRegionIdList.get(0));
                 intent.putExtra("regionType", interestRegionTypeList.get(0));
+                System.out.println("이동");
+                System.out.println(interestRegionIdList.get(0));
+                System.out.println(interestRegionTypeList.get(0));
                 startActivityForResult(intent, 105);
             }
         });
@@ -330,6 +302,9 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 Intent intent = new Intent(getActivity().getApplicationContext(), InterestAreaWeatherActivity.class);
                 intent.putExtra("regionId", interestRegionIdList.get(1));
                 intent.putExtra("regionType", interestRegionTypeList.get(1));
+                System.out.println("이동");
+                System.out.println(interestRegionIdList.get(1));
+                System.out.println(interestRegionTypeList.get(1));
                 startActivityForResult(intent, 105);
             }
         });
@@ -340,6 +315,9 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 Intent intent = new Intent(getActivity().getApplicationContext(), InterestAreaWeatherActivity.class);
                 intent.putExtra("regionId", interestRegionIdList.get(2));
                 intent.putExtra("regionType", interestRegionTypeList.get(2));
+                System.out.println("이동");
+                System.out.println(interestRegionIdList.get(2));
+                System.out.println(interestRegionTypeList.get(2));
                 startActivityForResult(intent, 105);
             }
         });
