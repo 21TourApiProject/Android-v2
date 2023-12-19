@@ -32,7 +32,7 @@ public class WeatherLocationSearchActivity extends AppCompatActivity {
     private static final String TAG = "WeatherLocationSearch";
 
     Long userId;
-    Boolean fromInterestAreaAdd = false;
+    boolean fromInterestAreaAdd = false;
 
     private EditText locationSearch;
     private RecyclerView locationResult;
@@ -47,7 +47,8 @@ public class WeatherLocationSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather_location_search);
 
-        fromInterestAreaAdd = (Boolean) getIntent().getSerializableExtra("fromInterestAreaAdd");
+        if(getIntent().getSerializableExtra("fromInterestAreaAdd") != null)
+            fromInterestAreaAdd = (Boolean) getIntent().getSerializableExtra("fromInterestAreaAdd");
 
         if (Objects.nonNull(fromInterestAreaAdd) && fromInterestAreaAdd) {
             userId = (Long) getIntent().getSerializableExtra("userId");

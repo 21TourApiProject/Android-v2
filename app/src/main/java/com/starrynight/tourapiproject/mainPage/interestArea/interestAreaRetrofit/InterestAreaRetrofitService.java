@@ -14,7 +14,7 @@ import retrofit2.http.Path;
 public interface InterestAreaRetrofitService {
 
     @GET("interestArea/detail/{regionId}/{regionType}")
-    Call<InterestAreaWeatherDTO> getInterestAreaInfo(@Path("regionId") Long regionId, @Path("regionType") Integer regionType);
+    Call<InterestAreaDetailDTO> getInterestAreaDetailInfo(@Path("regionId") Long regionId, @Path("regionType") Integer regionType);
 
     @GET("interestArea/{userId}")
     Call<List<InterestAreaDTO>> getAllInterestArea(@Path("userId") Long userId);

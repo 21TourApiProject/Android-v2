@@ -158,7 +158,6 @@
                         android:layout_width="260dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="날씨 요약 레포트 날씨 요약 레포트 날씨 요약 레포트 날씨 요약 레포트 날씨 요약 레포트 날씨 요약 레포트 날씨 요약 레포트 날씨 요약 레포트 "
                         android:textColor="@color/gray_300" />
                 </LinearLayout>
 

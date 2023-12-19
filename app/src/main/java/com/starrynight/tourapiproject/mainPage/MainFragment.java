@@ -103,8 +103,10 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private ImageView subBanner;
     private LinearLayout subBannerLayout;
     private TextView helloMassage; // 인사말
+    private ImageView currentIcon; // 인사말
     private TextView currentLocation; // 현 위치
     private TextView locationError; // 위치 오류 문구
+    private TextView loading; // 날씨 로딩 문구
     private TextView currentWeather; // 현 위치 날씨 정보
     private Boolean findLocation; // 현위치 조회 성공 여부
 
@@ -158,8 +160,10 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         swipeRefreshLayout.setOnRefreshListener(this);
 
         helloMassage = v.findViewById(R.id.hello_message);
+        currentIcon = v.findViewById(R.id.main__current_icon);
         currentLocation = v.findViewById(R.id.main__current_location);
         locationError = v.findViewById(R.id.location_error);
+        loading = v.findViewById(R.id.main__loading);
         currentWeather = v.findViewById(R.id.current_weather);
         LinearLayout weatherLocationSearch = v.findViewById(R.id.weather_location_search);
 
@@ -226,6 +230,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             } else {
                 findLocation = true;
                 locationError.setVisibility(View.GONE);
+                loading.setVisibility(View.VISIBLE);
                 Date date = new Date(System.currentTimeMillis());
                 NearestAreaDTO nearestAreaDTO = new NearestAreaDTO(SGG, latitude, longitude, yyyy_MM_dd.format(date), Integer.valueOf(HH.format(date)));
                 if (SD.contains("세종")) nearestAreaDTO.setSgg("세종");
@@ -236,6 +241,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             @Override
                             public void onResponse(Call<MainInfo> call, Response<MainInfo> response) {
                                 if (response.isSuccessful()) {
+                                    loading.setVisibility(View.GONE); // 로딩 문구 해제
+                                    currentIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.main__weather_star)); // 로딩 문구 해제
                                     MainInfo mainInfo = response.body();
                                     currentLocation.setText(mainInfo.getLocation());
                                     currentWeather.setText(mainInfo.getComment());

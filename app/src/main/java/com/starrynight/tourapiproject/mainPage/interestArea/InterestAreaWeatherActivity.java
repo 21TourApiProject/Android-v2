@@ -14,14 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.starrynight.tourapiproject.MainActivity;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.mainPage.RecentReviewAdapter;
 import com.starrynight.tourapiproject.mainPage.RecentReviewItemClickListener;
+import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaDetailDTO;
 import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaRetrofitClient;
-import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaWeatherDTO;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.PostContentsParams;
-import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.observationPage.MoreObservationActivity;
 import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
 import com.starrynight.tourapiproject.postPage.PostActivity;
@@ -67,7 +65,7 @@ public class InterestAreaWeatherActivity extends AppCompatActivity {
 
     Long regionId;
     Integer regionType;
-    InterestAreaWeatherDTO interestAreaWeather;
+    InterestAreaDetailDTO interestAreaDetail;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -93,24 +91,24 @@ public class InterestAreaWeatherActivity extends AppCompatActivity {
         System.out.println("regionType = " + regionType);
 
         InterestAreaRetrofitClient.getApiService()
-                .getInterestAreaInfo(regionId, regionType)
-                .enqueue(new Callback<InterestAreaWeatherDTO>() {
+                .getInterestAreaDetailInfo(regionId, regionType)
+                .enqueue(new Callback<InterestAreaDetailDTO>() {
                     @Override
-                    public void onResponse(Call<InterestAreaWeatherDTO> call, Response<InterestAreaWeatherDTO> response) {
+                    public void onResponse(Call<InterestAreaDetailDTO> call, Response<InterestAreaDetailDTO> response) {
                         if (response.isSuccessful()) {
-                            interestAreaWeather = response.body();
-                            System.out.println("interestAreaWeather = " + interestAreaWeather);
-                            interest_area_name.setText(interestAreaWeather.getRegionName());
-                            if(Objects.nonNull(interestAreaWeather.getRegionImage())){
-                                Glide.with(getApplicationContext()).load(interestAreaWeather.getRegionImage()).into(interest_area_image);
+                            interestAreaDetail = response.body();
+                            System.out.println("interestAreaDetail = " + interestAreaDetail);
+                            interest_area_name.setText(interestAreaDetail.getRegionName());
+                            if (Objects.nonNull(interestAreaDetail.getRegionImage())) {
+                                Glide.with(getApplicationContext()).load(interestAreaDetail.getRegionImage()).into(interest_area_image);
                             }
-                            interest_area_best_day.setText(interestAreaWeather.getBestDay());
-                            interest_area_best_hour.setText(interestAreaWeather.getBestHour()+"시");
-                            interest_area_best_observational_fit.setText(interestAreaWeather.getBestObservationalFit()+"%");
-                            if(interestAreaWeather.getBestObservationalFit() < 60){
+                            interest_area_best_day.setText(interestAreaDetail.getInterestAreaDetailWeatherInfo().getBestDay());
+                            interest_area_best_hour.setText(interestAreaDetail.getInterestAreaDetailWeatherInfo().getBestHour() + "시");
+                            interest_area_best_observational_fit.setText(interestAreaDetail.getInterestAreaDetailWeatherInfo().getBestObservationalFit() + "%");
+                            if (interestAreaDetail.getInterestAreaDetailWeatherInfo().getBestObservationalFit() < 60) {
                                 interest_area_best_observational_fit.setTextColor(getColor(R.color.point_red));
                             }
-                            interest_area_weather_report.setText(interestAreaWeather.getWeatherReport());
+                            interest_area_weather_report.setText(interestAreaDetail.getInterestAreaDetailWeatherInfo().getWeatherReport());
 
                         } else {
                             Log.e(TAG, "서버 api 호출 실패");
@@ -118,7 +116,7 @@ public class InterestAreaWeatherActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<InterestAreaWeatherDTO> call, Throwable t) {
+                    public void onFailure(Call<InterestAreaDetailDTO> call, Throwable t) {
                         Log.e("연결실패", t.getMessage());
                     }
                 });
@@ -127,8 +125,8 @@ public class InterestAreaWeatherActivity extends AppCompatActivity {
         // 상세 날씨 페이지로 이동
         interest_area_detail_weather.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), WeatherActivity.class);
-            LocationDTO locationDTO = new LocationDTO(interestAreaWeather.getLatitude(), interestAreaWeather.getLongitude(),
-                    null, null, interestAreaWeather.getRegionName());
+            LocationDTO locationDTO = new LocationDTO(interestAreaDetail.getLatitude(), interestAreaDetail.getLongitude(),
+                    null, null, interestAreaDetail.getRegionName());
             if (regionType == 1) locationDTO.setObservationId(regionId);
             if (regionType == 2) locationDTO.setAreaId(regionId);
             intent.putExtra("locationDTO", locationDTO);
@@ -157,7 +155,7 @@ public class InterestAreaWeatherActivity extends AppCompatActivity {
             moveObservationBtn.setVisibility(View.GONE);
         }
 
-        Call<List<PostContentsParams>> call = InterestAreaRetrofitClient.getApiService().getObservationPostWithSize(regionId,3);
+        Call<List<PostContentsParams>> call = InterestAreaRetrofitClient.getApiService().getObservationPostWithSize(regionId, 3);
         call.enqueue(new Callback<List<PostContentsParams>>() {
             @Override
             public void onResponse(Call<List<PostContentsParams>> call, Response<List<PostContentsParams>> response) {

@@ -86,13 +86,13 @@ public class CustomInterestAreaView extends LinearLayout {
     }
 
     public void setInterestAreaImage(String image) {
-        if(Objects.nonNull(image)){
+        if (Objects.nonNull(image)) {
             Glide.with(getContext()).load(image).into(interestAreaImage);
         }
     }
 
     public void setInterestAreaObservationalFit(String observationalFit) {
-        interestAreaObservationalFit.setText(observationalFit+"%");
+        interestAreaObservationalFit.setText("~" + observationalFit + "%");
         if (Integer.parseInt(observationalFit) < 60) {
             interestAreaObservationalFit.setTextColor(ContextCompat.getColor(context, R.color.point_red));
         }
@@ -100,7 +100,7 @@ public class CustomInterestAreaView extends LinearLayout {
 
     // 삭제 버튼 setVisibility
     public void showInterestAreaDelete(boolean show) {
-        if(show) interestAreaDelete.setVisibility(View.VISIBLE);
+        if (show) interestAreaDelete.setVisibility(View.VISIBLE);
         else interestAreaDelete.setVisibility(View.GONE);
     }
 
