@@ -39,7 +39,9 @@
         android:theme="@style/StarryNight"
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
-        <activity android:name=".starPage.SelectStarActivity"></activity>
+        <activity android:name=".myPage.NoticeDetailActivity"></activity>
+        <activity android:name=".myPage.AlarmSettingActivity" />
+        <activity android:name=".starPage.SelectStarActivity" />
         <activity android:name=".myPage.MyCommentActivity" />
         <activity
             android:name=".MainActivity"

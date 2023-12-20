@@ -337,6 +337,23 @@ public class PhoneAuthActivity extends AppCompatActivity implements
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
+                                    //Fcm 토큰 생성
+                                    Call<Void> fcmCall = com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient.getApiService().createFcmToken(Long.parseLong(userId));
+                                    fcmCall.enqueue(new Callback<Void>() {
+                                        @Override
+                                        public void onResponse(Call<Void> call, Response<Void> response) {
+                                            if(response.isSuccessful()){
+                                                Log.d(TAG,"fcm 토큰 생성 성공");
+                                            }else{
+                                                Log.e(TAG,"fcm 토큰 생성 실패");
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Void> call, Throwable t) {
+                                            Log.e(TAG,"fcm 토큰 생성 인터넷 오류");
+                                        }
+                                    });
 
                                     Intent intent = new Intent(PhoneAuthActivity.this, MainActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP); //액티비티 스택제거

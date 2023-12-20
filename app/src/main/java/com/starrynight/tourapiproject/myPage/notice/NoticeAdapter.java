@@ -1,6 +1,7 @@
 package com.starrynight.tourapiproject.myPage.notice;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.starrynight.tourapiproject.R;
+import com.starrynight.tourapiproject.myPage.NoticeDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,13 +58,9 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.ViewHolder
         viewHolder.noticeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (viewHolder.noticeOpen.getVisibility() == View.GONE) { //닫혀있으면 열기
-                    viewHolder.noticeBtn.setRotation(90);
-                    viewHolder.noticeOpen.setVisibility(View.VISIBLE);
-                } else { //열려있으면 닫기
-                    viewHolder.noticeBtn.setRotation(360);
-                    viewHolder.noticeOpen.setVisibility(View.GONE);
-                }
+                Intent intent = new Intent(viewHolder.itemView.getContext(), NoticeDetailActivity.class);
+                intent.putExtra("noticeId",item.getNoticeId());
+                viewHolder.itemView.getContext().startActivity(intent);
             }
         });
     }

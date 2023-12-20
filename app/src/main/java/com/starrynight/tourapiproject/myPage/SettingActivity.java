@@ -52,6 +52,16 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
+        //알람 설정
+        LinearLayout myAlarm = findViewById(R.id.myAlarm);
+        myAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingActivity.this, AlarmSettingActivity.class);
+                startActivity(intent);
+            }
+        });
+
         //내 정보
         LinearLayout myData = findViewById(R.id.myData);
         myData.setOnClickListener(new View.OnClickListener() {
@@ -70,20 +80,6 @@ public class SettingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(SettingActivity.this, NoticeActivity.class);
                 startActivity(intent);
-            }
-        });
-
-        Switch switchButton = findViewById(R.id.switchButton);
-        SharedPreferences pref=getSharedPreferences("pref",MODE_PRIVATE);
-        SharedPreferences.Editor editor=pref.edit();
-        boolean isDenied = pref.getBoolean("isDenied",true);
-        switchButton.setChecked(isDenied);
-        Log.d("isDenied","수신여부: "+isDenied);
-        switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                editor.putBoolean("isDenied", isChecked);
-                editor.apply();
             }
         });
 
