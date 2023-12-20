@@ -69,6 +69,7 @@ public class FcmService extends FirebaseMessagingService {
 
         String title = remoteMessage.getData().get("title");
         String body = remoteMessage.getData().get("body");
+        String isNotice = remoteMessage.getData().get("isNotice");
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("type","alarm");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -82,12 +83,13 @@ public class FcmService extends FirebaseMessagingService {
 
         Notification notification = builder.build();
         SharedPreferences pref=getSharedPreferences("pref",MODE_PRIVATE);
-        boolean isDenied = pref.getBoolean("isDenied",true);
-        Log.d("isDenied","수신여부: "+isDenied);
-        if(isDenied){
+        boolean isCommentDenied = pref.getBoolean("isCommentDenied",true);
+        boolean isNoticeDenied = pref.getBoolean("isNoticeDenied",true);
+        if(isNoticeDenied &&isNotice.equals("notification")){
             notificationManager.notify(1, notification);
-
         }
-
+        if(isCommentDenied &&isNotice.equals("comment")){
+            notificationManager.notify(1, notification);
+        }
     }
 }

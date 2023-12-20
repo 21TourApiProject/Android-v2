@@ -56,11 +56,9 @@ public class AlarmActivity extends AppCompatActivity {
                         if (alarms.get(i).getAlarmTitle().contains("$")){
                             alarms.get(i).setAlarmTitle(alarms.get(i).getAlarmTitle().substring(1));
                             finalAlarmList.add(alarms.get(i));
-                            Log.d("alarm", "알림 내용"+alarms.get(i).getAlarmContent());
                         }
                         else{
                             finalAlarmList.add(alarms.get(i));
-                            Log.d("alarm", "알림 내용"+alarms.get(i).getAlarmContent());
                         }
                     }
                     AlarmAdapter adapter = new AlarmAdapter(getApplicationContext(),finalAlarmList);

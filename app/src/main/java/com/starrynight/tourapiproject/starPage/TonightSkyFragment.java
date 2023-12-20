@@ -33,6 +33,7 @@ import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListe
 import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdapter;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.RetrofitClient;
+import com.starrynight.tourapiproject.weatherPage.GpsTracker;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -120,7 +121,7 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
 
 
         //나침반
-        mSensorManger = (SensorManager) Objects.requireNonNull(getActivity()).getSystemService(Context.SENSOR_SERVICE);
+        mSensorManger = (SensorManager)(requireActivity()).getSystemService(Context.SENSOR_SERVICE);
         mAcclerometer = mSensorManger.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mMagnetometer = mSensorManger.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
@@ -133,18 +134,16 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
         allConstBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Objects.requireNonNull(getActivity()).getApplicationContext(), StarAllActivity.class);
+                Intent intent = new Intent(getActivity(), StarAllActivity.class);
                 startActivity(intent);
             }
         });
-
-
         //별자리 사진 클릭 이벤트
         starCamera = v.findViewById(R.id.star_camera);
         starCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Objects.requireNonNull(getActivity()).getApplicationContext(),SelectStarActivity.class);
+                Intent intent = new Intent(getActivity(),SelectStarActivity.class);
                 startActivity(intent);
             }
         });

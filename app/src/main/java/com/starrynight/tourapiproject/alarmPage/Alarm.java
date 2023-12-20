@@ -21,6 +21,10 @@ public class Alarm {
     private String alarmDate;
     @SerializedName("alarmContent")
     private String alarmContent;
+    @SerializedName("isNotice")
+    private String isNotice;
+    @SerializedName("itemId")
+    private Long itemId;
 
     public Alarm() {
     }
@@ -53,5 +57,21 @@ public class Alarm {
         this.alarmTitle = alarmTitle;
         this.alarmDate = alarmDate;
         this.alarmContent = alarmContent;
+    }
+
+    public String getIsNotice() {
+        return isNotice;
+    }
+
+    public void setIsNotice(String isNotice) {
+        this.isNotice = isNotice;
+    }
+
+    public Long getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
     }
 }
