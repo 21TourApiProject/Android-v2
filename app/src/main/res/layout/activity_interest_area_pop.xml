@@ -3,39 +3,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="320dp"
     android:layout_height="wrap_content"
-    android:background="@drawable/tppop_area"
+    android:background="@drawable/interest_area_pop_back"
     android:orientation="vertical"
+    android:padding="20dp"
     tools:context=".mainPage.interestArea.InterestAreaPopActivity">
 
     <TextView
-        style="@style/medium_multi_14"
-        android:layout_width="wrap_content"
+        style="@style/medium_multi_16"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="5dp"
-        android:text="삭제하세여"
+        android:text="관심지역은 최대 3개까지 홈에 추가할 수 있어요. 새로운 위치를 홈에 추가하고 싶으실 경우, 기존에 등록된 위치를 삭제한 후 시도해주세요."
         android:textColor="@color/white" />
 
     <TextView
-        style="@style/medium_multi_14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text=""
-        android:textColor="@color/gray_400" />
-
-    <Button
-        android:id="@+id/interest_area_pop_close"
-        style="@style/semiBold_single_14"
+        style="@style/semiBold_single_16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/round_btn_gray"
+        android:layout_marginTop="20dp"
+        android:gravity="end"
         android:onClick="closeInterestAreaPop"
-        android:text="닫기"
-        android:textColor="@color/gray_700" />
+        android:text="확인"
+        android:textColor="@color/white" />
 
 </LinearLayout>
