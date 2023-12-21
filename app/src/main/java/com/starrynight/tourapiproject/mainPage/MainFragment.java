@@ -42,6 +42,7 @@ import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.ObservationSimpl
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.PostContentsParams;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
+import com.starrynight.tourapiproject.observationPage.RecyclerDecoration;
 import com.starrynight.tourapiproject.postPage.PostActivity;
 import com.starrynight.tourapiproject.postWritePage.PostWriteActivity;
 import com.starrynight.tourapiproject.starPage.StarActivity;
@@ -458,6 +459,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         bestFitRecyclerView.setLayoutManager(linearLayoutManager);
         BestFitObservationAdapter adapter = new BestFitObservationAdapter();
+        RecyclerDecoration obsItemDecorator = new RecyclerDecoration(12, getActivity());
+        bestFitRecyclerView.addItemDecoration(obsItemDecorator);
         bestFitRecyclerView.setAdapter(adapter);
         Call<List<ObservationSimpleParams>> call = RetrofitClient.getApiService().getBestFitObservationList();
         call.enqueue(new Callback<List<ObservationSimpleParams>>() {
@@ -492,6 +495,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         starViewAdapter = new StarViewAdapter();
         startMonthText = v.findViewById(R.id.main_star_month_txt);
         starRecycler.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+        RecyclerDecoration starItemDecorator = new RecyclerDecoration(12, getActivity());
+        starRecycler.addItemDecoration(starItemDecorator);
         starRecycler.setAdapter(starViewAdapter);
         setTodayStarLayout();
 

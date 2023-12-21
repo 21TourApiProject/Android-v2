@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ortiz.touchview.TouchImageView;
 import com.starrynight.tourapiproject.R;
+import com.starrynight.tourapiproject.observationPage.RecyclerDecoration;
 import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdapter;
@@ -161,6 +162,8 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
         constList = v.findViewById(R.id.today_cel_recycler);
         constList.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
         constAdapter = new StarViewAdapter();
+        RecyclerDecoration starItemDecorator = new RecyclerDecoration(8, getActivity().getApplicationContext());
+        constList.addItemDecoration(starItemDecorator);
         constList.setAdapter(constAdapter);
 
         // 오늘의 별자리 리스트 불러오는 api

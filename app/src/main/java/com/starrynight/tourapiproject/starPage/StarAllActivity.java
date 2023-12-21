@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.starrynight.tourapiproject.R;
+import com.starrynight.tourapiproject.observationPage.RecyclerDecoration;
 import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener;
 import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener2;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
@@ -162,6 +163,8 @@ public class StarAllActivity extends AppCompatActivity {
         constTodayList.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
         constTodayList.addItemDecoration(new StarRecyclerViewWidth(20,0));
         constTodayAdapter = new StarViewAdapter();
+        RecyclerDecoration starItemDecorator = new RecyclerDecoration(8, getApplicationContext());
+        constTodayList.addItemDecoration(starItemDecorator);
         constTodayList.setAdapter(constTodayAdapter);
 
         // 오늘 볼 수 있는 별자리 리스트 api
