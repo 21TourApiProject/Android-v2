@@ -259,7 +259,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@drawable/interest_area_move_observation"
+        android:background="@drawable/custom_purple_blue_gradient"
         android:gravity="center"
         android:layout_marginVertical="12dp"
         android:layout_marginHorizontal="16dp"

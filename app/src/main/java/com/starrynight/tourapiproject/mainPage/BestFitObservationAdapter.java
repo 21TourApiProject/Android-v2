@@ -110,7 +110,10 @@ public class BestFitObservationAdapter extends RecyclerView.Adapter<BestFitObser
         public void setItem(ObservationSimpleParams item) {
             nameTextView.setText(item.getTitle());
             addressTextView.setText(item.getAddress());
-            fitTextView.setText(item.getObserveFit().toString());
+
+            String fitString = Math.round(item.getObserveFit()) + "%";
+            fitTextView.setText(fitString);
+
         }
     }
 }

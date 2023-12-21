@@ -346,7 +346,6 @@
                         android:id="@+id/main_best_fit_recycler"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="16dp"
                         android:layout_marginBottom="24dp"
                         android:visibility="visible" />
                 </LinearLayout>
@@ -400,7 +399,6 @@
                         android:id="@+id/main_star_today_recycler"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="16dp"
                         android:layout_marginBottom="24dp"
                         android:visibility="visible" />
                 </LinearLayout>
