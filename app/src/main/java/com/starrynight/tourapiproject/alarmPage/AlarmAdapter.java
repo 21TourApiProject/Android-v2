@@ -1,6 +1,7 @@
 package com.starrynight.tourapiproject.alarmPage;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,12 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.starrynight.tourapiproject.R;
+import com.starrynight.tourapiproject.myPage.AlarmSettingActivity;
+import com.starrynight.tourapiproject.myPage.NoticeDetailActivity;
+import com.starrynight.tourapiproject.myPage.SettingActivity;
 import com.starrynight.tourapiproject.myPage.notice.Notice;
+import com.starrynight.tourapiproject.postPage.PostActivity;
+import com.starrynight.tourapiproject.searchPage.SearchResultActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,16 +81,15 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
         viewHolder.alarmLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (viewHolder.alarmOpen.getVisibility() == View.GONE) { //닫혀있으면 열기
-                    viewHolder.alarmBtn.setBackground(ContextCompat.getDrawable(viewHolder.itemView.getContext(),R.drawable.down_dense));
-                    viewHolder.alarmOpen.setVisibility(View.VISIBLE);
-                    viewHolder.alarmtitle.setTextColor(ContextCompat.getColor(viewHolder.itemView.getContext(),R.color.white));
-                    viewHolder.star.setImageDrawable(ContextCompat.getDrawable(viewHolder.itemView.getContext(),R.drawable.alarm__star));
-                } else { //열려있으면 닫기
-                    viewHolder.alarmBtn.setBackground(ContextCompat.getDrawable(viewHolder.itemView.getContext(),R.drawable.up_dense));
-                    viewHolder.alarmOpen.setVisibility(View.GONE);
-                    viewHolder.alarmtitle.setTextColor(ContextCompat.getColor(viewHolder.itemView.getContext(),R.color.gray_400));
-                    viewHolder.star.setImageDrawable(ContextCompat.getDrawable(viewHolder.itemView.getContext(),R.drawable.alarm__star_non));
+                if(item.getIsNotice().equals("notice")){
+                    Intent intent = new Intent(viewHolder.itemView.getContext(), NoticeDetailActivity.class);
+                    intent.putExtra("noticeId",item.getItemId());
+                    viewHolder.itemView.getContext().startActivity(intent);
+                }
+                if (item.getIsNotice().equals("comment")){
+                    Intent intent = new Intent(viewHolder.itemView.getContext(), PostActivity.class);
+                    intent.putExtra("postId",item.getItemId());
+                    viewHolder.itemView.getContext().startActivity(intent);
                 }
             }
         });
@@ -103,9 +108,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
         LinearLayout alarmLayout;
         TextView alarmtitle;
         TextView alarmdate;
-        TextView alarmcontent;
         Button alarmBtn;
-        LinearLayout alarmOpen;
         ImageView star;
 
         public ViewHolder(View itemView, final OnAlarmClickListener listener) {
@@ -113,9 +116,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
             alarmLayout = itemView.findViewById(R.id.alarmLayout);
             alarmtitle = itemView.findViewById(R.id.alarm_title);
             alarmdate = itemView.findViewById(R.id.alarm_date);
-            alarmcontent = itemView.findViewById(R.id.alarm_content);
             alarmBtn = itemView.findViewById(R.id.scroll_btn);
-            alarmOpen = itemView.findViewById(R.id.alarmOpen);
             star = itemView.findViewById(R.id.alarm_star);
 
         }
@@ -123,8 +124,11 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
         public void setItem(Alarm item) {
             alarmtitle.setText(item.getAlarmTitle());
             alarmdate.setText(item.getAlarmDate());
-            alarmcontent.setText(item.getAlarmContent());
-            alarmOpen.setVisibility(View.GONE);
+            if(item.getIsNotice().equals("notice")){
+                star.setImageResource(R.drawable.alarm__star_non);
+            }else{
+                star.setImageResource(R.drawable.main__alarm);
+            }
         }
     }
 

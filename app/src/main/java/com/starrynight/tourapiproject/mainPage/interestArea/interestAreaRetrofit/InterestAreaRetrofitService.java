@@ -15,16 +15,16 @@ import retrofit2.http.Path;
 public interface InterestAreaRetrofitService {
 
     @GET("interestArea/detail/{regionId}/{regionType}")
-    Call<InterestAreaWeatherDTO> getInterestAreaInfo(@Path("regionId") Long regionId, @Path("regionType") Integer regionType);
+    Call<InterestAreaDetailDTO> getInterestAreaDetailInfo(@Path("regionId") Long regionId, @Path("regionType") Integer regionType);
 
     @GET("interestArea/{userId}")
     Call<List<InterestAreaDTO>> getAllInterestArea(@Path("userId") Long userId);
 
     @POST("interestArea")
-    Call<Void> addInterestArea(@Body UpdateInterestAreaDTO updateInterestAreaDTO);
+    Call<Void> addInterestArea(@Body AddInterestAreaDTO addInterestAreaDTO);
 
-    @DELETE("interestArea")
-    Call<Void> deleteInterestArea(@Body UpdateInterestAreaDTO updateInterestAreaDTO);
+    @DELETE("interestArea/{userId}/{regionId}/{regionType}")
+    Call<Void> deleteInterestArea(@Path("userId") Long userId, @Path("regionId") Long regionId, @Path("regionType") Integer regionType);
 
     @GET("post/observation/{observationId}/{size}")
     Call<List<PostContentsParams>> getObservationPostWithSize(@Path("observationId") Long observationId,@Path("size") int size);

@@ -14,18 +14,18 @@ import com.starrynight.tourapiproject.R;
 import java.util.ArrayList;
 
 public class SearchLocationItemAdapter extends RecyclerView.Adapter<SearchLocationItemAdapter.ViewHolder> {
-    ArrayList<SearchLocationItem> searchItemArrayList;
+    ArrayList<SearchLocationItem> items;
     OnSearchItemClickListener listener;
 
-
-    public SearchLocationItemAdapter(ArrayList<SearchLocationItem> searchItemArrayList, WeatherLocationSearchActivity weatherLocationSearchActivity) {
-        this.searchItemArrayList = searchItemArrayList;
+    public SearchLocationItemAdapter(ArrayList<SearchLocationItem> items) {
+        this.items = items;
     }
 
     public SearchLocationItem getItem(int position) {
-        return searchItemArrayList.get(position);
+        return items.get(position);
     }
 
+    // ViewHolder 객체를 생성하고 초기화
     @NonNull
     @Override
     public SearchLocationItemAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -34,25 +34,26 @@ public class SearchLocationItemAdapter extends RecyclerView.Adapter<SearchLocati
         return new ViewHolder(itemView, listener);
     }
 
+    // 데이터를 가져와 ViewHolder 안의 내용을 채워줌
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        holder.title.setText(searchItemArrayList.get(position).getTitle());
-        holder.subtitle.setText(searchItemArrayList.get(position).getSubtitle());
-        holder.observationalFit.setText(searchItemArrayList.get(position).getObservationalFit());
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+        SearchLocationItem item = items.get(position);
+        viewHolder.setItem(item);
     }
 
-    public void setOnItemClicklistener(OnSearchItemClickListener listener) {
+    public void setOnItemClickListener(OnSearchItemClickListener listener) {
         this.listener = listener;
     }
 
 
+    // 총 데이터의 갯수를 반환
     @Override
     public int getItemCount() {
-        return searchItemArrayList.size();
+        return items.size();
     }
 
     public void filterList(ArrayList<SearchLocationItem> filteredList) {
-        searchItemArrayList = filteredList;
+        items = filteredList;
         notifyDataSetChanged();
     }
 
@@ -78,6 +79,18 @@ public class SearchLocationItemAdapter extends RecyclerView.Adapter<SearchLocati
                 }
             });
 
+        }
+
+        public void setItem(SearchLocationItem item) {
+            title.setText(item.getTitle());
+            subtitle.setText(item.getSubtitle());
+            if (item.getObservationalFit() != null) { // 관측지
+                observationalStar.setAlpha(1.0f);
+                observationalFit.setText("~" + item.getObservationalFit() + "%");
+            } else { // 지역
+                observationalStar.setAlpha(0.0f);
+                observationalFit.setText("");
+            }
         }
     }
 }

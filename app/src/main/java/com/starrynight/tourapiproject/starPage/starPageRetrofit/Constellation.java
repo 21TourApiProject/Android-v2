@@ -48,11 +48,11 @@ public class Constellation {
     @SerializedName("constEng")
     private String constEng;
 
-    @SerializedName("azimuth")
-    private Float azimuth;
+    @SerializedName("rightAsc")
+    private Float rightAsc;
 
-    @SerializedName("altitude")
-    private Float altitude;
+    @SerializedName("declination")
+    private Float declination;
 
     public Constellation() {
     }
@@ -145,19 +145,19 @@ public class Constellation {
         this.constEng = constEng;
     }
 
-    public Float getAzimuth() {
-        return azimuth;
+    public Float getRightAsc() {
+        return rightAsc;
     }
 
-    public void setAzimuth(Float azimuth) {
-        this.azimuth = azimuth;
+    public void setRightAsc(Float rightAsc) {
+        this.rightAsc = rightAsc;
     }
 
-    public Float getAltitude() {
-        return altitude;
+    public Float getDeclination() {
+        return declination;
     }
 
-    public void setAltitude(Float altitude) {
-        this.altitude = altitude;
+    public void setDeclination(Float declination) {
+        this.declination = declination;
     }
 }

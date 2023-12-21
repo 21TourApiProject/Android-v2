@@ -29,6 +29,7 @@ import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListe
 import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdpater2;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.RetrofitClient;
+import com.starrynight.tourapiproject.weatherPage.GpsTracker;
 
 import java.util.List;
 
@@ -135,9 +136,16 @@ public class SelectStarActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         pop.dismiss();
+                        //GPS 위도, 경도
+                        GpsTracker gpsTracker = new GpsTracker(getApplicationContext());
+                        double lat = gpsTracker.getLatitude();
+
+                        double lon = gpsTracker.getLongitude();
                         StarItem item = selectConstAdapter.getItem(position);
                         Intent intent = new Intent(getApplicationContext(),StarCameraActivity.class);
                         intent.putExtra("constName", item.getConstName());
+                        intent.putExtra("lat",lat);
+                        intent.putExtra("lon",lon);
                         startActivity(intent);
                     }
                 });

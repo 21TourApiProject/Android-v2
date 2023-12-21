@@ -1,17 +1,14 @@
 package com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit;
 
-public class InterestAreaWeatherDTO {
+public class InterestAreaDetailDTO {
 
     public Long regionId;
     public String regionName;
     public Integer regionType;
     public String regionImage;
-    public String bestDay;
-    public Integer bestHour;
-    public Integer bestObservationalFit;
-    public String weatherReport;
     public Double latitude;
     public Double longitude;
+    public InterestAreaDetailWeatherInfo interestAreaDetailWeatherInfo;
 
     public Long getRegionId() {
         return regionId;
@@ -45,38 +42,6 @@ public class InterestAreaWeatherDTO {
         this.regionImage = regionImage;
     }
 
-    public String getBestDay() {
-        return bestDay;
-    }
-
-    public void setBestDay(String bestDay) {
-        this.bestDay = bestDay;
-    }
-
-    public Integer getBestHour() {
-        return bestHour;
-    }
-
-    public void setBestHour(Integer bestHour) {
-        this.bestHour = bestHour;
-    }
-
-    public Integer getBestObservationalFit() {
-        return bestObservationalFit;
-    }
-
-    public void setBestObservationalFit(Integer bestObservationalFit) {
-        this.bestObservationalFit = bestObservationalFit;
-    }
-
-    public String getWeatherReport() {
-        return weatherReport;
-    }
-
-    public void setWeatherReport(String weatherReport) {
-        this.weatherReport = weatherReport;
-    }
-
     public Double getLatitude() {
         return latitude;
     }
@@ -91,5 +56,13 @@ public class InterestAreaWeatherDTO {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public InterestAreaDetailWeatherInfo getInterestAreaDetailWeatherInfo() {
+        return interestAreaDetailWeatherInfo;
+    }
+
+    public void setInterestAreaDetailWeatherInfo(InterestAreaDetailWeatherInfo interestAreaDetailWeatherInfo) {
+        this.interestAreaDetailWeatherInfo = interestAreaDetailWeatherInfo;
     }
 }

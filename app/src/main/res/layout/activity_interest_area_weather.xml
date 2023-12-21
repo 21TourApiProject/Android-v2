@@ -58,7 +58,6 @@
                         style="@style/semiBold_multi_18"
                         android:layout_width="232dp"
                         android:layout_height="wrap_content"
-                        android:text="화악터널 쌈지공원"
                         android:textColor="@color/gray_500" />
 
                     <TextView
@@ -67,7 +66,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="9. 17(토)"
                         android:textColor="@color/gray_200" />
                 </LinearLayout>
 
@@ -81,10 +79,9 @@
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/default_tp"
-                    app:civ_border_color="@color/point_blue"
-                    app:civ_border_overlay="true"
-                    app:civ_border_width="2dp" />
+                    android:background="@drawable/interest_area__image_back"
+                    android:padding="2dp"
+                    android:src="@drawable/default_tp" />
 
             </LinearLayout>
 
@@ -114,7 +111,6 @@
                         style="@style/medium_single_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="오늘"
                         android:textColor="@color/gray_500" />
 
                     <TextView
@@ -123,7 +119,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:text="23시"
                         android:textColor="@color/gray_200" />
 
                     <TextView
@@ -140,7 +135,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:text="NN%"
                         android:textColor="@color/point_blue" />
                 </LinearLayout>
 
@@ -153,18 +147,55 @@
                     android:paddingVertical="16dp">
 
                     <ImageView
+                        android:id="@+id/interest_area_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/interest_area_star" />
+                        android:src="@drawable/main__loader" />
 
                     <TextView
-                        android:id="@+id/interest_area_weather_report"
+                        android:id="@+id/interest_area_weather_error"
                         style="@style/medium_multi_14"
-                        android:layout_width="260dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="날씨 요약 레포트 날씨 요약 레포트 날씨 요약 레포트 날씨 요약 레포트 날씨 요약 레포트 날씨 요약 레포트 날씨 요약 레포트 날씨 요약 레포트 "
+                        android:text="이 곳의 날씨를 분석하는 중..."
                         android:textColor="@color/gray_300" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/interest_area_weather_comment1_front"
+                                style="@style/semiBold_single_14"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/gray_300" />
+
+                            <TextView
+                                android:id="@+id/interest_area_weather_comment1_back"
+                                style="@style/semiBold_single_14"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/interest_area_weather_comment2"
+                            style="@style/medium_multi_14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:textColor="@color/gray_500" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <TextView
@@ -185,16 +216,16 @@
                 android:id="@+id/interest_area_review_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="124dp"
                 android:orientation="vertical"
-                android:paddingHorizontal="16dp"
-                android:layout_marginBottom="124dp">
+                android:paddingHorizontal="16dp">
 
                 <TextView
                     style="@style/semiBold_single_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="이 위치가 태그된 후기"
-                    android:layout_marginVertical="20dp"/>
+                    android:layout_marginVertical="20dp"
+                    android:text="이 위치가 태그된 후기" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/interest_review_recycler"
@@ -214,17 +245,18 @@
                     android:paddingVertical="14dp"
                     android:text="이 관측지 후기 더보기"
                     android:textColor="@color/gray_300" />
+
                 <TextView
                     android:id="@+id/interest_area_no_review"
+                    style="@style/medium_single_14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingVertical="80dp"
                     android:text="아직 작성된 후기가 없어요"
                     android:textColor="@color/gray_200"
-                    style="@style/medium_single_14"
                     android:visibility="gone"
-                    tools:visibility="visible"
-                    android:layout_gravity="center"
-                    android:paddingVertical="80dp"/>
+                    tools:visibility="visible" />
             </LinearLayout>
 
             <LinearLayout
@@ -258,24 +290,26 @@
         android:id="@+id/interest_area_move_observation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="12dp"
         android:background="@drawable/custom_purple_blue_gradient"
         android:gravity="center"
-        android:layout_marginVertical="12dp"
-        android:layout_marginHorizontal="16dp"
+        android:orientation="horizontal"
         android:paddingVertical="16dp"
         app:layout_constraintBottom_toBottomOf="parent">
+
         <TextView
             style="@style/semiBold_single_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="관측지 정보 보러가기"
             android:textColor="@color/white" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/right_arrow_white"
-            android:layout_marginLeft="4dp"/>
+            android:layout_marginLeft="4dp"
+            android:src="@drawable/right_arrow_white" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

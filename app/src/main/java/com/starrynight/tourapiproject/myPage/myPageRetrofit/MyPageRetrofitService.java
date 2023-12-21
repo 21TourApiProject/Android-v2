@@ -101,11 +101,17 @@ public interface MyPageRetrofitService {
     @GET("user/{userId}/isKakao")
     Call<Boolean> checkIsKakao(@Path("userId") Long userId);
 
+    @GET("notice/{noticeId}")
+    Call<Notice> getNotice(@Path("noticeId") Long noticeId);
+
     @GET("notice/all")
     Call<List<Notice>> getAllNotice();
 
     @GET("myCommentList/{userId}")
     Call<List<MyComment>> getMyComments(@Path("userId") Long userId);
+
+    @POST("fcmToken/{userId}")
+    Call<Void> createFcmToken(@Path("userId") Long userId);
 
     @GET("fcmToken/{userId}/{fcmToken}")
     Call<Boolean> updateFcmToken(@Path("userId") Long userId, @Path("fcmToken") String fcmToken);
