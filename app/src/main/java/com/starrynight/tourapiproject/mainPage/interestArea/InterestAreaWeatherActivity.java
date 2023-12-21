@@ -22,7 +22,6 @@ import com.starrynight.tourapiproject.mainPage.RecentReviewAdapter;
 import com.starrynight.tourapiproject.mainPage.RecentReviewItemClickListener;
 import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaDetailDTO;
 import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaRetrofitClient;
-import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaWeatherDTO;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.ObservationSimpleParams;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.PostContentsParams;
 import com.starrynight.tourapiproject.observationPage.MoreObservationActivity;
