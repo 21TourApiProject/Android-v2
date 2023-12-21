@@ -40,14 +40,12 @@
                         style="@style/bold_single_18"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="밤하늘 관측 후기"
-                        android:textSize="16sp" />
+                        android:text="밤하늘 관측 후기"/>
                     <TextView
                         style="@style/medium_single_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="💫 여러분의 밤하늘을 공유해주세요!"
-                        android:textSize="16sp"
                         android:textColor="@color/gray_500"
                         android:layout_marginTop="8dp"/>
 

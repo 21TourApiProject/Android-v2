@@ -1,5 +1,6 @@
 package com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit;
 
+import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.ObservationSimpleParams;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.PostContentsParams;
 
 import java.util.List;
@@ -27,4 +28,7 @@ public interface InterestAreaRetrofitService {
 
     @GET("post/observation/{observationId}/{size}")
     Call<List<PostContentsParams>> getObservationPostWithSize(@Path("observationId") Long observationId,@Path("size") int size);
+
+    @GET("observations/near/{areaId}/{size}")
+    Call<List<ObservationSimpleParams>> getNearObservationIds(@Path("areaId") Long areaId,@Path("size") int size);
 }
