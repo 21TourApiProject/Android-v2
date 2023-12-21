@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="28dp"
-                android:background="@drawable/star_seatch_non"
+                android:background="@drawable/star_search_non"
                 android:orientation="horizontal">
 
                 <ImageView

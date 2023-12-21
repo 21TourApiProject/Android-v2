@@ -23,6 +23,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,7 +61,7 @@ import retrofit2.Response;
 public class TonightSkyFragment extends Fragment implements SensorEventListener {
     //bottomSheet 관련
     ImageView topIcon;
-    ImageView starCamera;
+    CardView starCamera;
 
     //나침반 관련
     private SensorManager mSensorManger;

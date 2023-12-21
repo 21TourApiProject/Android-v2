@@ -43,6 +43,68 @@
             app:layout_constraintStart_toStartOf="@id/compass_body"
             app:layout_constraintTop_toTopOf="@id/compass_body" />
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/star_camera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="15dp"
+            android:orientation="horizontal"
+            app:cardBackgroundColor="@color/gray_700"
+            app:contentPadding="20dp"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintBottom_toTopOf="@id/bottom_sheet">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/star__camera_icon"
+                    android:layout_marginEnd="14dp"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/search_point_background"
+                        android:layout_marginEnd="8dp"
+                        style="@style/semiBold_single_10"
+                        android:text="신기능"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="카메라로 별자리 찾기"
+                        android:textColor="@color/point_blue"
+                        style="@style/semiBold_single_14"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="오늘 밤하늘에서 별자리 위치를 찾아드려요!"
+                    android:textColor="@color/gray_500"
+                    style="@style/medium_single_12"/>
+            </LinearLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="17dp"
+                    android:background="@drawable/right_arrow"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         <RelativeLayout
             android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
@@ -76,13 +138,6 @@
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
 
-            <ImageView
-                android:id="@+id/star_camera"
-                android:layout_width="match_parent"
-                android:layout_height="50sp"
-                android:layout_below="@id/Nest"
-                android:src="@drawable/ic_star_camera"
-                android:visibility="visible"/>
         </RelativeLayout>
 
         <LinearLayout

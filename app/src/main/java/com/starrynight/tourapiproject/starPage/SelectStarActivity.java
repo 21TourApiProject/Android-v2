@@ -141,7 +141,6 @@ public class SelectStarActivity extends AppCompatActivity {
                         double lat = gpsTracker.getLatitude();
 
                         double lon = gpsTracker.getLongitude();
-                        Log.d("방위각,고도 구하기","위도: "+lat+"경도:"+lon);
                         StarItem item = selectConstAdapter.getItem(position);
                         Intent intent = new Intent(getApplicationContext(),StarCameraActivity.class);
                         intent.putExtra("constName", item.getConstName());
