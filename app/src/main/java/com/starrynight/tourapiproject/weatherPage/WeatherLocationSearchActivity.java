@@ -80,8 +80,8 @@ public class WeatherLocationSearchActivity extends AppCompatActivity {
         });
 
         //검색어 입력했을 때 나오는 관측지 리스트
-        searchAdapter = new SearchLocationItemAdapter(searchItemArrayList, this);
-        searchAdapter.setOnItemClicklistener((holder, view, position) -> {
+        searchAdapter = new SearchLocationItemAdapter(searchItemArrayList);
+        searchAdapter.setOnItemClickListener((holder, view, position) -> {
             SearchLocationItem item = searchAdapter.getItem(position);
             if (fromInterestAreaAdd) {
 

@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,10 +42,10 @@ public class InterestAreaWeatherActivity extends AppCompatActivity {
     private static final Integer REGION_TYPE_OBSERVATION = 1;
     private static final Integer REGION_TYPE_LOCALE = 2;
 
-
     @SuppressLint("SimpleDateFormat")
     SimpleDateFormat MM_dd_EE = new SimpleDateFormat("MM. dd(EE)");
-
+    @SuppressLint("SimpleDateFormat")
+    SimpleDateFormat MM_dd_HH = new SimpleDateFormat("MM'월 'dd'일' HH'시'");
 
     private ImageView interest_area_back; // 뒤로가기 버튼
     private TextView interest_area_name; // 지역 또는 관측지 이름
@@ -53,7 +54,11 @@ public class InterestAreaWeatherActivity extends AppCompatActivity {
     private TextView interest_area_best_day; // 오늘 또는 내일
     private TextView interest_area_best_hour; // 제일 잘보이는 시간
     private TextView interest_area_best_observational_fit; // 최대 관측적합도
-    private TextView interest_area_weather_report; // 날씨 요약 레포트
+    private ImageView interest_area_icon; // 로딩 아이콘
+    private TextView interest_area_weather_error; //
+    private TextView interest_area_weather_comment1_front; //
+    private TextView interest_area_weather_comment1_back; //
+    private TextView interest_area_weather_comment2; //
     private TextView interest_area_detail_weather; // 날씨 자세히 보기 버튼
 
     private RecyclerView reviewRecycler;//관측후기 recycler
@@ -81,7 +86,11 @@ public class InterestAreaWeatherActivity extends AppCompatActivity {
         interest_area_best_day = findViewById(R.id.interest_area_best_day);
         interest_area_best_hour = findViewById(R.id.interest_area_best_hour);
         interest_area_best_observational_fit = findViewById(R.id.interest_area_best_observational_fit);
-        interest_area_weather_report = findViewById(R.id.interest_area_weather_report);
+        interest_area_icon = findViewById(R.id.interest_area_icon);
+        interest_area_weather_error = findViewById(R.id.interest_area_weather_error);
+        interest_area_weather_comment1_front = findViewById(R.id.interest_area_weather_comment1_front);
+        interest_area_weather_comment1_back = findViewById(R.id.interest_area_weather_comment1_back);
+        interest_area_weather_comment2 = findViewById(R.id.interest_area_weather_comment2);
         interest_area_detail_weather = findViewById(R.id.interest_area_detail_weather);
 
         regionId = (Long) getIntent().getSerializableExtra("regionId");
@@ -97,7 +106,7 @@ public class InterestAreaWeatherActivity extends AppCompatActivity {
                     public void onResponse(Call<InterestAreaDetailDTO> call, Response<InterestAreaDetailDTO> response) {
                         if (response.isSuccessful()) {
                             interestAreaDetail = response.body();
-                            System.out.println("interestAreaDetail = " + interestAreaDetail);
+                            interest_area_weather_error.setVisibility(View.GONE);
                             interest_area_name.setText(interestAreaDetail.getRegionName());
                             if (Objects.nonNull(interestAreaDetail.getRegionImage())) {
                                 Glide.with(getApplicationContext()).load(interestAreaDetail.getRegionImage()).into(interest_area_image);
@@ -108,7 +117,10 @@ public class InterestAreaWeatherActivity extends AppCompatActivity {
                             if (interestAreaDetail.getInterestAreaDetailWeatherInfo().getBestObservationalFit() < 60) {
                                 interest_area_best_observational_fit.setTextColor(getColor(R.color.point_red));
                             }
-                            interest_area_weather_report.setText(interestAreaDetail.getInterestAreaDetailWeatherInfo().getWeatherReport());
+                            interest_area_icon.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.main__weather_sun));
+                            interest_area_weather_comment1_front.setText(MM_dd_HH.format(new Date(System.currentTimeMillis())));
+                            interest_area_weather_comment1_back.setText("이 곳의 날씨 ");
+                            interest_area_weather_comment2.setText(interestAreaDetail.getInterestAreaDetailWeatherInfo().getWeatherReport());
 
                         } else {
                             Log.e(TAG, "서버 api 호출 실패");

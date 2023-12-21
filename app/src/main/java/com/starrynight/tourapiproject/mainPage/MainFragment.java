@@ -91,9 +91,9 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private static final String MAIN_STAR_TEXT = "월에 잘 보여요";
 
     @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat HH = new SimpleDateFormat("HH");
+    SimpleDateFormat MM_dd_HH = new SimpleDateFormat("MM'월 'dd'일' HH'시'");
     @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat mm = new SimpleDateFormat("mm");
+    SimpleDateFormat HH = new SimpleDateFormat("HH");
     @SuppressLint("SimpleDateFormat")
     SimpleDateFormat yyyy_MM_dd = new SimpleDateFormat("yyyy-MM-dd");
     String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
@@ -103,11 +103,12 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private ImageView subBanner;
     private LinearLayout subBannerLayout;
     private TextView helloMassage; // 인사말
-    private ImageView currentIcon; // 인사말
-    private TextView currentLocation; // 현 위치
-    private TextView locationError; // 위치 오류 문구
-    private TextView loading; // 날씨 로딩 문구
-    private TextView currentWeather; // 현 위치 날씨 정보
+
+    private ImageView currentWeatherIcon;
+    private TextView currentWeatherError; // 새로고침, 현위치 오류, 날씨 로딩 문구
+    private TextView currentWeatherComment1Front;
+    private TextView currentWeatherComment1Back;
+    private TextView currentWeatherComment2;
     private Boolean findLocation; // 현위치 조회 성공 여부
 
     private RecyclerView starRecycler;
@@ -160,11 +161,11 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         swipeRefreshLayout.setOnRefreshListener(this);
 
         helloMassage = v.findViewById(R.id.hello_message);
-        currentIcon = v.findViewById(R.id.main__current_icon);
-        currentLocation = v.findViewById(R.id.main__current_location);
-        locationError = v.findViewById(R.id.location_error);
-        loading = v.findViewById(R.id.main__loading);
-        currentWeather = v.findViewById(R.id.current_weather);
+        currentWeatherIcon = v.findViewById(R.id.main__current_weather_icon);
+        currentWeatherError = v.findViewById(R.id.main__current_weather_error);
+        currentWeatherComment1Front = v.findViewById(R.id.main__current_weather_comment1_front);
+        currentWeatherComment1Back = v.findViewById(R.id.main__current_weather_comment1_back);
+        currentWeatherComment2 = v.findViewById(R.id.main__current_weather_comment2);
         LinearLayout weatherLocationSearch = v.findViewById(R.id.weather_location_search);
 
         // 관심지역 편집 시 투명도 조절을 위한 타 레이아웃 변수
@@ -226,11 +227,13 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
             if (SD == null || !SD.contains("세종") && SGG == null) {
                 findLocation = false;
-                locationError.setVisibility(View.VISIBLE);
+                currentWeatherError.setVisibility(View.VISIBLE);
+                currentWeatherError.setText("현 위치를 불러올 수 없습니다.");
+
             } else {
                 findLocation = true;
-                locationError.setVisibility(View.GONE);
-                loading.setVisibility(View.VISIBLE);
+                currentWeatherError.setVisibility(View.VISIBLE);
+                currentWeatherError.setText("현 위치 날씨를 분석하는 중...");
                 Date date = new Date(System.currentTimeMillis());
                 NearestAreaDTO nearestAreaDTO = new NearestAreaDTO(SGG, latitude, longitude, yyyy_MM_dd.format(date), Integer.valueOf(HH.format(date)));
                 if (SD.contains("세종")) nearestAreaDTO.setSgg("세종");
@@ -241,11 +244,12 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             @Override
                             public void onResponse(Call<MainInfo> call, Response<MainInfo> response) {
                                 if (response.isSuccessful()) {
-                                    loading.setVisibility(View.GONE); // 로딩 문구 해제
-                                    currentIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.main__weather_star)); // 로딩 문구 해제
+                                    currentWeatherError.setVisibility(View.GONE); // 오류 문구 해제
+                                    currentWeatherIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.main__weather_sun));
                                     MainInfo mainInfo = response.body();
-                                    currentLocation.setText(mainInfo.getLocation());
-                                    currentWeather.setText(mainInfo.getComment());
+                                    currentWeatherComment1Front.setText(MM_dd_HH.format(date));
+                                    currentWeatherComment1Back.setText(" " + mainInfo.getLocation() + " 날씨");
+                                    currentWeatherComment2.setText(mainInfo.getComment());
                                 } else {
                                     Log.e(TAG, "getNearestAreaWeatherInfo 오류");
                                 }
@@ -261,8 +265,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         // 위치 허용 동의 후 최초 발생
         if (findLocation == null) {
-            locationError.setText("새로고침이 필요합니다.");
-            locationError.setVisibility(View.VISIBLE);
+            currentWeatherError.setVisibility(View.VISIBLE);
+            currentWeatherError.setText("새로고침이 필요합니다.");
         }
 
         // 관심지역 조회

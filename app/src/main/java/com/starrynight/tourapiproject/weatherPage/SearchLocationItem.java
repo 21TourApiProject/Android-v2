@@ -7,7 +7,7 @@ public class SearchLocationItem {
     Long observationId; // WEATHER_OBSERVATION id
     Double latitude;
     Double longitude;
-    String observationalFit;
+    Long observationalFit;
 
     public String getTitle() {
         return title;
@@ -33,7 +33,7 @@ public class SearchLocationItem {
         return longitude;
     }
 
-    public String getObservationalFit() {
+    public Long getObservationalFit() {
         return observationalFit;
     }
 }
