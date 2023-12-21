@@ -5,17 +5,22 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,12 +33,14 @@ import androidx.core.content.ContextCompat;
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.starrynight.tourapiproject.R;
+import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.Constellation;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.weatherPage.GpsTracker;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -182,30 +189,24 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
                 if(constData.getRightAsc()!=null&&constData.getDeclination()!=null){
                     RA = constData.getRightAsc();
                     D = constData.getDeclination();
+                    //지방항성시 LST 계산
+                    double LST = LMSTCalculator(lon);
+
+                    //방위각 위도 계산
+                    HA = Math.round((LST-RA)*100.0)/100.0;
+
+                    //constAzimuth=Math.atan2(-Math.cos(D)*Math.sin(HA),Math.sin(D)*Math.cos(lat)-Math.cos(D)*Math.sin(lat)*Math.cos(HA));
+                    //constAltitude=Math.PI-Math.asin(Math.sin(lat)*Math.sin(D)+Math.cos(lat)*Math.cos(D)*Math.cos(HA));
+                    constAzimuth=Math.atan2(Math.sin(HA),Math.cos(HA)*Math.sin(lat)-Math.tan(D)*Math.cos(lat));
+                    constAltitude=Math.acos(Math.sin(D)*Math.sin(lat)+Math.cos(D)*Math.cos(lat)*Math.cos(HA));
+                    Log.d(TAG,"위도: "+lat+"경도:"+lon);
+                    Log.d(TAG,"LST: "+LST+" HA: "+HA);
                     Log.d(TAG,"RA: "+RA+" D: "+D);
+                    Log.d(TAG,"고도: "+String.format("%2f",constAltitude)+" 방위각: "+String.format("%2f",constAzimuth));
+                    finalConstName.setText(constData.getConstName());
+                    Glide.with(StarCameraActivity.this).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/s_"
+                            + constData.getConstEng() + ".png").fitCenter().into(guideImage);
                 }
-
-                //지방항성시 LST 계산
-                long time = System.currentTimeMillis();
-                double dtime = time/1000.0;
-                Log.d(TAG,"현재 시각: "+dtime);
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-                String now = sdf.format(time);
-                Log.d(TAG,"현재시간 :"+now);
-                double LST = LMSTCalculator(lon,dtime);
-
-                //방위각 위도 계산
-                HA = LST-RA;
-                Log.d(TAG,"HA: "+HA);
-                constAzimuth=Math.atan2(-Math.cos(D)*Math.sin(HA),Math.sin(D)*Math.cos(lat)-Math.cos(D)*Math.sin(lat)*Math.cos(HA));
-                constAltitude=Math.PI-Math.asin(Math.sin(lat)*Math.sin(D)+Math.cos(lat)*Math.cos(D)*Math.cos(HA));
-                Log.d(TAG,"고도: "+String.format("%2f",constAltitude)+" 방위각: "+String.format("%2f",constAzimuth));
-
-
-                finalConstName.setText(constData.getConstName());
-                Glide.with(StarCameraActivity.this).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/s_"
-                        + constData.getConstEng() + ".png").fitCenter().into(guideImage);
-
             }
 
             @Override
@@ -231,9 +232,10 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                reviewAlarm();
             }
         });
+
 
         //guideOnOff 버튼 클릭 이벤트
         onOffButton.setOnClickListener(new View.OnClickListener() {
@@ -381,7 +383,7 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
                 crtGuideTextDir.setVisibility(View.VISIBLE);
                 crtGuideTextDir.setText("핸드폰을 "+yDirection+"으로");
                 crtGuideTextAngle.setText(Math.abs(Math.floor(crtAltitude))+"°");
-                crtGuideText.setText(" 돌아주세요.");
+                crtGuideText.setText((crtAltitude>0)?" 들어주세요":" 내려주세요");
             }
 
 
@@ -424,20 +426,11 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
             }
         };
     }
-    public double LMSTCalculator(double lon, double obstime) {
-            ZoneOffset seoulZoneOffset = ZoneOffset.of("+09:00");
-            ZonedDateTime currentTime =ZonedDateTime.now();
+    public double LMSTCalculator(double lon) {
+            LocalDateTime currentTime =LocalDateTime.now();
             double JD = calculateJulianDate(currentTime);
             double GMST = calculateGMST(JD);
             Log.d(TAG,"zonedDateTime: "+currentTime+" JD: "+JD+" GMST: "+GMST);
-//            double d = (obstime / 86400.0) + 2440587.5 - 2451545.0;
-//            double t = d / 36525;
-//
-//            // GMST calculation
-//            double GMST_s = 24110.54841 + 8640184.812866 * t + 0.093104 * Math.pow(t, 2) - 0.0000062 * Math.pow(t, 3);
-//            // convert from UT1=0
-//            GMST_s += obstime;
-//            GMST_s = GMST_s - 86400.0 * Math.floor(GMST_s / 86400.0);
 
             // adjust to LMST
             double LMST_s = GMST + lon;
@@ -446,19 +439,20 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
                 // LMST is between 0 and 24h
                 LMST_s += 86400.0;
             }
-            LMST_s*=4;
-            // time format conversion
-            int hour = (int) Math.floor(LMST_s / 3600);
-            LMST_s -= 3600 * Math.floor(LMST_s / 3600);
-            int min = (int) Math.floor(LMST_s / 60);
-            int sec = (int) (LMST_s - 60 * Math.floor(LMST_s / 60));
 
-           Log.d(TAG,"LMST:"+hour+":"+min+":"+sec);
-           Log.d(TAG,"LMST_s:"+LMST_s);
-           return LMST_s;
+            // time format conversion
+            double hour = (LMST_s % 360)/360*24;
+            int hh = (int) Math.floor(hour);
+            int min = (int) Math.floor((hour-hh)* 60);
+            int sec = (int) ((hour-hh-min/60.0)*3600);
+
+            float angle = (float) ((hh*60.0)+min+(sec/60.0))*360/1436;
+            guideImage.setRotation(angle);
+           Log.d(TAG,"LMST: "+hh+":"+min+":"+sec+" angle: "+angle);
+           return Math.round(LMST_s*100.0)/100.0;
         }
         // 율리우스 일 (Julian Date) 계산
-        private static double calculateJulianDate(ZonedDateTime dateTime) {
+        private static double calculateJulianDate(LocalDateTime dateTime) {
             long epochDay = dateTime.toLocalDate().toEpochDay();
             long secondsOfDay = dateTime.toLocalTime().toSecondOfDay();
             double julianDate = epochDay + (secondsOfDay / 86400.0) + 2440587.5;
@@ -472,6 +466,60 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
               if (GMST < 0) {
                   GMST += 360; // 음수일 경우 조절
                 }
-               return GMST-135.0;
+               return GMST-135.0; // 시차 9시간 차감
+          }
+          @Override
+          public void onBackPressed(){
+            reviewAlarm();
+          }
+
+          private void reviewAlarm(){
+              AlertDialog.Builder builder =
+                      new AlertDialog.Builder(StarCameraActivity.this,R.style.DimDialog); // 알림 뒤 화면 dim 처리
+              AlertDialog pop = builder.create();
+              LayoutInflater layoutInflater = LayoutInflater.from(StarCameraActivity.this);
+              View selectView = layoutInflater.inflate(R.layout.custom_select_star_dialog, null);
+              pop.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+              Display display = getWindowManager().getDefaultDisplay();//dialog 크기 조정
+              Point size = new Point();
+              display.getSize(size);
+
+              TextView constName = selectView.findViewById(R.id.star_alert_text);
+              ImageView constImage = selectView.findViewById(R.id.star_alart_image);
+              TextView positive = selectView.findViewById(R.id.star_alert_positive);
+              TextView negative = selectView.findViewById(R.id.star_alert_negative);
+
+              constName.setText("‘카메라로 별 찾기' 기능, 사용해보니 어떠셨나요?\n" + "의견을 남겨주시면 적극적으로 반영할게요!");
+              constImage.setVisibility(View.GONE);
+              positive.setText("의견 남기기");
+              negative.setText("닫기");
+
+              pop.setView(selectView);
+              pop.show();
+              WindowManager.LayoutParams params=pop.getWindow().getAttributes();
+              params.gravity= Gravity.CENTER_VERTICAL;
+              params.width=(int)(size.x*0.9f);
+              pop.getWindow().setAttributes(params);
+
+              positive.setOnClickListener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View view) {
+                      String url = "https://play.google.com/store/apps/details?id=com.starrynight.tourapiproject";
+                      Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                      startActivity(i);
+                      System.runFinalization();
+                      System.exit(0);
+                      pop.dismiss();
+                  }
+              });
+
+              negative.setOnClickListener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View view) {
+                      pop.dismiss();
+                      finish();
+                  }
+              });
           }
 }

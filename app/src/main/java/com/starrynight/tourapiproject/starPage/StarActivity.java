@@ -20,11 +20,13 @@ import com.kakao.sdk.newtoneapi.TextToSpeechListener;
 import com.kakao.sdk.newtoneapi.TextToSpeechManager;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.starPage.constNameRetrofit.ConstellationParams2;
+import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.Constellation;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.OnStarHashTagClickListener;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.StarHashTag;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.StarHashTagAdapter;
+import com.starrynight.tourapiproject.weatherPage.GpsTracker;
 
 import java.util.List;
 
@@ -57,7 +59,7 @@ public class StarActivity extends AppCompatActivity {
     List<StarHashTag> starHashTags;
     StarHashTagAdapter starHashTagAdapter;
     RecyclerView recyclerView;
-    LinearLayout hashTagList;
+    LinearLayout hashTagList,detailConstCameara;
 
     String intentConstName;
     Constellation constData;
@@ -86,6 +88,7 @@ public class StarActivity extends AppCompatActivity {
         constBestMonthTv = findViewById(R.id.const_best_month_tv);
         constSummary = findViewById(R.id.constSummary);
         hashTagList = findViewById(R.id.starHashTags);
+        detailConstCameara=findViewById(R.id.detail_const_camera);
 
         story_play_btn = findViewById(R.id.story_play_btn);
         rightNow = findViewById(R.id.rightNow);
@@ -221,6 +224,22 @@ public class StarActivity extends AppCompatActivity {
                 } else {
                     ttsClient.play();
                 }
+            }
+        });
+
+        detailConstCameara.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //GPS 위도, 경도
+                GpsTracker gpsTracker = new GpsTracker(getApplicationContext());
+                double lat = gpsTracker.getLatitude();
+
+                double lon = gpsTracker.getLongitude();
+                Intent intent = new Intent(getApplicationContext(),StarCameraActivity.class);
+                intent.putExtra("constName", constName.getText());
+                intent.putExtra("lat",lat);
+                intent.putExtra("lon",lon);
+                startActivity(intent);
             }
         });
 
