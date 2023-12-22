@@ -177,7 +177,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         View observation_layout = v.findViewById(R.id.observation_layout);
         View star_layout = v.findViewById(R.id.star_layout);
         View night_sky_layout = v.findViewById(R.id.night_sky_layout);
-        View[] viewListWithoutInterestArea = new View[]{hello_layout, current_layout, search_layout, observation_layout, star_layout, night_sky_layout};
+        View tip_layout = v.findViewById(R.id.tip_layout);
+        View[] viewListWithoutInterestArea = new View[]{hello_layout, current_layout, search_layout, observation_layout, star_layout, night_sky_layout, tip_layout};
 
         // userId 가져오기
         try {
@@ -222,10 +223,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         if (!addressList.isEmpty()) {
             Address address = addressList.get(0);
-            String SD = address.getAdminArea();
-            String SGG = address.getLocality() == null ? address.getSubLocality() : address.getLocality();
-            System.out.println("SD = " + SD); // 서울특별시
-            System.out.println("SGG = " + SGG); // 서대문구
+            String SD = address.getAdminArea(); // 서울특별시
+            String SGG = address.getLocality() == null ? address.getSubLocality() : address.getLocality(); // 서대문구
 
             if (SD == null || !SD.contains("세종") && SGG == null) {
                 findLocation = false;
@@ -344,7 +343,18 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 editMode = true;
                 needRefresh = false;
                 editInterestArea.setText("편집취소");
-                Arrays.stream(viewListWithoutInterestArea).forEach(layout -> layout.setAlpha(0.3f)); // 투명도 조절
+                Arrays.stream(viewListWithoutInterestArea).forEach(layout -> layout.setAlpha(0.3f)); // 타 영역 투명하게
+
+                // 편집 모드에서 타 영역 클릭시 편집모드 취소됨
+                Arrays.stream(viewListWithoutInterestArea).forEach(
+                        viewItem -> viewItem.setOnClickListener(__ -> {
+                            editMode = false;
+                            editInterestArea.setText("편집");
+                            Arrays.stream(viewListWithoutInterestArea).forEach(layout -> layout.setAlpha(1.0f)); // 투명도 롤백
+                            if (needRefresh) refreshFragment();
+
+                        })
+                );
 
                 if (interestRegionIdList.size() >= 1) {
                     interestArea0.showInterestAreaDelete(true);
@@ -355,7 +365,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                 .enqueue(new Callback<Void>() {
                                     @Override
                                     public void onResponse(Call<Void> call, Response<Void> response) {
-                                        System.out.println("삭제 성공");
+                                        Log.d(TAG, "관심지역 삭제 성공");
                                         interestArea0.setVisibility(View.GONE);
                                     }
 
@@ -395,7 +405,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                 .enqueue(new Callback<Void>() {
                                     @Override
                                     public void onResponse(Call<Void> call, Response<Void> response) {
-                                        System.out.println("삭제 성공");
+                                        Log.d(TAG, "관심지역 삭제 성공");
                                         interestArea2.setVisibility(View.GONE);
                                     }
 
@@ -409,7 +419,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             } else { // 편집 모드 on -> off
                 editMode = false;
                 editInterestArea.setText("편집");
-                Arrays.stream(viewListWithoutInterestArea).forEach(layout -> layout.setAlpha(1.0f)); // 투명도 조절
+                Arrays.stream(viewListWithoutInterestArea).forEach(layout -> layout.setAlpha(1.0f)); // 투명하게
 
                 if (interestRegionIdList.size() >= 1) { // 1, 2, 3
                     interestArea0.showInterestAreaDelete(false);
@@ -430,9 +440,6 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 Intent intent = new Intent(getActivity().getApplicationContext(), InterestAreaWeatherActivity.class);
                 intent.putExtra("regionId", interestRegionIdList.get(0));
                 intent.putExtra("regionType", interestRegionTypeList.get(0));
-                System.out.println("이동");
-                System.out.println(interestRegionIdList.get(0));
-                System.out.println(interestRegionTypeList.get(0));
                 startActivityForResult(intent, 105);
 
             }
@@ -442,9 +449,6 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 Intent intent = new Intent(getActivity().getApplicationContext(), InterestAreaWeatherActivity.class);
                 intent.putExtra("regionId", interestRegionIdList.get(1));
                 intent.putExtra("regionType", interestRegionTypeList.get(1));
-                System.out.println("이동");
-                System.out.println(interestRegionIdList.get(1));
-                System.out.println(interestRegionTypeList.get(1));
                 startActivityForResult(intent, 105);
             }
         });
@@ -453,9 +457,6 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 Intent intent = new Intent(getActivity().getApplicationContext(), InterestAreaWeatherActivity.class);
                 intent.putExtra("regionId", interestRegionIdList.get(2));
                 intent.putExtra("regionType", interestRegionTypeList.get(2));
-                System.out.println("이동");
-                System.out.println(interestRegionIdList.get(2));
-                System.out.println(interestRegionTypeList.get(2));
                 startActivityForResult(intent, 105);
 
             }
