@@ -119,7 +119,7 @@ public class InterestAreaWeatherActivity extends AppCompatActivity {
                             }
                             interest_area_icon.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.main__weather_sun));
                             interest_area_weather_comment1_front.setText(MM_dd_HH.format(new Date(System.currentTimeMillis())));
-                            interest_area_weather_comment1_back.setText("이 곳의 날씨 ");
+                            interest_area_weather_comment1_back.setText(" 이 곳의 날씨");
                             interest_area_weather_comment2.setText(interestAreaDetail.getInterestAreaDetailWeatherInfo().getWeatherReport());
 
                         } else {

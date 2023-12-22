@@ -33,6 +33,7 @@ import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.alarmPage.AlarmActivity;
 import com.starrynight.tourapiproject.alarmPage.subBanner.SubBanner;
 import com.starrynight.tourapiproject.mainPage.interestArea.CustomInterestAreaView;
+import com.starrynight.tourapiproject.mainPage.interestArea.InterestAreaIntent;
 import com.starrynight.tourapiproject.mainPage.interestArea.InterestAreaPopActivity;
 import com.starrynight.tourapiproject.mainPage.interestArea.InterestAreaWeatherActivity;
 import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaDTO;
@@ -124,6 +125,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private ImageView addInterestAreaInit; // 관심지역 추가 버튼 (0개일 때)
     List<Long> interestRegionIdList; // 관심지역 id 리스트
     List<Integer> interestRegionTypeList; // 관심지역 type 리스트
+    List<String> interestRegionNameList; // 관심지역 이름 리스트
     boolean editMode = false; // 관심지역 편집 상태
     boolean needRefresh = false; // 관심지역 편집취소 클릭 시 새로고침 여부
 
@@ -286,11 +288,17 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             List<InterestAreaDTO> interestAreaList = response.body();
                             interestRegionIdList = new ArrayList<>();
                             interestRegionTypeList = new ArrayList<>();
-                            interestAreaList.forEach(interestAreaDTO -> interestRegionIdList.add(interestAreaDTO.getRegionId()));
-                            interestAreaList.forEach(interestAreaDTO -> interestRegionTypeList.add(interestAreaDTO.getRegionType()));
+                            interestRegionNameList = new ArrayList<>();
+
+                            interestAreaList.forEach(interestAreaDTO -> {
+                                interestRegionIdList.add(interestAreaDTO.getRegionId());
+                                interestRegionTypeList.add(interestAreaDTO.getRegionType());
+                                interestRegionNameList.add(interestAreaDTO.getRegionName());
+                            });
 
                             System.out.println("interestRegionIdList = " + interestRegionIdList);
                             System.out.println("interestRegionTypeList = " + interestRegionTypeList);
+                            System.out.println("interestRegionNameList = " + interestRegionNameList);
 
                             if (interestAreaList.size() == 0) { // 0
                                 interestAreaTitle.setText("여행자님의 관심지역");
@@ -464,8 +472,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 // 관심지역 추가 페이지로 이동
                 if (!editMode) {
                     Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
-                    intent.putExtra("fromInterestAreaAdd", true);
-                    intent.putExtra("userId", userId);
+                    intent.putExtra("interestAreaIntent", new InterestAreaIntent(userId, interestRegionNameList));
                     startActivityForResult(intent, 105);
                 }
             }
@@ -474,8 +481,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         addInterestAreaInit.setOnClickListener(view -> {
             // 관심지역 추가 페이지로 이동
             Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
-            intent.putExtra("fromInterestAreaAdd", true);
-            intent.putExtra("userId", userId);
+            intent.putExtra("interestAreaIntent", new InterestAreaIntent(userId, null));
             startActivityForResult(intent, 105);
         });
 
