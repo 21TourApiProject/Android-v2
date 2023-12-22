@@ -195,14 +195,15 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
                     //방위각 위도 계산
                     HA = Math.round((LST-RA)*100.0)/100.0;
 
-                    //constAzimuth=Math.atan2(-Math.cos(D)*Math.sin(HA),Math.sin(D)*Math.cos(lat)-Math.cos(D)*Math.sin(lat)*Math.cos(HA));
-                    //constAltitude=Math.PI-Math.asin(Math.sin(lat)*Math.sin(D)+Math.cos(lat)*Math.cos(D)*Math.cos(HA));
-                    constAzimuth=Math.atan2(Math.sin(HA),Math.cos(HA)*Math.sin(lat)-Math.tan(D)*Math.cos(lat));
-                    constAltitude=Math.acos(Math.sin(D)*Math.sin(lat)+Math.cos(D)*Math.cos(lat)*Math.cos(HA));
-                    Log.d(TAG,"위도: "+lat+"경도:"+lon);
-                    Log.d(TAG,"LST: "+LST+" HA: "+HA);
-                    Log.d(TAG,"RA: "+RA+" D: "+D);
-                    Log.d(TAG,"고도: "+String.format("%2f",constAltitude)+" 방위각: "+String.format("%2f",constAzimuth));
+                    double sin = Math.sin(d2r(D)) * Math.sin(d2r(lat)) + Math.cos(d2r(D)) * Math.cos(d2r(lat)) * Math.cos(d2r(HA));
+                    constAltitude = r2d(Math.asin(sin));
+                    constAzimuth = r2d(Math.atan2(Math.sin(d2r(HA)),
+                            Math.cos(d2r(HA)) * Math.sin(d2r(lat)) - Math.tan(d2r(D)) * Math.cos(d2r(lat)))) + 180;
+                    constAzimuth=Math.round(constAzimuth*100.0)/100.0;
+                    constAltitude=Math.round(constAltitude*100.0)/100.0;
+
+                    Log.d(TAG,"고도: "+constAltitude+" 방위각: "+constAzimuth);
+
                     finalConstName.setText(constData.getConstName());
                     Glide.with(StarCameraActivity.this).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/s_"
                             + constData.getConstEng() + ".png").fitCenter().into(guideImage);
@@ -430,7 +431,6 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
             LocalDateTime currentTime =LocalDateTime.now();
             double JD = calculateJulianDate(currentTime);
             double GMST = calculateGMST(JD);
-            Log.d(TAG,"zonedDateTime: "+currentTime+" JD: "+JD+" GMST: "+GMST);
 
             // adjust to LMST
             double LMST_s = GMST + lon;
@@ -472,6 +472,10 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
           public void onBackPressed(){
             reviewAlarm();
           }
+
+          public static double r2d(double rad) { return rad * 180 / Math.PI; }
+
+          public static double d2r(double degree) { return degree * Math.PI / 180; }
 
           private void reviewAlarm(){
               AlertDialog.Builder builder =
