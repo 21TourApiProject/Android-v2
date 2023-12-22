@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -226,6 +227,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             Address address = addressList.get(0);
             String SD = address.getAdminArea(); // 서울특별시
             String SGG = address.getLocality() == null ? address.getSubLocality() : address.getLocality(); // 서대문구
+            System.out.println("현 위치 = " + SD + ", " + SGG);
 
             if (SD == null || !SD.contains("세종") && SGG == null) {
                 findLocation = false;
@@ -634,9 +636,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 101) {
-            //프래그먼트 새로고침
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.detach(this).attach(this).commit();
+            ((FragmentActivity) getContext()).getSupportFragmentManager().beginTransaction().detach(this).commit();
+            ((FragmentActivity) getContext()).getSupportFragmentManager().beginTransaction().attach(this).commit();
         }
     }
 
@@ -647,8 +648,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.detach(this).attach(this).commit();
+        ((FragmentActivity) getContext()).getSupportFragmentManager().beginTransaction().detach(this).commit();
+        ((FragmentActivity) getContext()).getSupportFragmentManager().beginTransaction().attach(this).commit();
         swipeRefreshLayout.setRefreshing(false);
     }
 
