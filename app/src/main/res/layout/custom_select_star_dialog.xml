@@ -19,6 +19,7 @@
             android:id="@+id/star_alart_image"
             android:layout_width="120dp"
             android:layout_height="120dp"
+            android:layout_marginTop="20dp"
             app:srcCompat="@drawable/star__character_planet" />
 
         <TextView
