@@ -24,7 +24,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -53,6 +52,8 @@ import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListe
 import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdapter;
 import com.starrynight.tourapiproject.weatherPage.GpsTracker;
+import com.starrynight.tourapiproject.weatherPage.LocationDTO;
+import com.starrynight.tourapiproject.weatherPage.WeatherActivity;
 import com.starrynight.tourapiproject.weatherPage.WeatherLocationSearchActivity;
 import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.MainInfo;
 import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.NearestAreaDTO;
@@ -115,6 +116,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private TextView currentWeatherComment1Back;
     private TextView currentWeatherComment2;
     private Boolean findLocation; // 현위치 조회 성공 여부
+    private LinearLayout weatherReportLayout;
 
     private RecyclerView starRecycler;
     private ImageButton move_star_btn;
@@ -132,6 +134,10 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     List<String> interestRegionNameList; // 관심지역 이름 리스트
     boolean editMode = false; // 관심지역 편집 상태
     boolean needRefresh = false; // 관심지역 편집취소 클릭 시 새로고침 여부
+    View[] viewListWithoutInterestArea;
+    CustomInterestAreaView interestArea0;
+    CustomInterestAreaView interestArea1;
+    CustomInterestAreaView interestArea2;
 
     //도움말
     private LinearLayout help_1;
@@ -172,9 +178,11 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         currentWeatherComment1Front = v.findViewById(R.id.main__current_weather_comment1_front);
         currentWeatherComment1Back = v.findViewById(R.id.main__current_weather_comment1_back);
         currentWeatherComment2 = v.findViewById(R.id.main__current_weather_comment2);
+        weatherReportLayout = v.findViewById(R.id.weather_report_layout);
         LinearLayout weatherLocationSearch = v.findViewById(R.id.weather_location_search);
 
         // 관심지역 편집 시 투명도 조절을 위한 타 레이아웃 변수
+        View top_layout = v.findViewById(R.id.top_layout);
         View hello_layout = v.findViewById(R.id.hello_layout);
         View current_layout = v.findViewById(R.id.current_layout);
         View search_layout = v.findViewById(R.id.search_layout);
@@ -182,7 +190,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         View star_layout = v.findViewById(R.id.star_layout);
         View night_sky_layout = v.findViewById(R.id.night_sky_layout);
         View tip_layout = v.findViewById(R.id.tip_layout);
-        View[] viewListWithoutInterestArea = new View[]{hello_layout, current_layout, search_layout, observation_layout, star_layout, night_sky_layout, tip_layout};
+        viewListWithoutInterestArea = new View[]{top_layout, hello_layout, current_layout, search_layout, observation_layout, star_layout, night_sky_layout, tip_layout};
 
         // userId 가져오기
         try {
@@ -256,6 +264,18 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                     currentWeatherComment1Front.setText(MM_dd_HH.format(date));
                                     currentWeatherComment1Back.setText(" " + mainInfo.getLocation() + " 날씨");
                                     currentWeatherComment2.setText(mainInfo.getComment());
+
+                                    // 날씨 요약 레포트 클릭 시 날씨 상세 페이지로 이동
+                                    weatherReportLayout.setOnClickListener((view) -> {
+                                        if (!editMode) {
+                                            Intent intent = new Intent(getActivity().getApplicationContext(), WeatherActivity.class);
+                                            LocationDTO locationDTO = new LocationDTO(latitude, longitude, mainInfo.getRegionId(), null, mainInfo.getLocation());
+                                            intent.putExtra("locationDTO", locationDTO);
+                                            startActivity(intent);
+                                        } else {
+                                            editModeOut();
+                                        }
+                                    });
                                 } else {
                                     Log.e(TAG, "getNearestAreaWeatherInfo 오류");
                                 }
@@ -277,9 +297,9 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         // 관심지역 조회
         interestAreaTitle = v.findViewById(R.id.interest_area_title);
-        CustomInterestAreaView interestArea0 = v.findViewById(R.id.interestArea0);
-        CustomInterestAreaView interestArea1 = v.findViewById(R.id.interestArea1);
-        CustomInterestAreaView interestArea2 = v.findViewById(R.id.interestArea2);
+        interestArea0 = v.findViewById(R.id.interestArea0);
+        interestArea1 = v.findViewById(R.id.interestArea1);
+        interestArea2 = v.findViewById(R.id.interestArea2);
         addInterestArea = v.findViewById(R.id.addInterestArea);
         addInterestAreaInit = v.findViewById(R.id.addInterestAreaInit);
 
@@ -343,23 +363,12 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         // 관심지역 편집
         editInterestArea = v.findViewById(R.id.editInterestArea);
-        editInterestArea.setOnClickListener((view) -> {
+        editInterestArea.setOnClickListener(view -> {
             if (!editMode) { // 편집 모드 off -> on
                 editMode = true;
                 needRefresh = false;
                 editInterestArea.setText("편집취소");
                 Arrays.stream(viewListWithoutInterestArea).forEach(layout -> layout.setAlpha(0.3f)); // 타 영역 투명하게
-
-                // 편집 모드에서 타 영역 클릭시 편집모드 취소됨
-                Arrays.stream(viewListWithoutInterestArea).forEach(
-                        viewItem -> viewItem.setOnClickListener(__ -> {
-                            editMode = false;
-                            editInterestArea.setText("편집");
-                            Arrays.stream(viewListWithoutInterestArea).forEach(layout -> layout.setAlpha(1.0f)); // 투명도 롤백
-                            if (needRefresh) refreshFragment();
-
-                        })
-                );
 
                 if (interestRegionIdList.size() >= 1) {
                     interestArea0.showInterestAreaDelete(true);
@@ -390,7 +399,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                 .enqueue(new Callback<Void>() {
                                     @Override
                                     public void onResponse(Call<Void> call, Response<Void> response) {
-                                        System.out.println("삭제 성공");
+                                        System.out.println("관심지역 삭제 성공");
                                         interestArea1.setVisibility(View.GONE);
                                     }
 
@@ -422,22 +431,16 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     });
                 }
             } else { // 편집 모드 on -> off
-                editMode = false;
-                editInterestArea.setText("편집");
-                Arrays.stream(viewListWithoutInterestArea).forEach(layout -> layout.setAlpha(1.0f)); // 투명하게
-
-                if (interestRegionIdList.size() >= 1) { // 1, 2, 3
-                    interestArea0.showInterestAreaDelete(false);
-                }
-                if (interestRegionIdList.size() >= 2) { // 2, 3
-                    interestArea1.showInterestAreaDelete(false);
-                }
-                if (interestRegionIdList.size() == 3) { // 3
-                    interestArea2.showInterestAreaDelete(false);
-                }
-                if (needRefresh) refreshFragment();
+                editModeOut();
             }
         });
+
+        // 편집 모드에서 타 영역 클릭시 편집모드 취소됨
+        Arrays.stream(viewListWithoutInterestArea).forEach(
+                viewItem -> viewItem.setOnClickListener(view -> {
+                    if (editMode) editModeOut();
+                })
+        );
 
         // 관심지역 클릭
         interestArea0.setOnClickListener((view) -> {
@@ -445,8 +448,9 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 Intent intent = new Intent(getActivity().getApplicationContext(), InterestAreaWeatherActivity.class);
                 intent.putExtra("regionId", interestRegionIdList.get(0));
                 intent.putExtra("regionType", interestRegionTypeList.get(0));
-                startActivityForResult(intent, 105);
-
+                startActivity(intent);
+            } else {
+                editModeOut();
             }
         });
         interestArea1.setOnClickListener((view) -> {
@@ -454,7 +458,9 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 Intent intent = new Intent(getActivity().getApplicationContext(), InterestAreaWeatherActivity.class);
                 intent.putExtra("regionId", interestRegionIdList.get(1));
                 intent.putExtra("regionType", interestRegionTypeList.get(1));
-                startActivityForResult(intent, 105);
+                startActivity(intent);
+            } else {
+                editModeOut();
             }
         });
         interestArea2.setOnClickListener((view) -> {
@@ -462,33 +468,40 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 Intent intent = new Intent(getActivity().getApplicationContext(), InterestAreaWeatherActivity.class);
                 intent.putExtra("regionId", interestRegionIdList.get(2));
                 intent.putExtra("regionType", interestRegionTypeList.get(2));
-                startActivityForResult(intent, 105);
-
+                startActivity(intent);
+            } else {
+                editModeOut();
             }
         });
 
         // 관심지역 추가
         addInterestArea = v.findViewById(R.id.addInterestArea);
         addInterestArea.setOnClickListener(view -> {
-            if (interestRegionIdList.size() >= 3) {
-                //삭제 유도 팝업
-                Intent intent = new Intent(getActivity().getApplicationContext(), InterestAreaPopActivity.class);
-                startActivityForResult(intent, 1);
-            } else {
-                // 관심지역 추가 페이지로 이동
-                if (!editMode) {
+            if (!editMode) {
+                if (interestRegionIdList.size() >= 3) {
+                    //삭제 유도 팝업
+                    Intent intent = new Intent(getActivity().getApplicationContext(), InterestAreaPopActivity.class);
+                    startActivity(intent);
+                } else {
+                    // 관심지역 추가 페이지로 이동
                     Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
                     intent.putExtra("interestAreaIntent", new InterestAreaIntent(userId, interestRegionNameList));
-                    startActivityForResult(intent, 105);
+                    startActivity(intent);
                 }
+            } else {
+                editModeOut();
             }
         });
         addInterestAreaInit = v.findViewById(R.id.addInterestAreaInit);
         addInterestAreaInit.setOnClickListener(view -> {
-            // 관심지역 추가 페이지로 이동
-            Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
-            intent.putExtra("interestAreaIntent", new InterestAreaIntent(userId, null));
-            startActivityForResult(intent, 105);
+            if (!editMode) {
+                // 관심지역 추가 페이지로 이동
+                Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
+                intent.putExtra("interestAreaIntent", new InterestAreaIntent(userId, null));
+                startActivity(intent);
+            } else {
+                editModeOut();
+            }
         });
 
         //서브 배너 가져오기
@@ -506,16 +519,16 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     } else {
                         subBannerLayout.setVisibility(View.GONE);
                     }
-                    subBanner.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
+                    subBanner.setOnClickListener(view -> {
+                        if (!editMode) {
                             if (banner.getLink() != null) {
                                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(banner.getLink()));
                                 startActivity(intent);
                             }
+                        } else {
+                            editModeOut();
                         }
                     });
-
                 } else {
                     Log.e(TAG1, "서브 배너 오류");
                 }
@@ -529,32 +542,36 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         // 게시물 작성 페이지로 넘어가는 이벤트
         Button postWrite = v.findViewById(R.id.postWrite);
-        postWrite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        postWrite.setOnClickListener(view -> {
+            if (!editMode) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), PostWriteActivity.class);
-                startActivityForResult(intent, 101);
+                startActivity(intent);
+            } else {
+                editModeOut();
             }
         });
 
         // 알림 페이지로 넘어가는 이벤트
 
         Button alarm = v.findViewById(R.id.main_alarm);
-        alarm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        alarm.setOnClickListener(view -> {
+            if (!editMode) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), AlarmActivity.class);
                 intent.putExtra("userId", userId);
-                startActivityForResult(intent, 104);
+                startActivity(intent);
+            } else {
+                editModeOut();
             }
         });
 
         //위치 검색바 클릭 시 위치 검색 페이지로 이동하는 이벤트
-        weatherLocationSearch.setOnClickListener(v12 ->
-
-        {
-            Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
-            startActivityForResult(intent, 105);
+        weatherLocationSearch.setOnClickListener(view -> {
+            if (!editMode) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
+                startActivity(intent);
+            } else {
+                editModeOut();
+            }
         });
 
         // 오늘 보기좋은 관측지
@@ -707,13 +724,14 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
 
-        move_star_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        move_star_btn.setOnClickListener(view -> {
+            if (!editMode) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), StarSearchActivity.class);
                 intent.putExtra("starHashTagName", month + "월");
                 intent.putExtra("type", 3);
                 startActivity(intent);
+            } else {
+                editModeOut();
             }
         });
     }
@@ -748,67 +766,100 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
 
-        moveReviewBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity) Objects.requireNonNull(getActivity())).movePost();
-            }
+        moveReviewBtn.setOnClickListener(view -> {
+            if (!editMode) ((MainActivity) Objects.requireNonNull(getActivity())).movePost();
+            else editModeOut();
         });
     }
 
     private void setHelp() {
 
         help_1.setOnClickListener(view -> {
-            if (help_1_text.getVisibility() == View.VISIBLE) {
-                help_1_button.setRotation(180);
-                help_1_text.setVisibility(View.GONE);
+            if (!editMode) {
+                if (help_1_text.getVisibility() == View.VISIBLE) {
+                    help_1_button.setRotation(180);
+                    help_1_text.setVisibility(View.GONE);
+                } else {
+                    help_1_button.setRotation(0);
+                    help_1_text.setVisibility(View.VISIBLE);
+                }
             } else {
-                help_1_button.setRotation(0);
-                help_1_text.setVisibility(View.VISIBLE);
+                editModeOut();
             }
         });
         help_2.setOnClickListener(view -> {
-            if (help_2_text.getVisibility() == View.VISIBLE) {
-                help_2_button.setRotation(180);
-                help_2_text.setVisibility(View.GONE);
+            if (!editMode) {
+                if (help_2_text.getVisibility() == View.VISIBLE) {
+                    help_2_button.setRotation(180);
+                    help_2_text.setVisibility(View.GONE);
+                } else {
+                    help_2_button.setRotation(0);
+                    help_2_text.setVisibility(View.VISIBLE);
+                }
             } else {
-                help_2_button.setRotation(0);
-                help_2_text.setVisibility(View.VISIBLE);
+                editModeOut();
             }
         });
         help_3.setOnClickListener(view -> {
-            if (help_3_text.getVisibility() == View.VISIBLE) {
-                help_3_button.setRotation(180);
-                help_3_text.setVisibility(View.GONE);
+            if (!editMode) {
+                if (help_3_text.getVisibility() == View.VISIBLE) {
+                    help_3_button.setRotation(180);
+                    help_3_text.setVisibility(View.GONE);
+                } else {
+                    help_3_button.setRotation(0);
+                    help_3_text.setVisibility(View.VISIBLE);
+                }
             } else {
-                help_3_button.setRotation(0);
-                help_3_text.setVisibility(View.VISIBLE);
+                editModeOut();
             }
         });
         help_4.setOnClickListener(view -> {
-            if (help_4_text.getVisibility() == View.VISIBLE) {
-                help_4_button.setRotation(180);
-                help_4_text.setVisibility(View.GONE);
+            if (!editMode) {
+                if (help_4_text.getVisibility() == View.VISIBLE) {
+                    help_4_button.setRotation(180);
+                    help_4_text.setVisibility(View.GONE);
+                } else {
+                    help_4_button.setRotation(0);
+                    help_4_text.setVisibility(View.VISIBLE);
+                }
             } else {
-                help_4_button.setRotation(0);
-                help_4_text.setVisibility(View.VISIBLE);
+                editModeOut();
             }
         });
         help_5.setOnClickListener(view -> {
-            if (help_5_text.getVisibility() == View.VISIBLE) {
-                help_5_button.setRotation(180);
-                help_5_text.setVisibility(View.GONE);
+            if (!editMode) {
+                if (help_5_text.getVisibility() == View.VISIBLE) {
+                    help_5_button.setRotation(180);
+                    help_5_text.setVisibility(View.GONE);
+                } else {
+                    help_5_button.setRotation(0);
+                    help_5_text.setVisibility(View.VISIBLE);
+                }
             } else {
-                help_5_button.setRotation(0);
-                help_5_text.setVisibility(View.VISIBLE);
+                editModeOut();
             }
         });
     }
 
     private void refreshFragment() {
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.detach(this);
-        fragmentTransaction.attach(this);
-        fragmentTransaction.commit();
+        ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().detach(this).commit();
+        ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().attach(this).commit();
+    }
+
+    private void editModeOut() {
+        editMode = false;
+        editInterestArea.setText("편집");
+        Arrays.stream(viewListWithoutInterestArea).forEach(layout -> layout.setAlpha(1.0f));
+
+        if (interestRegionIdList.size() >= 1) { // 1, 2, 3
+            interestArea0.showInterestAreaDelete(false);
+        }
+        if (interestRegionIdList.size() >= 2) { // 2, 3
+            interestArea1.showInterestAreaDelete(false);
+        }
+        if (interestRegionIdList.size() == 3) { // 3
+            interestArea2.showInterestAreaDelete(false);
+        }
+        if (needRefresh) refreshFragment();
     }
 }
