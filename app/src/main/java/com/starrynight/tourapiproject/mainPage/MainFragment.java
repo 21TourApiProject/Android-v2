@@ -2,6 +2,7 @@ package com.starrynight.tourapiproject.mainPage;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -101,6 +102,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     SimpleDateFormat yyyy_MM_dd = new SimpleDateFormat("yyyy-MM-dd");
     String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 
+    private Context mContext;
     private Long userId;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ImageView subBanner;
@@ -249,7 +251,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             public void onResponse(Call<MainInfo> call, Response<MainInfo> response) {
                                 if (response.isSuccessful()) {
                                     currentWeatherError.setVisibility(View.GONE); // 오류 문구 해제
-                                    currentWeatherIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.main__weather_sun));
+                                    currentWeatherIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.main__weather_sun));
                                     MainInfo mainInfo = response.body();
                                     currentWeatherComment1Front.setText(MM_dd_HH.format(date));
                                     currentWeatherComment1Back.setText(" " + mainInfo.getLocation() + " 날씨");
@@ -630,6 +632,12 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         setHelp();
 
         return v;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        mContext = context;
+        super.onAttach(context);
     }
 
     @Override
