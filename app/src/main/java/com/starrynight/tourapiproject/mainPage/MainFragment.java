@@ -49,8 +49,10 @@ import com.starrynight.tourapiproject.postWritePage.PostWriteActivity;
 import com.starrynight.tourapiproject.starPage.StarActivity;
 import com.starrynight.tourapiproject.starPage.StarSearchActivity;
 import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener;
+import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener2;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdapter;
+import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdpater2;
 import com.starrynight.tourapiproject.weatherPage.GpsTracker;
 import com.starrynight.tourapiproject.weatherPage.WeatherLocationSearchActivity;
 import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.MainInfo;
@@ -116,7 +118,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private RecyclerView starRecycler;
     private ImageButton move_star_btn;
-    private StarViewAdapter starViewAdapter;
+    private StarViewAdpater2 starViewAdapter;
     private TextView startMonthText;
     private LinearLayout moveReviewBtn;
     private RecentReviewAdapter recentReviewAdapter;
@@ -594,7 +596,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         // 오늘 볼 수 있는 별자리
         starRecycler = v.findViewById(R.id.main_star_today_recycler);
         move_star_btn = v.findViewById(R.id.main_move_star);
-        starViewAdapter = new StarViewAdapter();
+        starViewAdapter = new StarViewAdpater2();
         startMonthText = v.findViewById(R.id.main_star_month_txt);
         starRecycler.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         RecyclerDecoration starItemDecorator = new RecyclerDecoration(12, getActivity());
@@ -688,9 +690,9 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         });
 
         // item 클릭 시 해당 아이템 constId 넘겨주기
-        starViewAdapter.setOnItemClickListener(new OnStarItemClickListener() {
+        starViewAdapter.setOnItemClickListener(new OnStarItemClickListener2() {
             @Override
-            public void onItemClick(StarViewAdapter.ViewHolder holder, View view, int position) {
+            public void onItemClick(StarViewAdpater2.ViewHolder holder, View view, int position) {
                 StarItem item = starViewAdapter.getItem(position);
                 Intent intent = new Intent(getActivity().getApplicationContext(), StarActivity.class);
                 intent.putExtra("constName", item.getConstName());
@@ -743,7 +745,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         moveReviewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) Objects.requireNonNull(getActivity())).movePost();
+                ((MainActivity) getActivity()).movePost();
             }
         });
     }

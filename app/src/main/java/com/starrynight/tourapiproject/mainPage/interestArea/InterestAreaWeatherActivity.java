@@ -26,6 +26,7 @@ import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.ObservationSimpl
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.PostContentsParams;
 import com.starrynight.tourapiproject.observationPage.MoreObservationActivity;
 import com.starrynight.tourapiproject.observationPage.ObservationsiteActivity;
+import com.starrynight.tourapiproject.observationPage.RecyclerDecoration;
 import com.starrynight.tourapiproject.postPage.PostActivity;
 import com.starrynight.tourapiproject.weatherPage.LocationDTO;
 import com.starrynight.tourapiproject.weatherPage.WeatherActivity;
@@ -236,6 +237,8 @@ public class InterestAreaWeatherActivity extends AppCompatActivity {
         moveObservationBtn.setVisibility(View.GONE);
 
         BestFitObservationAdapter adapter = new BestFitObservationAdapter();
+        RecyclerDecoration obsItemDecorator = new RecyclerDecoration(12, InterestAreaWeatherActivity.this);
+        nearObsRecyclerView.addItemDecoration(obsItemDecorator);
         nearObsRecyclerView.setAdapter(adapter);
         Call<List<ObservationSimpleParams>> call = InterestAreaRetrofitClient.getApiService().getNearObservationIds(regionId, 4);
         call.enqueue(new Callback<List<ObservationSimpleParams>>() {
