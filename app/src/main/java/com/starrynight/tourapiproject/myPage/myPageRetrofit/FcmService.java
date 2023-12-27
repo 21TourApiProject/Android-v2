@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.util.Log;
 
@@ -79,7 +80,8 @@ public class FcmService extends FirebaseMessagingService {
                 .setContentText(body)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
-                .setSmallIcon(R.mipmap.main_icon2_foreground);
+                .setSmallIcon(R.drawable.main_icon2_round)
+                .setLargeIcon(BitmapFactory. decodeResource (getResources() , R.drawable.main_icon2_round ));
 
         Notification notification = builder.build();
         SharedPreferences pref=getSharedPreferences("pref",MODE_PRIVATE);

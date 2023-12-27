@@ -49,11 +49,42 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/myPosts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                  />
+            <LinearLayout
+                android:id="@+id/nothingPost"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingVertical="200dp"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/star__character_star" />
+
+                <TextView
+                    android:id="@+id/nothingPostText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    style="@style/medium_single_16"
+                    android:text="아직 작성한 게시글이 없어요."
+                    android:textColor="@color/gray_300"
+                    />
+            </LinearLayout>
+
+            </LinearLayout>
 
         </ScrollView>
 

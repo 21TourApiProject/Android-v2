@@ -38,6 +38,12 @@ import com.starrynight.tourapiproject.starPage.starPageRetrofit.Constellation;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.weatherPage.GpsTracker;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -74,7 +80,7 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
     LottieAnimationView starGuideArrow;
     TextView az,ro;
     TextView constName,finalConstName,crtGuideSubText,crtGuideText,crtGuideTextDir,crtGuideTextAngle;
-    LinearLayout guideLayout,guideImageLayout, constTitle,crtGuideLayout;
+    LinearLayout guideLayout,guideImageLayout, constTitle,crtGuideLayout,starTooltip;
     Context context = this;
 
     String intentConstName;
@@ -102,6 +108,7 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
     boolean guideOn = true;
     boolean isAlt = false;
     boolean isAzi = true;
+    boolean isReview=false;
     float RA,D;//적경, 적위
     double lat,lon,HA;
     double constAzimuth,constAltitude;
@@ -131,6 +138,7 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
         starGuideArrow = findViewById(R.id.star_guide_arrow);
         crtGuideLayout =findViewById(R.id.crt_guide_layout);
         countDown = findViewById(R.id.star_guide_countdown);
+        starTooltip=findViewById(R.id.star_camera_tooltip);
 
         guideLayout = findViewById(R.id.guideLineFinal); // 최종적으로 나오는 별자리 이미지 LinearLayout
         guideImage = findViewById(R.id.guideLineImage); // 최종적으로 나오는 이미지
@@ -152,6 +160,19 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
             ActivityCompat.requestPermissions(this, CAMERA_PERMISSION, PERMISSIONS_REQUEST_CODE);
         }
 
+        //앱 내부 저장소의 review 유무 데이터 읽기
+        String fileName = "review";
+        try {
+            FileInputStream fis = openFileInput(fileName);
+            String line = new BufferedReader(new InputStreamReader(fis)).readLine();
+            isReview = Boolean.parseBoolean(line);
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         // 카메라 시작 전 안내 팝업
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(StarCameraActivity.this,R.style.DimDialog);
@@ -161,6 +182,7 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
         TextView starGuideBtn = view.findViewById(R.id.star_guide_btn);
         pop.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         pop.setView(view);
+        pop.setCancelable(false);
         pop.show();
 
         starGuideBtn.setOnClickListener(new View.OnClickListener() {
@@ -233,7 +255,19 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                reviewAlarm();
+                if(!isReview) {
+                    reviewAlarm();
+                }else{
+                    finish();
+                }
+            }
+        });
+
+        //툴팁 클릭 이벤트
+        starTooltip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                starTooltip.setVisibility(View.GONE);
             }
         });
 
@@ -395,6 +429,7 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
                 constTitle.setBackgroundResource(R.drawable.star_search);
                 constName.setText(intentConstName+ "발견!");
                 starIcon.setVisibility(View.VISIBLE);
+                starTooltip.setVisibility(View.VISIBLE);
             }
 
         }
@@ -470,14 +505,18 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
           }
           @Override
           public void onBackPressed(){
-            reviewAlarm();
+              if(!isReview){
+                  reviewAlarm();
+              }else{
+                  finish();
+              }
           }
 
           public static double r2d(double rad) { return rad * 180 / Math.PI; }
 
           public static double d2r(double degree) { return degree * Math.PI / 180; }
 
-          private void reviewAlarm(){
+          private void reviewAlarm( ){
               AlertDialog.Builder builder =
                       new AlertDialog.Builder(StarCameraActivity.this,R.style.DimDialog); // 알림 뒤 화면 dim 처리
               AlertDialog pop = builder.create();
@@ -509,6 +548,16 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
               positive.setOnClickListener(new View.OnClickListener() {
                   @Override
                   public void onClick(View view) {
+                      //앱 내부 저장소에 review란 이름으로 리뷰 유무 저장
+                      String fileName = "review";
+                      String isReview = "true";
+                      try {
+                          FileOutputStream fos = openFileOutput(fileName, Context.MODE_PRIVATE);
+                          fos.write(isReview.getBytes());
+                          fos.close();
+                      } catch (Exception e) {
+                          e.printStackTrace();
+                      }
                       String url = "https://play.google.com/store/apps/details?id=com.starrynight.tourapiproject";
                       Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                       startActivity(i);

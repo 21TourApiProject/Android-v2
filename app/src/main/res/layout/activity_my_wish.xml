@@ -112,6 +112,30 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                    />
+                <LinearLayout
+                    android:id="@+id/nothingWish"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingVertical="200dp"
+                    android:gravity="center"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/star__character_star" />
+
+                    <TextView
+                        android:id="@+id/nothingWishText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        style="@style/medium_single_16"
+                        android:text="아직 북마크한 관측지가 없어요."
+                        android:textColor="@color/gray_300"
+                        />
+                </LinearLayout>
 
             </LinearLayout>
         </ScrollView>
