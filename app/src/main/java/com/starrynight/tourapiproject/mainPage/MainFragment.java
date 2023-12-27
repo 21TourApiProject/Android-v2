@@ -47,6 +47,7 @@ import com.starrynight.tourapiproject.observationPage.RecyclerDecoration;
 import com.starrynight.tourapiproject.postPage.PostActivity;
 import com.starrynight.tourapiproject.postWritePage.PostWriteActivity;
 import com.starrynight.tourapiproject.starPage.StarActivity;
+import com.starrynight.tourapiproject.starPage.StarAllActivity;
 import com.starrynight.tourapiproject.starPage.StarSearchActivity;
 import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener;
 import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener2;
@@ -704,9 +705,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         move_star_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), StarSearchActivity.class);
-                intent.putExtra("starHashTagName", month + "월");
-                intent.putExtra("type", 3);
+                Intent intent = new Intent(getActivity().getApplicationContext(), StarAllActivity.class);
                 startActivity(intent);
             }
         });
