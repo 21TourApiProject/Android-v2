@@ -28,7 +28,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="20dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -397,14 +398,6 @@
                             android:src="@drawable/right_arrow" />
                     </RelativeLayout>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/main_star_today_recycler"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="24dp"
-                        android:paddingHorizontal="16dp"
-                        android:clipToPadding="false"
-                        android:visibility="visible" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -441,6 +434,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
+                            android:gravity="center_vertical"
                             android:orientation="horizontal">
 
                             <TextView
@@ -465,6 +459,15 @@
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="16dp"
                         android:layout_marginBottom="24dp"
+                        android:visibility="visible" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/main_star_today_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="24dp"
+                        android:clipToPadding="false"
+                        android:paddingHorizontal="16dp"
                         android:visibility="visible" />
                 </LinearLayout>
 

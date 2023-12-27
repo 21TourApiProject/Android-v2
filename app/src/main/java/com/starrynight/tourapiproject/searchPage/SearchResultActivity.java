@@ -145,13 +145,12 @@ public class SearchResultActivity extends AppCompatActivity {
         Log.d(TAG, "인텐트 " + fromWhere + " " + fromHashTagName);
 
 
-        if (fromWhere != null) {
-            searchView.requestFocus();
-        }
+        searchView.requestFocus();
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.d(TAG, "작동?");
+                Log.d(TAG, "검색 작동, 기존내용 초기화");
                 keyword = query;
                 pagenum = 0;
                 observationResult.clear();

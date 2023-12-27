@@ -63,9 +63,14 @@ public class ObserveImageSliderAdapter extends RecyclerView.Adapter<ObserveImage
         }
 
         public void bindSliderImage(String imageURL) {
-            Glide.with(context)
-                    .load(imageURL)
-                    .into(mImageView);
+            if (imageURL.startsWith("http")) {
+                Glide.with(context)
+                        .load(imageURL)
+                        .into(mImageView);
+            } else {
+                mImageView.setImageResource(R.drawable.default_tp);
+            }
+
         }
     }
 }

@@ -6,8 +6,7 @@
     android:background="@drawable/observation__hashtag_background"
     android:gravity="center"
     android:paddingHorizontal="12dp"
-    android:paddingVertical="6dp"
-    android:layout_marginEnd="8dp">
+    android:paddingVertical="6dp">
 
     <TextView
         android:id="@+id/recycler_hashTagName"
