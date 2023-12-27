@@ -3,8 +3,6 @@ package com.starrynight.tourapiproject.mainPage;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -50,11 +48,8 @@ import com.starrynight.tourapiproject.postPage.PostActivity;
 import com.starrynight.tourapiproject.postWritePage.PostWriteActivity;
 import com.starrynight.tourapiproject.starPage.StarActivity;
 import com.starrynight.tourapiproject.starPage.StarAllActivity;
-import com.starrynight.tourapiproject.starPage.StarSearchActivity;
-import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener;
 import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener2;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
-import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdapter;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdpater2;
 import com.starrynight.tourapiproject.weatherPage.GpsTracker;
 import com.starrynight.tourapiproject.weatherPage.LocationDTO;
@@ -75,7 +70,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -646,7 +640,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     if (banner != null) {
                         if (banner.isShow()) { //isShow가 true면 배너가 보일 수 있도록 한다
                             subBannerLayout.setVisibility(View.VISIBLE);
-                            Glide.with(activityContext).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/subBanner/" + banner.getBannerImage()).fitCenter().into(subBanner);
+                            Glide.with(mContext).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/subBanner/" + banner.getBannerImage()).fitCenter().into(subBanner);
                         } else {
                             subBannerLayout.setVisibility(View.GONE);
                         }
@@ -694,8 +688,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     public void checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(activityContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(activityContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE);
         }
     }
