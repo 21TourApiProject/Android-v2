@@ -34,6 +34,7 @@ public class MyCommentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_comment);
+        LinearLayout nothingComment = findViewById(R.id.nothingComment);
 
 
         Intent intent = getIntent();
@@ -62,6 +63,11 @@ public class MyCommentActivity extends AppCompatActivity {
                     myComments = response.body();
                     MyCommentAdapter adapter = new MyCommentAdapter(myComments,MyCommentActivity.this);
                     myCommentRecyclerView.setAdapter(adapter);
+                    if(myComments.isEmpty()){
+                        nothingComment.setVisibility(View.VISIBLE);
+                    }else{
+                        nothingComment.setVisibility(View.GONE);
+                    }
                     adapter.setOnMyCommentItemClickListener(new OnMyCommentItemClickListener() {
                         @Override
                         public void onItemClick(MyCommentAdapter.ViewHolder holder, View view, int position) {

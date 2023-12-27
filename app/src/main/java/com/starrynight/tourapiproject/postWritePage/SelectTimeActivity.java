@@ -14,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.starrynight.tourapiproject.R;
 
@@ -133,14 +134,18 @@ public class SelectTimeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                if(time.isEmpty()){
-                    time="00:00";
+                if(yearDate.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "날짜를 입력 해주세요", Toast.LENGTH_SHORT).show();
+                }else{
+                    if(time.isEmpty()){
+                        time="00:00";
+                    }
+                    intent.putExtra("date",yearDate);
+                    intent.putExtra("time",time);
+                    intent.putExtra("day",day);
+                    setResult(4,intent);
+                    finish();
                 }
-                intent.putExtra("date",yearDate);
-                intent.putExtra("time",time);
-                intent.putExtra("day",day);
-                setResult(4,intent);
-                finish();
             }
         });
 

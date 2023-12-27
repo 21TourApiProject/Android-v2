@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,6 +54,7 @@ public class MyPostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_post);
+        LinearLayout nothingPost=findViewById(R.id.nothingPost);
 
         Intent intent = getIntent();
         userId = (Long) intent.getSerializableExtra("userId"); //전 페이지에서 받아온 사용자 id
@@ -79,6 +81,11 @@ public class MyPostActivity extends AppCompatActivity {
                     postResult = response.body();
                     MyPostAdapter myPostAdapter = new MyPostAdapter(postResult, MyPostActivity.this);
                     myPostRecyclerview.setAdapter(myPostAdapter);
+                    if(postResult.isEmpty()){
+                        nothingPost.setVisibility(View.VISIBLE);
+                    }else{
+                        nothingPost.setVisibility(View.GONE);
+                    }
                     myPostAdapter.setOnMyWishPostItemClickListener(new OnMyPostItemClickListener() {
                         @Override
                         public void onItemClick(MyPostAdapter.ViewHolder holder, View view, int position) {

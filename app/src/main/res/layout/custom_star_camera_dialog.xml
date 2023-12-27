@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
             android:text="별자리 가이드 시작"
-            android:background="@drawable/custom_purple_blue_gradient"
+            android:background="@drawable/custom_point_red"
             android:paddingVertical="12dp"
             android:paddingHorizontal="40dp"
             style="@style/semiBold_single_18"
