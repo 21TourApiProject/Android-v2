@@ -57,8 +57,10 @@ public class MyWishActivity extends AppCompatActivity {
 
     TextView myWishOb;
     TextView myWishPost;
+    TextView nothingWishText;
     ImageView myWishObLine;
     ImageView myWishPostLine;
+    LinearLayout nothingWish;
     RecyclerView myWishRecyclerview;
 
     List<MyWishObTp> obResult; //찜 관측지
@@ -78,7 +80,8 @@ public class MyWishActivity extends AppCompatActivity {
         myWishObLine = findViewById(R.id.myWishObLine);
         myWishPostLine = findViewById(R.id.myWishPostLine);
         myWishRecyclerview = findViewById(R.id.myWishs);
-
+        nothingWish = findViewById(R.id.nothingWish);
+        nothingWishText = findViewById(R.id.nothingWishText);
         //뒤로 가기
         LinearLayout myWishBack = findViewById(R.id.myWishBack);
         myWishBack.setOnClickListener(new View.OnClickListener() {
@@ -149,6 +152,12 @@ public class MyWishActivity extends AppCompatActivity {
 
                     MyWishObTpAdapter myWishObAdapter = new MyWishObTpAdapter(tpResult, MyWishActivity.this);
                     myWishRecyclerview.setAdapter(myWishObAdapter);
+                    if(tpResult.isEmpty()){
+                        nothingWishText.setText("아직 북마크한 관측지가 없어요.");
+                        nothingWish.setVisibility(View.VISIBLE);
+                    }else{
+                        nothingWish.setVisibility(View.GONE);
+                    }
                     myWishObAdapter.setOnMyWishObTpItemClickListener(new OnMyWishObTpItemClickListener() {
                         @Override
                         public void onItemClick(MyWishObTpAdapter.ViewHolder holder, View view, int position) {
@@ -215,6 +224,12 @@ public class MyWishActivity extends AppCompatActivity {
 
                     MyPostAdapter myPostAdapter = new MyPostAdapter(postResult, MyWishActivity.this);
                     myWishRecyclerview.setAdapter(myPostAdapter);
+                    if(postResult.isEmpty()){
+                        nothingWishText.setText("아직 북마크한 게시글이 없어요.");
+                        nothingWish.setVisibility(View.VISIBLE);
+                    }else{
+                        nothingWish.setVisibility(View.GONE);
+                    }
                     myPostAdapter.setOnMyWishPostItemClickListener(new OnMyPostItemClickListener() {
                         @Override
                         public void onItemClick(MyPostAdapter.ViewHolder holder, View view, int position) {

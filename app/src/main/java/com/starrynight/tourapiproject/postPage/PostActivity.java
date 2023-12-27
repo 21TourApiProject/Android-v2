@@ -63,11 +63,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -592,6 +594,39 @@ public class PostActivity extends AppCompatActivity {
                         commentRecyclerView.setVisibility(View.GONE);
                     }
                     for(int i=0;i<result.size();i++){
+                        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+                        String commentTime = result.get(i).getYearDate()+" "+result.get(i).getTime();
+                        Date currentTime = new Date();
+                        try {
+                            Date commentDate = dateFormat.parse(commentTime);
+                            long timeDifference = currentTime.getTime() - commentDate.getTime();
+                            long minutesDifference = timeDifference / (60 * 1000);
+                            if (minutesDifference < 1) {
+                                result.get(i).setYearDate("방금 전");
+                                result.get(i).setTime("");
+                            } else if (minutesDifference < 60) {
+                                result.get(i).setYearDate(minutesDifference + "분 전");
+                                result.get(i).setTime("");
+                            } else if (minutesDifference < 24 * 60) {
+                                result.get(i).setYearDate((minutesDifference / 60) + "시간 전");
+                                result.get(i).setTime("");
+                            }else if(minutesDifference>=24*60&&minutesDifference<48*60){
+                                result.get(i).setYearDate("어제");
+                                result.get(i).setTime("");
+                            }else if(minutesDifference>=48*60&&minutesDifference<7*24*60){
+                                result.get(i).setYearDate((minutesDifference / (24*60)) + "일 전");
+                                result.get(i).setTime("");
+                            }else if(minutesDifference>=7*24*60&&minutesDifference<365*24*60){
+                                result.get(i).setYearDate((minutesDifference / (7*24*60)) + "주 전");
+                                result.get(i).setTime("");
+                            }else{
+                                result.get(i).setYearDate((minutesDifference / (365*24*60)) + "년 전");
+                                result.get(i).setTime("");
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
                         commentAdapter.addItem(result.get(i));
                     }
                     if(result.size()>1&&result.size()<5){ //댓글이 4개까지만 늘어나고 5개부터는 고정됨
@@ -640,7 +675,7 @@ public class PostActivity extends AppCompatActivity {
                         @SuppressLint("SimpleDateFormat")
                         SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
                         @SuppressLint("SimpleDateFormat")
-                        SimpleDateFormat dateFormat2 = new SimpleDateFormat("hh:mm:ss");
+                        SimpleDateFormat dateFormat2 = new SimpleDateFormat("kk:mm:ss");
                         String yearDate = dateFormat1.format(date);
                         String time = dateFormat2.format(date);
                         postCommentParams.setTime(time);
