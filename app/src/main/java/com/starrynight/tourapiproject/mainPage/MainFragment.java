@@ -47,10 +47,10 @@ import com.starrynight.tourapiproject.observationPage.RecyclerDecoration;
 import com.starrynight.tourapiproject.postPage.PostActivity;
 import com.starrynight.tourapiproject.postWritePage.PostWriteActivity;
 import com.starrynight.tourapiproject.starPage.StarActivity;
-import com.starrynight.tourapiproject.starPage.StarSearchActivity;
-import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener;
+import com.starrynight.tourapiproject.starPage.StarAllActivity;
+import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener2;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
-import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdapter;
+import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdpater2;
 import com.starrynight.tourapiproject.weatherPage.GpsTracker;
 import com.starrynight.tourapiproject.weatherPage.LocationDTO;
 import com.starrynight.tourapiproject.weatherPage.WeatherActivity;
@@ -70,7 +70,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -89,6 +88,8 @@ import retrofit2.Response;
  * @date : 2022-09-02
  */
 public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+
+    private MainActivity activityContext;
 
     private static final String TAG = "MainFragment";
     private static final String TAG1 = "SubBannerApi";
@@ -120,7 +121,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private RecyclerView starRecycler;
     private ImageButton move_star_btn;
-    private StarViewAdapter starViewAdapter;
+    private StarViewAdpater2 starViewAdapter;
     private TextView startMonthText;
     private LinearLayout moveReviewBtn;
     private RecentReviewAdapter recentReviewAdapter;
@@ -163,6 +164,15 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+        if (context instanceof MainActivity) {
+            activityContext = (MainActivity) context;
+        }
     }
 
     @Override
@@ -504,41 +514,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
 
-        //서브 배너 가져오기
-        subBannerLayout = v.findViewById(R.id.subBanner_linear);
-        subBanner = v.findViewById(R.id.subBanner);
-        Call<SubBanner> subBannerCall = com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient.getApiService().getLastSubBanner();
-        subBannerCall.enqueue(new Callback<SubBanner>() {
-            @Override
-            public void onResponse(Call<SubBanner> call, Response<SubBanner> response) {
-                if (response.isSuccessful()) {
-                    SubBanner banner = response.body();
-                    if (banner.isShow()) { //isShow가 true면 배너가 보일 수 있도록 한다
-                        subBannerLayout.setVisibility(View.VISIBLE);
-                        Glide.with(getActivity()).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/subBanner/" + banner.getBannerImage()).fitCenter().into(subBanner);
-                    } else {
-                        subBannerLayout.setVisibility(View.GONE);
-                    }
-                    subBanner.setOnClickListener(view -> {
-                        if (!editMode) {
-                            if (banner.getLink() != null) {
-                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(banner.getLink()));
-                                startActivity(intent);
-                            }
-                        } else {
-                            editModeOut();
-                        }
-                    });
-                } else {
-                    Log.e(TAG1, "서브 배너 오류");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<SubBanner> call, Throwable t) {
-                Log.e(TAG1, t.getMessage());
-            }
-        });
+        setSubbannerLayout(v);
 
         // 게시물 작성 페이지로 넘어가는 이벤트
         Button postWrite = v.findViewById(R.id.postWrite);
@@ -556,7 +532,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         Button alarm = v.findViewById(R.id.main_alarm);
         alarm.setOnClickListener(view -> {
             if (!editMode) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), AlarmActivity.class);
+                Intent intent = new Intent(activityContext.getApplicationContext(), AlarmActivity.class);
                 intent.putExtra("userId", userId);
                 startActivity(intent);
             } else {
@@ -613,7 +589,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         // 오늘 볼 수 있는 별자리
         starRecycler = v.findViewById(R.id.main_star_today_recycler);
         move_star_btn = v.findViewById(R.id.main_move_star);
-        starViewAdapter = new StarViewAdapter();
+        starViewAdapter = new StarViewAdpater2();
         startMonthText = v.findViewById(R.id.main_star_month_txt);
         starRecycler.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         RecyclerDecoration starItemDecorator = new RecyclerDecoration(12, getActivity());
@@ -651,10 +627,43 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         return v;
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        mContext = context;
-        super.onAttach(context);
+    private void setSubbannerLayout(View v) {
+        //서브 배너 가져오기
+        subBannerLayout = v.findViewById(R.id.subBanner_linear);
+        subBanner = v.findViewById(R.id.subBanner);
+        Call<SubBanner> subBannerCall = com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient.getApiService().getLastSubBanner();
+        subBannerCall.enqueue(new Callback<SubBanner>() {
+            @Override
+            public void onResponse(Call<SubBanner> call, Response<SubBanner> response) {
+                if (response.isSuccessful()) {
+                    SubBanner banner = response.body();
+                    if (banner != null) {
+                        if (banner.isShow()) { //isShow가 true면 배너가 보일 수 있도록 한다
+                            subBannerLayout.setVisibility(View.VISIBLE);
+                            Glide.with(mContext).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/subBanner/" + banner.getBannerImage()).fitCenter().into(subBanner);
+                        } else {
+                            subBannerLayout.setVisibility(View.GONE);
+                        }
+                        subBanner.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (banner.getLink() != null) {
+                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(banner.getLink()));
+                                    startActivity(intent);
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    Log.e(TAG1, "서브 배너 오류");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SubBanner> call, Throwable t) {
+                Log.e(TAG1, t.getMessage());
+            }
+        });
     }
 
     @Override
@@ -679,8 +688,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     public void checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE);
         }
     }
@@ -713,11 +722,11 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         });
 
         // item 클릭 시 해당 아이템 constId 넘겨주기
-        starViewAdapter.setOnItemClickListener(new OnStarItemClickListener() {
+        starViewAdapter.setOnItemClickListener(new OnStarItemClickListener2() {
             @Override
-            public void onItemClick(StarViewAdapter.ViewHolder holder, View view, int position) {
+            public void onItemClick(StarViewAdpater2.ViewHolder holder, View view, int position) {
                 StarItem item = starViewAdapter.getItem(position);
-                Intent intent = new Intent(getActivity().getApplicationContext(), StarActivity.class);
+                Intent intent = new Intent(activityContext.getApplicationContext(), StarActivity.class);
                 intent.putExtra("constName", item.getConstName());
                 Log.d("itemConstName", item.getConstName());
                 startActivity(intent);
@@ -726,9 +735,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         move_star_btn.setOnClickListener(view -> {
             if (!editMode) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), StarSearchActivity.class);
-                intent.putExtra("starHashTagName", month + "월");
-                intent.putExtra("type", 3);
+                Intent intent = new Intent(activityContext.getApplicationContext(), StarAllActivity.class);
                 startActivity(intent);
             } else {
                 editModeOut();
@@ -767,7 +774,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         });
 
         moveReviewBtn.setOnClickListener(view -> {
-            if (!editMode) ((MainActivity) Objects.requireNonNull(getActivity())).movePost();
+            if (!editMode) activityContext.movePost();
             else editModeOut();
         });
     }

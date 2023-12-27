@@ -52,7 +52,7 @@ public class StarAllActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     StarViewAdpater2 constAdapter;
-    StarViewAdapter constTodayAdapter;
+    StarViewAdpater2 constTodayAdapter;
     StarFeatureAdapter starFeatureAdapter;
     TextView monthText,starNumber;
     LinearLayout moreStarLinearLayout;
@@ -162,7 +162,7 @@ public class StarAllActivity extends AppCompatActivity {
         constTodayList = findViewById(R.id.today_cel_recyclerview);
         constTodayList.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
         constTodayList.addItemDecoration(new StarRecyclerViewWidth(20,0));
-        constTodayAdapter = new StarViewAdapter();
+        constTodayAdapter = new StarViewAdpater2();
         RecyclerDecoration starItemDecorator = new RecyclerDecoration(8, getApplicationContext());
         constTodayList.addItemDecoration(starItemDecorator);
         constTodayList.setAdapter(constTodayAdapter);
@@ -190,9 +190,9 @@ public class StarAllActivity extends AppCompatActivity {
         });
 
         // item 클릭 시 해당 아이템 constId 넘겨주기
-        constTodayAdapter.setOnItemClickListener(new OnStarItemClickListener() {
+        constTodayAdapter.setOnItemClickListener(new OnStarItemClickListener2() {
             @Override
-            public void onItemClick(StarViewAdapter.ViewHolder holder, View view, int position) {
+            public void onItemClick(StarViewAdpater2.ViewHolder holder, View view, int position) {
                 StarItem item = constTodayAdapter.getItem(position);
                 Intent intent = new Intent(getApplicationContext(), StarActivity.class);
                 intent.putExtra("constName", item.getConstName());
