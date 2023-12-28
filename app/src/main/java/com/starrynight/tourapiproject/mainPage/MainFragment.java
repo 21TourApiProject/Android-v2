@@ -126,15 +126,19 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private LinearLayout moveReviewBtn;
     private RecentReviewAdapter recentReviewAdapter;
 
-    private TextView interestAreaTitle; // 관심지역 탭 제목
+    private LinearLayout interestAreaInitLayout; // 관심지역 레이아웃 (0개일 때)
+    private LinearLayout addInterestAreaInit; // 관심지역 추가 버튼 (0개일 때)
+
+    private LinearLayout interestAreaLayout; // 관심지역 레이아웃 (1개 이상일 때)
     private TextView editInterestArea; // 관심지역 편집 버튼
     private ImageView addInterestArea; // 관심지역 추가 버튼 (1개 이상일 때)
-    private ImageView addInterestAreaInit; // 관심지역 추가 버튼 (0개일 때)
+
     List<Long> interestRegionIdList; // 관심지역 id 리스트
     List<Integer> interestRegionTypeList; // 관심지역 type 리스트
     List<String> interestRegionNameList; // 관심지역 이름 리스트
     boolean editMode = false; // 관심지역 편집 상태
-    boolean needRefresh = false; // 관심지역 편집취소 클릭 시 새로고침 여부
+    boolean needRefresh = false; // 관심지역 편집취소 클릭 시 새로고침 필요 여부 flag
+    boolean needSet = false; // 관심지역 추가 후 재조회 필요 여부 flag
     View[] viewListWithoutInterestArea;
     CustomInterestAreaView interestArea0;
     CustomInterestAreaView interestArea1;
@@ -247,7 +251,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             Address address = addressList.get(0);
             String SD = address.getAdminArea(); // 서울특별시
             String SGG = address.getLocality() == null ? address.getSubLocality() : address.getLocality(); // 서대문구
-            System.out.println("현 위치 = " + SD + ", " + SGG);
+            Log.d(TAG, "현 위치 = " + SD + ", " + SGG);
 
             if (SD == null || !SD.contains("세종") && SGG == null) {
                 findLocation = false;
@@ -306,70 +310,14 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
 
         // 관심지역 조회
-        interestAreaTitle = v.findViewById(R.id.interest_area_title);
+        interestAreaInitLayout = v.findViewById(R.id.interest_area_init_layout);
+        addInterestAreaInit = v.findViewById(R.id.addInterestAreaInit);
+        interestAreaLayout = v.findViewById(R.id.interest_area_layout);
         interestArea0 = v.findViewById(R.id.interestArea0);
         interestArea1 = v.findViewById(R.id.interestArea1);
         interestArea2 = v.findViewById(R.id.interestArea2);
         addInterestArea = v.findViewById(R.id.addInterestArea);
-        addInterestAreaInit = v.findViewById(R.id.addInterestAreaInit);
-
-        InterestAreaRetrofitClient.getApiService()
-                .getAllInterestArea(userId)
-                .enqueue(new Callback<List<InterestAreaDTO>>() {
-                    @Override
-                    public void onResponse(Call<List<InterestAreaDTO>> call, Response<List<InterestAreaDTO>> response) {
-                        if (response.isSuccessful()) {
-                            List<InterestAreaDTO> interestAreaList = response.body();
-                            interestRegionIdList = new ArrayList<>();
-                            interestRegionTypeList = new ArrayList<>();
-                            interestRegionNameList = new ArrayList<>();
-
-                            interestAreaList.forEach(interestAreaDTO -> {
-                                interestRegionIdList.add(interestAreaDTO.getRegionId());
-                                interestRegionTypeList.add(interestAreaDTO.getRegionType());
-                                interestRegionNameList.add(interestAreaDTO.getRegionName());
-                            });
-
-                            System.out.println("interestRegionIdList = " + interestRegionIdList);
-                            System.out.println("interestRegionTypeList = " + interestRegionTypeList);
-                            System.out.println("interestRegionNameList = " + interestRegionNameList);
-
-                            if (interestAreaList.size() == 0) { // 0
-                                interestAreaTitle.setText("여행자님의 관심지역");
-                                addInterestAreaInit.setVisibility(View.VISIBLE);
-                                addInterestArea.setVisibility(View.GONE);
-                            }
-                            if (interestAreaList.size() >= 1) { // 1, 2, 3
-                                addInterestArea.setVisibility(View.VISIBLE);
-                                editInterestArea.setVisibility(View.VISIBLE);
-                                interestArea0.setVisibility(View.VISIBLE);
-                                interestArea0.setInterestAreaName(interestAreaList.get(0).getRegionName());
-                                interestArea0.setInterestAreaImage(interestAreaList.get(0).getRegionImage());
-                                interestArea0.setInterestAreaObservationalFit(interestAreaList.get(0).getObservationalFit());
-
-                            }
-                            if (interestAreaList.size() >= 2) { // 2, 3
-                                interestArea1.setVisibility(View.VISIBLE);
-                                interestArea1.setInterestAreaName(interestAreaList.get(1).getRegionName());
-                                interestArea1.setInterestAreaImage(interestAreaList.get(1).getRegionImage());
-                                interestArea1.setInterestAreaObservationalFit(interestAreaList.get(1).getObservationalFit());
-                            }
-                            if (interestAreaList.size() == 3) { // 3
-                                interestArea2.setVisibility(View.VISIBLE);
-                                interestArea2.setInterestAreaName(interestAreaList.get(2).getRegionName());
-                                interestArea2.setInterestAreaImage(interestAreaList.get(2).getRegionImage());
-                                interestArea2.setInterestAreaObservationalFit(interestAreaList.get(2).getObservationalFit());
-                            }
-                        } else {
-                            Log.e(TAG, "서버 api 호출 실패");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<InterestAreaDTO>> call, Throwable t) {
-                        Log.e("연결실패", t.getMessage());
-                    }
-                });
+        resetInterestArea();
 
         // 관심지역 편집
         editInterestArea = v.findViewById(R.id.editInterestArea);
@@ -409,7 +357,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                 .enqueue(new Callback<Void>() {
                                     @Override
                                     public void onResponse(Call<Void> call, Response<Void> response) {
-                                        System.out.println("관심지역 삭제 성공");
+                                        Log.d(TAG, "관심지역 삭제 성공");
                                         interestArea1.setVisibility(View.GONE);
                                     }
 
@@ -497,6 +445,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
                     intent.putExtra("interestAreaIntent", new InterestAreaIntent(userId, interestRegionNameList));
                     startActivity(intent);
+                    needSet = true;
                 }
             } else {
                 editModeOut();
@@ -509,6 +458,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
                 intent.putExtra("interestAreaIntent", new InterestAreaIntent(userId, null));
                 startActivity(intent);
+                needSet = true;
             } else {
                 editModeOut();
             }
@@ -868,5 +818,71 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             interestArea2.showInterestAreaDelete(false);
         }
         if (needRefresh) refreshFragment();
+    }
+
+    private void resetInterestArea() {
+        InterestAreaRetrofitClient.getApiService()
+                .getAllInterestArea(userId)
+                .enqueue(new Callback<List<InterestAreaDTO>>() {
+                    @Override
+                    public void onResponse(Call<List<InterestAreaDTO>> call, Response<List<InterestAreaDTO>> response) {
+                        if (response.isSuccessful()) {
+                            List<InterestAreaDTO> interestAreaList = response.body();
+                            interestRegionIdList = new ArrayList<>();
+                            interestRegionTypeList = new ArrayList<>();
+                            interestRegionNameList = new ArrayList<>();
+
+                            interestAreaList.forEach(interestAreaDTO -> {
+                                interestRegionIdList.add(interestAreaDTO.getRegionId());
+                                interestRegionTypeList.add(interestAreaDTO.getRegionType());
+                                interestRegionNameList.add(interestAreaDTO.getRegionName());
+                            });
+
+                            System.out.println("interestRegionIdList = " + interestRegionIdList);
+                            System.out.println("interestRegionNameList = " + interestRegionNameList);
+
+                            if (interestAreaList.size() == 0) { // 0
+                                interestAreaInitLayout.setVisibility(View.VISIBLE);
+                                interestAreaLayout.setVisibility(View.GONE);
+                            }
+                            if (interestAreaList.size() >= 1) { // 1, 2, 3
+                                interestAreaInitLayout.setVisibility(View.GONE);
+                                interestAreaLayout.setVisibility(View.VISIBLE);
+                                interestArea0.setVisibility(View.VISIBLE);
+                                interestArea0.setInterestAreaName(interestAreaList.get(0).getRegionName());
+                                interestArea0.setInterestAreaImage(interestAreaList.get(0).getRegionImage());
+                                interestArea0.setInterestAreaObservationalFit(interestAreaList.get(0).getObservationalFit());
+                            }
+                            if (interestAreaList.size() >= 2) { // 2, 3
+                                interestArea1.setVisibility(View.VISIBLE);
+                                interestArea1.setInterestAreaName(interestAreaList.get(1).getRegionName());
+                                interestArea1.setInterestAreaImage(interestAreaList.get(1).getRegionImage());
+                                interestArea1.setInterestAreaObservationalFit(interestAreaList.get(1).getObservationalFit());
+                            }
+                            if (interestAreaList.size() == 3) { // 3
+                                interestArea2.setVisibility(View.VISIBLE);
+                                interestArea2.setInterestAreaName(interestAreaList.get(2).getRegionName());
+                                interestArea2.setInterestAreaImage(interestAreaList.get(2).getRegionImage());
+                                interestArea2.setInterestAreaObservationalFit(interestAreaList.get(2).getObservationalFit());
+                            }
+                        } else {
+                            Log.e(TAG, "서버 api 호출 실패");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<InterestAreaDTO>> call, Throwable t) {
+                        Log.e("연결실패", t.getMessage());
+                    }
+                });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (needSet) {
+            needSet = false;
+            resetInterestArea();
+        }
     }
 }

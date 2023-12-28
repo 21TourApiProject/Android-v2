@@ -227,7 +227,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -238,7 +239,6 @@
                         android:paddingHorizontal="16dp">
 
                         <TextView
-                            android:id="@+id/interest_area_title"
                             style="@style/semiBold_single_16"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -254,8 +254,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="편집"
-                            android:textColor="@color/gray_500"
-                            android:visibility="gone" />
+                            android:textColor="@color/gray_500" />
 
                     </LinearLayout>
 
@@ -301,15 +300,6 @@
                                 android:layout_height="wrap_content"
                                 android:paddingTop="11dp"
                                 android:src="@drawable/main__interest_area_add" />
-
-                            <ImageView
-                                android:id="@+id/addInterestAreaInit"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingTop="11dp"
-                                android:src="@drawable/main__interest_area_add_init"
-                                android:visibility="gone" />
-
                         </LinearLayout>
                     </HorizontalScrollView>
 
@@ -349,9 +339,63 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginBottom="24dp"
-                        android:paddingHorizontal="16dp"
                         android:clipToPadding="false"
+                        android:paddingHorizontal="16dp"
                         android:visibility="visible" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/interest_area_init_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        style="@style/semiBold_single_16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="20dp"
+                        android:text="여행자님의 관심지역" />
+
+                    <LinearLayout
+                        android:id="@+id/addInterestAreaInit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/main__interest_area_background"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="20dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:src="@drawable/main__interest_area_add_plus" />
+
+                        <TextView
+                            style="@style/medium_multi_12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="가고싶은 관측지를 추가해두면"
+                            android:textColor="@color/gray_500" />
+
+                        <TextView
+                            style="@style/medium_multi_12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginBottom="8dp"
+                            android:text="밤하늘 날씨를 쉽게 확인할 수 있어요"
+                            android:textColor="@color/gray_500" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -405,8 +449,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginBottom="24dp"
-                        android:paddingHorizontal="16dp"
                         android:clipToPadding="false"
+                        android:paddingHorizontal="16dp"
                         android:visibility="visible" />
                 </LinearLayout>
 
