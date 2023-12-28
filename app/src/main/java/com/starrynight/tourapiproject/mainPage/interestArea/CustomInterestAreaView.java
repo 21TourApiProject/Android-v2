@@ -92,9 +92,16 @@ public class CustomInterestAreaView extends LinearLayout {
     }
 
     public void setInterestAreaObservationalFit(String observationalFit) {
-        interestAreaObservationalFit.setText("~" + observationalFit + "%");
-        if (Integer.parseInt(observationalFit) < 60) {
-            interestAreaObservationalFit.setTextColor(ContextCompat.getColor(context, R.color.point_red));
+        if (observationalFit != null) { // db 에 값 있을 때만 표시
+            if (observationalFit.equals("-1")) { // api 콜 횟수 초과 시
+                interestAreaObservationalFit.setText("로딩중...");
+                interestAreaObservationalFit.setTextAppearance(R.style.medium_single_12);
+            } else {
+                interestAreaObservationalFit.setText("~" + observationalFit + "%");
+                if (Integer.parseInt(observationalFit) < 60) {
+                    interestAreaObservationalFit.setTextColor(ContextCompat.getColor(context, R.color.point_red));
+                }
+            }
         }
     }
 
