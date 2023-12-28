@@ -108,6 +108,7 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
     boolean guideOn = true;
     boolean isAlt = false;
     boolean isAzi = true;
+    boolean finish = false;
     boolean isReview=false;
     float RA,D;//적경, 적위
     double lat,lon,HA;
@@ -430,8 +431,32 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
                 constName.setText(intentConstName+ "발견!");
                 starIcon.setVisibility(View.VISIBLE);
                 starTooltip.setVisibility(View.VISIBLE);
+                finish=true;
             }
-
+            if(finish&&Math.abs(Math.floor(crtAltitude))>50){
+                crtGuideLayout.setVisibility(View.VISIBLE);
+                guideLayout.setVisibility(View.GONE);
+                onOffButton.setVisibility(View.GONE);
+                starIcon.setVisibility(View.GONE);
+                starTooltip.setVisibility(View.GONE);
+                constTitle.setBackgroundResource(R.drawable.star_search_non);
+                constName.setText(intentConstName+ "찾기");
+                finish=false;
+                isAzi=true;
+                isAlt=false;
+            }
+            if(finish&&Math.abs(Math.floor(crtAzimuth))>50){
+                crtGuideLayout.setVisibility(View.VISIBLE);
+                guideLayout.setVisibility(View.GONE);
+                onOffButton.setVisibility(View.GONE);
+                starIcon.setVisibility(View.GONE);
+                starTooltip.setVisibility(View.GONE);
+                constTitle.setBackgroundResource(R.drawable.star_search_non);
+                constName.setText(intentConstName+ "찾기");
+                finish=false;
+                isAzi=true;
+                isAlt=false;
+            }
         }
     }
 
