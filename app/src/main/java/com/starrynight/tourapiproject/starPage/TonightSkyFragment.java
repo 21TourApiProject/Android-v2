@@ -13,12 +13,14 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -63,6 +65,7 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
     //bottomSheet 관련
     ImageView topIcon;
     CardView starCamera;
+    RelativeLayout bottomSheet;
 
     //나침반 관련
     private SensorManager mSensorManger;
@@ -120,7 +123,14 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_tonight_sky, container, false);
-
+        allConstList = v.findViewById(R.id.all_const_recycler);
+        allConstBtn = v.findViewById(R.id.all_const_btn);
+        starCamera = v.findViewById(R.id.star_camera);
+        monthText = v.findViewById(R.id.monthStarText);
+        touchImageView = v.findViewById(R.id.touchImage);
+        compass = v.findViewById(R.id.compass_needle);
+        seekBar = v.findViewById(R.id.starSeekBar);
+        bottomSheet = v.findViewById(R.id.bottom_sheet);
 
         //나침반
         mSensorManger = (SensorManager)(requireActivity()).getSystemService(Context.SENSOR_SERVICE);
@@ -130,8 +140,6 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
         topIcon = v.findViewById(R.id.icon);
 
         // 모든 천체 보기 버튼 클릭 이벤트
-        allConstList = v.findViewById(R.id.all_const_recycler);
-        allConstBtn = v.findViewById(R.id.all_const_btn);
 
         allConstBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,7 +149,7 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
             }
         });
         //별자리 사진 클릭 이벤트
-        starCamera = v.findViewById(R.id.star_camera);
+
         starCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,7 +159,6 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
         });
 
         //n월에 볼 수 있는 별자리 택스트 가져오기
-        monthText = v.findViewById(R.id.monthStarText);
         long now = System.currentTimeMillis();//현재시간 가져오기
         Date date = new Date(now);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("M");
@@ -200,10 +207,6 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
             }
         });
 
-
-        touchImageView = v.findViewById(R.id.touchImage);
-        compass = v.findViewById(R.id.compass_needle);
-
         //나침반 페이지로 이동
         compass.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,7 +217,6 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
         });
 
         //seekbar 사용 시 이미지 회전 시키기
-        seekBar = v.findViewById(R.id.starSeekBar);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -230,6 +232,24 @@ public class TonightSkyFragment extends Fragment implements SensorEventListener 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
+            }
+        });
+
+        //배경 터치 시 다른 오브젝트 숨기기
+        touchImageView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        starCamera.setVisibility(View.GONE);
+                        bottomSheet.setVisibility(View.GONE);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        starCamera.setVisibility(View.VISIBLE);
+                        bottomSheet.setVisibility(View.VISIBLE);
+                        break;
+                }
+                return true;
             }
         });
 
