@@ -138,6 +138,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/wt__best_observational_fit"
+                        android:text="로딩중..."
                         android:textColor="#DADAE5" />
 
                     <TextView
@@ -172,6 +173,16 @@
                         android:text="시간별 관측적합도" />
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/hour_loading"
+                    style="@style/medium_single_14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="로딩중..."
+                    android:textColor="@color/gray_500"
+                    android:visibility="gone" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/hour_recycler"
                     android:layout_width="match_parent"
@@ -186,6 +197,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="52dp"
                     android:text="주간 예보" />
+
+                <TextView
+                    android:id="@+id/day_loading"
+                    style="@style/medium_single_14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="로딩중..."
+                    android:textColor="@color/gray_500"
+                    android:visibility="gone" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/day_recycler"
@@ -222,7 +243,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="52dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -240,7 +261,6 @@
                     android:layout_gravity="end"
                     android:layout_marginEnd="16dp"
                     android:gravity="right"
-                    android:text="12시 기준"
                     android:textColor="#84838D" />
 
             </LinearLayout>
@@ -295,6 +315,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
+                            android:text="로딩중..."
                             android:textColor="#84838D" />
                     </LinearLayout>
 
@@ -332,6 +353,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="20dp"
+                            android:text="로딩중..."
                             android:textColor="#84838D" />
                     </LinearLayout>
 
@@ -374,6 +396,7 @@
                                 style="@style/medium_single_14"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:text="로딩중..."
                                 android:textColor="#84838D" />
 
                             <TextView
@@ -421,6 +444,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="20dp"
+                            android:text="로딩중..."
                             android:textColor="#84838D" />
                     </LinearLayout>
 
@@ -474,8 +498,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
+                                    android:text="로딩중..."
                                     android:textColor="#84838D" />
-
                             </LinearLayout>
 
                             <LinearLayout
@@ -496,6 +520,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
+                                    android:text="로딩중..."
                                     android:textColor="#84838D" />
                             </LinearLayout>
                         </LinearLayout>
@@ -544,6 +569,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="20dp"
+                            android:text="로딩중..."
                             android:textColor="#84838D" />
                     </LinearLayout>
 
@@ -581,6 +607,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
+                            android:text="로딩중..."
                             android:textColor="#84838D" />
                     </LinearLayout>
 
@@ -619,6 +646,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="20dp"
+                            android:text="로딩중..."
                             android:textColor="#84838D" />
                     </LinearLayout>
 
@@ -657,6 +685,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="20dp"
+                            android:text="로딩중..."
                             android:textColor="#84838D" />
                     </LinearLayout>
 
@@ -712,6 +741,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
+                                    android:text="로딩중..."
                                     android:textColor="#84838D" />
                             </LinearLayout>
 
@@ -733,6 +763,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
+                                    android:text="로딩중..."
                                     android:textColor="#84838D" />
                             </LinearLayout>
                         </LinearLayout>

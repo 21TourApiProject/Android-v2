@@ -21,6 +21,7 @@ import com.starrynight.tourapiproject.mainPage.OnBestFitObsItemClickListener;
 import com.starrynight.tourapiproject.mainPage.RecentReviewAdapter;
 import com.starrynight.tourapiproject.mainPage.RecentReviewItemClickListener;
 import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaDetailDTO;
+import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaDetailWeatherInfo;
 import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaRetrofitClient;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.ObservationSimpleParams;
 import com.starrynight.tourapiproject.mainPage.mainPageRetrofit.PostContentsParams;
@@ -57,6 +58,7 @@ public class InterestAreaWeatherActivity extends AppCompatActivity {
     private ImageView interest_area_image; // 관측지 이미지
     private TextView interest_area_best_day; // 오늘 또는 내일
     private TextView interest_area_best_hour; // 제일 잘보이는 시간
+    private TextView interest_area_best_observational_fit_text;
     private TextView interest_area_best_observational_fit; // 최대 관측적합도
     private ImageView interest_area_icon; // 로딩 아이콘
     private TextView interest_area_weather_error; //
@@ -92,6 +94,7 @@ public class InterestAreaWeatherActivity extends AppCompatActivity {
         interest_area_image = findViewById(R.id.interest_area_image);
         interest_area_best_day = findViewById(R.id.interest_area_best_day);
         interest_area_best_hour = findViewById(R.id.interest_area_best_hour);
+        interest_area_best_observational_fit_text = findViewById(R.id.interest_area_best_observational_fit_text);
         interest_area_best_observational_fit = findViewById(R.id.interest_area_best_observational_fit);
         interest_area_icon = findViewById(R.id.interest_area_icon);
         interest_area_weather_error = findViewById(R.id.interest_area_weather_error);
@@ -113,22 +116,26 @@ public class InterestAreaWeatherActivity extends AppCompatActivity {
                     public void onResponse(Call<InterestAreaDetailDTO> call, Response<InterestAreaDetailDTO> response) {
                         if (response.isSuccessful()) {
                             interestAreaDetail = response.body();
-                            interest_area_weather_error.setVisibility(View.GONE);
+
                             interest_area_name.setText(interestAreaDetail.getRegionName());
                             if (Objects.nonNull(interestAreaDetail.getRegionImage())) {
                                 Glide.with(getApplicationContext()).load(interestAreaDetail.getRegionImage()).into(interest_area_image);
                             }
-                            interest_area_best_day.setText(interestAreaDetail.getInterestAreaDetailWeatherInfo().getBestDay());
-                            interest_area_best_hour.setText(interestAreaDetail.getInterestAreaDetailWeatherInfo().getBestHour() + "시");
-                            interest_area_best_observational_fit.setText(interestAreaDetail.getInterestAreaDetailWeatherInfo().getBestObservationalFit() + "%");
-                            if (interestAreaDetail.getInterestAreaDetailWeatherInfo().getBestObservationalFit() < 60) {
-                                interest_area_best_observational_fit.setTextColor(getColor(R.color.point_red));
+                            if (interestAreaDetail.getInterestAreaDetailWeatherInfo().getBestDay() != null) {
+                                InterestAreaDetailWeatherInfo interestAreaDetailWeatherInfo = interestAreaDetail.getInterestAreaDetailWeatherInfo();
+                                interest_area_weather_error.setVisibility(View.GONE);
+                                interest_area_best_day.setText(interestAreaDetailWeatherInfo.getBestDay());
+                                interest_area_best_hour.setText(interestAreaDetailWeatherInfo.getBestHour() + "시");
+                                interest_area_best_observational_fit_text.setText("최대 관측적합도");
+                                interest_area_best_observational_fit.setText(interestAreaDetailWeatherInfo.getBestObservationalFit() + "%");
+                                if (interestAreaDetailWeatherInfo.getBestObservationalFit() < 60) {
+                                    interest_area_best_observational_fit.setTextColor(getColor(R.color.point_red));
+                                }
+                                interest_area_icon.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.main__weather_sun));
+                                interest_area_weather_comment1_front.setText(MM_dd_HH.format(new Date(System.currentTimeMillis())));
+                                interest_area_weather_comment1_back.setText(" 이 곳의 날씨");
+                                interest_area_weather_comment2.setText(interestAreaDetailWeatherInfo.getWeatherReport());
                             }
-                            interest_area_icon.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.main__weather_sun));
-                            interest_area_weather_comment1_front.setText(MM_dd_HH.format(new Date(System.currentTimeMillis())));
-                            interest_area_weather_comment1_back.setText(" 이 곳의 날씨");
-                            interest_area_weather_comment2.setText(interestAreaDetail.getInterestAreaDetailWeatherInfo().getWeatherReport());
-
                         } else {
                             Log.e(TAG, "서버 api 호출 실패");
                         }

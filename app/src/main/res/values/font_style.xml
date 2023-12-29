@@ -179,6 +179,14 @@
         <item name="android:textFontWeight">500</item>
         <item name="lineHeight">14.4sp</item>
     </style>
+    <style name="medium_single_12_gray_300" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/pretendard_variable</item>
+        <item name="android:textSize">12sp</item>
+        <item name="fontStyle">normal</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textColor">@color/gray_300</item>
+        <item name="lineHeight">14.4sp</item>
+    </style>
     <style name="semiBold_multi_12" parent="Widget.AppCompat.TextView">
         <item name="android:fontFamily">@font/pretendard_variable</item>
         <item name="android:textSize">12sp</item>

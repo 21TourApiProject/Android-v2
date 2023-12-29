@@ -122,11 +122,11 @@
                         android:textColor="@color/gray_200" />
 
                     <TextView
+                        android:id="@+id/interest_area_best_observational_fit_text"
                         style="@style/medium_single_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
-                        android:text="최대 관측적합도"
                         android:textColor="@color/gray_500" />
 
                     <TextView
