@@ -52,6 +52,8 @@ public class WeatherActivity extends AppCompatActivity {
     private TextView bestObservationalFit;
     private TextView mainEffect;
 
+    private TextView hour_loading; // api 콜 횟수 초과 시 표시 문구
+    private TextView day_loading; // api 콜 횟수 초과 시 표시 문구
     private RecyclerView hour_recycler; // 시간별 예보 RecyclerView
     private RecyclerView day_recycler; // 주간 예보 RecyclerView
     List<HourObservationalFit> hourResult = new ArrayList<>(); // 시간별 예보 결과
@@ -101,6 +103,8 @@ public class WeatherActivity extends AppCompatActivity {
         bestObservationalFit = findViewById(R.id.best_observation_fit);
         mainEffect = findViewById(R.id.main_effect);
 
+        hour_loading = findViewById(R.id.hour_loading);
+        day_loading = findViewById(R.id.day_loading);
         hour_recycler = findViewById(R.id.hour_recycler);
         hour_recycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         day_recycler = findViewById(R.id.day_recycler);
@@ -171,39 +175,46 @@ public class WeatherActivity extends AppCompatActivity {
                     public void onResponse(Call<WeatherInfo> call, Response<WeatherInfo> response) {
                         if (response.isSuccessful()) {
                             WeatherInfo info = response.body();
-                            WeatherInfo.DetailWeather detail = info.getDetailWeather();
 
-                            setLightPollutionLevel(info.getLightPollutionLevel());
-                            todayComment.setText(info.getTodayComment1() + "\n" + info.getTodayComment2());
-                            bestObservationalFit.setText(Const.Weather.BEST_OBSERVATIONAL_FIT + info.getBestObservationalFit() + Const.Weather.PERCENT);
-                            if (info.getBestObservationalFit() < 60) {
-                                bestObservationalFit.setBackgroundResource(R.drawable.wt__bad_observational_fit);
-                                mainEffect.setBackgroundResource(R.drawable.wt__bad_observational_fit);
-                                mainEffect.setText(info.getMainEffect());
-                                mainEffect.setVisibility(View.VISIBLE);
+                            // api 콜 횟수 초과
+                            if (info.getDetailWeather() == null) {
+                                System.out.println("api 콜 횟수 초과");
+                                todayComment.setText("날씨 정보를\n불러오고 있어요...");
+                                hour_loading.setVisibility(View.VISIBLE);
+                                day_loading.setVisibility(View.VISIBLE);
+                            } else {
+                                setLightPollutionLevel(info.getLightPollutionLevel());
+                                todayComment.setText(info.getTodayComment1() + "\n" + info.getTodayComment2());
+                                bestObservationalFit.setText(Const.Weather.BEST_OBSERVATIONAL_FIT + info.getBestObservationalFit() + Const.Weather.PERCENT);
+                                if (info.getBestObservationalFit() < 60) {
+                                    bestObservationalFit.setBackgroundResource(R.drawable.wt__bad_observational_fit);
+                                    mainEffect.setBackgroundResource(R.drawable.wt__bad_observational_fit);
+                                    mainEffect.setText(info.getMainEffect());
+                                    mainEffect.setVisibility(View.VISIBLE);
+                                }
+
+                                hourResult = info.getHourObservationalFitList();
+                                HourAdapter hourAdapter = new HourAdapter(hourResult);
+                                hour_recycler.setAdapter(hourAdapter);
+                                dayResult = info.getDayObservationalFitList();
+                                DayAdapter dayAdapter = new DayAdapter(dayResult);
+                                day_recycler.setAdapter(dayAdapter);
+
+                                WeatherInfo.DetailWeather detail = info.getDetailWeather();
+                                detail_weather.setText(detail.getWeatherText());
+                                detail_temp_highest.setText(detail.getTempHighest());
+                                detail_temp_lowest.setText(detail.getTempLowest());
+                                detail_rainfall_probability.setText(detail.getRainfallProbability());
+                                detail_humidity.setText(detail.getHumidity());
+                                detail_cloud.setText(detail.getCloud());
+                                detail_fine_dust.setText(detail.getFineDust());
+                                detail_wind_speed.setText(detail.getWindSpeed());
+                                detail_moon_age.setText(detail.getMoonAge());
+                                detail_sunrise.setText(detail.getSunrise());
+                                detail_sunset.setText(detail.getSunset());
+                                detail_moonrise.setText(detail.getMoonrise());
+                                detail_moonset.setText(detail.getMoonset());
                             }
-
-                            hourResult = info.getHourObservationalFitList();
-                            HourAdapter hourAdapter = new HourAdapter(hourResult);
-                            hour_recycler.setAdapter(hourAdapter);
-
-                            dayResult = info.getDayObservationalFitList();
-                            DayAdapter dayAdapter = new DayAdapter(dayResult);
-                            day_recycler.setAdapter(dayAdapter);
-
-                            detail_weather.setText(detail.getWeatherText());
-                            detail_temp_highest.setText(detail.getTempHighest());
-                            detail_temp_lowest.setText(detail.getTempLowest());
-                            detail_rainfall_probability.setText(detail.getRainfallProbability());
-                            detail_humidity.setText(detail.getHumidity());
-                            detail_cloud.setText(detail.getCloud());
-                            detail_fine_dust.setText(detail.getFineDust());
-                            detail_wind_speed.setText(detail.getWindSpeed());
-                            detail_moon_age.setText(detail.getMoonAge());
-                            detail_sunrise.setText(detail.getSunrise());
-                            detail_sunset.setText(detail.getSunset());
-                            detail_moonrise.setText(detail.getMoonrise());
-                            detail_moonset.setText(detail.getMoonset());
                         } else {
                             Log.e(TAG, "서버 api 호출 실패");
                         }

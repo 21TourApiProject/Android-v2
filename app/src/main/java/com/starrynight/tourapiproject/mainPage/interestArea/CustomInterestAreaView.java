@@ -1,5 +1,7 @@
 package com.starrynight.tourapiproject.mainPage.interestArea;
 
+import static androidx.core.content.ContextCompat.getColor;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -10,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.starrynight.tourapiproject.R;
@@ -95,11 +96,11 @@ public class CustomInterestAreaView extends LinearLayout {
         if (observationalFit != null) { // db 에 값 있을 때만 표시
             if (observationalFit.equals("-1")) { // api 콜 횟수 초과 시
                 interestAreaObservationalFit.setText("로딩중...");
-                interestAreaObservationalFit.setTextAppearance(R.style.medium_single_12);
+                interestAreaObservationalFit.setTextAppearance(R.style.medium_single_12_gray_300);
             } else {
                 interestAreaObservationalFit.setText("~" + observationalFit + "%");
                 if (Integer.parseInt(observationalFit) < 60) {
-                    interestAreaObservationalFit.setTextColor(ContextCompat.getColor(context, R.color.point_red));
+                    interestAreaObservationalFit.setTextColor(getColor(context, R.color.point_red));
                 }
             }
         }
