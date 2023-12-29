@@ -104,7 +104,7 @@ public class WeatherLocationSearchActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
                                 if (response.isSuccessful()) {
-
+                                    Log.d(TAG, "관심 지역 추가 성공");
                                 } else {
                                     Log.e(TAG, "서버 api 호출 실패");
                                 }

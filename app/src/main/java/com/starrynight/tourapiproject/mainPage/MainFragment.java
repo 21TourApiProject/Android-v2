@@ -838,8 +838,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                 interestRegionNameList.add(interestAreaDTO.getRegionName());
                             });
 
-                            System.out.println("interestRegionIdList = " + interestRegionIdList);
-                            System.out.println("interestRegionNameList = " + interestRegionNameList);
+//                            System.out.println("interestRegionIdList = " + interestRegionIdList);
+//                            System.out.println("interestRegionNameList = " + interestRegionNameList);
 
                             if (interestAreaList.size() == 0) { // 0
                                 interestAreaInitLayout.setVisibility(View.VISIBLE);
@@ -881,8 +881,13 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onResume() {
         super.onResume();
         if (needSet) {
-            needSet = false;
+            try {
+                Thread.sleep(500);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             resetInterestArea();
+            needSet = false;
         }
     }
 }
