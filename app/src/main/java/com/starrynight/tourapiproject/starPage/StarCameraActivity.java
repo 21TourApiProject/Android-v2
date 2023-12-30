@@ -433,7 +433,7 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
                 starTooltip.setVisibility(View.VISIBLE);
                 finish=true;
             }
-            if(finish&&Math.abs(Math.floor(crtAltitude))>50){
+            if(finish&&Math.abs(Math.floor(crtAltitude))>20){
                 crtGuideLayout.setVisibility(View.VISIBLE);
                 guideLayout.setVisibility(View.GONE);
                 onOffButton.setVisibility(View.GONE);
@@ -445,7 +445,7 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
                 isAzi=true;
                 isAlt=false;
             }
-            if(finish&&Math.abs(Math.floor(crtAzimuth))>50){
+            if(finish&&Math.abs(Math.floor(crtAzimuth))>20){
                 crtGuideLayout.setVisibility(View.VISIBLE);
                 guideLayout.setVisibility(View.GONE);
                 onOffButton.setVisibility(View.GONE);

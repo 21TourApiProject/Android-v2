@@ -13,6 +13,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -80,7 +81,7 @@ public class FcmService extends FirebaseMessagingService {
                 .setContentText(body)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
-                .setColor(R.drawable.custom_purple_blue_gradient)
+                .setColor(ContextCompat.getColor(getApplicationContext(),R.color.point_blue))
                 .setSmallIcon(R.drawable.push_notification_icon);
 
         Notification notification = builder.build();
