@@ -113,6 +113,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private ImageView currentWeatherIcon;
     private TextView currentWeatherError; // 새로고침, 현위치 오류, 날씨 로딩 문구
+    private LinearLayout currentWeatherText;
     private TextView currentWeatherComment1Front;
     private TextView currentWeatherComment1Back;
     private TextView currentWeatherComment2;
@@ -189,6 +190,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         helloMassage = v.findViewById(R.id.hello_message);
         currentWeatherIcon = v.findViewById(R.id.main__current_weather_icon);
         currentWeatherError = v.findViewById(R.id.main__current_weather_error);
+        currentWeatherText = v.findViewById(R.id.main__current_weather_text);
         currentWeatherComment1Front = v.findViewById(R.id.main__current_weather_comment1_front);
         currentWeatherComment1Back = v.findViewById(R.id.main__current_weather_comment1_back);
         currentWeatherComment2 = v.findViewById(R.id.main__current_weather_comment2);
@@ -257,11 +259,14 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 findLocation = false;
                 currentWeatherError.setVisibility(View.VISIBLE);
                 currentWeatherError.setText("현 위치를 불러올 수 없습니다.");
+                currentWeatherText.setVisibility(View.GONE);
 
             } else {
                 findLocation = true;
                 currentWeatherError.setVisibility(View.VISIBLE);
                 currentWeatherError.setText("현 위치 날씨를 분석하는 중...");
+                currentWeatherText.setVisibility(View.GONE);
+
                 Date date = new Date(System.currentTimeMillis());
                 NearestAreaDTO nearestAreaDTO = new NearestAreaDTO(SGG, latitude, longitude, yyyy_MM_dd.format(date), Integer.valueOf(HH.format(date)));
                 if (SD.contains("세종")) nearestAreaDTO.setSgg("세종");
@@ -273,6 +278,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             public void onResponse(Call<MainInfo> call, Response<MainInfo> response) {
                                 if (response.isSuccessful()) {
                                     currentWeatherError.setVisibility(View.GONE); // 오류 문구 해제
+                                    currentWeatherText.setVisibility(View.VISIBLE);
                                     currentWeatherIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.main__weather_sun));
                                     MainInfo mainInfo = response.body();
                                     currentWeatherComment1Front.setText(MM_dd_HH.format(date));
