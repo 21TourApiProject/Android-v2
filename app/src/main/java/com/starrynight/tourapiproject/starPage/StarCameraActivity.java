@@ -507,7 +507,7 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
             int sec = (int) ((hour-hh-min/60.0)*3600);
 
             float angle = (float) ((hh*60.0)+min+(sec/60.0))*360/1436;
-            guideImage.setRotation(angle);
+            guideImage.setRotation(-angle);
            Log.d(TAG,"LMST: "+hh+":"+min+":"+sec+" angle: "+angle);
            return Math.round(LMST_s*100.0)/100.0;
         }
