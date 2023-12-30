@@ -237,13 +237,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:layout_marginBottom="9dp"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="16dp">
+                        android:orientation="horizontal">
 
                         <TextView
                             style="@style/semiBold_single_16"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:paddingLeft="16dp"
                             android:text="내 관심지역 날씨" />
 
                         <View
@@ -256,6 +256,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="편집"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
                             android:textColor="@color/gray_500" />
 
                     </LinearLayout>

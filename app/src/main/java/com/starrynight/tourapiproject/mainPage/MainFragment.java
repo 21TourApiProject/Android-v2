@@ -198,6 +198,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         LinearLayout weatherLocationSearch = v.findViewById(R.id.weather_location_search);
 
         // 관심지역 편집 시 투명도 조절을 위한 타 레이아웃 변수
+        subBannerLayout = v.findViewById(R.id.subBanner_linear);
         View top_layout = v.findViewById(R.id.top_layout);
         View hello_layout = v.findViewById(R.id.hello_layout);
         View current_layout = v.findViewById(R.id.current_layout);
@@ -206,7 +207,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         View star_layout = v.findViewById(R.id.star_layout);
         View night_sky_layout = v.findViewById(R.id.night_sky_layout);
         View tip_layout = v.findViewById(R.id.tip_layout);
-        viewListWithoutInterestArea = new View[]{top_layout, hello_layout, current_layout, search_layout, observation_layout, star_layout, night_sky_layout, tip_layout};
+        viewListWithoutInterestArea = new View[]{subBannerLayout, top_layout, hello_layout, current_layout, search_layout, observation_layout, star_layout, night_sky_layout, tip_layout};
 
         // userId 가져오기
         try {
@@ -331,7 +332,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             if (!editMode) { // 편집 모드 off -> on
                 editMode = true;
                 needRefresh = false;
-                editInterestArea.setText("편집취소");
+                editInterestArea.setText("편집완료");
                 Arrays.stream(viewListWithoutInterestArea).forEach(layout -> layout.setAlpha(0.3f)); // 타 영역 투명하게
 
                 if (interestRegionIdList.size() >= 1) {
@@ -345,6 +346,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                     public void onResponse(Call<Void> call, Response<Void> response) {
                                         Log.d(TAG, "관심지역 삭제 성공");
                                         interestArea0.setVisibility(View.GONE);
+                                        editModeOut();
                                     }
 
                                     @Override
@@ -365,6 +367,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                     public void onResponse(Call<Void> call, Response<Void> response) {
                                         Log.d(TAG, "관심지역 삭제 성공");
                                         interestArea1.setVisibility(View.GONE);
+                                        editModeOut();
                                     }
 
                                     @Override
@@ -385,6 +388,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                     public void onResponse(Call<Void> call, Response<Void> response) {
                                         Log.d(TAG, "관심지역 삭제 성공");
                                         interestArea2.setVisibility(View.GONE);
+                                        editModeOut();
                                     }
 
                                     @Override
@@ -585,7 +589,6 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private void setSubbannerLayout(View v) {
         //서브 배너 가져오기
-        subBannerLayout = v.findViewById(R.id.subBanner_linear);
         subBanner = v.findViewById(R.id.subBanner);
         Call<SubBanner> subBannerCall = com.starrynight.tourapiproject.myPage.myPageRetrofit.RetrofitClient.getApiService().getLastSubBanner();
         subBannerCall.enqueue(new Callback<SubBanner>() {
