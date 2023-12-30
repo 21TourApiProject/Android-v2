@@ -44,7 +44,7 @@
             android:resource="@drawable/push_notification_icon" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@drawable/custom_purple_blue_gradient" />
+            android:resource="@color/point_blue" />
         <activity android:name=".myPage.NoticeDetailActivity"></activity>
         <activity android:name=".myPage.AlarmSettingActivity" />
         <activity android:name=".starPage.SelectStarActivity" />
