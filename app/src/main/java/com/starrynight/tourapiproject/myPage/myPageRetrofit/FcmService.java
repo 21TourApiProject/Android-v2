@@ -80,8 +80,8 @@ public class FcmService extends FirebaseMessagingService {
                 .setContentText(body)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
-                .setSmallIcon(R.drawable.main_icon2_round)
-                .setLargeIcon(BitmapFactory. decodeResource (getResources() , R.drawable.main_icon2_round ));
+                .setColor(R.drawable.custom_purple_blue_gradient)
+                .setSmallIcon(R.drawable.push_notification_icon);
 
         Notification notification = builder.build();
         SharedPreferences pref=getSharedPreferences("pref",MODE_PRIVATE);
