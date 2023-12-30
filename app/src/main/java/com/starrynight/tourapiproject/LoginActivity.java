@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (!versionPass) {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                                 builder.setTitle("업데이트 안내");
-                                builder.setMessage("앱 버젼이 다릅니다. 보다 좋은 서비스를 위해 업데이트 해주세요.");
+                                builder.setMessage("이전 버전을 사용하고 계시군요!\n보다 좋은 서비스 경험을 위해 업데이트를 부탁드려요.");
                                 builder.setPositiveButton("업데이트",
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
