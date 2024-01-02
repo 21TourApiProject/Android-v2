@@ -16,8 +16,8 @@ android {
         applicationId "com.starrynight.tourapiproject"
         minSdkVersion 27
         targetSdkVersion 33
-        versionCode 23
-        versionName "1.4.0"
+        versionCode 25
+        versionName "1.4.2"
         multiDexEnabled true
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
