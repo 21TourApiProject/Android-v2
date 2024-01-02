@@ -9,15 +9,15 @@ properties.load(project.rootProject.file('local.properties').newDataInputStream(
 def kakao_sdk_key = properties.getProperty('kakao_sdk_key')
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
     buildToolsVersion "30.0.2"
 
     defaultConfig {
         applicationId "com.starrynight.tourapiproject"
         minSdkVersion 27
-        targetSdkVersion 32
-        versionCode 18
-        versionName "1.3.0"
+        targetSdkVersion 33
+        versionCode 23
+        versionName "1.4.0"
         multiDexEnabled true
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
