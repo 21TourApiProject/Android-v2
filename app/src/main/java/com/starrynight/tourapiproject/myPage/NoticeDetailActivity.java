@@ -1,9 +1,11 @@
 package com.starrynight.tourapiproject.myPage;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.text.HtmlCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -47,7 +49,7 @@ public class NoticeDetailActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     Notice notice = response.body();
                     noticeTitle.setText(notice.getNoticeTitle());
-                    noticeContent.setText(notice.getNoticeContent());
+                    noticeContent.setText(Html.fromHtml(notice.getNoticeContent(), HtmlCompat.FROM_HTML_MODE_LEGACY));
                     noticeDate.setText(notice.getNoticeDate());
                 }
             }
