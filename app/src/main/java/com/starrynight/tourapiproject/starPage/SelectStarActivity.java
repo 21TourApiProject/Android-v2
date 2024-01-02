@@ -25,8 +25,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchLoadingDialog;
+import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener;
 import com.starrynight.tourapiproject.starPage.starItemPage.OnStarItemClickListener2;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
+import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdapter;
 import com.starrynight.tourapiproject.starPage.starItemPage.StarViewAdpater2;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.weatherPage.GpsTracker;
@@ -52,7 +54,7 @@ import retrofit2.Response;
 public class SelectStarActivity extends AppCompatActivity {
 
     RecyclerView selectStarRecyclerView;
-    StarViewAdpater2 selectConstAdapter;
+    StarViewAdapter selectConstAdapter;
     SearchLoadingDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,12 +77,12 @@ public class SelectStarActivity extends AppCompatActivity {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
         selectStarRecyclerView.setLayoutManager(gridLayoutManager);
         selectStarRecyclerView.addItemDecoration(new StarRecyclerViewWidth(3,30));
-        selectConstAdapter = new StarViewAdpater2();
+        selectConstAdapter = new StarViewAdapter();
         selectStarRecyclerView.setAdapter(selectConstAdapter);
         dialog.show();
 
         // 전체 별자리 가져오는 이벤트
-        Call<List<StarItem>> starItemCall = RetrofitClient.getApiService().getConstellation();
+        Call<List<StarItem>> starItemCall = RetrofitClient.getApiService().getTodayConst();
         starItemCall.enqueue(new Callback<List<StarItem>>() {
             @SuppressLint("ResourceAsColor")
             @Override
@@ -102,9 +104,9 @@ public class SelectStarActivity extends AppCompatActivity {
             }
         });
         // item 클릭 시 해당 아이템 constName 넘겨주기
-        selectConstAdapter.setOnItemClickListener(new OnStarItemClickListener2() {
+        selectConstAdapter.setOnItemClickListener(new OnStarItemClickListener() {
             @Override
-            public void onItemClick(StarViewAdpater2.ViewHolder holder, View view, int position) {
+            public void onItemClick(StarViewAdapter.ViewHolder holder, View view, int position) {
                 AlertDialog.Builder builder =
                         new AlertDialog.Builder(SelectStarActivity.this,R.style.DimDialog); // 알림 뒤 화면 dim 처리
                 AlertDialog pop = builder.create();
