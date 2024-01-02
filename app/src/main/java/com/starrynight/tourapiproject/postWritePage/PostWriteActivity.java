@@ -184,7 +184,12 @@ public class PostWriteActivity extends AppCompatActivity {
                             Toast.makeText(PostWriteActivity.this, "사진은 최대 10장까지 선택할수있습니다.", Toast.LENGTH_LONG).show();
                         }
                         //권한 설정
-                        int permission = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                        int permission;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            permission = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_MEDIA_VIDEO);
+                        } else {
+                            permission = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                        }
                         int permission2;
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                             permission2 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_MEDIA_IMAGES);
@@ -194,7 +199,7 @@ public class PostWriteActivity extends AppCompatActivity {
                         int permission3 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.INTERNET);//denied면 -1
 
                         Log.d("test", "onClick: location clicked");
-                        if (permission == PackageManager.PERMISSION_GRANTED && permission2 == PackageManager.PERMISSION_GRANTED && permission3 == PackageManager.PERMISSION_GRANTED) {
+                        if (permission2 == PackageManager.PERMISSION_GRANTED && permission3 == PackageManager.PERMISSION_GRANTED) {
                             Log.d("MyTag", "읽기,쓰기,인터넷 권한이 있습니다.");
                             Intent intent = new Intent("android.intent.action.MULTIPLE_PICK");
                             intent.setType("image/*");
@@ -226,7 +231,6 @@ public class PostWriteActivity extends AppCompatActivity {
                         } else {
                             Log.d("test", "permission denied");
                             Toast.makeText(getApplicationContext(), "읽기 권한이 없습니다.", Toast.LENGTH_SHORT).show();
-                            ActivityCompat.requestPermissions(PostWriteActivity.this, WRITE_PERMISSION, PERMISSIONS_REQUEST_CODE);
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                 ActivityCompat.requestPermissions(PostWriteActivity.this, READ_MEDIA_IMAGES, PERMISSIONS_REQUEST_CODE);
                             } else {
