@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("test", "onClick: location clicked");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            System.out.println("왜 안될까요");
             if (permission == PackageManager.PERMISSION_GRANTED
                     && permission3 == PackageManager.PERMISSION_GRANTED
                     && permission4 == PackageManager.PERMISSION_GRANTED
