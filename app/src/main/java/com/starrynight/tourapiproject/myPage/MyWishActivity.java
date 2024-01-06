@@ -103,6 +103,12 @@ public class MyWishActivity extends AppCompatActivity {
             public void onResponse(Call<List<MyWishObTp>> call, Response<List<MyWishObTp>> response) {
                 if (response.isSuccessful()) {
                     tpResult = response.body();
+                    if(tpResult.isEmpty()){
+                        nothingWishText.setText("아직 북마크한 관측지가 없어요.");
+                        nothingWish.setVisibility(View.VISIBLE);
+                    }else{
+                        nothingWish.setVisibility(View.GONE);
+                    }
                     MyWishObTpAdapter myWishObAdapter = new MyWishObTpAdapter(tpResult, MyWishActivity.this);
                     myWishRecyclerview.setAdapter(myWishObAdapter);
                     myWishObAdapter.setOnMyWishObTpItemClickListener(new OnMyWishObTpItemClickListener() {

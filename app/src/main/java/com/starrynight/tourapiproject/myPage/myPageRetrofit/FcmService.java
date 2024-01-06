@@ -8,12 +8,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.text.Html;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -71,6 +73,7 @@ public class FcmService extends FirebaseMessagingService {
 
         String title = remoteMessage.getData().get("title");
         String body = remoteMessage.getData().get("body");
+        CharSequence htmlBody = Html.fromHtml(body,HtmlCompat.FROM_HTML_MODE_LEGACY);
         String isNotice = remoteMessage.getData().get("isNotice");
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("type","alarm");
@@ -78,7 +81,7 @@ public class FcmService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 10 , intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
         builder.setContentTitle(title)
-                .setContentText(body)
+                .setContentText(htmlBody)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .setColor(ContextCompat.getColor(getApplicationContext(),R.color.point_blue))

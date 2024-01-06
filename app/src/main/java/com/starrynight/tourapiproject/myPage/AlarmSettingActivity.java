@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.starrynight.tourapiproject.R;
 
@@ -30,6 +31,11 @@ public class AlarmSettingActivity extends AppCompatActivity {
         switchComment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if(!isChecked){
+                    Toast.makeText(getApplicationContext(), "댓글 알림을 껐습니다", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(), "댓글 알림을 켰습니다", Toast.LENGTH_SHORT).show();
+                }
                 editor.putBoolean("isCommentDenied", isChecked);
                 editor.apply();
             }
@@ -43,6 +49,11 @@ public class AlarmSettingActivity extends AppCompatActivity {
         switchNotice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if(!isChecked){
+                    Toast.makeText(getApplicationContext(), "공지사항 알림을 껐습니다", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(), "공지사항 알림을 켰습니다", Toast.LENGTH_SHORT).show();
+                }
                 editor.putBoolean("isNoticeDenied", isChecked);
                 editor.apply();
             }
@@ -55,5 +66,7 @@ public class AlarmSettingActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
     }
 }
