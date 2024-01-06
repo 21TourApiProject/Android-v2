@@ -1,5 +1,6 @@
 package com.starrynight.tourapiproject.starPage.starItemPage;
 
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,6 +97,9 @@ public class StarViewAdpater2 extends RecyclerView.Adapter<StarViewAdpater2.View
         }
 
         public void setItem(StarItem item) {
+            if(item.getConstName().length()>7){
+                constName.setTextSize(TypedValue.COMPLEX_UNIT_SP,11);
+            }
             constName.setText(item.getConstName());
         }
     }

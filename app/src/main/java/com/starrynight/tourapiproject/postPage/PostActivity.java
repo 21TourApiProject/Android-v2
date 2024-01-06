@@ -675,7 +675,7 @@ public class PostActivity extends AppCompatActivity {
                         @SuppressLint("SimpleDateFormat")
                         SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
                         @SuppressLint("SimpleDateFormat")
-                        SimpleDateFormat dateFormat2 = new SimpleDateFormat("kk:mm:ss");
+                        SimpleDateFormat dateFormat2 = new SimpleDateFormat("HH:mm:ss");
                         String yearDate = dateFormat1.format(date);
                         String time = dateFormat2.format(date);
                         postCommentParams.setTime(time);
@@ -737,7 +737,7 @@ public class PostActivity extends AppCompatActivity {
                     long now = System.currentTimeMillis();//댓글을 쓴 현재시간 가져오기
                     Date date = new Date(now);
                     SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
-                    SimpleDateFormat dateFormat2 = new SimpleDateFormat("hh:mm:ss");
+                    SimpleDateFormat dateFormat2 = new SimpleDateFormat("HH:mm:ss");
                     String yearDate = dateFormat1.format(date);
                     String time = dateFormat2.format(date);
                     postCommentParams.setTime(time);

@@ -1,5 +1,6 @@
 package com.starrynight.tourapiproject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -68,6 +70,7 @@ public class PersonFragment extends Fragment {
 
     private static final String TAG = "PersonFragment";
     private static final int HAVE_TO_REFRESH = 20;
+    private Context mContext;
 
     Long userId;
     User2 user;
@@ -88,6 +91,13 @@ public class PersonFragment extends Fragment {
 
     List<MyWish> myWishes = new ArrayList<>();
     List<MyPost3> myPost3s = new ArrayList<>();
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -146,11 +156,11 @@ public class PersonFragment extends Fragment {
                     user = response.body();
                     if (user.getProfileImage() != null) {
                         if (user.getProfileImage().startsWith("http://") || user.getProfileImage().startsWith("https://")) {
-                            Glide.with(getActivity()).load(user.getProfileImage()).into(profileImage);
+                            Glide.with(mContext).load(user.getProfileImage()).into(profileImage);
                         } else {
                             String fileName = user.getProfileImage();
                             fileName = fileName.substring(1, fileName.length() - 1);
-                            Glide.with(getActivity()).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/profileImage/" + fileName).into(profileImage);
+                            Glide.with(mContext).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/profileImage/" + fileName).into(profileImage);
                         }
                     }
                     nickName.setText(user.getNickName());
@@ -181,9 +191,9 @@ public class PersonFragment extends Fragment {
                         if (myWishes.get(i).getThumbnail() != null) {
                             String imageName = myWishes.get(i).getThumbnail();
                             if (imageName.startsWith("http://") || imageName.startsWith("https://"))
-                                Glide.with(getActivity()).load(imageName).into(myWishImage1);
+                                Glide.with(mContext).load(imageName).into(myWishImage1);
                             else
-                                Glide.with(getActivity()).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + imageName).into(myWishImage1);
+                                Glide.with(mContext).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + imageName).into(myWishImage1);
                         } else {
                             myWishImage1.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.default_image));
                         }
@@ -194,9 +204,9 @@ public class PersonFragment extends Fragment {
                             if (myWishes.get(i).getThumbnail() != null) {
                                 String imageName = myWishes.get(i).getThumbnail();
                                 if (imageName.startsWith("http://") || imageName.startsWith("https://"))
-                                    Glide.with(getContext()).load(imageName).into(myWishImage2);
+                                    Glide.with(mContext).load(imageName).into(myWishImage2);
                                 else
-                                    Glide.with(getActivity()).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + imageName).into(myWishImage2);
+                                    Glide.with(mContext).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + imageName).into(myWishImage2);
                             } else {
                                 myWishImage2.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.default_image));
                             }
@@ -207,9 +217,9 @@ public class PersonFragment extends Fragment {
                                 if (myWishes.get(i).getThumbnail() != null) {
                                     String imageName = myWishes.get(i).getThumbnail();
                                     if (imageName.startsWith("http://") || imageName.startsWith("https://"))
-                                        Glide.with(getContext()).load(imageName).into(myWishImage3);
+                                        Glide.with(mContext).load(imageName).into(myWishImage3);
                                     else
-                                        Glide.with(getActivity()).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + imageName).into(myWishImage3);
+                                        Glide.with(mContext).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + imageName).into(myWishImage3);
                                 } else {
                                     myWishImage3.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.default_image));
                                 }
@@ -243,21 +253,21 @@ public class PersonFragment extends Fragment {
                         myPostLayout.setVisibility(View.GONE);
                     else {
                         if (myPost3s.get(i).getThumbnail() != null) {
-                            Glide.with(getActivity()).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + myPost3s.get(i).getThumbnail()).into(myPostImage1);
+                            Glide.with(mContext).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + myPost3s.get(i).getThumbnail()).into(myPostImage1);
                         } else
                             myPostImage1.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.default_image));
                         myPostTitle1.setText(myPost3s.get(i).getTitle());
                         i++;
                         if (size > 1) {
                             if (myPost3s.get(i).getThumbnail() != null) {
-                                Glide.with(getActivity()).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + myPost3s.get(i).getThumbnail()).into(myPostImage2);
+                                Glide.with(mContext).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + myPost3s.get(i).getThumbnail()).into(myPostImage2);
                             } else
                                 myPostImage2.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.default_image));
                             myPostTitle2.setText(myPost3s.get(i).getTitle());
                             i++;
                             if (size > 2) {
                                 if (myPost3s.get(i).getThumbnail() != null) {
-                                    Glide.with(getActivity()).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + myPost3s.get(i).getThumbnail()).into(myPostImage3);
+                                    Glide.with(mContext).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + myPost3s.get(i).getThumbnail()).into(myPostImage3);
                                 } else
                                     myPostImage3.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.default_image));
                                 myPostTitle3.setText(myPost3s.get(i).getTitle());
@@ -289,21 +299,21 @@ public class PersonFragment extends Fragment {
                         myCommentLayout.setVisibility(View.GONE);
                     else {
                         if (myComments.get(i).getThumbnail() != null) {
-                            Glide.with(getContext()).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + myComments.get(i).getThumbnail()).into(myCommentImage1);
+                            Glide.with(mContext).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + myComments.get(i).getThumbnail()).into(myCommentImage1);
                         } else
                             myCommentImage1.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.default_image));
                         myCommentTitle1.setText(myComments.get(i).getComment());
                         i++;
                         if (size > 1) {
                             if (myComments.get(i).getThumbnail() != null) {
-                                Glide.with(getContext()).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + myComments.get(i).getThumbnail()).into(myCommentImage2);
+                                Glide.with(mContext).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + myComments.get(i).getThumbnail()).into(myCommentImage2);
                             } else
                                 myCommentImage2.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.default_image));
                             myCommentTitle2.setText(myComments.get(i).getComment());
                             i++;
                             if (size > 2) {
                                 if (myComments.get(i).getThumbnail() != null) {
-                                    Glide.with(getContext()).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + myComments.get(i).getThumbnail()).into(myCommentImage3);
+                                    Glide.with(mContext).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + myComments.get(i).getThumbnail()).into(myCommentImage3);
                                 } else
                                     myCommentImage3.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.default_image));
                                 myCommentTitle3.setText(myComments.get(i).getComment());
@@ -362,6 +372,15 @@ public class PersonFragment extends Fragment {
         //내가 쓴 댓글 페이지로 이동
         LinearLayout myCommentBtn = v.findViewById(R.id.myCommentLinearLayout);
         myCommentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MyCommentActivity.class);
+                intent.putExtra("userId", userId);
+                startActivityForResult(intent, HAVE_TO_REFRESH);
+            }
+        });
+
+        myCommentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MyCommentActivity.class);
