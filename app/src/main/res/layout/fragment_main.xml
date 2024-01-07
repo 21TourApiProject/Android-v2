@@ -6,17 +6,14 @@
     android:layout_height="wrap_content"
     tools:context=".mainPage.MainFragment">
 
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_layout"
+    <com.baoyz.widget.PullRefreshLayout
+        android:id="@+id/pull_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/bottom_nav_size"
         android:foregroundGravity="center"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:refreshColor="@color/point_blue"
+        app:refreshType="smartisan">
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scroll_layout"
@@ -255,9 +252,9 @@
                             android:id="@+id/editInterestArea"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="편집"
                             android:paddingLeft="16dp"
                             android:paddingRight="16dp"
+                            android:text="편집"
                             android:textColor="@color/gray_500" />
 
                     </LinearLayout>
@@ -835,17 +832,10 @@
 
                 </LinearLayout>
 
-                <ProgressBar
-                    android:id="@+id/mainProgressBar"
-                    style="?android:attr/progressBarStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" />
-
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </com.baoyz.widget.PullRefreshLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

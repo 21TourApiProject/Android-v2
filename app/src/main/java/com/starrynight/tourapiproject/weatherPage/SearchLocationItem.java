@@ -1,6 +1,8 @@
 package com.starrynight.tourapiproject.weatherPage;
 
-public class SearchLocationItem {
+import java.io.Serializable;
+
+public class SearchLocationItem implements Serializable {
     String title;
     String subtitle;
     Long areaId; // WEATHER_AREA id

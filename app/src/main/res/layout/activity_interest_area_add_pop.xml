@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/interest_area_pop_back"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context=".mainPage.interestArea.InterestAreaPopActivity">
+
+    <TextView
+        android:id="@+id/interest_area_add_region_name"
+        style="@style/medium_multi_16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/interest_area_add_close"
+        style="@style/semiBold_single_16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="end"
+        android:text="확인"
+        android:layout_marginEnd="10dp"
+        android:textColor="@color/white" />
+
+</LinearLayout>

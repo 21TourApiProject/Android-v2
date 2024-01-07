@@ -8,16 +8,19 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.starrynight.tourapiproject.R;
+import com.starrynight.tourapiproject.mainPage.interestArea.InterestAreaAddIntent;
+import com.starrynight.tourapiproject.mainPage.interestArea.InterestAreaAddPopActivity;
 import com.starrynight.tourapiproject.mainPage.interestArea.InterestAreaIntent;
-import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.AddInterestAreaDTO;
-import com.starrynight.tourapiproject.mainPage.interestArea.interestAreaRetrofit.InterestAreaRetrofitClient;
 import com.starrynight.tourapiproject.weatherPage.weatherRetrofit.WeatherRetrofitClient;
 
 import java.util.ArrayList;
@@ -34,6 +37,7 @@ public class WeatherLocationSearchActivity extends AppCompatActivity {
 
     Long userId;
     List<String> interestAreaNameList;
+    Integer count;
 
     private EditText locationSearch;
     private RecyclerView locationResult;
@@ -48,10 +52,17 @@ public class WeatherLocationSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather_location_search);
 
+        ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == 1) {
+                count++;
+            }
+        });
+
         if (getIntent().getSerializableExtra("interestAreaIntent") != null) {
             InterestAreaIntent interestAreaIntent = (InterestAreaIntent) getIntent().getSerializableExtra("interestAreaIntent");
             userId = interestAreaIntent.getUserId();
             interestAreaNameList = interestAreaIntent.getInterestAreaNameList();
+            count = interestAreaNameList.size();
 
             weatherLocationTitle = findViewById(R.id.weatherLocationTitle);
             weatherLocationTitle.setText("관심지역 추가");
@@ -84,40 +95,15 @@ public class WeatherLocationSearchActivity extends AppCompatActivity {
         searchAdapter = new SearchLocationItemAdapter(searchItemArrayList);
         searchAdapter.setOnItemClickListener((holder, view, position) -> {
             SearchLocationItem item = searchAdapter.getItem(position);
-            if (userId != null) {
-                AddInterestAreaDTO addInterestAreaDTO = new AddInterestAreaDTO();
-                addInterestAreaDTO.setUserId(userId);
-                addInterestAreaDTO.setRegionName(item.getTitle());
-
-                if (Objects.nonNull(item.getObservationId())) {
-                    addInterestAreaDTO.setRegionType(1);
-                    addInterestAreaDTO.setRegionId(item.observationId);
+            if (userId != null) { // 관심지역 추가
+                if (count >= 3) {
+                    Toast.makeText(getApplicationContext(), "관심지역은 최대 3개까지 등록할 수 있습니다", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), InterestAreaAddPopActivity.class);
+                    intent.putExtra("interestAreaAddIntent", new InterestAreaAddIntent(userId, item));
+                    launcher.launch(intent);
                 }
-                if (Objects.nonNull(item.getAreaId())) {
-                    addInterestAreaDTO.setRegionType(2);
-                    addInterestAreaDTO.setRegionId(item.areaId);
-                }
-
-                InterestAreaRetrofitClient.getApiService()
-                        .addInterestArea(addInterestAreaDTO)
-                        .enqueue(new Callback<Void>() {
-                            @Override
-                            public void onResponse(Call<Void> call, Response<Void> response) {
-                                if (response.isSuccessful()) {
-                                    Log.d(TAG, "관심 지역 추가 성공");
-                                } else {
-                                    Log.e(TAG, "서버 api 호출 실패");
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<Void> call, Throwable t) {
-                                Log.e("연결실패", t.getMessage());
-                            }
-                        });
-
-                finish();
-            } else {
+            } else { // 날씨 페이지
                 Intent intent = new Intent(getApplicationContext(), WeatherActivity.class);
                 LocationDTO locationDTO = new LocationDTO(item.getLatitude(), item.getLongitude(), null, null, item.getTitle());
                 if (Objects.nonNull(item.getAreaId())) locationDTO.setAreaId(item.areaId);
@@ -164,5 +150,4 @@ public class WeatherLocationSearchActivity extends AppCompatActivity {
         }
         searchAdapter.filterList(filteredList);
     }
-
 }
