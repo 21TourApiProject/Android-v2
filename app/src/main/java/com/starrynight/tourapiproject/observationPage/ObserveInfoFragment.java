@@ -126,14 +126,16 @@ public class ObserveInfoFragment extends Fragment {
         map_btn = v.findViewById(R.id.obs_location_btn);
         nature_map_btn = v.findViewById(R.id.obs_nature_location_btn);
 
+        if (observation != null) {
+            setInfos();
+            //지도버튼 설정
+            setKakaomap();
 
-        setInfos();
+            //코스설정
+            setCourse();
+        }
 
-        //지도버튼 설정
-        setKakaomap();
 
-        //코스설정
-        setCourse();
 
         return v;
     }
