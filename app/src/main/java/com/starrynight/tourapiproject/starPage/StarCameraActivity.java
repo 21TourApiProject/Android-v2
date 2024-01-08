@@ -230,6 +230,7 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
                     finalConstName.setText(constData.getConstName());
                     Glide.with(StarCameraActivity.this).load("https://starry-night.s3.ap-northeast-2.amazonaws.com/constDetailImage/s_"
                             + constData.getConstEng() + ".png").fitCenter().into(guideImage);
+                    Log.d(TAG,"영어이름: "+constData.getConstEng());
                 }
             }
 
@@ -397,7 +398,7 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
                 crtGuideTextDir.setText(xDirection+" 방향으로");
                 starGuideArrow.setRotation((crtAzimuth>0)?180f:0f);
                 crtGuideTextAngle.setText(+Math.abs(Math.floor(crtAzimuth))+"°");
-                crtGuideText.setText(xDirection+"돌아주세요.");
+                crtGuideText.setText("돌아주세요.");
             }
             if(Math.abs(Math.floor(crtAzimuth))==0&&isAzi){
                 isAzi=false;
@@ -595,6 +596,21 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
               negative.setOnClickListener(new View.OnClickListener() {
                   @Override
                   public void onClick(View view) {
+                      //앱 내부 저장소에 review란 이름으로 리뷰 유무 저장
+                      String fileName = "review";
+                      String isReview = "true";
+                      try {
+                          FileOutputStream fos = openFileOutput(fileName, Context.MODE_PRIVATE);
+                          fos.write(isReview.getBytes());
+                          fos.close();
+                      } catch (Exception e) {
+                          e.printStackTrace();
+                      }
+                      String url = "https://play.google.com/store/apps/details?id=com.starrynight.tourapiproject";
+                      Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                      startActivity(i);
+                      System.runFinalization();
+                      System.exit(0);
                       pop.dismiss();
                       finish();
                   }

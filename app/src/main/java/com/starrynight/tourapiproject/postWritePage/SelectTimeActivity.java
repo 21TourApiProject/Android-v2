@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ public class SelectTimeActivity extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener callbackMethod;
     private TextView timePicker;
     private TimePickerDialog.OnTimeSetListener callbackMethod2;
+    private LinearLayout timeCheckBoxLayout;
 
     @SuppressLint("SimpleDateFormat")
     SimpleDateFormat formatHour = new SimpleDateFormat("HH");
@@ -106,8 +108,9 @@ public class SelectTimeActivity extends AppCompatActivity {
             }
         };
         //시간 모르겠음 체크박스 클릭
+        timeCheckBoxLayout=findViewById(R.id.timeCheckBoxLayout);
         timeCheckbox = findViewById(R.id.timeCheckBox);
-        timeCheckbox.setOnClickListener(new View.OnClickListener() {
+        timeCheckBoxLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(timeCheckbox.isChecked()){

@@ -26,8 +26,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.baoyz.widget.PullRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.starrynight.tourapiproject.MainActivity;
 import com.starrynight.tourapiproject.R;
@@ -87,7 +87,7 @@ import retrofit2.Response;
  * @modification : 2022-09-02 (jinhyeok) 주석 수정
  * @date : 2022-09-02
  */
-public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class MainFragment extends Fragment implements PullRefreshLayout.OnRefreshListener {
 
     private MainActivity activityContext;
 
@@ -106,7 +106,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private Context mContext;
     private Long userId;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private PullRefreshLayout pullRefreshLayout;
     private ImageView subBanner;
     private LinearLayout subBannerLayout;
     private TextView helloMassage; // 인사말
@@ -184,8 +184,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_main, container, false);
-        swipeRefreshLayout = v.findViewById(R.id.swipe_layout);
-        swipeRefreshLayout.setOnRefreshListener(this);
+        pullRefreshLayout = v.findViewById(R.id.pull_layout);
+        pullRefreshLayout.setOnRefreshListener(this);
 
         helloMassage = v.findViewById(R.id.hello_message);
         currentWeatherIcon = v.findViewById(R.id.main__current_weather_icon);
@@ -643,7 +643,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onRefresh() {
         ((FragmentActivity) getContext()).getSupportFragmentManager().beginTransaction().detach(this).commit();
         ((FragmentActivity) getContext()).getSupportFragmentManager().beginTransaction().attach(this).commit();
-        swipeRefreshLayout.setRefreshing(false);
+        pullRefreshLayout.setRefreshing(false);
     }
 
     public void checkLocationPermission() {

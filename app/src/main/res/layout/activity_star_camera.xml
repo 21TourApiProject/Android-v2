@@ -197,18 +197,18 @@
         android:layout_marginBottom="165dp"
         app:layout_constraintBottom_toBottomOf="parent">
         <TextView
-            android:id="@+id/azimuth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="현재 \n방위각:"
-            style="@style/semiBold_multi_12"
-            android:textColor="@color/white"/>
-        <TextView
             android:id="@+id/roll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="고도:"
             style="@style/medium_multi_12"
+            android:textColor="@color/white"/>
+        <TextView
+            android:id="@+id/azimuth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="현재 \n방위각:"
+            style="@style/semiBold_multi_12"
             android:textColor="@color/white"/>
     </LinearLayout>
 
