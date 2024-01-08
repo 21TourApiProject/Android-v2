@@ -119,6 +119,7 @@ public class PostWriteActivity extends AppCompatActivity {
     private TextView postObservePointItem;
     String[] WRITE_PERMISSION = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
     String[] READ_PERMISSION = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
+    String[] READ_MEDIA_IMAGES = new String[]{Manifest.permission.READ_MEDIA_IMAGES};
     String[] INTERNET_PERMISSION = new String[]{Manifest.permission.INTERNET};
     EditText addContext;
     TextView dateText,timeText;
@@ -183,12 +184,22 @@ public class PostWriteActivity extends AppCompatActivity {
                             Toast.makeText(PostWriteActivity.this, "사진은 최대 10장까지 선택할수있습니다.", Toast.LENGTH_LONG).show();
                         }
                         //권한 설정
-                        int permission = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                        int permission2 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
+                        int permission;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            permission = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_MEDIA_VIDEO);
+                        } else {
+                            permission = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                        }
+                        int permission2;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            permission2 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_MEDIA_IMAGES);
+                        } else {
+                            permission2 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
+                        }
                         int permission3 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.INTERNET);//denied면 -1
 
                         Log.d("test", "onClick: location clicked");
-                        if (permission == PackageManager.PERMISSION_GRANTED && permission2 == PackageManager.PERMISSION_GRANTED && permission3 == PackageManager.PERMISSION_GRANTED) {
+                        if (permission2 == PackageManager.PERMISSION_GRANTED && permission3 == PackageManager.PERMISSION_GRANTED) {
                             Log.d("MyTag", "읽기,쓰기,인터넷 권한이 있습니다.");
                             Intent intent = new Intent("android.intent.action.MULTIPLE_PICK");
                             intent.setType("image/*");
@@ -217,11 +228,14 @@ public class PostWriteActivity extends AppCompatActivity {
 //                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 //                    startActivityForResult(Intent.createChooser(intent, "사진 최대 9장 선택가능"), PICK_IMAGE_MULTIPLE);
                             }
-                        } else if (permission == PackageManager.PERMISSION_DENIED) {
+                        } else {
                             Log.d("test", "permission denied");
-                            Toast.makeText(getApplicationContext(), "쓰기권한이 없습니다.", Toast.LENGTH_SHORT).show();
-                            ActivityCompat.requestPermissions(PostWriteActivity.this, WRITE_PERMISSION, PERMISSIONS_REQUEST_CODE);
-                            ActivityCompat.requestPermissions(PostWriteActivity.this, READ_PERMISSION, PERMISSIONS_REQUEST_CODE);
+                            Toast.makeText(getApplicationContext(), "읽기 권한이 없습니다.", Toast.LENGTH_SHORT).show();
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                ActivityCompat.requestPermissions(PostWriteActivity.this, READ_MEDIA_IMAGES, PERMISSIONS_REQUEST_CODE);
+                            } else {
+                                ActivityCompat.requestPermissions(PostWriteActivity.this, READ_PERMISSION, PERMISSIONS_REQUEST_CODE);
+                            }
                             ActivityCompat.requestPermissions(PostWriteActivity.this, INTERNET_PERMISSION, PERMISSIONS_REQUEST_CODE);
                         }
                 }
