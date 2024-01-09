@@ -51,12 +51,11 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             installed_version = BuildConfig.VERSION_NAME;
                             firebase_version = mFirebaseRemoteConfig.getString("tour_api_project_v_1_3");
-                            if(installed_version.equals(firebase_version)){
-                                versionPass = true;
-                            }else{
-                                versionPass = false;
-                            }
-
+//                            if(installed_version.equals(firebase_version)){
+//                                versionPass = true;
+//                            }else{
+//                                versionPass = false;
+//                            }
                             if (!versionPass) {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                                 builder.setTitle("업데이트 안내");
