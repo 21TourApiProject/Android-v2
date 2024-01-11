@@ -97,9 +97,6 @@ public class StarViewAdpater2 extends RecyclerView.Adapter<StarViewAdpater2.View
         }
 
         public void setItem(StarItem item) {
-            if(item.getConstName().length()>7){
-                constName.setTextSize(TypedValue.COMPLEX_UNIT_SP,11);
-            }
             constName.setText(item.getConstName());
         }
     }
