@@ -466,7 +466,7 @@ public class MainFragment extends Fragment implements PullRefreshLayout.OnRefres
             if (!editMode) {
                 // 관심지역 추가 페이지로 이동
                 Intent intent = new Intent(getActivity().getApplicationContext(), WeatherLocationSearchActivity.class);
-                intent.putExtra("interestAreaIntent", new InterestAreaIntent(userId, null));
+                intent.putExtra("interestAreaIntent", new InterestAreaIntent(userId, new ArrayList<>()));
                 startActivity(intent);
                 needSet = true;
             } else {

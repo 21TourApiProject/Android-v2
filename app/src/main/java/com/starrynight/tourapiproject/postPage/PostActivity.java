@@ -35,8 +35,8 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.starrynight.tourapiproject.MainActivity;
-import com.starrynight.tourapiproject.mainPage.MainFragment;
 import com.starrynight.tourapiproject.R;
+import com.starrynight.tourapiproject.mainPage.MainFragment;
 import com.starrynight.tourapiproject.mapPage.Activities;
 import com.starrynight.tourapiproject.myPage.CustomerSCActivity;
 import com.starrynight.tourapiproject.myPage.myPageRetrofit.User;
@@ -57,6 +57,7 @@ import com.starrynight.tourapiproject.postPage.postRetrofit.PostImage;
 import com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostParams;
 import com.starrynight.tourapiproject.searchPage.SearchResultActivity;
+import com.starrynight.tourapiproject.searchPage.searchPageRetrofit.SearchLoadingDialog;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -69,7 +70,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -89,6 +89,7 @@ import retrofit2.Response;
 public class PostActivity extends AppCompatActivity {
     private ViewPager2 sliderViewPager;
     private LinearLayout indicator;
+    SearchLoadingDialog dialog;
     boolean isWish;
     boolean isLove;
     Button like_btn;
@@ -109,6 +110,7 @@ public class PostActivity extends AppCompatActivity {
     ArrayList<Integer> area = new ArrayList<Integer>(Collections.nCopies(17, 0));
     String keyword;
     MainFragment mainFragment = new MainFragment();
+    PostCommentAdapter commentAdapter = new PostCommentAdapter();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,6 +118,8 @@ public class PostActivity extends AppCompatActivity {
         Intent intent = getIntent();
         PostParams postParams = (PostParams) intent.getSerializableExtra("postParams");
         postId = (Long) intent.getSerializableExtra("postId");
+
+        dialog = new SearchLoadingDialog(PostActivity.this);
         //앱 내부저장소에서 저장된 유저 아이디 가져오기
         String fileName = "userId";
         try {
@@ -581,83 +585,8 @@ public class PostActivity extends AppCompatActivity {
         commentRecyclerView = findViewById(R.id.commentRecyclerview);
         LinearLayoutManager commentLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         commentRecyclerView.setLayoutManager(commentLayoutManager);
-        PostCommentAdapter commentAdapter = new PostCommentAdapter();
-        Call<List<PostComment>> commentCall = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().getPostCommentById(postId);
-        commentCall.enqueue(new Callback<List<PostComment>>() {
-            @Override
-            public void onResponse(Call<List<PostComment>> call, Response<List<PostComment>> response) {
-                if(response.isSuccessful()){
-                    List<PostComment> result = response.body();
-                    if (!result.isEmpty()){
-                        commentRecyclerView.setVisibility(View.VISIBLE);
-                    }else{
-                        commentRecyclerView.setVisibility(View.GONE);
-                    }
-                    for(int i=0;i<result.size();i++){
-                        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
-                        String commentTime = result.get(i).getYearDate()+" "+result.get(i).getTime();
-                        Date currentTime = new Date();
-                        try {
-                            Date commentDate = dateFormat.parse(commentTime);
-                            long timeDifference = currentTime.getTime() - commentDate.getTime();
-                            long minutesDifference = timeDifference / (60 * 1000);
-                            if (minutesDifference < 1) {
-                                result.get(i).setYearDate("방금 전");
-                                result.get(i).setTime("");
-                            } else if (minutesDifference < 60) {
-                                result.get(i).setYearDate(minutesDifference + "분 전");
-                                result.get(i).setTime("");
-                            } else if (minutesDifference < 24 * 60) {
-                                result.get(i).setYearDate((minutesDifference / 60) + "시간 전");
-                                result.get(i).setTime("");
-                            }else if(minutesDifference>=24*60&&minutesDifference<48*60){
-                                result.get(i).setYearDate("어제");
-                                result.get(i).setTime("");
-                            }else if(minutesDifference>=48*60&&minutesDifference<7*24*60){
-                                result.get(i).setYearDate((minutesDifference / (24*60)) + "일 전");
-                                result.get(i).setTime("");
-                            }else if(minutesDifference>=7*24*60&&minutesDifference<365*24*60){
-                                result.get(i).setYearDate((minutesDifference / (7*24*60)) + "주 전");
-                                result.get(i).setTime("");
-                            }else{
-                                result.get(i).setYearDate((minutesDifference / (365*24*60)) + "년 전");
-                                result.get(i).setTime("");
-                            }
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+        getComments();
 
-                        commentAdapter.addItem(result.get(i));
-                    }
-                    if(result.size()>1&&result.size()<5){ //댓글이 4개까지만 늘어나고 5개부터는 고정됨
-                        int padding_in_dp = 108*result.size();
-                        final float scale = getResources().getDisplayMetrics().density;
-                        int padding_in_px = (int) (padding_in_dp * scale + 0.5f);
-                        LinearLayout.LayoutParams params=(LinearLayout.LayoutParams)commentRecyclerView.getLayoutParams();
-                        params.height=padding_in_px;
-                        commentRecyclerView.setLayoutParams(params);
-                    }
-                    else if(result.size()>4){
-                        int padding_in_dp = 512;
-                        final float scale = getResources().getDisplayMetrics().density;
-                        int padding_in_px = (int) (padding_in_dp * scale + 0.5f);
-                        LinearLayout.LayoutParams params=(LinearLayout.LayoutParams)commentRecyclerView.getLayoutParams();
-                        params.height=padding_in_px;
-                        commentRecyclerView.setLayoutParams(params);
-                    }
-                    postCommentCount.setText(String.valueOf(result.size()));
-                    commentRecyclerView.setAdapter(commentAdapter);
-                }
-                else{
-                    Log.d("postComment", "게시물 댓글 정보 업로드 실패");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<PostComment>> call, Throwable t) {
-                Log.d("postComment", "게시물 댓글 인터넷 오류");
-            }
-        });
 
         //게시글 댓글 달기
         EditText commentEditText = findViewById(R.id.comment_editText);
@@ -667,6 +596,7 @@ public class PostActivity extends AppCompatActivity {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if(event.getAction()==KeyEvent.ACTION_DOWN&&keyCode ==KeyEvent.KEYCODE_ENTER){ //입력하고 엔터쳤을 때
                     if (!commentEditText.getText().toString().equals("")) {
+                        dialog.show();
                         PostCommentParams postCommentParams = new PostCommentParams();
                         postCommentParams.setComment(((EditText) (findViewById(R.id.comment_editText))).getText().toString());
                         postCommentParams.setUserId(userId);
@@ -685,11 +615,9 @@ public class PostActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
                                 if(response.isSuccessful()){
-                                    Intent intent = getIntent();
-                                    finish(); //페이지 새로고침
-                                    overridePendingTransition(0, 0);
-                                    startActivity(intent);
-                                    overridePendingTransition(0, 0);
+                                    getComments();
+                                    commentEditText.setText("");
+                                    dialog.dismiss();
                                 }else{
                                     Log.d("postComment", "게시물 댓글 정보 추가 실패");
                                 }
@@ -731,6 +659,7 @@ public class PostActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!commentEditText.getText().toString().equals("")) {
+                    dialog.show();
                     PostCommentParams postCommentParams = new PostCommentParams();
                     postCommentParams.setComment(((EditText) (findViewById(R.id.comment_editText))).getText().toString());
                     postCommentParams.setUserId(userId);
@@ -747,11 +676,9 @@ public class PostActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             if(response.isSuccessful()){
-                                Intent intent = getIntent();
-                                finish(); //페이지 새로고침
-                                overridePendingTransition(0, 0);
-                                startActivity(intent);
-                                overridePendingTransition(0, 0);
+                                getComments();
+                                commentEditText.setText("");
+                                dialog.dismiss();
                             }else{
                                 Log.d("postComment", "게시물 댓글 정보 추가 실패");
                             }
@@ -1031,6 +958,85 @@ public class PostActivity extends AppCompatActivity {
                 ));
             }
         }
+    }
+    public void getComments(){
+        Call<List<PostComment>> commentCall = com.starrynight.tourapiproject.postPage.postRetrofit.RetrofitClient.getApiService().getPostCommentById(postId);
+        commentCall.enqueue(new Callback<List<PostComment>>() {
+            @Override
+            public void onResponse(Call<List<PostComment>> call, Response<List<PostComment>> response) {
+                if(response.isSuccessful()){
+                    List<PostComment> result = response.body();
+                    if (!result.isEmpty()){
+                        commentRecyclerView.setVisibility(View.VISIBLE);
+                        commentAdapter= new PostCommentAdapter();
+                    }else{
+                        commentRecyclerView.setVisibility(View.GONE);
+                    }
+                    for(int i=0;i<result.size();i++){
+                        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+                        String commentTime = result.get(i).getYearDate()+" "+result.get(i).getTime();
+                        Date currentTime = new Date();
+                        try {
+                            Date commentDate = dateFormat.parse(commentTime);
+                            long timeDifference = currentTime.getTime() - commentDate.getTime();
+                            long minutesDifference = timeDifference / (60 * 1000);
+                            if (minutesDifference < 1) {
+                                result.get(i).setYearDate("방금 전");
+                                result.get(i).setTime("");
+                            } else if (minutesDifference < 60) {
+                                result.get(i).setYearDate(minutesDifference + "분 전");
+                                result.get(i).setTime("");
+                            } else if (minutesDifference < 24 * 60) {
+                                result.get(i).setYearDate((minutesDifference / 60) + "시간 전");
+                                result.get(i).setTime("");
+                            }else if(minutesDifference>=24*60&&minutesDifference<48*60){
+                                result.get(i).setYearDate("어제");
+                                result.get(i).setTime("");
+                            }else if(minutesDifference>=48*60&&minutesDifference<7*24*60){
+                                result.get(i).setYearDate((minutesDifference / (24*60)) + "일 전");
+                                result.get(i).setTime("");
+                            }else if(minutesDifference>=7*24*60&&minutesDifference<365*24*60){
+                                result.get(i).setYearDate((minutesDifference / (7*24*60)) + "주 전");
+                                result.get(i).setTime("");
+                            }else{
+                                result.get(i).setYearDate((minutesDifference / (365*24*60)) + "년 전");
+                                result.get(i).setTime("");
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        commentAdapter.addItem(result.get(i));
+                    }
+                    if(result.size()>1&&result.size()<5){ //댓글이 4개까지만 늘어나고 5개부터는 고정됨
+                        int padding_in_dp = 108*result.size();
+                        final float scale = getResources().getDisplayMetrics().density;
+                        int padding_in_px = (int) (padding_in_dp * scale + 0.5f);
+                        LinearLayout.LayoutParams params=(LinearLayout.LayoutParams)commentRecyclerView.getLayoutParams();
+                        params.height=padding_in_px;
+                        commentRecyclerView.setLayoutParams(params);
+                    }
+                    else if(result.size()>4){
+                        int padding_in_dp = 512;
+                        final float scale = getResources().getDisplayMetrics().density;
+                        int padding_in_px = (int) (padding_in_dp * scale + 0.5f);
+                        LinearLayout.LayoutParams params=(LinearLayout.LayoutParams)commentRecyclerView.getLayoutParams();
+                        params.height=padding_in_px;
+                        commentRecyclerView.setLayoutParams(params);
+                    }
+                    postCommentCount.setText(String.valueOf(result.size()));
+                    commentRecyclerView.setAdapter(commentAdapter);
+                }
+                else{
+                    Log.d("postComment", "게시물 댓글 정보 업로드 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PostComment>> call, Throwable t) {
+                Log.d("postComment", "게시물 댓글 인터넷 오류");
+            }
+        });
     }
 
     //recyclerview 간격
