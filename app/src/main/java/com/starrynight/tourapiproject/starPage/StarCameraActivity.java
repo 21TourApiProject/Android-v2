@@ -33,10 +33,8 @@ import androidx.core.content.ContextCompat;
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.starrynight.tourapiproject.R;
-import com.starrynight.tourapiproject.starPage.starItemPage.StarItem;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.Constellation;
 import com.starrynight.tourapiproject.starPage.starPageRetrofit.RetrofitClient;
-import com.starrynight.tourapiproject.weatherPage.GpsTracker;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -44,15 +42,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.temporal.ChronoField;
-import java.util.Calendar;
-import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -424,7 +414,7 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
             }
 
 
-            if(Math.abs(Math.floor(crtAltitude))==0&&isAlt){ //이 부분에 고도 방위각 수학 공식 구현
+            if(Math.abs(Math.floor(crtAltitude))==0&&isAlt){
                 crtGuideLayout.setVisibility(View.GONE);
                 guideLayout.setVisibility(View.VISIBLE);
                 onOffButton.setVisibility(View.VISIBLE);
@@ -508,8 +498,10 @@ public class StarCameraActivity extends AppCompatActivity implements SensorEvent
             int sec = (int) ((hour-hh-min/60.0)*3600);
 
             float angle = (float) ((hh*60.0)+min+(sec/60.0))*360/1436;
-            guideImage.setRotation(-angle);
-           Log.d(TAG,"LMST: "+hh+":"+min+":"+sec+" angle: "+angle);
+            float negativeAngle = -angle;
+            negativeAngle+=90.0;
+            guideImage.setRotation(negativeAngle);
+           //Log.d(TAG,"LMST: "+hh+":"+min+":"+sec+" angle: "+negativeAngle+ " "+ angle);
            return Math.round(LMST_s*100.0)/100.0;
         }
         // 율리우스 일 (Julian Date) 계산
