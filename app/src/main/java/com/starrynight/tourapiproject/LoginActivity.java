@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "RemoteConfig";
+    private static final String VERSIONTAG = "VersionCheck";
     Long userId;
 
     @Override
@@ -51,11 +52,9 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             installed_version = BuildConfig.VERSION_NAME;
                             firebase_version = mFirebaseRemoteConfig.getString("tour_api_project_v_1_3");
-                            if(installed_version.equals(firebase_version)){
-                                versionPass = true;
-                            }else{
-                                versionPass = false;
-                            }
+
+                            versionPass = compareVersions(installed_version,firebase_version);
+
                             if (!versionPass) {
                                 Log.d("version_check_success ", installed_version +" | "+ firebase_version);
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
@@ -105,11 +104,26 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
+    }
 
+    //버전 비교 함수
+    public boolean compareVersions(String install, String firebase) {
+        String[] installParts = install.split("\\.");
+        String[] fbParts = firebase.split("\\.");
 
+        for (int i = 0; i < Math.min(installParts.length, fbParts.length); i++) {
+            int installPart = Integer.parseInt(installParts[i]);
+            int fbPart = Integer.parseInt(fbParts[i]);
 
-
-
+            if (installPart < fbPart) {
+                Log.d(VERSIONTAG,"업데이트가 필요한 버전입니다.");
+                return false;
+            } else if (installPart > fbPart) {
+                Log.d(VERSIONTAG,"설치버전이 최신 버전입니다.");
+                return true;
+            }
+        }
+        return true; // 두 버전이 같은 경우
     }
 
     public boolean getLogin() {
