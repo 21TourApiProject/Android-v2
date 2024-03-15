@@ -53,19 +53,8 @@ public class LoginActivity extends AppCompatActivity {
                             installed_version = BuildConfig.VERSION_NAME;
                             firebase_version = mFirebaseRemoteConfig.getString("tour_api_project_v_1_3");
 
-                            String[] installParts = installed_version.split("\\.");
-                            String[] firebaseParts = firebase_version.split("\\.");
-                            if(!firebaseParts[0].equals(installParts[0])){
-                                Log.d(VERSIONTAG,"필수 업데이트가 있습니다.");
-                                versionPass = false;
-                            }else if(!firebaseParts[1].equals(installParts[1])){
-                                Log.d(VERSIONTAG,"필수 업데이트가 있습니다.");
-                                versionPass = false;
-                            }
-                            else if(!firebaseParts[2].equals(installParts[2])){
-                                Log.d(VERSIONTAG,"마이너 업데이트가 있습니다.");
-                                versionPass=true;
-                            }
+                            versionPass = compareVersions(installed_version,firebase_version);
+
                             if (!versionPass) {
                                 Log.d("version_check_success ", installed_version +" | "+ firebase_version);
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
@@ -115,11 +104,26 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
+    }
 
+    //버전 비교 함수
+    public boolean compareVersions(String install, String firebase) {
+        String[] installParts = install.split("\\.");
+        String[] fbParts = firebase.split("\\.");
 
+        for (int i = 0; i < Math.min(installParts.length, fbParts.length); i++) {
+            int installPart = Integer.parseInt(installParts[i]);
+            int fbPart = Integer.parseInt(fbParts[i]);
 
-
-
+            if (installPart < fbPart) {
+                Log.d(VERSIONTAG,"업데이트가 필요한 버전입니다.");
+                return false;
+            } else if (installPart > fbPart) {
+                Log.d(VERSIONTAG,"설치버전이 최신 버전입니다.");
+                return true;
+            }
+        }
+        return true; // 두 버전이 같은 경우
     }
 
     public boolean getLogin() {
