@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "RemoteConfig";
+    private static final String VERSIONTAG = "VersionCheck";
     Long userId;
 
     @Override
@@ -51,10 +52,19 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             installed_version = BuildConfig.VERSION_NAME;
                             firebase_version = mFirebaseRemoteConfig.getString("tour_api_project_v_1_3");
-                            if(installed_version.equals(firebase_version)){
-                                versionPass = true;
-                            }else{
+
+                            String[] installParts = installed_version.split("\\.");
+                            String[] firebaseParts = firebase_version.split("\\.");
+                            if(!firebaseParts[0].equals(installParts[0])){
+                                Log.d(VERSIONTAG,"필수 업데이트가 있습니다.");
                                 versionPass = false;
+                            }else if(!firebaseParts[1].equals(installParts[1])){
+                                Log.d(VERSIONTAG,"필수 업데이트가 있습니다.");
+                                versionPass = false;
+                            }
+                            else if(!firebaseParts[2].equals(installParts[2])){
+                                Log.d(VERSIONTAG,"마이너 업데이트가 있습니다.");
+                                versionPass=true;
                             }
                             if (!versionPass) {
                                 Log.d("version_check_success ", installed_version +" | "+ firebase_version);
