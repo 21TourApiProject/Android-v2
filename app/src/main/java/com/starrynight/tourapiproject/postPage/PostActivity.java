@@ -64,6 +64,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -149,7 +151,12 @@ public class PostActivity extends AppCompatActivity {
                     }
                     for (int i = 0; i < filename2.length; i++) {
                         if (filename2[i] != null) {
-                            filename2[i] = filename2[i].replace("+","%2B");
+                            //filename2[i] = filename2[i].replace("+","%2B");
+                            try {
+                                filename2[i] = URLEncoder.encode(filename2[i],"UTF-8");
+                            } catch (UnsupportedEncodingException e) {
+                                throw new RuntimeException(e);
+                            }
                             FileName.add("https://starry-night.s3.ap-northeast-2.amazonaws.com/postImage/" + filename2[i]);
                         }
                     }

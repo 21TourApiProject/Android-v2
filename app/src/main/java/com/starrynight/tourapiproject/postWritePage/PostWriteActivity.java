@@ -57,7 +57,6 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.starrynight.tourapiproject.R;
 import com.starrynight.tourapiproject.postItemPage.PostWriteHashTagItem2;
 import com.starrynight.tourapiproject.postItemPage.PostWriteHashTagItemAdapter;
-import com.starrynight.tourapiproject.postPage.postRetrofit.PostHashTag;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostHashTagParams;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostImageParams;
 import com.starrynight.tourapiproject.postWritePage.postWriteRetrofit.PostParams;
@@ -75,10 +74,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -322,111 +325,128 @@ public class PostWriteActivity extends AppCompatActivity {
                 ad.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        uploadfiles(files);
-                        postContent = ((EditText) (findViewById(R.id.postContentText))).getText().toString();
-                        if (postContent.isEmpty()) {
-                            Toast.makeText(getApplicationContext(), "게시물 내용을 입력해주세요.", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        if (numOfPicture == 0) {
-                            Toast.makeText(getApplicationContext(), "사진을 추가해주세요", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        postTitle = ((EditText) (findViewById(R.id.postWrite_titleText))).getText().toString();
-                        if (postTitle.isEmpty()) {
-                            Toast.makeText(getApplicationContext(), "게시물 제목을 입력해주세요.", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        if (yearDate.isEmpty()) {
-                            Toast.makeText(getApplicationContext(), "관측 날짜을 입력해주세요.", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        if (hashTagList.isEmpty()) {
-                            Toast.makeText(getApplicationContext(), "해시태그를 입력해주세요.", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        if (postObservePointName.isEmpty()) {
-                            Toast.makeText(getApplicationContext(), "관측지를 입력해주세요.", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-
-                        long now = System.currentTimeMillis();//게시물을 쓴 현재시간 가져오기
-                        Date date = new Date(now);
-                        SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
-                        String writeDate= dateFormat1.format(date);
-                        SimpleDateFormat dateFormat2 = new SimpleDateFormat("HH:mm");
-                        String writeTime= dateFormat2.format(date);
-
-                        PostParams postParams = new PostParams();
-                        postParams.setPostContent(postContent);
-                        postParams.setYearDate(yearDate);
-                        postParams.setTime(time);
-                        postParams.setWriteDate(writeDate);
-                        postParams.setWriteTime(writeTime);
-                        postParams.setUserId(userId);
-                        postParams.setPostTitle(postTitle);
-                        postParams.setOptionObservation(optionobservationName);
-                        Long areaId =0L;
-                        List<PostHashTagParams> finalParams= new ArrayList<PostHashTagParams>();
-                        if(postAreaParams!=null){
-                            finalParams.addAll(postAreaParams);
-                            finalParams.addAll(postHashTagParams);
-                            areaId=postAreaParams.get(0).getAreaId();
-                        }else{
-                            finalParams.addAll(postHashTagParams);
-                        }
-                        Call<Long> call = RetrofitClient.getApiService().postup(postObservePointName, postParams,areaId);
-                        call.enqueue(new Callback<Long>() {
+                        ExecutorService executorService = Executors.newSingleThreadExecutor();
+                        executorService.execute(new Runnable() {
                             @Override
-                            public void onResponse(Call<Long> call, Response<Long> response) {
-                                if (response.isSuccessful()) {
-                                    Log.d("post", "게시물 작성 성공");
-                                    Long result = response.body();
-                                    Call<Void> call1 = RetrofitClient.getApiService().createPostImage(result, postImageParams);
-                                    call1.enqueue(new Callback<Void>() {
-                                        @Override
-                                        public void onResponse(Call<Void> call, Response<Void> response) {
-                                            if (response.isSuccessful()) {
-                                                Log.d("postImage", "이미지 업로드 성공");
-                                            } else {
-                                                Log.d("postImage", "이미지 업로드 실패");
+                            public void run() {
+                                boolean uploadSuccess = uploadFiles(files);  // 파일 업로드 시도
+
+                                runOnUiThread(new Runnable() {  // UI 스레드에서 후속 작업 처리
+                                    @Override
+                                    public void run() {
+                                        if (!uploadSuccess) {
+                                            Toast.makeText(getApplicationContext(), "파일 업로드 실패", Toast.LENGTH_SHORT).show();
+                                        }else {
+                                            postContent = ((EditText) (findViewById(R.id.postContentText))).getText().toString();
+                                            if (postContent.isEmpty()) {
+                                                Toast.makeText(getApplicationContext(), "게시물 내용을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                                                return;
                                             }
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<Void> call, Throwable t) {
-                                            Log.d("postImage", "이미지 업로드 인터넷 오류");
-                                        }
-                                    });
-
-                                    Call<Void> call2 = RetrofitClient.getApiService().createPostHashTag(result, finalParams);
-                                    call2.enqueue(new Callback<Void>() {
-                                        @Override
-                                        public void onResponse(Call<Void> call, Response<Void> response) {
-                                            if (response.isSuccessful()) {
-                                                Log.d("posthashTag", "해시태그 업로드 성공");
-                                            } else {
-                                                Log.d("posthashTag", "해시태그 업로드 실패");
+                                            if (numOfPicture == 0) {
+                                                Toast.makeText(getApplicationContext(), "사진을 추가해주세요", Toast.LENGTH_SHORT).show();
+                                                return;
                                             }
-                                        }
+                                            postTitle = ((EditText) (findViewById(R.id.postWrite_titleText))).getText().toString();
+                                            if (postTitle.isEmpty()) {
+                                                Toast.makeText(getApplicationContext(), "게시물 제목을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                                                return;
+                                            }
+                                            if (yearDate.isEmpty()) {
+                                                Toast.makeText(getApplicationContext(), "관측 날짜을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                                                return;
+                                            }
+                                            if (hashTagList.isEmpty()) {
+                                                Toast.makeText(getApplicationContext(), "해시태그를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                                                return;
+                                            }
+                                            if (postObservePointName.isEmpty()) {
+                                                Toast.makeText(getApplicationContext(), "관측지를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                                                return;
+                                            }
 
-                                        @Override
-                                        public void onFailure(Call<Void> call, Throwable t) {
-                                            Log.d("posthashTag", "해시태그 업로드 인터넷 오류");
-                                        }
-                                    });
-                                } else {
-                                    Log.d("post", "게시물 작성 실패");
-                                }
-                            }
+                                            long now = System.currentTimeMillis();//게시물을 쓴 현재시간 가져오기
+                                            Date date = new Date(now);
+                                            SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+                                            String writeDate= dateFormat1.format(date);
+                                            SimpleDateFormat dateFormat2 = new SimpleDateFormat("HH:mm");
+                                            String writeTime= dateFormat2.format(date);
 
-                            @Override
-                            public void onFailure(Call<Long> call, Throwable t) {
-                                Log.d("post", "게시물 작성 인터넷 오류");
+                                            PostParams postParams = new PostParams();
+                                            postParams.setPostContent(postContent);
+                                            postParams.setYearDate(yearDate);
+                                            postParams.setTime(time);
+                                            postParams.setWriteDate(writeDate);
+                                            postParams.setWriteTime(writeTime);
+                                            postParams.setUserId(userId);
+                                            postParams.setPostTitle(postTitle);
+                                            postParams.setOptionObservation(optionobservationName);
+                                            Long areaId =0L;
+                                            List<PostHashTagParams> finalParams= new ArrayList<PostHashTagParams>();
+                                            if(postAreaParams!=null){
+                                                finalParams.addAll(postAreaParams);
+                                                finalParams.addAll(postHashTagParams);
+                                                areaId=postAreaParams.get(0).getAreaId();
+                                            }else{
+                                                finalParams.addAll(postHashTagParams);
+                                            }
+                                            Call<Long> call = RetrofitClient.getApiService().postup(postObservePointName, postParams,areaId);
+                                            call.enqueue(new Callback<Long>() {
+                                                @Override
+                                                public void onResponse(Call<Long> call, Response<Long> response) {
+                                                    if (response.isSuccessful()) {
+                                                        Log.d("post", "게시물 작성 성공");
+                                                        Long result = response.body();
+                                                        Call<Void> call1 = RetrofitClient.getApiService().createPostImage(result, postImageParams);
+                                                        call1.enqueue(new Callback<Void>() {
+                                                            @Override
+                                                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                                                if (response.isSuccessful()) {
+                                                                    Log.d("postImage", "이미지 업로드 성공");
+                                                                } else {
+                                                                    Log.d("postImage", "이미지 업로드 실패");
+                                                                }
+                                                            }
+
+                                                            @Override
+                                                            public void onFailure(Call<Void> call, Throwable t) {
+                                                                Log.d("postImage", "이미지 업로드 인터넷 오류");
+                                                            }
+                                                        });
+
+                                                        Call<Void> call2 = RetrofitClient.getApiService().createPostHashTag(result, finalParams);
+                                                        call2.enqueue(new Callback<Void>() {
+                                                            @Override
+                                                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                                                if (response.isSuccessful()) {
+                                                                    Log.d("posthashTag", "해시태그 업로드 성공");
+                                                                } else {
+                                                                    Log.d("posthashTag", "해시태그 업로드 실패");
+                                                                }
+                                                            }
+
+                                                            @Override
+                                                            public void onFailure(Call<Void> call, Throwable t) {
+                                                                Log.d("posthashTag", "해시태그 업로드 인터넷 오류");
+                                                            }
+                                                        });
+                                                    } else {
+                                                        Log.d("post", "게시물 작성 실패");
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<Long> call, Throwable t) {
+                                                    Log.d("post", "게시물 작성 인터넷 오류");
+                                                }
+                                            });
+                                            LoadingAsyncTask task = new LoadingAsyncTask(PostWriteActivity.this, 3000);
+                                            task.execute();
+                                        }
+                                    }
+                                });
                             }
                         });
-                        LoadingAsyncTask task = new LoadingAsyncTask(PostWriteActivity.this, 3000);
-                        task.execute();
+
                     }
                 });
                 ad.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
@@ -654,36 +674,51 @@ public class PostWriteActivity extends AppCompatActivity {
         }
     }
 
-    public void uploadWithTransferUtilty(String fileName, File file) {
-
+    public boolean uploadWithTransferUtility(String fileName, File file) {
         String realFileName = userId + "_" + fileName;
 
-        AWSCredentials awsCredentials = new BasicAWSCredentials(readAccessKey(), readSecretKey());    // IAM 생성하며 받은 것 입력
+        AWSCredentials awsCredentials = new BasicAWSCredentials(readAccessKey(), readSecretKey());
         AmazonS3Client s3Client = new AmazonS3Client(awsCredentials, Region.getRegion(Regions.AP_NORTHEAST_2));
 
         TransferUtility transferUtility = TransferUtility.builder().s3Client(s3Client).context(getApplicationContext()).build();
         TransferNetworkLossHandler.getInstance(getApplicationContext());
+        TransferObserver uploadObserver = transferUtility.upload("starry-night/postImage", realFileName, file);
+        final boolean[] isSuccess = {true};
 
-        TransferObserver uploadObserver = transferUtility.upload("starry-night/postImage", realFileName, file);    // (bucket api, file이름, file객체)
         uploadObserver.setTransferListener(new TransferListener() {
             @Override
             public void onStateChanged(int id, TransferState state) {
                 if (state == TransferState.COMPLETED) {
-                    Log.d("TAG", "onStateChanged: " + id + ", " + state.toString());
+                    Log.d("TAG", "Upload completed: " + id + ", " + state.toString());
+                } else if (state == TransferState.FAILED || state == TransferState.CANCELED) {
+                    Log.d("TAG", "Upload failed: " + id + ", " + state.toString());
+                    isSuccess[0] = false;
                 }
             }
 
             @Override
             public void onProgressChanged(int id, long current, long total) {
                 int done = (int) (((double) current / total) * 100.0);
-                Log.d("MYTAG", "UPLOAD - - ID: $id, percent done = $done");
+                Log.d("MYTAG", "UPLOAD - ID: " + id + ", percent done = " + done);
             }
 
             @Override
             public void onError(int id, Exception ex) {
-                Log.d("MYTAG", "UPLOAD ERROR - - ID: $id - - EX:" + ex.toString());
+                Log.d("MYTAG", "UPLOAD ERROR - ID: " + id + " - EX: " + ex.toString());
+                isSuccess[0] = false;  // 에러 발생 시 업로드 실패로 설정
             }
         });
+
+        // 업로드 완료 대기
+        while (uploadObserver.getState() == TransferState.WAITING || uploadObserver.getState() == TransferState.IN_PROGRESS) {
+            try {
+                Thread.sleep(500);  // 잠시 대기
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return isSuccess[0];  // 업로드 성공 여부 반환
     }
 
     private void addImage(Bitmap img) {
@@ -711,12 +746,40 @@ public class PostWriteActivity extends AppCompatActivity {
         }
     }
 
-    public void uploadfiles(ArrayList<File> files) {
+    public boolean uploadFiles(ArrayList<File> files) {
+        ArrayList<String> uploadedFiles = new ArrayList<>(); // 업로드된 파일들 저장 리스트
         for (File file : files) {
-            uploadWithTransferUtilty(file.getName(), file);
+            boolean success = uploadWithTransferUtility(file.getName(), file);
+            if (!success) {
+                // 업로드 실패 시 이전에 업로드된 파일들 삭제
+                deleteUploadedFiles(uploadedFiles);
+                return false; // 업로드 실패
+            }else{
+                uploadedFiles.add(userId + "_" + file.getName()); // 업로드 성공 시 파일명을 리스트에 추가
+            }
+        }
+        return true; // 모든 파일 업로드 성공
+    }
+    public void deleteUploadedFiles(ArrayList<String> uploadedFiles) {
+        AWSCredentials awsCredentials = new BasicAWSCredentials(readAccessKey(), readSecretKey());
+        AmazonS3Client s3Client = new AmazonS3Client(awsCredentials, Region.getRegion(Regions.AP_NORTHEAST_2));
+
+        for (String fileName : uploadedFiles) {
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            executor.execute(() -> {
+                try {
+                    String deleteURL = URLDecoder.decode(fileName, "UTF-8");
+                    s3Client.deleteObject("starry-night/postImage", deleteURL);
+                    Log.d("TAG", "Delete completed: " + deleteURL);
+                } catch (UnsupportedEncodingException e) {
+                    Log.e("TAG", "Error decoding object key: " + e.getMessage());
+                } catch (Exception e) {
+                    Log.e("TAG", "Error deleting object: " + e.getMessage());
+                }
+            });
+            Log.d("TAG", "Deleted file: " + fileName);
         }
     }
-
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
